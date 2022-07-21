@@ -9,10 +9,7 @@ import tile.TileManager;
 
 public class SpielPanel extends Pane {
 
-	final int Block = 16;
-	final int S = 3;
-
-	public final int Bg = Block * S;
+	public final int Bg = 48;
 	public final int BildS = 20;
 	public final int BildH = 11;
 	public final int SpielLaenge = Bg * BildS;

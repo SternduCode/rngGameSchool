@@ -1,19 +1,21 @@
 package tile;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import javafx.scene.image.*;
 
 public class ImgUtil {
 
-	public static Map.Entry<Double, Double> getScaleFactor(Image i, int requestedWidth, int requestedHeight) {
-		return Map.entry(requestedWidth / i.getWidth(), requestedHeight / i.getHeight());
+	public static Entry<Integer, Integer> getScaleFactor(int width, int height, int requestedWidth,
+			int requestedHeight) {
+		return Map.entry(requestedWidth / width, requestedHeight / height);
 	}
 
-	public static Image resample(Image input, Map.Entry<Double, Double> scaleFactor) {
+	public static Image resample(Image input, Map.Entry<Integer, Integer> scaleFactor) {
 		final int W = (int) input.getWidth();
 		final int H = (int) input.getHeight();
-		final int WS = (int) (double) scaleFactor.getKey();
-		final int HS = (int) (double) scaleFactor.getValue();
+		final int WS = scaleFactor.getKey();
+		final int HS = scaleFactor.getValue();
 
 		WritableImage output = new WritableImage(
 				W * WS,

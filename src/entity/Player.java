@@ -20,7 +20,9 @@ public class Player extends Entity {
 		keyH = keyH2;
 
 		up = new ArrayList<>();
+		upl = new ArrayList<>();
 		down = new ArrayList<>();
+		downl = new ArrayList<>();
 		left = new ArrayList<>();
 		right = new ArrayList<>();
 		nomovel = new ArrayList<>();
@@ -42,42 +44,64 @@ public class Player extends Entity {
 
 			for (int i = 0; i < up.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, 32, 32);
-				this.up.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.up.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+			}
+
+			Image upl = new Image(getClass().getResourceAsStream("/Player/LaufenHochL.png"));
+
+			for (int i = 0; i < upl.getWidth(); i += 32) {
+				WritableImage wi = new WritableImage(upl.getPixelReader(), i, 0, 32, 32);
+				this.upl.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 			Image down = new Image(getClass().getResourceAsStream("/Player/LaufenRunter.png"));
 
 			for (int i = 0; i < down.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(down.getPixelReader(), i, 0, 32, 32);
-				this.down.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.down.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+			}
+
+			Image downl = new Image(getClass().getResourceAsStream("/Player/LaufenRunterL.png"));
+
+			for (int i = 0; i < downl.getWidth(); i += 32) {
+				WritableImage wi = new WritableImage(downl.getPixelReader(), i, 0, 32, 32);
+				this.downl.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 			Image right = new Image(getClass().getResourceAsStream("/Player/LaufenRechts.png"));
 
 			for (int i = 0; i < right.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(right.getPixelReader(), i, 0, 32, 32);
-				this.right.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.right.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 			Image left = new Image(getClass().getResourceAsStream("/Player/LaufenLinks.png"));
 
 			for (int i = 0; i < left.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(left.getPixelReader(), i, 0, 32, 32);
-				this.left.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.left.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 			Image nomover = new Image(getClass().getResourceAsStream("/Player/Stehen.png"));
 
 			for (int i = 0; i < nomover.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, 32, 32);
-				this.nomover.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.nomover.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 			Image nomovel = new Image(getClass().getResourceAsStream("/Player/Stehen2.png"));
 
 			for (int i = 0; i < nomovel.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, 32, 32);
-				this.nomovel.add(ImgUtil.resample(wi, ImgUtil.getScaleFactor(wi, gp.Bg, gp.Bg)));
+				this.nomovel.add(ImgUtil.resample(wi,
+						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
 			}
 
 
@@ -113,11 +137,13 @@ public class Player extends Entity {
 
 	public void update() {
 		if (keyH.upPressed) {
-			direction = "up";
+			if (direction.equals("left") || direction.endsWith("L")) direction = "upL";
+			else direction = "up";
 			worldY -= speed;
 		}
 		else if (keyH.downPressed) {
-			direction = "down";
+			if (direction.equals("left") || direction.endsWith("L")) direction = "downL";
+			else direction = "down";
 			worldY += speed;
 		}
 		else if (keyH.leftPressed) {
@@ -127,16 +153,22 @@ public class Player extends Entity {
 		else if (keyH.rightPressed) {
 			direction = "right";
 			worldX += speed;
-		} else if (direction.equals("left") || direction.equals("lnone")) direction = "lnone";
-		else direction = "rnone";
+		} else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
+		else direction = "none";
 
 		int div = switch (direction) {
 			case "up" -> up.size();
+			case "upL" -> upl.size();
 			case "down" -> down.size();
+			case "downL" -> downl.size();
 			case "left" -> left.size();
 			case "right" -> right.size();
+			case "none" -> nomover.size();
+			case "noneL" -> nomovel.size();
 			default -> 1;
 		};
+
+		if (div == 0) div = 1;
 
 		spriteCounter++;
 		if (spriteCounter > 30 / div) {
@@ -151,9 +183,17 @@ public class Player extends Entity {
 				if (spriteNum >= up.size()) spriteNum = 0;
 				image = up.get(spriteNum);
 				break;
+			case "upL":
+				if (spriteNum >= upl.size()) spriteNum = 0;
+				image = upl.get(spriteNum);
+				break;
 			case "down":
 				if (spriteNum >= down.size()) spriteNum = 0;
 				image = down.get(spriteNum);
+				break;
+			case "downL":
+				if (spriteNum >= downl.size()) spriteNum = 0;
+				image = downl.get(spriteNum);
 				break;
 			case "left":
 				if (spriteNum >= left.size()) spriteNum = 0;
@@ -163,11 +203,11 @@ public class Player extends Entity {
 				if (spriteNum >= right.size()) spriteNum = 0;
 				image = right.get(spriteNum);
 				break;
-			case "rnone":
+			case "none":
 				if (spriteNum >= nomover.size()) spriteNum = 0;
 				image = nomover.get(spriteNum);
 				break;
-			case "lnone":
+			case "noneL":
 				if (spriteNum >= nomovel.size()) spriteNum = 0;
 				image = nomovel.get(spriteNum);
 				break;
