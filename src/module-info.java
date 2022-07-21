@@ -4,7 +4,7 @@ module rngGAME {
 	exports entity;
 
 	requires javafx.base;
-	requires javafx.graphics;
+	requires transitive javafx.graphics;
 
 	opens rngGAME to javafx.graphics;
 }

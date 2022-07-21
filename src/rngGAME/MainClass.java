@@ -9,7 +9,7 @@ public class MainClass extends Application {
 
 	public static void main(String[] args) {
 
-		System.setProperty("edit", "true");
+		System.setProperty("edit", "false");
 
 		//		JFrame Spiel = new JFrame();
 		//		Spiel.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
