@@ -93,7 +93,7 @@ public class Player extends Entity {
 
 		worldX = gp.Bg * 13;
 		worldY = gp.Bg * 37;
-		speed = 4;
+		speed = 3;
 		direction = "down";
 	}
 
