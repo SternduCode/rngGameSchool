@@ -67,6 +67,7 @@ public class Player extends Entity {
 			for (int i = 0; i < nomovel.getWidth(); i += 32)
 				this.nomovel.add(new WritableImage(nomovel.getPixelReader(), i, 0, 32, 32));
 
+
 			//			up1 = new Image(getClass().getResourceAsStream("/Player/Character-Hoch-1.png"), gp.Bg, gp.Bg, false, false);
 			//			up2 = new Image(getClass().getResourceAsStream("/Player/Character-Hoch-2.png"), gp.Bg, gp.Bg, false, false);
 			//			down1 = new Image(getClass().getResourceAsStream("/Player/Character-Runter-1.png"), gp.Bg, gp.Bg, false,
