@@ -40,7 +40,7 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			Image up = new Image(getClass().getResourceAsStream("/Player/LaufenHoch.png"));
+			Image up = new Image(getClass().getResourceAsStream("/res/player/LaufenHoch.png"));
 
 			for (int i = 0; i < up.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, 32, 32);
@@ -48,7 +48,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image upl = new Image(getClass().getResourceAsStream("/Player/LaufenHochL.png"));
+			Image upl = new Image(getClass().getResourceAsStream("/res/player/LaufenHochL.png"));
 
 			for (int i = 0; i < upl.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(upl.getPixelReader(), i, 0, 32, 32);
@@ -56,7 +56,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image down = new Image(getClass().getResourceAsStream("/Player/LaufenRunter.png"));
+			Image down = new Image(getClass().getResourceAsStream("/res/player/LaufenRunter.png"));
 
 			for (int i = 0; i < down.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(down.getPixelReader(), i, 0, 32, 32);
@@ -64,7 +64,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image downl = new Image(getClass().getResourceAsStream("/Player/LaufenRunterL.png"));
+			Image downl = new Image(getClass().getResourceAsStream("/res/player/LaufenRunterL.png"));
 
 			for (int i = 0; i < downl.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(downl.getPixelReader(), i, 0, 32, 32);
@@ -72,7 +72,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image right = new Image(getClass().getResourceAsStream("/Player/LaufenRechts.png"));
+			Image right = new Image(getClass().getResourceAsStream("/res/player/LaufenRechts.png"));
 
 			for (int i = 0; i < right.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(right.getPixelReader(), i, 0, 32, 32);
@@ -80,7 +80,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image left = new Image(getClass().getResourceAsStream("/Player/LaufenLinks.png"));
+			Image left = new Image(getClass().getResourceAsStream("/res/player/LaufenLinks.png"));
 
 			for (int i = 0; i < left.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(left.getPixelReader(), i, 0, 32, 32);
@@ -88,7 +88,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image nomover = new Image(getClass().getResourceAsStream("/Player/Stehen.png"));
+			Image nomover = new Image(getClass().getResourceAsStream("/res/player/Stehen.png"));
 
 			for (int i = 0; i < nomover.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, 32, 32);
@@ -96,7 +96,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
-			Image nomovel = new Image(getClass().getResourceAsStream("/Player/Stehen2.png"));
+			Image nomovel = new Image(getClass().getResourceAsStream("/res/player/Stehen2.png"));
 
 			for (int i = 0; i < nomovel.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, 32, 32);
