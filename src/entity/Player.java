@@ -44,64 +44,64 @@ public class Player extends Entity {
 
 			for (int i = 0; i < up.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, 32, 32);
-				this.up.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.up.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image upl = new Image(getClass().getResourceAsStream("/Player/LaufenHochL.png"));
 
 			for (int i = 0; i < upl.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(upl.getPixelReader(), i, 0, 32, 32);
-				this.upl.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.upl.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image down = new Image(getClass().getResourceAsStream("/Player/LaufenRunter.png"));
 
 			for (int i = 0; i < down.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(down.getPixelReader(), i, 0, 32, 32);
-				this.down.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.down.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image downl = new Image(getClass().getResourceAsStream("/Player/LaufenRunterL.png"));
 
 			for (int i = 0; i < downl.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(downl.getPixelReader(), i, 0, 32, 32);
-				this.downl.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.downl.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image right = new Image(getClass().getResourceAsStream("/Player/LaufenRechts.png"));
 
 			for (int i = 0; i < right.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(right.getPixelReader(), i, 0, 32, 32);
-				this.right.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.right.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image left = new Image(getClass().getResourceAsStream("/Player/LaufenLinks.png"));
 
 			for (int i = 0; i < left.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(left.getPixelReader(), i, 0, 32, 32);
-				this.left.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.left.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image nomover = new Image(getClass().getResourceAsStream("/Player/Stehen.png"));
 
 			for (int i = 0; i < nomover.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, 32, 32);
-				this.nomover.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.nomover.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image nomovel = new Image(getClass().getResourceAsStream("/Player/Stehen2.png"));
 
 			for (int i = 0; i < nomovel.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, 32, 32);
-				this.nomovel.add(ImgUtil.resample(wi,
-						ImgUtil.getScaleFactor((int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg)));
+				this.nomovel.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 

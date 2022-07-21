@@ -33,4 +33,19 @@ public class ImgUtil {
 		return output;
 	}
 
+	public static Image resizeImage(Image input, int w1, int h1, int w2, int h2) {
+		WritableImage wi = new WritableImage(w2, h2);
+		PixelReader reader = input.getPixelReader();
+		PixelWriter writer = wi.getPixelWriter();
+		double x_ratio = w1 / (double) w2;
+		double y_ratio = h1 / (double) h2;
+		int px, py;
+		for (int i = 0; i < h2; i++) for (int j = 0; j < w2; j++) {
+			px = (int) Math.floor(j * x_ratio);
+			py = (int) Math.floor(i * y_ratio);
+			writer.setArgb(j, i, reader.getArgb(px, py));
+		}
+		return wi;
+	}
+
 }
