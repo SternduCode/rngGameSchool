@@ -2,9 +2,12 @@
 	"buildings": [
 		{
 			"textures" : {
-			 
+				"closed" : "/res/building/A11Haus.png"
+				"open" : "/res/building/A1Haus.png"
 			},
-			"position" : [0.5, 0.5],
+			"position" : [1100, 800],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [225, 225], 
 			"buildingData" : {
 				
 			}

@@ -1,14 +1,11 @@
 package rngGAME;
 
 import java.util.List;
+import buildings.Building;
 import entity.Player;
 import javafx.animation.*;
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import javafx.scene.Group;
-
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -33,12 +30,13 @@ public class SpielPanel extends Pane {
 	private final int FPS = 60;
 
 
-	ImageView inv; 
+	private final ImageView inv;
 
 	private final Input keyH;
 	private final Player player;
 	private final TileManager tileM;
 	private final Group buildingsGroup;
+	private final List<Building> buildings;
 
 
 
@@ -52,23 +50,24 @@ public class SpielPanel extends Pane {
 		player = new Player(this, getKeyH());
 
 		tileM = new TileManager(this);
-		
-		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png"))); 
+
+		buildings = tileM.getBuildingsFromMap();
+
+		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png")));
 
 
 		buildingsGroup = new Group();
 
 		addBuildings();
 
-		getChildren().addAll(tileM, player, buildingsGroup, inv);
+		getChildren().addAll(tileM, buildingsGroup, player, inv);
 
 
 	}
 
 
 	public void addBuildings() {
-		List<Building> buildings = tileM.getBuildingsFromMap();
-
+		buildingsGroup.getChildren().addAll(buildings);
 	}
 
 	public Input getKeyH() {
@@ -102,12 +101,11 @@ public class SpielPanel extends Pane {
 		player.update();
 
 		tileM.update();
-		
-		if (keyH.tabPressed) {
-			inv.setVisible(true);
-		} else {
-			inv.setVisible(false);
-		}
+
+		for (Building b: buildings) b.update(player, this);
+
+		if (keyH.tabPressed) inv.setVisible(true);
+		else inv.setVisible(false);
 
 	}
 
