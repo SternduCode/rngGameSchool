@@ -3,7 +3,12 @@ package rngGAME;
 import java.util.List;
 import entity.Player;
 import javafx.animation.*;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import javafx.scene.Group;
+
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -27,10 +32,14 @@ public class SpielPanel extends Pane {
 
 	private final int FPS = 60;
 
+
+	ImageView inv; 
+
 	private final Input keyH;
 	private final Player player;
 	private final TileManager tileM;
 	private final Group buildingsGroup;
+
 
 
 
@@ -43,12 +52,16 @@ public class SpielPanel extends Pane {
 		player = new Player(this, getKeyH());
 
 		tileM = new TileManager(this);
+		
+		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png"))); 
+
 
 		buildingsGroup = new Group();
 
 		addBuildings();
 
-		getChildren().addAll(tileM, player, buildingsGroup);
+		getChildren().addAll(tileM, player, buildingsGroup, inv);
+
 
 	}
 
@@ -89,6 +102,12 @@ public class SpielPanel extends Pane {
 		player.update();
 
 		tileM.update();
+		
+		if (keyH.tabPressed) {
+			inv.setVisible(true);
+		} else {
+			inv.setVisible(false);
+		}
 
 	}
 
