@@ -24,7 +24,8 @@ public class TileManager extends Pane {
 
 		tile = new ArrayList<>();
 		try {
-			JsonObject jo = (JsonObject) JsonParser.parse(getClass().getResourceAsStream("/res/maps/lavaMap2.txt"));
+			JsonObject jo = (JsonObject) JsonParser
+					.parse(getClass().getResourceAsStream("/res/maps/InnenContracts.txt"));
 			JsonObject map = (JsonObject) jo.get("map");
 			JsonArray textures = (JsonArray) map.get("textures");
 			JsonArray npcs = (JsonArray) jo.get("npcs");
@@ -113,11 +114,11 @@ public class TileManager extends Pane {
 				&& worldY + gp.Bg > p.worldY - p.screenY
 				&& worldY - gp.Bg < p.worldY + p.screenY) {
 				TextureHolder th = null;
-				if (group.getChildren().size() > worldRow * 50 + worldCol)
-					th = (TextureHolder) group.getChildren().get(worldRow * 50 + worldCol);
+				if (group.getChildren().size() > worldRow * maxCol + worldCol)
+					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
 				if (th == null) {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
-					group.getChildren().add(worldRow * 50 + worldCol, th);
+					group.getChildren().add(worldRow * maxCol + worldCol, th);
 				} else {
 					th.setLayoutX(screenX);
 					th.setLayoutY(screenY);
@@ -125,19 +126,19 @@ public class TileManager extends Pane {
 				th.setVisible(true);
 			} else {
 				TextureHolder th = null;
-				if (group.getChildren().size() > worldRow * 50 + worldCol)
-					th = (TextureHolder) group.getChildren().get(worldRow * 50 + worldCol);
+				if (group.getChildren().size() > worldRow * maxCol + worldCol)
+					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
 				if (th != null) th.setVisible(false);
 				else {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
 					th.setVisible(false);
-					group.getChildren().add(worldRow * 50 + worldCol, th);
+					group.getChildren().add(worldRow * maxCol + worldCol, th);
 				}
 			}
 
 			worldCol++;
 
-			if (worldCol == 50) {
+			if (worldCol == maxCol) {
 				worldCol = 0;
 				worldRow++;
 			}
