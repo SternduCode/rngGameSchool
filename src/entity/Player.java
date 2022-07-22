@@ -136,9 +136,9 @@ public class Player extends Entity {
 	}
 
 
-	public void setPosition(Entry<Integer, Integer> startingPosition) {
-		worldX = gp.Bg * startingPosition.getKey();
-		worldY = gp.Bg * startingPosition.getValue();
+	public void setPosition(Entry<Double, Double> startingPosition) {
+		worldX = (int) (gp.Bg * startingPosition.getKey());
+		worldY = (int) (gp.Bg * startingPosition.getValue());
 	}
 
 	public void update() {

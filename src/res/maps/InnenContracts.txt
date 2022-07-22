@@ -1,5 +1,9 @@
 {
-	"buildings": [
+	"exit" : {
+		"map" : "/res/maps/lavaMap2.txt",
+		"spawnPosition" : [18.5, 9.8],
+		"position" : [7, 12],
+	}, "buildings": [
 		
 	], "npcs": [
 		{
@@ -12,7 +16,6 @@
 			}
 		}
 	], "map": {
-
 	
 		"size" : [13, 13],
 

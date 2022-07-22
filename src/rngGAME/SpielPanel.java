@@ -1,6 +1,6 @@
 package rngGAME;
 
-import java.util.List;
+import java.util.*;
 import buildings.Building;
 import entity.Player;
 import javafx.animation.*;
@@ -28,14 +28,13 @@ public class SpielPanel extends Pane {
 	private final Player player;
 	private final TileManager tileM;
 	private final Group buildingsGroup;
-	private final List<Building> buildings;
+	private List<Building> buildings;
 
 
 
 
 	public SpielPanel(Input keyH) {
 		setPrefSize(SpielLaenge, SpielHoehe);
-		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
 		this.keyH = keyH;
 
@@ -43,23 +42,18 @@ public class SpielPanel extends Pane {
 
 		tileM = new TileManager(this);
 
-		buildings = tileM.getBuildingsFromMap();
-
 		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
-		player.setPosition(tileM.getStartingPosition());
-
 		buildingsGroup = new Group();
 
-		addBuildings();
+		setMap("/res/maps/lavaMap2.txt");
 
 		getChildren().addAll(tileM, buildingsGroup, player, inv);
 
 
 	}
-
 
 	public void addBuildings() {
 		buildingsGroup.getChildren().addAll(buildings);
@@ -72,11 +66,28 @@ public class SpielPanel extends Pane {
 
 	public Player getPlayer() { return player; }
 
-
-
 	public void run() {
 		update();
 
+	}
+
+
+	public void setMap(String path) {
+		tileM.setMap(path);
+		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		buildings = tileM.getBuildingsFromMap();
+		player.setPosition(tileM.getStartingPosition());
+		buildingsGroup.getChildren().clear();
+		addBuildings();
+	}
+
+	public void setMap(String path, Map.Entry<Double, Double> position) {
+		tileM.setMap(path);
+		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		buildings = tileM.getBuildingsFromMap();
+		player.setPosition(position);
+		buildingsGroup.getChildren().clear();
+		addBuildings();
 	}
 
 

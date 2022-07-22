@@ -2,6 +2,7 @@ module rngGAME {
 	exports rngGAME;
 	exports tile;
 	exports entity;
+	exports buildings;
 
 	requires javafx.base;
 	requires transitive javafx.graphics;

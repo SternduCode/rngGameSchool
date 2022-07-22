@@ -16,8 +16,10 @@ public class Building extends ImageView {
 	protected final double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 	protected final JsonObject buildingData;
+	protected String map;
 
 	public Building(JsonObject building) {
+		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
 		x = ((NumberValue) ((JsonArray) building.get("position")).get(0)).getValue().doubleValue();
 		y = ((NumberValue) ((JsonArray) building.get("position")).get(1)).getValue().doubleValue();
 		origWidth = ((NumberValue) ((JsonArray) building.get("originalSize")).get(0)).getValue().intValue();

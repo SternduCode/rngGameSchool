@@ -18,6 +18,9 @@ public class House extends Building {
 				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -135)
 			setImage(images.get("open").get(0));
 		else setImage(images.get("closed").get(0));
+		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
+				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -65)
+			if (map != null) gp.setMap(map);
 	}
 
 }

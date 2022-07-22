@@ -13,53 +13,35 @@ public class TileManager extends Pane {
 	private final SpielPanel gp;
 	private final List<Tile> tile;
 	private int mapTileNum[][];
-	private Group group;
+	private final Group group;
 	private List<Building> buildings;
 	private List<NPC> npcs;
 	private int maxCol, maxRow;
-	private Map.Entry<Integer, Integer> startingPosition;
+	private String exitMap;
+
+	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
 
 	public TileManager(SpielPanel gp) {
 		this.gp = gp;
 
 		tile = new ArrayList<>();
-		try {
-			JsonObject jo = (JsonObject) JsonParser
-					.parse(getClass().getResourceAsStream("/res/maps/InnenContracts.txt"));
-			JsonObject map = (JsonObject) jo.get("map");
-			JsonArray textures = (JsonArray) map.get("textures");
-			JsonArray npcs = (JsonArray) jo.get("npcs");
-			JsonArray buildings = (JsonArray) jo.get("buildings");
-			JsonArray size = (JsonArray) map.get("size");
-			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
-			for (Object texture: textures)
-				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
-			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
-			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
-			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().intValue(),
-					((NumberValue) startingPosition.get(1)).getValue().intValue());
-			mapTileNum = new int[maxCol][maxRow];
-			loadMap(((StringValue) map.get("matrix")).getValue());
-			this.buildings = new ArrayList<>();
-			this.npcs = new ArrayList<>();
-			for (Object building: buildings)
-				this.buildings.add(switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building);
-					default -> new Building((JsonObject) building);
-				});
-			for (Object npc: npcs) this.npcs.add(new NPC((JsonObject) npc));
 
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		}
+		group = new Group();
+		getChildren().add(group);
 	}
 
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
+	public String getExitMap() { return exitMap; }
+
+	public Map.Entry<Double, Double> getExitPosition() { return exitPosition; }
+
+	public Map.Entry<Double, Double> getExitStartingPosition() { return exitStartingPosition; }
+
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
-	public Map.Entry<Integer, Integer> getStartingPosition() { return startingPosition; }
+	public Map.Entry<Double, Double> getStartingPosition() { return startingPosition; }
 
 	public void loadMap(String data) {
 
@@ -96,19 +78,72 @@ public class TileManager extends Pane {
 
 	}
 
+	public void setMap(String path) {
+		try {
+			exitPosition = null;
+			exitStartingPosition = null;
+			exitMap = null;
+
+			group.getChildren().clear();
+			tile.clear();
+			JsonObject jo = (JsonObject) JsonParser
+					.parse(getClass().getResourceAsStream(path));
+			JsonObject map = (JsonObject) jo.get("map");
+			JsonArray textures = (JsonArray) map.get("textures");
+			JsonArray npcs = (JsonArray) jo.get("npcs");
+			JsonArray buildings = (JsonArray) jo.get("buildings");
+			JsonArray size = (JsonArray) map.get("size");
+			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
+			if (jo.containsKey("exit")) {
+				JsonObject exit = (JsonObject) jo.get("exit");
+				exitMap = ((StringValue) exit.get("map")).getValue();
+				JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
+				JsonArray position = (JsonArray) exit.get("position");
+				exitStartingPosition = Map.entry(((NumberValue) spawnPosition.get(0)).getValue().doubleValue(),
+						((NumberValue) spawnPosition.get(1)).getValue().doubleValue());
+				exitPosition = Map.entry(((NumberValue) position.get(0)).getValue().doubleValue(),
+						((NumberValue) position.get(1)).getValue().doubleValue());
+			}
+			for (Object texture: textures)
+				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
+			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
+			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
+			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
+					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
+			mapTileNum = new int[maxCol][maxRow];
+			loadMap(((StringValue) map.get("matrix")).getValue());
+			this.buildings = new ArrayList<>();
+			this.npcs = new ArrayList<>();
+			for (Object building: buildings)
+				this.buildings.add(switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
+					case "House" -> new House((JsonObject) building);
+					default -> new Building((JsonObject) building);
+				});
+			for (Object npc: npcs) this.npcs.add(new NPC((JsonObject) npc));
+
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void update() {
+
+		Player p = gp.getPlayer();
+
+		if (exitMap != null) {
+			int worldX = (int) (gp.Bg * exitPosition.getKey());
+			int worldY = (int) (gp.Bg * exitPosition.getValue());
+
+			if (worldX + gp.Bg / 2 - p.worldX < 105 && worldX + gp.Bg / 2 - p.worldX > -45 &&
+					worldY + gp.Bg / 2 - p.worldY < 25 && worldY + gp.Bg / 2 - p.worldY > 0)
+				gp.setMap(exitMap, exitStartingPosition);
+		}
+
 		int worldCol = 0;
 		int worldRow = 0;
 
-		if (group == null) {
-			group = new Group();
-			getChildren().add(group);
-		}
-
 		while (worldCol < maxCol && worldRow < maxRow) {
 			int tileNum = mapTileNum[worldCol][worldRow];
-
-			Player p = gp.getPlayer();
 
 			int worldX = worldCol * gp.Bg;
 			int worldY = worldRow * gp.Bg;

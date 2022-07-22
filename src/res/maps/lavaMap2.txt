@@ -9,6 +9,7 @@
 			"position" : [800, 250],
 			"originalSize" : [64, 64], 
 			"requestedSize" : [225, 225], 
+			"map" : "/res/maps/InnenContracts.txt",
 			"buildingData" : {
 				
 			}
