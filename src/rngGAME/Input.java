@@ -52,6 +52,14 @@ public class Input {
 
 	}
 
+	public void mouseDragged(MouseEvent me) {
+		System.out.println("Dragged " + me);
+		EventTarget target = me.getTarget();
+		if (target instanceof TextureHolder t) if (!t.isDragging())
+			t.startDrag();
+		else t.doDrag(me.getPickResult());
+	}
+
 	public void mouseMoved(MouseEvent me) {
 		if (System.getProperty("edit").equals("true")) {
 			EventTarget et= me.getTarget();
@@ -69,6 +77,11 @@ public class Input {
 
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
+		EventTarget target = me.getTarget();
+		if (target instanceof TextureHolder t) for (Node e: ((Group) t.getParent()).getChildren())
+			if (((TextureHolder) e).isDragging()) ((TextureHolder) e).endDrag();
+		//t.setCon
+		//new ContextMenu();
 	}
 
 }

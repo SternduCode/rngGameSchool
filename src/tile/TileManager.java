@@ -2,6 +2,7 @@ package tile;
 
 import java.io.*;
 import java.util.*;
+import entity.Player;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import rngGAME.SpielPanel;
@@ -23,6 +24,11 @@ public class TileManager extends Pane {
 		getTileImage();
 		loadMap("/res/maps/lavaMap.txt");
 	}
+
+	public List<String> getBuildingsFromMap() {
+		return new ArrayList<>();//TODO
+	}
+
 
 	public void getTileImage() {
 
@@ -141,7 +147,6 @@ public class TileManager extends Pane {
 
 	}
 
-
 	public void loadMap(String filePath) {
 
 		int col = 0;
@@ -191,17 +196,20 @@ public class TileManager extends Pane {
 		while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			int tileNum = mapTileNum[worldCol][worldRow];
 
+			Player p = gp.getPlayer();
+
 			int worldX = worldCol * gp.Bg;
 			int worldY = worldRow * gp.Bg;
-			int screenX = worldX - gp.player.worldX + gp.player.screenX;
-			int screenY = worldY - gp.player.worldY + gp.player.screenY;
+			int screenX = worldX - p.worldX + p.screenX;
+			int screenY = worldY - p.worldY + p.screenY;
 
-			if (worldX + gp.Bg > gp.player.worldX - gp.player.screenX
-				&& worldX - gp.Bg < gp.player.worldX + gp.player.screenX
-				&& worldY + gp.Bg > gp.player.worldY - gp.player.screenY
-				&& worldY - gp.Bg < gp.player.worldY + gp.player.screenY) {
+			if (worldX + gp.Bg > p.worldX - p.screenX
+				&& worldX - gp.Bg < p.worldX + p.screenX
+				&& worldY + gp.Bg > p.worldY - p.screenY
+				&& worldY - gp.Bg < p.worldY + p.screenY) {
 				TextureHolder th = null;
-				if (group.getChildren().size() > worldRow * 50 + worldCol) th = (TextureHolder) group.getChildren().get(worldRow * 50 + worldCol);
+				if (group.getChildren().size() > worldRow * 50 + worldCol)
+					th = (TextureHolder) group.getChildren().get(worldRow * 50 + worldCol);
 				if (th == null) {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
 					group.getChildren().add(worldRow * 50 + worldCol, th);
@@ -229,6 +237,7 @@ public class TileManager extends Pane {
 				worldRow++;
 			}
 		}
+
 	}
 
 }
