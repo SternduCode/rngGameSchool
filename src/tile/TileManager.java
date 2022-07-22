@@ -2,7 +2,7 @@ package tile;
 
 import java.util.*;
 import com.sterndu.json.*;
-import buildings.Building;
+import buildings.*;
 import entity.*;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -34,7 +34,11 @@ public class TileManager extends Pane {
 			loadMap(((StringValue) map.get("matrix")).getValue());
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
-			for (Object building: buildings) this.buildings.add(new Building((JsonObject) building));
+			for (Object building: buildings)
+				this.buildings.add(switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
+					case "House" -> new House((JsonObject) building);
+					default -> new Building((JsonObject) building);
+				});
 			for (Object npc: npcs) this.npcs.add(new NPC((JsonObject) npc));
 
 		} catch (JsonParseException e) {

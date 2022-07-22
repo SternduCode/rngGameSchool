@@ -1,6 +1,7 @@
 {
 	"buildings": [
 		{
+			"type" : "House",
 			"textures" : {
 				"closed" : "/res/building/A11Haus.png"
 				"open" : "/res/building/A1Haus.png"
