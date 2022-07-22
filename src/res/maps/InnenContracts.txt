@@ -13,25 +13,45 @@
 		}
 	], "map": {
 	
-		"size" : [11, 11],
+		"size" : [13, 13],
 	
 		"textures" : [
 			
-			"/res/buildingInside/Boden.png",
+			"/res/buildingInside/Boden.png",			
+			"/res/buildingInside/BodenAusgang.png",		
+			"/res/buildingInside/Unten.png",			
+			"/res/buildingInside/Rechts.png",			
+			"/res/buildingInside/RechtsEcke.png",		
+			"/res/buildingInside/RechtsEckeM.png",		
+			"/res/buildingInside/Void.png",				
+			"/res/buildingInside/RechtsEckeMU.png",		
+			"/res/buildingInside/RechtsEckeU.png",		
+			"/res/buildingInside/Oben.png",				
+			"/res/buildingInside/LinksEckeM.png",		
+			"/res/buildingInside/LinksEckeU.png",		
+			"/res/buildingInside/Links.png",			
+			"/res/buildingInside/LinksEckeO.png",		
+			"/res/buildingInside/LinksEckeMO.png",		
+			"/res/buildingInside/BookWand.png",			
+			"/res/buildingInside/HalbBookWand.png",		
+			"/res/buildingInside/LeerWand.png",			
+			"/res/buildingInside/SchubWand.png",		
 			
 		],
 		"matrix" : 
-"0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0"
+"6 6 6 6 6 6 6 6 6 6 6 6 6
+6 6 6 7 9 9 9 9 9 10 6 6 6
+6 6 7 8 15 16 16 17 18 11 10 6 6
+6 7 8 18 0 0 0 0 0 16 11 10 6
+6 3 16 0 0 0 0 0 0 0 17 12 6
+6 3 0 0 0 0 0 0 0 0 0 12 6
+6 3 0 0 0 0 0 0 0 0 0 12 6
+6 3 0 0 0 0 0 0 0 0 0 12 6
+6 3 0 0 0 0 0 0 0 0 0 12 6
+6 3 0 0 0 0 0 0 0 0 0 12 6
+6 5 4 0 0 0 0 0 0 0 13 14 6
+6 6 5 2 4 0 0 0 13 2 14 6 6
+6 6 6 6 5 4 1 13 14 6 6 6 6"
 
 	}
 }
