@@ -25,7 +25,7 @@ public class TileManager extends Pane {
 		tile = new ArrayList<>();
 		try {
 			JsonObject jo = (JsonObject) JsonParser
-					.parse(getClass().getResourceAsStream("/res/maps/InnenContracts.txt"));
+					.parse(getClass().getResourceAsStream("/res/maps/lavaMap2.txt"));
 			JsonObject map = (JsonObject) jo.get("map");
 			JsonArray textures = (JsonArray) map.get("textures");
 			JsonArray npcs = (JsonArray) jo.get("npcs");
