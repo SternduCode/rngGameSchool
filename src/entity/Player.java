@@ -40,7 +40,7 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			Image up = new Image(getClass().getResourceAsStream("/res/player/LaufenHoch.png"));
+			Image up = new Image(getClass().getResourceAsStream("/res/player/LaufenHochL.png"));
 
 			for (int i = 0; i < up.getWidth(); i += 32) {
 				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, 32, 32);
