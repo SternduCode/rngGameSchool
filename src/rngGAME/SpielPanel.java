@@ -12,7 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import tile.TileManager;
+import tile.*;
 
 public class SpielPanel extends Pane {
 
@@ -67,7 +67,7 @@ public class SpielPanel extends Pane {
 
 
 	public void addBuildings() {
-		List<String> buildings = tileM.getBuildingsFromMap();
+		List<Building> buildings = tileM.getBuildingsFromMap();
 
 	}
 

@@ -1,18 +1,20 @@
 package tile;
 
-import java.io.*;
 import java.util.*;
-import entity.Player;
+import com.sterndu.json.*;
+import entity.*;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import rngGAME.SpielPanel;
 
 public class TileManager extends Pane {
 
-	SpielPanel gp;
-	List<Tile> tile;
-	int mapTileNum[][];
-	Group group;
+	private final SpielPanel gp;
+	private final List<Tile> tile;
+	private final int mapTileNum[][];
+	private Group group;
+	private List<Building> buildings;
+	private List<NPC> npcs;
 
 
 	public TileManager(SpielPanel gp) {
@@ -20,163 +22,173 @@ public class TileManager extends Pane {
 
 		tile = new ArrayList<>();
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-
-		getTileImage();
-		loadMap("/res/maps/lavaMap.txt");
-	}
-
-	public List<String> getBuildingsFromMap() {
-		return new ArrayList<>();//TODO
-	}
-
-
-	public void getTileImage() {
-
 		try {
-			//
-			// Arrays.asList(new
-			// File(getClass().getResource("res/tiles").toURI()).listFiles()).forEach(f -> {
-			//				try {
-			//					System.out.println(f);
-			//					tile.add(new Tile(new Image(new FileInputStream(f))));
-			//				} catch (FileNotFoundException e) {
-			//					e.printStackTrace();
-			//				}
-			//			});
+			JsonObject jo = (JsonObject) JsonParser.parse(getClass().getResourceAsStream("/res/maps/lavaMap2.txt"));
+			JsonObject map = (JsonObject) jo.get("map");
+			JsonArray textures = (JsonArray) map.get("textures");
+			JsonArray npcs = (JsonArray) jo.get("npcs");
+			JsonArray buildings = (JsonArray) jo.get("buildings");
+			for (Object texture: textures)
+				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
+			loadMap(((StringValue) map.get("matrix")).getValue());
+			this.buildings = new ArrayList<>();
+			this.npcs = new ArrayList<>();
+			for (Object building: buildings) this.buildings.add(new Building((JsonObject) building));
+			for (Object npc: npcs) this.npcs.add(new NPC((JsonObject) npc));
 
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Stein.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/LavaS3.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOG.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGELO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGMELO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Sand.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasBoden.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGEMRU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Pflanze.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGL.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGMMERU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSL.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGELU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSOW.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGMMERO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Wasser.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasser.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SELU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserGerade.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEcke.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeC.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEcke.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRG.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGERU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeLO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasSas.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRRU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SERUU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGERO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeLU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLLU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeFF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hoffnung.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope2.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLG.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope3.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope4.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope5.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Gras.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope6.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU2.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD2.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE2.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU3.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD3.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE3.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU4.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD4.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE4.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Nanana.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Puff.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/FFFF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Zaun.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Zaun2.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunS.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunFF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunSS.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DM.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DL.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Eingang.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HL.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSL.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSRU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSLU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSRO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSLO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Baum.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALMU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALEU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSML.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALEO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AMF.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSMO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AREO.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSMR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AREU.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGR.png"), gp));
-			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope7.png"), gp));      
-			tile.add(new Tile(getClass().getResourceAsStream("/res/Buildings/A11Haus.png"), gp));    //95
-			
-		} catch (Exception e) {
+		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void loadMap(String filePath) {
+	public List<Building> getBuildingsFromMap() { return buildings; }
+
+	public List<NPC> getNPCSFromMap() { return npcs; }
+
+
+	//	public void getTileImage() {
+	//
+	//		try {
+	//			//
+	//			// Arrays.asList(new
+	//			// File(getClass().getResource("res/tiles").toURI()).listFiles()).forEach(f -> {
+	//			//				try {
+	//			//					System.out.println(f);
+	//			//					tile.add(new Tile(new Image(new FileInputStream(f))));
+	//			//				} catch (FileNotFoundException e) {
+	//			//					e.printStackTrace();
+	//			//				}
+	//			//			});
+	//
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Stein.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/LavaS3.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOG.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGELO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGMELO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Sand.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasBoden.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGEMRU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Pflanze.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGL.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGMMERU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSL.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGELU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSOW.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGMMERO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Wasser.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasser.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SELU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserGerade.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEcke.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeC.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEcke.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGGSO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRG.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGERU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeLO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasSas.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeRRU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SERUU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SGERO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeLU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLLU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GrasEckeFF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hoffnung.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope2.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SteinWandWasserEckeLG.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope3.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope4.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope5.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Gras.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope6.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU2.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD2.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE2.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU3.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD3.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE3.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DGERU4.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AWDAD4.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/GEGEGE4.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Nanana.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Puff.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/FFFF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Zaun.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Zaun2.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunS.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunFF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ZaunSS.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DM.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DL.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Eingang.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HL.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/DR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSL.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSRU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSLU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSRO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSLO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/HSR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Baum.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALMU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALEU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSML.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALEO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AMF.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSMO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AREO.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSMR.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AREU.png"), gp));
+	//			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGR.png"), gp));
+	//
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//
+	//	}
+
+	public void loadMap(String data) {
 
 		int col = 0;
 		int row = 0;
 
 		try {
 
-			InputStream is = getClass().getResourceAsStream(filePath);			//Importiert Die Textdatei
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String[] lines = data.replaceAll("\r", "").split("\n");
+			int idx = 0;
 
 			while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
 
-				String line = br.readLine();
+				String line = lines[idx];
+				String numbers[] = line.split(" ");
 
 				while (col < gp.maxWorldCol) {
-
-					String numbers[] = line.split(" ");
 
 					int num = Integer.parseInt(numbers[col]);
 
 					mapTileNum[col][row] = num;
 					col++;
-
 				}
 				if (col == gp.maxWorldCol) {
 					col = 0;
 					row++;
+					idx++;
 				}
 			}
-			br.close();
 
 		} catch (Exception e) {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
