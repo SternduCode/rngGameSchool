@@ -13,8 +13,8 @@ public class Building extends ImageView {
 	public Building(JsonObject building) {
 		images = ((JsonArray) building.get("textures")).stream()
 				.map(s -> new Image(getClass().getResourceAsStream(((StringValue) s).getValue()))).toList();
-		x = ((DoubleValue) ((JsonArray) building.get("position")).get(0)).getValue();
-		y = ((DoubleValue) ((JsonArray) building.get("position")).get(0)).getValue();
+		x = ((FloatValue) ((JsonArray) building.get("position")).get(0)).getValue();
+		y = ((FloatValue) ((JsonArray) building.get("position")).get(0)).getValue();
 		buildingData = (JsonObject) building.get("buildingData");
 	}
 
