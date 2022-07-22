@@ -1,0 +1,48 @@
+{
+	"buildings": [
+		{
+			"type" : "House",
+			"textures" : {
+				"closed" : "/res/building/A11Haus.png"
+				"open" : "/res/building/A1Haus.png"
+			},
+			"position" : [800, 250],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [225, 225], 
+			"buildingData" : {
+				
+			}
+		}
+	], "npcs": [
+		{
+			"textures" : {
+				
+			},
+			"position" : [0.5, 0.5],
+			"npcData" : {
+			
+			}
+		}
+	], "map": {
+	
+		"size" : [10, 10],
+	
+		"textures" : [
+			
+			"/res/buildingInside/Boden.png",
+			
+		],
+		"matrix" : 
+"0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0"
+
+	}
+}
