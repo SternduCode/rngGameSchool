@@ -9,7 +9,7 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import tile.*;
+import tile.TileManager;
 
 public class SpielPanel extends Pane {
 
@@ -54,6 +54,8 @@ public class SpielPanel extends Pane {
 		buildings = tileM.getBuildingsFromMap();
 
 		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png")));
+		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
+		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
 
 		buildingsGroup = new Group();
