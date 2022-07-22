@@ -132,6 +132,7 @@ public class TileManager extends Pane {
 			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/ALSMR.png"), gp));
 			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/AREU.png"), gp));
 			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/SandOGR.png"), gp));
+			tile.add(new Tile(getClass().getResourceAsStream("/res/tiles/Hope7.png"), gp));
 
 		} catch (Exception e) {
 			e.printStackTrace();
