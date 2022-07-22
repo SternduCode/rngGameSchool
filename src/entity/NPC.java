@@ -18,10 +18,10 @@ public class NPC extends ImageView {
 	}
 
 	public NPC(JsonObject npc) {
-		images = ((JsonArray) npc.get("textures")).stream()
+		images = ((JsonObject) npc.get("textures")).entrySet().stream()
 				.map(s -> new Image(getClass().getResourceAsStream(((StringValue) s).getValue()))).toList();
-		x = ((DoubleValue) ((JsonArray) npc.get("position")).get(0)).getValue();
-		y = ((DoubleValue) ((JsonArray) npc.get("position")).get(0)).getValue();
+		x = ((FloatValue) ((JsonArray) npc.get("position")).get(0)).getValue();
+		y = ((FloatValue) ((JsonArray) npc.get("position")).get(0)).getValue();
 		npcData = (JsonObject) npc.get("npcData");
 	}
 
