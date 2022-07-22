@@ -7,7 +7,7 @@ import tile.*;
 
 public class Input {
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed = false;
 
 
 	public void dragDetected(MouseEvent me) {
@@ -26,6 +26,7 @@ public class Input {
 
 		if(code == KeyCode.D) rightPressed = true;
 
+
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -40,6 +41,8 @@ public class Input {
 
 		if(code == KeyCode.D) rightPressed = false;
 
+		if(code == KeyCode.TAB) tabPressed = !tabPressed;
+		
 		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
 		else System.setProperty("edit", "true");
 
