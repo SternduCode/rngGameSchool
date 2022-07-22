@@ -49,6 +49,7 @@ public class SpielPanel extends Pane {
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
+		player.setPosition(tileM.getStartingPosition());
 
 		buildingsGroup = new Group();
 

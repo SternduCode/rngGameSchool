@@ -24,6 +24,7 @@
 			}
 		}
 	], "map": {
+		"startingPosition" : [13, 37],
 		"size" : [50, 50],
 		"textures" : [
 			"/res/tiles/Stein.png",

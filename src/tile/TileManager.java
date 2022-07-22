@@ -17,6 +17,7 @@ public class TileManager extends Pane {
 	private List<Building> buildings;
 	private List<NPC> npcs;
 	private int maxCol, maxRow;
+	private Map.Entry<Integer, Integer> startingPosition;
 
 
 	public TileManager(SpielPanel gp) {
@@ -31,10 +32,13 @@ public class TileManager extends Pane {
 			JsonArray npcs = (JsonArray) jo.get("npcs");
 			JsonArray buildings = (JsonArray) jo.get("buildings");
 			JsonArray size = (JsonArray) map.get("size");
+			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
 			for (Object texture: textures)
 				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
 			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
 			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
+			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().intValue(),
+					((NumberValue) startingPosition.get(1)).getValue().intValue());
 			mapTileNum = new int[maxCol][maxRow];
 			loadMap(((StringValue) map.get("matrix")).getValue());
 			this.buildings = new ArrayList<>();
@@ -54,6 +58,8 @@ public class TileManager extends Pane {
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
+
+	public Map.Entry<Integer, Integer> getStartingPosition() { return startingPosition; }
 
 	public void loadMap(String data) {
 
