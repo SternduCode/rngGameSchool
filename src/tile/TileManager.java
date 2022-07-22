@@ -12,25 +12,29 @@ public class TileManager extends Pane {
 
 	private final SpielPanel gp;
 	private final List<Tile> tile;
-	private final int mapTileNum[][];
+	private int mapTileNum[][];
 	private Group group;
 	private List<Building> buildings;
 	private List<NPC> npcs;
+	private int maxCol, maxRow;
 
 
 	public TileManager(SpielPanel gp) {
 		this.gp = gp;
 
 		tile = new ArrayList<>();
-		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		try {
 			JsonObject jo = (JsonObject) JsonParser.parse(getClass().getResourceAsStream("/res/maps/lavaMap2.txt"));
 			JsonObject map = (JsonObject) jo.get("map");
 			JsonArray textures = (JsonArray) map.get("textures");
 			JsonArray npcs = (JsonArray) jo.get("npcs");
 			JsonArray buildings = (JsonArray) jo.get("buildings");
+			JsonArray size = (JsonArray) map.get("size");
 			for (Object texture: textures)
 				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
+			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
+			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
+			mapTileNum = new int[maxCol][maxRow];
 			loadMap(((StringValue) map.get("matrix")).getValue());
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
@@ -60,19 +64,19 @@ public class TileManager extends Pane {
 			String[] lines = data.replaceAll("\r", "").split("\n");
 			int idx = 0;
 
-			while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+			while (col < maxCol && row < maxRow) {
 
 				String line = lines[idx];
 				String numbers[] = line.split(" ");
 
-				while (col < gp.maxWorldCol) {
+				while (col < maxCol) {
 
 					int num = Integer.parseInt(numbers[col]);
 
 					mapTileNum[col][row] = num;
 					col++;
 				}
-				if (col == gp.maxWorldCol) {
+				if (col == maxCol) {
 					col = 0;
 					row++;
 					idx++;
@@ -94,7 +98,7 @@ public class TileManager extends Pane {
 			getChildren().add(group);
 		}
 
-		while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
+		while (worldCol < maxCol && worldRow < maxRow) {
 			int tileNum = mapTileNum[worldCol][worldRow];
 
 			Player p = gp.getPlayer();

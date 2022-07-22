@@ -19,14 +19,6 @@ public class SpielPanel extends Pane {
 	public final int SpielLaenge = Bg * BildS;
 	public final int SpielHoehe = Bg * BildH;
 
-
-	public final int maxWorldCol = 50;
-	public final int maxWorldRow = 50;
-	public final int worldWidth = Bg * maxWorldCol;
-	public final int worldHeight = Bg * maxWorldRow;
-
-
-
 	private final int FPS = 60;
 
 

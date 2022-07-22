@@ -24,6 +24,7 @@
 			}
 		}
 	], "map": {
+		"size" : [50, 50],
 		"textures" : [
 			"/res/tiles/Stein.png",
 			"/res/tiles/LavaS3.png",
