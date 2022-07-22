@@ -1,10 +1,10 @@
 {
 	"buildings": [
 		{
-			"textures" : [
-				""
-			],
-			"position" : [0.0, 0.0],
+			"textures" : {
+			 
+			},
+			"position" : [0.5, 0.5],
 			"buildingData" : {
 				
 			}
@@ -14,10 +14,10 @@
 			"textures" : {
 				
 			},
-			"position" : [0.0, 0.0],
-			"npcData" : [
+			"position" : [0.5, 0.5],
+			"npcData" : {
 			
-			]
+			}
 		}
 	], "map": {
 		"textures" : [
