@@ -45,6 +45,7 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_RELEASED, input::mouseReleased);
 		primaryStage.addEventHandler(MouseEvent.DRAG_DETECTED, input::dragDetected);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
+		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
 		SpielPanel spielebene = new SpielPanel(input);
 		Scene gameScene = new Scene(spielebene);
