@@ -14,7 +14,6 @@ public class House extends Building {
 	@Override
 	public void update(Player p, SpielPanel gp) {
 		super.update(p, gp);
-		System.out.println(x + reqWidth / 2 - p.worldX + " " + (y + reqHeight / 2 - p.worldY));
 		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 && y + reqHeight / 2 - p.worldY < -10
 				&& y + reqHeight / 2 - p.worldY > -135)
 			setImage(images.get("open").get(0));
