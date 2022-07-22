@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import javafx.scene.image.*;
 import rngGAME.*;
 import tile.ImgUtil;
@@ -134,6 +135,11 @@ public class Player extends Entity {
 		direction = "down";
 	}
 
+
+	public void setPosition(Entry<Integer, Integer> startingPosition) {
+		worldX = gp.Bg * startingPosition.getKey();
+		worldY = gp.Bg * startingPosition.getValue();
+	}
 
 	public void update() {
 		if (keyH.upPressed) {

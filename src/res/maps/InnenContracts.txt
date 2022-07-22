@@ -12,8 +12,15 @@
 			}
 		}
 	], "map": {
+
 	
 		"size" : [13, 13],
+
+	
+		"startingPosition" : [6, 11],
+		
+
+
 	
 		"textures" : [
 			
