@@ -40,13 +40,14 @@
 		}
 		
 		{
-			"type" : "npc",
+			"type" : "demon",
+			"dir" : "void",
 			"textures" : {
 				"idle" : "TakumiIdle.png"
 			},
 			"position" : [600, 1600],
 			"originalSize" : [64, 64], 
-			"requestedSize" : [100, 100], 
+			"requestedSize" : [200, 200], 
 			"npcData" : {
 			
 			}
@@ -60,7 +61,7 @@
 			},
 			"position" : [600, 1600],
 			"originalSize" : [64, 64], 
-			"requestedSize" : [250, 100], 
+			"requestedSize" : [10, 10], 
 			"npcData" : {
 			
 			}
