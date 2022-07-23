@@ -15,6 +15,7 @@ public class NPC extends Entity {
 	protected double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 	protected JsonObject npcData;
+	protected int fps;
 
 	public NPC(JsonObject npc) {
 		init(npc);
@@ -44,6 +45,7 @@ public class NPC extends Entity {
 		setImage(images.values().stream().findFirst().get().get(0));
 		npcData = (JsonObject) npc.get("npcData");
 		currentKey = "idle";
+		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
 	}
 
 	public void update(Player p, SpielPanel gp) {
@@ -57,10 +59,9 @@ public class NPC extends Entity {
 			setX(screenX);
 			setY(screenY);
 			List<Image> frames = images.get(currentKey);
-			spriteCounter++;
-			if (spriteCounter > 30 / frames.size()) {
+			if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
+				spriteCounter = System.currentTimeMillis();
 				spriteNum++;
-				spriteCounter = 0;
 			}
 			Image image = null;
 			if (spriteNum >= frames.size()) spriteNum = 0;

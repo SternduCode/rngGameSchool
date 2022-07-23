@@ -176,10 +176,9 @@ public class Player extends Entity {
 
 		if (div == 0) div = 1;
 
-		spriteCounter++;
-		if (spriteCounter > 30 / div) {
+		if (System.currentTimeMillis() > spriteCounter + 1000 / div) {
+			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
-			spriteCounter = 0;
 		}
 
 		Image image = null;

@@ -15,6 +15,7 @@
 	], "npcs": [
 		{
 			"type" : "npc",
+			"fps" : 60,
 			"textures" : {
 				"idle" : "FritzA.png"
 			},
@@ -28,6 +29,7 @@
 		
 		{
 			"type" : "npc",
+			"fps" : 60,
 			"textures" : {
 				"idle" : "GandalfA.png"
 			},
@@ -42,6 +44,7 @@
 		{
 			"type" : "demon",
 			"dir" : "void",
+			"fps" : 5,
 			"textures" : {
 				"idle" : "TakumiIdle.png"
 			},
@@ -56,6 +59,7 @@
 		{
 			"type" : "demon",
 			"dir" : "plant",
+			"fps" : 5,
 			"textures" : {
 				"idle" : "SlyzerAPlant.png"
 			},
