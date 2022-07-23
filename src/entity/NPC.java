@@ -8,7 +8,7 @@ import javafx.scene.image.*;
 import rngGAME.SpielPanel;
 import tile.ImgUtil;
 
-public class NPC extends ImageView {
+public class NPC extends Entity {
 
 	protected final Map<String, List<Image>> images;
 	protected String currentKey;
@@ -35,10 +35,10 @@ public class NPC extends ImageView {
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 		setImage(images.values().stream().findFirst().get().get(0));
 		npcData = (JsonObject) npc.get("npcData");
+		currentKey = "idle";
 	}
 
 	private List<Image> getAnimatedImages(String path) {
-		System.out.println(path);
 		List<Image> li = new ArrayList<>();
 		Image img = new Image(getClass().getResourceAsStream("/res/npc/" + path));
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
@@ -59,6 +59,16 @@ public class NPC extends ImageView {
 			setVisible(true);
 			setX(screenX);
 			setY(screenY);
+			List<Image> frames = images.get(currentKey);
+			spriteCounter++;
+			if (spriteCounter > 30 / frames.size()) {
+				spriteNum++;
+				spriteCounter = 0;
+			}
+			Image image = null;
+			if (spriteNum >= frames.size()) spriteNum = 0;
+			image = frames.get(spriteNum);
+			setImage(image);
 		} else setVisible(false);
 	}
 

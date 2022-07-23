@@ -15,7 +15,7 @@
 	], "npcs": [
 		{
 			"textures" : {
-				"abc" : "FritzA.png"
+				"idle" : "FritzA.png"
 			},
 			"position" : [950, 250],
 			"originalSize" : [64, 32], 
