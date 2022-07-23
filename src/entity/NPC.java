@@ -25,7 +25,7 @@ public class NPC extends Entity {
 
 	public NPC(JsonObject npc) {
 		x = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
-		y = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
+		y = ((NumberValue) ((JsonArray) npc.get("position")).get(1)).getValue().doubleValue();
 		origWidth = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(0)).getValue().intValue();
 		origHeight = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(0)).getValue().intValue();
