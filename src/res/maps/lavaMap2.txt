@@ -15,6 +15,7 @@
 	], "npcs": [
 		{
 			"type" : "npc",
+			"fps" : 60,
 			"textures" : {
 				"idle" : "FritzA.png"
 			},
@@ -28,6 +29,7 @@
 		
 		{
 			"type" : "npc",
+			"fps" : 60,
 			"textures" : {
 				"idle" : "GandalfA.png"
 			},
@@ -42,6 +44,7 @@
 		{
 			"type" : "demon",
 			"dir" : "void",
+			"fps" : 5,
 			"textures" : {
 				"idle" : "TakumiIdle.png"
 			},
@@ -55,9 +58,12 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "shadow",
+
+			"dir" : "light",
+			"fps" : 7,
+
 			"textures" : {
-				"idle" : "SlyzerAShadow.png"
+				"idle" : "SlyzerALight.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 

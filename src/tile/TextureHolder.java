@@ -33,6 +33,8 @@ public class TextureHolder extends Pane {
 		rect.setStrokeWidth(4.5);
 		rect.setDisable(false);
 		rect.setVisible(false);
+
+		// TODO lighing iv.setOpacity(0.5);
 	}
 
 	public void doDrag(PickResult pickResult) {

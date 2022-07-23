@@ -68,7 +68,7 @@ public class Building extends ImageView {
 
 			for (int i = 0; i < coll.getWidth(); i++)
 				//				for (int j = 0; j < coll.getHeight(); j++)
-				System.out.println(pr.getArgb(i, 31) >>> 31);
+				System.out.println(pr.getArgb(i, 31) >>> 31 == 0);
 		}
 
 		spriteCounter++;
