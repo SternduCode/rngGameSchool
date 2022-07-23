@@ -54,13 +54,13 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "water",
+			"dir" : "plant",
 			"textures" : {
-				"idle" : "SlyzerAWater.png"
+				"idle" : "SlyzerAPlant.png"
 			},
-			"position" : [600, 1600],
+			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
-			"requestedSize" : [250, 100], 
+			"requestedSize" : [120, 120], 
 			"npcData" : {
 			
 			}
