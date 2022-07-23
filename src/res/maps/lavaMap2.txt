@@ -42,7 +42,7 @@
 		{
 			"type" : "npc",
 			"textures" : {
-				"idle" : "SlyzerA.png"
+				"idle" : "TakumiIdle.png"
 			},
 			"position" : [600, 1600],
 			"originalSize" : [64, 64], 
