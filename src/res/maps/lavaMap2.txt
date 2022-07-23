@@ -20,7 +20,7 @@
 				"left" : "Character-Links-1.png"
 				"right" : "Character-Rechts-1.png"
 			},
-			"position" : [900, 250],
+			"position" : [950, 250],
 			"originalSize" : [16, 16], 
 			"requestedSize" : [48, 48], 
 			"npcData" : {

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import javafx.scene.image.*;
+import rngGAME.SpielPanel;
 import tile.ImgUtil;
 
 public class NPC extends ImageView {
@@ -32,6 +33,7 @@ public class NPC extends ImageView {
 		images = ((JsonObject) npc.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		setImage(images.values().stream().findFirst().get().get(0));
 		npcData = (JsonObject) npc.get("npcData");
 	}
 
@@ -46,8 +48,17 @@ public class NPC extends ImageView {
 		return li;
 	}
 
-	public void update() {
-
+	public void update(Player p, SpielPanel gp) {
+		double screenX = x - p.worldX + p.screenX;
+		double screenY = y - p.worldY + p.screenY;
+		if (x + reqWidth > p.worldX - p.screenX
+				&& x - reqWidth < p.worldX + p.screenX
+				&& y + reqHeight > p.worldY - p.screenY
+				&& y - reqHeight < p.worldY + p.screenY) {
+			setVisible(true);
+			setX(screenX);
+			setY(screenY);
+		} else setVisible(false);
 	}
 
 }

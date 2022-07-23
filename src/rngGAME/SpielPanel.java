@@ -2,7 +2,7 @@ package rngGAME;
 
 import java.util.*;
 import buildings.Building;
-import entity.Player;
+import entity.*;
 import javafx.animation.*;
 import javafx.scene.Group;
 import javafx.scene.image.*;
@@ -27,8 +27,9 @@ public class SpielPanel extends Pane {
 	private final Input keyH;
 	private final Player player;
 	private final TileManager tileM;
-	private final Group buildingsGroup;
+	private final Group buildingsGroup, npcsGroup;
 	private List<Building> buildings;
+	private List<NPC> npcs;
 
 
 
@@ -47,16 +48,21 @@ public class SpielPanel extends Pane {
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
 		buildingsGroup = new Group();
+		npcsGroup = new Group();
 
 		setMap("/res/maps/lavaMap2.txt");
 
-		getChildren().addAll(tileM, buildingsGroup, player, inv);
+		getChildren().addAll(tileM, buildingsGroup, npcsGroup, player, inv);
 
 
 	}
 
 	public void addBuildings() {
 		buildingsGroup.getChildren().addAll(buildings);
+	}
+
+	public void addNPCs() {
+		npcsGroup.getChildren().addAll(npcs);
 	}
 
 	public Input getKeyH() {
@@ -76,18 +82,24 @@ public class SpielPanel extends Pane {
 		tileM.setMap(path);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
+		npcs = tileM.getNPCSFromMap();
 		player.setPosition(tileM.getStartingPosition());
 		buildingsGroup.getChildren().clear();
+		npcsGroup.getChildren().clear();
 		addBuildings();
+		addNPCs();
 	}
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
 		tileM.setMap(path);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
+		npcs = tileM.getNPCSFromMap();
 		player.setPosition(position);
 		buildingsGroup.getChildren().clear();
+		npcsGroup.getChildren().clear();
 		addBuildings();
+		addNPCs();
 	}
 
 
@@ -109,6 +121,7 @@ public class SpielPanel extends Pane {
 		tileM.update();
 
 		for (Building b: buildings) b.update(player, this);
+		for (NPC n: npcs) n.update(player, this);
 
 		if (keyH.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);
