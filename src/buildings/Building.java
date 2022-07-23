@@ -62,13 +62,13 @@ public class Building extends ImageView {
 
 	public void update(Player p, SpielPanel gp) {
 		// TODO coll
-		System.out.println(colls);
 		if (colls.containsKey(currentKey)) {
 			Image coll = colls.get(currentKey).get(colls.get(currentKey).size() > 1 ? spriteCounter : 0);
 			PixelReader pr = coll.getPixelReader();
-			//			for (int i = 0; i < coll.getWidth(); i++)
-			//				for (int j = 0; j < coll.getHeight(); j++)
-			//					System.out.println(pr.getArgb(i, j) >>> 31);
+
+			for (int i = 0; i < coll.getWidth(); i++)
+				//				for (int j = 0; j < coll.getHeight(); j++)
+				System.out.println(pr.getArgb(i, 31) >>> 31);
 		}
 
 		spriteCounter++;
