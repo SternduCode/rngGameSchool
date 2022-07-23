@@ -17,9 +17,9 @@
 			"textures" : {
 				"abc" : "FritzA.png"
 			},
-			"position" : [950, 250],
+			"position" : [870, 225],
 			"originalSize" : [64, 32], 
-			"requestedSize" : [96, 48], 
+			"requestedSize" : [125, 65], 
 			"npcData" : {
 			
 			}
