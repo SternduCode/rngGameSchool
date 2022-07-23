@@ -55,9 +55,9 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "plant",
+			"dir" : "shadow",
 			"textures" : {
-				"idle" : "SlyzerAPlant.png"
+				"idle" : "SlyzerAShadow.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
