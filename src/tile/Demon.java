@@ -16,7 +16,7 @@ public class Demon extends NPC {
 	@Override
 	protected List<Image> getAnimatedImages(String path) {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream("/res/demnons/" + dir + "/" + path));
+		Image img = new Image(getClass().getResourceAsStream("/res/demons/" + dir + "/" + path));
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
 			li.add(ImgUtil.resizeImage(wi,
