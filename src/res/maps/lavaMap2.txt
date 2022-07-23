@@ -46,7 +46,7 @@
 			"dir" : "void",
 			"fps" : 5,
 			"textures" : {
-				"idle" : "TakumiIdle.png"
+				"idle" : "ArashiIdle.png"
 			},
 			"position" : [600, 1600],
 			"originalSize" : [64, 64], 
