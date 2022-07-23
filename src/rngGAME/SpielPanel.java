@@ -43,7 +43,7 @@ public class SpielPanel extends Pane {
 
 		tileM = new TileManager(this);
 
-		inv = new ImageView(new Image (getClass().getResourceAsStream("/res/GUI/Inv.png")));
+		inv = new ImageView(new Image(getClass().getResourceAsStream("/res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
