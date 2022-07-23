@@ -7,11 +7,10 @@ import javafx.scene.image.*;
 
 public class Demon extends NPC {
 
-	private final String dir;
+	private String dir;
 
 	public Demon(JsonObject npc) {
 		super(npc);
-		dir = ((StringValue) npc.get("dir")).getValue();
 	}
 
 	@Override
@@ -24,6 +23,12 @@ public class Demon extends NPC {
 					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 		}
 		return li;
+	}
+
+	@Override
+	protected void init(JsonObject npc) {
+		dir = ((StringValue) npc.get("dir")).getValue();
+		super.init(npc);
 	}
 
 }

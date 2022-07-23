@@ -10,13 +10,28 @@ import tile.ImgUtil;
 
 public class NPC extends Entity {
 
-	protected final Map<String, List<Image>> images;
+	protected Map<String, List<Image>> images;
 	protected String currentKey;
-	protected final double x, y;
+	protected double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
-	protected final JsonObject npcData;
+	protected JsonObject npcData;
 
 	public NPC(JsonObject npc) {
+		init(npc);
+	}
+
+	protected List<Image> getAnimatedImages(String path) {
+		List<Image> li = new ArrayList<>();
+		Image img = new Image(getClass().getResourceAsStream("/res/npc/" + path));
+		for (int i = 0; i < img.getWidth(); i += origWidth) {
+			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
+			li.add(ImgUtil.resizeImage(wi,
+					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
+		}
+		return li;
+	}
+
+	protected void init(JsonObject npc) {
 		x = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
 		y = ((NumberValue) ((JsonArray) npc.get("position")).get(1)).getValue().doubleValue();
 		origWidth = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(0)).getValue().intValue();
@@ -29,17 +44,6 @@ public class NPC extends Entity {
 		setImage(images.values().stream().findFirst().get().get(0));
 		npcData = (JsonObject) npc.get("npcData");
 		currentKey = "idle";
-	}
-
-	protected List<Image> getAnimatedImages(String path) {
-		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream("/res/npc/" + path));
-		for (int i = 0; i < img.getWidth(); i += origWidth) {
-			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
-			li.add(ImgUtil.resizeImage(wi,
-					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
-		}
-		return li;
 	}
 
 	public void update(Player p, SpielPanel gp) {
