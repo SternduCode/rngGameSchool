@@ -16,13 +16,6 @@ public class NPC extends Entity {
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 	protected final JsonObject npcData;
 
-	protected NPC(double x, double y, JsonObject npcData) {
-		images = null;
-		this.x =x;
-		this.y = y;
-		this.npcData =npcData;
-	}
-
 	public NPC(JsonObject npc) {
 		x = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
 		y = ((NumberValue) ((JsonArray) npc.get("position")).get(1)).getValue().doubleValue();
@@ -38,7 +31,7 @@ public class NPC extends Entity {
 		currentKey = "idle";
 	}
 
-	private List<Image> getAnimatedImages(String path) {
+	protected List<Image> getAnimatedImages(String path) {
 		List<Image> li = new ArrayList<>();
 		Image img = new Image(getClass().getResourceAsStream("/res/npc/" + path));
 		for (int i = 0; i < img.getWidth(); i += origWidth) {

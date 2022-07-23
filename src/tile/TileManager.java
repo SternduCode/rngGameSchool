@@ -124,7 +124,12 @@ public class TileManager extends Pane {
 					case "House" -> new House((JsonObject) building);
 					default -> new Building((JsonObject) building);
 				});
-			for (Object npc: npcs) this.npcs.add(new NPC((JsonObject) npc));
+			for (Object npc: npcs)
+				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
+					case "npc" -> new NPC((JsonObject) npc);
+					case "demon" -> new Demon((JsonObject) npc);
+					default -> new NPC((JsonObject) npc);
+				});
 
 		} catch (JsonParseException e) {
 			e.printStackTrace();
