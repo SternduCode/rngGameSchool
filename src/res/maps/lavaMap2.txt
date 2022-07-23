@@ -52,6 +52,20 @@
 			}
 		}
 		
+		{
+			"type" : "demon",
+			"dir" : "water",
+			"textures" : {
+				"idle" : "SlyzerAWater.png"
+			},
+			"position" : [600, 1600],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [250, 100], 
+			"npcData" : {
+			
+			}
+		}
+		
 	], "map": {
 		"startingPosition" : [13, 37],
 		"size" : [50, 50],
