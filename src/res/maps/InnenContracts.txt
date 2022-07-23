@@ -1,52 +1,44 @@
 {
 	"exit" : {
-		"map" : "/res/maps/lavaMap2.txt",
-		"spawnPosition" : [18.5, 9.8],
+		"map" : "lavaMap2.txt",
+		"spawnPosition" : [18.5, 9.3],
 		"position" : [7, 12],
 	}, "buildings": [
 		
 	], "npcs": [
-		{
-			"textures" : {
-				
-			},
-			"position" : [0.5, 0.5],
-			"npcData" : {
-			
-			}
-		}
+	
 	], "map": {
 	
 		"size" : [13, 13],
 
 	
-		"startingPosition" : [6, 11],
+		"startingPosition" : [6, 11.8],
 		
 
 
-	
+		"dir" : "buildingInside",
 		"textures" : [
 			
-			"/res/buildingInside/Boden.png",			
-			"/res/buildingInside/BodenAusgang.png",		
-			"/res/buildingInside/Unten.png",			
-			"/res/buildingInside/Rechts.png",			
-			"/res/buildingInside/RechtsEcke.png",		
-			"/res/buildingInside/RechtsEckeM.png",		
-			"/res/buildingInside/Void.png",				
-			"/res/buildingInside/RechtsEckeMU.png",		
-			"/res/buildingInside/RechtsEckeU.png",		
-			"/res/buildingInside/Oben.png",				
-			"/res/buildingInside/LinksEckeM.png",		
-			"/res/buildingInside/LinksEckeU.png",		
-			"/res/buildingInside/Links.png",			
-			"/res/buildingInside/LinksEckeO.png",		
-			"/res/buildingInside/LinksEckeMO.png",		
-			"/res/buildingInside/BookWand.png",			
-			"/res/buildingInside/HalbBookWand.png",		
-			"/res/buildingInside/LeerWand.png",			
-			"/res/buildingInside/SchubWand.png",
-			"/res/buildingInside/CTisch.png",	
+			"Boden.png",			
+			"BodenAusgang.png",		
+			"Unten.png",			
+			"Rechts.png",			
+			"RechtsEcke.png",		
+			"RechtsEckeM.png",		
+			"Void.png",				
+			"RechtsEckeMU.png",		
+			"RechtsEckeU.png",		
+			"Oben.png",				
+			"LinksEckeM.png",		
+			"LinksEckeU.png",		
+			"Links.png",			
+			"LinksEckeO.png",		
+			"LinksEckeMO.png",		
+			"BookWand.png",			
+			"HalbBookWand.png",		
+			"LeerWand.png",			
+			"SchubWand.png",
+			"CTisch.png",	
 			
 		],
 		"matrix" : 

@@ -17,7 +17,7 @@ public class TileManager extends Pane {
 	private List<Building> buildings;
 	private List<NPC> npcs;
 	private int maxCol, maxRow;
-	private String exitMap;
+	private String exitMap, dir;
 
 	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
@@ -94,6 +94,9 @@ public class TileManager extends Pane {
 			JsonArray buildings = (JsonArray) jo.get("buildings");
 			JsonArray size = (JsonArray) map.get("size");
 			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
+
+			dir = ((StringValue) map.get("dir")).getValue();
+
 			if (jo.containsKey("exit")) {
 				JsonObject exit = (JsonObject) jo.get("exit");
 				exitMap = ((StringValue) exit.get("map")).getValue();
@@ -105,7 +108,9 @@ public class TileManager extends Pane {
 						((NumberValue) position.get(1)).getValue().doubleValue());
 			}
 			for (Object texture: textures)
-				tile.add(new Tile(getClass().getResourceAsStream(((StringValue) texture).getValue()), gp));
+				tile.add(new Tile(
+						getClass().getResourceAsStream("/res/" + dir + "/" + ((StringValue) texture).getValue()),
+						gp));
 			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
 			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
 			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
@@ -136,7 +141,7 @@ public class TileManager extends Pane {
 
 			if (worldX + gp.Bg / 2 - p.worldX < 105 && worldX + gp.Bg / 2 - p.worldX > -45 &&
 					worldY + gp.Bg / 2 - p.worldY < 25 && worldY + gp.Bg / 2 - p.worldY > 0)
-				gp.setMap(exitMap, exitStartingPosition);
+				gp.setMap("/res/maps/" + exitMap, exitStartingPosition);
 		}
 
 		int worldCol = 0;

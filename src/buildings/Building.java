@@ -35,7 +35,7 @@ public class Building extends ImageView {
 
 	private List<Image> getAnimatedImages(String path) {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream(path));
+		Image img = new Image(getClass().getResourceAsStream("/res/building/" + path));
 
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
@@ -46,6 +46,8 @@ public class Building extends ImageView {
 	}
 
 	public void update(Player p, SpielPanel gp) {
+		// TODO coll
+
 		double screenX = x - p.worldX + p.screenX;
 		double screenY = y - p.worldY + p.screenY;
 		if (x + reqWidth > p.worldX - p.screenX

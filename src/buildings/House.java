@@ -20,7 +20,7 @@ public class House extends Building {
 		else setImage(images.get("closed").get(0));
 		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
 				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -65)
-			if (map != null) gp.setMap(map);
+			if (map != null) gp.setMap("/res/maps/" + map);
 	}
 
 }
