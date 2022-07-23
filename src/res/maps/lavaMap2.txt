@@ -58,10 +58,12 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "plant",
-			"fps" : 5,
+
+			"dir" : "light",
+			"fps" : 7,
+
 			"textures" : {
-				"idle" : "SlyzerAPlant.png"
+				"idle" : "SlyzerALight.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
