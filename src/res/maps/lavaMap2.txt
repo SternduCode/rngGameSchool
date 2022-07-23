@@ -17,13 +17,38 @@
 			"textures" : {
 				"idle" : "FritzA.png"
 			},
-			"position" : [870, 225],
+			"position" : [870, 870],
 			"originalSize" : [64, 32], 
-			"requestedSize" : [125, 65], 
+			"requestedSize" : [135, 75], 
 			"npcData" : {
 			
 			}
 		}
+		
+		{
+			"textures" : {
+				"idle" : "GandalfA.png"
+			},
+			"position" : [840, 430],
+			"originalSize" : [32, 32], 
+			"requestedSize" : [55, 65], 
+			"npcData" : {
+			
+			}
+		}
+		
+		{
+			"textures" : {
+				"idle" : "SlyzerA.png"
+			},
+			"position" : [600, 1600],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [100, 100], 
+			"npcData" : {
+			
+			}
+		}
+		
 	], "map": {
 		"startingPosition" : [13, 37],
 		"size" : [50, 50],
