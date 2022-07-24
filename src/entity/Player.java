@@ -232,5 +232,7 @@ public class Player extends Entity {
 		setImage(image);
 
 		shape = new Rectangle(image.getWidth(), image.getHeight());
+		shape.setTranslateX(getLayoutX());
+		shape.setTranslateY(getLayoutY());
 	}
 }
