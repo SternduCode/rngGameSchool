@@ -11,7 +11,7 @@ public class Player extends Entity {
 
 	private final SpielPanel gp;
 	private final Input keyH;
-	private final int fps = 5;
+	private final double fps = 7.5;
 
 	public final int screenX;
 	public final int screenY;

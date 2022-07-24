@@ -58,15 +58,15 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "shadow",
+			"dir" : "light",
 			"fps" : 7,
 			"textures" : {
-				"idle" : "MelloAShadow.png"
+				"idle" : "MelloAlight.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
 
-			"requestedSize" : [100, 100], 
+			"requestedSize" : [120, 120], 
 
 
 			"npcData" : {
