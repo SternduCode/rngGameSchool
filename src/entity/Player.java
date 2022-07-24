@@ -3,16 +3,20 @@ package entity;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import javafx.scene.image.*;
+import javafx.scene.shape.*;
 import rngGAME.*;
 import tile.ImgUtil;
 
 public class Player extends Entity {
 
-	SpielPanel gp;
-	Input keyH;
+	private final SpielPanel gp;
+	private final Input keyH;
+	private final int fps = 5;
 
 	public final int screenX;
 	public final int screenY;
+
+	private Rectangle shape;
 
 
 	public Player(SpielPanel gp2, Input keyH2) {
@@ -36,6 +40,8 @@ public class Player extends Entity {
 
 		setDefaultValues();
 		getPlayerImage();
+
+		shape = new Rectangle(48, 48);
 	}
 
 	public void getPlayerImage() {
@@ -127,6 +133,9 @@ public class Player extends Entity {
 
 	}
 
+	public Shape getShape() { return shape; }
+
+
 	public void setDefaultValues() {
 
 		worldX = gp.Bg * 13;
@@ -134,7 +143,6 @@ public class Player extends Entity {
 		speed = 3;
 		direction = "down";
 	}
-
 
 	public void setPosition(Entry<Double, Double> startingPosition) {
 		worldX = (int) (gp.Bg * startingPosition.getKey());
@@ -176,7 +184,7 @@ public class Player extends Entity {
 
 		if (div == 0) div = 1;
 
-		if (System.currentTimeMillis() > spriteCounter + 1000 / div) {
+		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
 			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
 		}
@@ -222,5 +230,7 @@ public class Player extends Entity {
 		setFitWidth(gp.Bg);
 		setFitHeight(gp.Bg);
 		setImage(image);
+
+		shape = new Rectangle(image.getWidth(), image.getHeight());
 	}
 }
