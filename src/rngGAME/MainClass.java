@@ -10,6 +10,7 @@ public class MainClass extends Application {
 	public static void main(String[] args) {
 
 		System.setProperty("edit", "false");
+		System.setProperty("coll", "false");
 
 		//		JFrame Spiel = new JFrame();
 		//		Spiel.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,6 +37,7 @@ public class MainClass extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("RNG fun");
+
 
 		Input input = new Input();
 
