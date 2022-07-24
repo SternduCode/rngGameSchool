@@ -46,11 +46,11 @@
 			"dir" : "void",
 			"fps" : 5,
 			"textures" : {
-				"idle" : "ArashiIdle.png"
+				"idle" : "AndromedusIdle.png"
 			},
 			"position" : [600, 1600],
 			"originalSize" : [64, 64], 
-			"requestedSize" : [200, 200], 
+			"requestedSize" : [80, 80], 
 			"npcData" : {
 			
 			}
@@ -58,17 +58,15 @@
 		
 		{
 			"type" : "demon",
-
-			"dir" : "light",
+			"dir" : "shadow",
 			"fps" : 7,
-
 			"textures" : {
-				"idle" : "SlyzerALight.png"
+				"idle" : "MelloAShadow.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
 
-			"requestedSize" : [120, 120], 
+			"requestedSize" : [100, 100], 
 
 
 			"npcData" : {
