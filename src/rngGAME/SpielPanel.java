@@ -29,10 +29,8 @@ public class SpielPanel extends Pane {
 	private final TileManager tileM;
 	private final Group buildingsGroup, npcsGroup;
 	private List<Building> buildings;
+
 	private List<NPC> npcs;
-
-
-
 
 	public SpielPanel(Input keyH) {
 		setPrefSize(SpielLaenge, SpielHoehe);
@@ -54,23 +52,30 @@ public class SpielPanel extends Pane {
 
 		getChildren().addAll(tileM, buildingsGroup, npcsGroup, player, inv);
 
-
 	}
 
 	public void addBuildings() {
 		buildingsGroup.getChildren().addAll(buildings);
 	}
-
 	public void addNPCs() {
 		npcsGroup.getChildren().addAll(npcs);
 	}
+
+
+
+
+	public List<Building> getBuildings() { return buildings; }
 
 	public Input getKeyH() {
 		return keyH;
 	}
 
+	public List<NPC> getNpcs() { return npcs; }
 
 	public Player getPlayer() { return player; }
+
+
+	public TileManager getTileM() { return tileM; }
 
 	public void run() {
 		update();
@@ -118,10 +123,11 @@ public class SpielPanel extends Pane {
 
 		player.update();
 
-		tileM.update();
 
 		for (Building b: buildings) b.update(player, this);
 		for (NPC n: npcs) n.update(player, this);
+
+		tileM.update();
 
 		if (keyH.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);

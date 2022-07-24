@@ -3,11 +3,12 @@ package entity;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import javafx.scene.image.*;
-import javafx.scene.shape.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import rngGAME.*;
 import tile.ImgUtil;
 
-public class Player extends Entity {
+public class Player extends Entity implements Collidable {
 
 	private final SpielPanel gp;
 	private final Input keyH;
@@ -15,8 +16,6 @@ public class Player extends Entity {
 
 	public final int screenX;
 	public final int screenY;
-
-	private Rectangle shape;
 
 
 	public Player(SpielPanel gp2, Input keyH2) {
@@ -41,7 +40,12 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 
+		iv = new ImageView();
+
 		shape = new Rectangle(48, 48);
+		shape.setFill(Color.color(1, 0, 1, 0.75));
+
+		getChildren().addAll(iv, shape);
 	}
 
 	public void getPlayerImage() {
@@ -133,13 +137,16 @@ public class Player extends Entity {
 
 	}
 
-	public Shape getShape() { return shape; }
+	@Override
+	public Rectangle getPoly() { return shape; }
 
 
 	public void setDefaultValues() {
 
 		worldX = gp.Bg * 13;
 		worldY = gp.Bg * 37;
+		oldWorldX = worldX;
+		oldWorldY = worldY;
 		speed = 3;
 		direction = "down";
 	}
@@ -147,9 +154,13 @@ public class Player extends Entity {
 	public void setPosition(Entry<Double, Double> startingPosition) {
 		worldX = (int) (gp.Bg * startingPosition.getKey());
 		worldY = (int) (gp.Bg * startingPosition.getValue());
+		oldWorldX = worldX;
+		oldWorldY = worldY;
 	}
 
 	public void update() {
+		int oldWorldX = worldX;
+		int oldWorldY = worldY;
 		if (keyH.upPressed) {
 			if (direction.equals("left") || direction.endsWith("L")) direction = "upL";
 			else direction = "up";
@@ -227,12 +238,43 @@ public class Player extends Entity {
 		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);
-		setFitWidth(gp.Bg);
-		setFitHeight(gp.Bg);
-		setImage(image);
+		iv.setFitWidth(gp.Bg);
+		iv.setFitHeight(gp.Bg);
+		iv.setImage(image);
 
-		shape = new Rectangle(image.getWidth(), image.getHeight());
-		shape.setTranslateX(getLayoutX());
-		shape.setTranslateY(getLayoutY());
+		shape.setTranslateX(worldX - this.oldWorldX);
+		shape.setTranslateY(worldY - this.oldWorldY);
+
+		if (System.getProperty("coll").equals("true"))
+			shape.setVisible(true);
+		else
+			shape.setVisible(false);
+
+
+		gp.getBuildings().forEach(b -> {
+			if (b.collides(this)) {
+				worldX = this.oldWorldX;
+				worldY = this.oldWorldY;
+			}
+		});
+
+		gp.getNpcs().forEach(b -> {
+			if (b.collides(this)) {
+				worldX = this.oldWorldX;
+				worldY = this.oldWorldY;
+			}
+		});
+
+		if (gp.getTileM().collides(this)) {
+			worldX = this.oldWorldX;
+			worldY = this.oldWorldY;
+		}
+
+		this.oldWorldX = worldX;
+		this.oldWorldY = worldY;
+
+		//		shape.setTranslateX(0);
+		//		shape.setTranslateY(0);
+
 	}
 }

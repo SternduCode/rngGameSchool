@@ -8,8 +8,9 @@ import com.sterndu.json.*;
 import entity.Player;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import rngGAME.SpielPanel;
+import rngGAME.*;
 import tile.ImgUtil;
 
 public class Building extends Pane {
@@ -29,6 +30,7 @@ public class Building extends Pane {
 	public Building(JsonObject building) {
 		poly = new Polygon();
 		poly.setVisible(false);
+		poly.setFill(Color.color(0, 0, 1, 0.75));
 		iv = new ImageView();
 		getChildren().addAll(iv, poly);
 		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
@@ -55,12 +57,8 @@ public class Building extends Pane {
 					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 		}
 		String[] sp = path.split("[.]");
-		System.out.println(String.join(".", Arrays.copyOf(sp, sp.length - 1))
-				+ ".collisionbox");
 		if (getClass().getResource("/res/collisions/building/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 		+ ".collisionbox") != null) try {
-			System.out.println(String.join(".", Arrays.copyOf(sp, sp.length - 1))
-					+ ".collisionbox");
 			RandomAccessFile raf = new RandomAccessFile(getClass()
 					.getResource("/res/collisions/building/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 					+ ".collisionbox")
@@ -68,21 +66,26 @@ public class Building extends Pane {
 			raf.seek(0l);
 			int length = raf.readInt();
 			for (int i = 0; i < length; i++) poly.getPoints().add(raf.readDouble());
-			} catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		else poly.getPoints().addAll(0.0, 0.0, 0.0, img.getHeight(), img.getWidth(), 0.0, img.getWidth(),
+				img.getHeight());
 		return li;
+	}
+
+	public boolean collides(Collidable collidable) {
+		Shape intersect = Shape.intersect(collidable.getPoly(), poly);
+		return !intersect.getBoundsInLocal().isEmpty();
 	}
 
 	public Polygon getPolygon() { return poly; }
 
 	public void update(Player p, SpielPanel gp) {
-		System.out.println(!Shape.intersect(p.getShape(), poly).getBoundsInLocal().isEmpty());
 		if (System.getProperty("coll").equals("true"))
 			poly.setVisible(true);
 		else
 			poly.setVisible(false);
-		// TODO coll
 
 		spriteCounter++;
 		if (spriteCounter > 30 / images.get(currentKey).size()) {
@@ -101,10 +104,10 @@ public class Building extends Pane {
 			setVisible(true);
 			setLayoutX(screenX);
 			setLayoutY(screenY);
-			//			iv.setX(screenX);
-			//			iv.setY(screenY);
+			// iv.setX(screenX);
+			// iv.setY(screenY);
 		} else setVisible(false);
-		//		setWidth(iv.getImage().getWidth());
+		// setWidth(iv.getImage().getWidth());
 	}
 
 }

@@ -5,10 +5,12 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import javafx.scene.image.*;
-import rngGAME.SpielPanel;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+import rngGAME.*;
 import tile.ImgUtil;
 
-public class NPC extends Entity {
+public class NPC extends Entity implements Collidable {
 
 	protected Map<String, List<Image>> images;
 	protected String currentKey;
@@ -42,11 +44,23 @@ public class NPC extends Entity {
 		images = ((JsonObject) npc.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-		setImage(images.values().stream().findFirst().get().get(0));
+		iv = new ImageView();
+		iv.setImage(images.values().stream().findFirst().get().get(0));
 		npcData = (JsonObject) npc.get("npcData");
 		currentKey = "idle";
 		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
+		shape = new Rectangle(48, 48);
+		shape.setFill(Color.color(0, 1, 1, 0.75));
+		getChildren().addAll(iv, shape);
 	}
+
+	public boolean collides(Collidable collidable) {
+		Shape intersect = Shape.intersect(collidable.getPoly(), shape);
+		return !intersect.getBoundsInLocal().isEmpty();
+	}
+
+	@Override
+	public Rectangle getPoly() { return shape; }
 
 	public void update(Player p, SpielPanel gp) {
 		double screenX = x - p.worldX + p.screenX;
@@ -56,8 +70,8 @@ public class NPC extends Entity {
 				&& y + reqHeight > p.worldY - p.screenY
 				&& y - reqHeight < p.worldY + p.screenY) {
 			setVisible(true);
-			setX(screenX);
-			setY(screenY);
+			setLayoutX(screenX);
+			setLayoutY(screenY);
 			List<Image> frames = images.get(currentKey);
 			if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
 				spriteCounter = System.currentTimeMillis();
@@ -66,7 +80,15 @@ public class NPC extends Entity {
 			Image image = null;
 			if (spriteNum >= frames.size()) spriteNum = 0;
 			image = frames.get(spriteNum);
-			setImage(image);
+			iv.setImage(image);
+
+			shape.setTranslateX(0);
+			shape.setTranslateY(0);
+			if (System.getProperty("coll").equals("true"))
+				shape.setVisible(true);
+			else
+				shape.setVisible(false);
+
 		} else setVisible(false);
 	}
 

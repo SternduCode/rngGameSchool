@@ -1,11 +1,12 @@
 package tile;
 
+import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 
 public class TextureHolder extends Pane {
 
@@ -14,6 +15,7 @@ public class TextureHolder extends Pane {
 	private final ImageView iv;
 
 	private final Rectangle rect;
+	private final Polygon poly;
 
 	private boolean dragging = false;
 
@@ -27,12 +29,19 @@ public class TextureHolder extends Pane {
 		setLayoutX(layoutX);
 		setLayoutY(layoutY);
 		rect = new Rectangle();
-		getChildren().add(rect);
 		rect.setStroke(Color.WHITE);
 		rect.setFill(Color.TRANSPARENT);
 		rect.setStrokeWidth(4.5);
 		rect.setDisable(false);
 		rect.setVisible(false);
+
+		poly = new Polygon();
+		System.out.println("poly: " + (tile.poly != null));
+		poly.getPoints()
+				.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
+		System.out.println("pol2: " + poly);
+		getChildren().add(poly);
+		getChildren().add(rect);
 
 		// TODO lighing iv.setOpacity(0.5);
 	}

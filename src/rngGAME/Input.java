@@ -14,6 +14,7 @@ import tile.*;
 public class Input {
 
 	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save;
+	private long timeout;
 
 
 	public void dragDetected(MouseEvent me) {
@@ -24,13 +25,17 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
-		if(code == KeyCode.W) upPressed = true;
+		if (timeout < System.currentTimeMillis()) {
 
-		if (code == KeyCode.S && !ctrlPressed) downPressed = true;
 
-		if(code == KeyCode.A) leftPressed = true;
+			if(code == KeyCode.W) upPressed = true;
 
-		if(code == KeyCode.D) rightPressed = true;
+			if (code == KeyCode.S && !ctrlPressed) downPressed = true;
+
+			if(code == KeyCode.A) leftPressed = true;
+
+			if(code == KeyCode.D) rightPressed = true;
+		}
 
 		if (code == KeyCode.CONTROL) ctrlPressed = true;
 
@@ -132,8 +137,19 @@ public class Input {
 					}
 					System.out.println(f);
 				}
-			}
+			} else
+				if (target instanceof TextureHolder th) {
 
+				} // TODO ctrl+n coll bo ti
+
+	}
+
+	public void setTimeout(long i) {
+		timeout = i;
+		upPressed = false;
+		downPressed = false;
+		leftPressed = false;
+		rightPressed = false;
 	}
 
 }

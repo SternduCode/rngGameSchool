@@ -1,12 +1,13 @@
 package tile;
 
+import java.io.*;
 import java.util.*;
 import com.sterndu.json.*;
 import buildings.*;
 import entity.*;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
-import rngGAME.SpielPanel;
+import rngGAME.*;
 
 public class TileManager extends Pane {
 
@@ -29,6 +30,11 @@ public class TileManager extends Pane {
 
 		group = new Group();
 		getChildren().add(group);
+	}
+
+	public boolean collides(Collidable collidable) {
+
+		return false;
 	}
 
 	public List<Building> getBuildingsFromMap() { return buildings; }
@@ -107,10 +113,29 @@ public class TileManager extends Pane {
 				exitPosition = Map.entry(((NumberValue) position.get(0)).getValue().doubleValue(),
 						((NumberValue) position.get(1)).getValue().doubleValue());
 			}
-			for (Object texture: textures)
-				tile.add(new Tile(
+			for (Object texture: textures) {
+				Tile t = new Tile(
 						getClass().getResourceAsStream("/res/" + dir + "/" + ((StringValue) texture).getValue()),
-						gp));
+						gp);
+				tile.add(t);
+				String[] sp = ((StringValue) texture).getValue().split("[.]");
+				if (getClass()
+						.getResource("/res/collisions/tiles/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+						+ ".collisionbox") != null)
+					try {
+						RandomAccessFile raf = new RandomAccessFile(getClass()
+								.getResource(
+										"/res/collisions/tiles/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+										+ ".collisionbox")
+								.getFile(), "rws");
+						raf.seek(0l);
+						int length = raf.readInt();
+						t.poly = new ArrayList<>();
+						for (int i = 0; i < length; i++) t.poly.add(raf.readDouble());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
 			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
 			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
 			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
