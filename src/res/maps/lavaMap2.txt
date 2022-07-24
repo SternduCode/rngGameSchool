@@ -58,10 +58,10 @@
 		
 		{
 			"type" : "demon",
-			"dir" : "light",
+			"dir" : "void",
 			"fps" : 7,
 			"textures" : {
-				"idle" : "MelloAlight.png"
+				"idle" : "MelloAVoid.png"
 			},
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
