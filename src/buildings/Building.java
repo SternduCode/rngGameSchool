@@ -47,6 +47,7 @@ public class Building extends Pane {
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 		iv.setImage(images.values().stream().findFirst().get().get(0));
 		buildingData = (JsonObject) building.get("buildingData");
+		currentKey = "default";
 	}
 
 	private List<Image> getAnimatedImages(String key, String path) {
