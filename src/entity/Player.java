@@ -31,6 +31,7 @@ public class Player extends Entity implements Collidable {
 		right = new ArrayList<>();
 		nomovel = new ArrayList<>();
 		nomover = new ArrayList<>();
+		nomoveup = new ArrayList<>();
 
 		screenX = gp.SpielLaenge/2 - gp.Bg/2;
 		screenY = gp.SpielHoehe/2 - gp.Bg/2;
@@ -115,6 +116,14 @@ public class Player extends Entity implements Collidable {
 				this.nomovel.add(ImgUtil.resizeImage(wi,
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
+			
+			Image nomoveup = new Image(getClass().getResourceAsStream("/res/player/IdleUp.png"));
+
+			for (int i = 0; i < nomoveup.getWidth(); i += 32) {
+				WritableImage wi = new WritableImage(nomoveup.getPixelReader(), i, 0, 32, 32);
+				this.nomoveup.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
+			}
 
 
 			//			up1 = new Image(getClass().getResourceAsStream("/Player/Character-Hoch-1.png"), gp.Bg, gp.Bg, false, false);
@@ -179,7 +188,9 @@ public class Player extends Entity implements Collidable {
 		else if (keyH.rightPressed) {
 			direction = "right";
 			worldX += speed;
-		} else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
+		} else if (direction.equals("up") || direction.startsWith("up")) direction = "noneup";
+		else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
+		
 		else direction = "none";
 
 		int div = switch (direction) {
@@ -191,6 +202,7 @@ public class Player extends Entity implements Collidable {
 			case "right" -> right.size();
 			case "none" -> nomover.size();
 			case "noneL" -> nomovel.size();
+			case "noneup" -> nomoveup.size();
 			default -> 1;
 		};
 
@@ -236,6 +248,10 @@ public class Player extends Entity implements Collidable {
 				if (spriteNum >= nomovel.size()) spriteNum = 0;
 				image = nomovel.get(spriteNum);
 				break;
+			case "noneup":
+				if (spriteNum >= nomoveup.size()) spriteNum = 0;
+				image = nomoveup.get(spriteNum);
+				break;	
 		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);

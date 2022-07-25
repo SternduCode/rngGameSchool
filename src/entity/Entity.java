@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
@@ -11,7 +12,7 @@ public class Entity extends Pane {
 
 	public int worldX, worldY, oldWorldX, oldWorldY;
 	public int speed;
-	public List<Image> up, upl, down, downl, left, right, nomovel, nomover;
+	public List<Image> up, upl, down, downl, left, right, nomovel, nomover, nomoveup;
 	public String direction;
 	public long spriteCounter = 0;
 	public int spriteNum = 0;
