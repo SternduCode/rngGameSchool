@@ -72,14 +72,14 @@ public class Building extends Pane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		else poly.getPoints().addAll(0.0, 0.0, 0.0, img.getHeight(), img.getWidth(), 0.0, img.getWidth(),
-				img.getHeight());
 		return li;
 	}
 
 	public boolean collides(Collidable collidable) {
-		Shape intersect = Shape.intersect(collidable.getPoly(), poly);
-		return !intersect.getBoundsInLocal().isEmpty();
+		if (poly.getPoints().size() > 0) {
+			Shape intersect = Shape.intersect(collidable.getPoly(), poly);
+			return !intersect.getBoundsInLocal().isEmpty();
+		} else return false;
 	}
 
 	public Polygon getPolygon() { return poly; }
