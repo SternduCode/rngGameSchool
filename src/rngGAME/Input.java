@@ -6,6 +6,7 @@ import buildings.Building;
 import javafx.event.EventTarget;
 import javafx.scene.*;
 import javafx.scene.input.*;
+import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import tile.*;
@@ -15,6 +16,30 @@ public class Input {
 	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save;
 	private long timeout;
 
+
+	private void save(Polygon p) {
+		FileChooser fc = new FileChooser();
+		fc.setInitialDirectory(new File("."));
+		fc.getExtensionFilters().add(new ExtensionFilter(
+				"A file containing the collision box of something", "*.collisionbox"));
+		File f = fc.showSaveDialog(p.getScene().getWindow());
+		if (f == null) return;
+		if (!f.exists()) try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			RandomAccessFile raf = new RandomAccessFile(f, "rws");
+			raf.seek(0l);
+			raf.writeInt(p.getPoints().size());
+			for (Double element: p.getPoints()) raf.writeDouble(element);
+			raf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(f);
+	}
 
 	public void dragDetected(MouseEvent me) {
 		System.out.println("Drag " + me);
@@ -110,54 +135,12 @@ public class Input {
 				if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 				t.getTile().poly.add(me.getX() - t.getLayoutX());
 				t.getTile().poly.add(me.getY() - t.getLayoutY());
-			} else {
-				FileChooser fc = new FileChooser();
-				fc.setInitialDirectory(new File("."));
-				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing the collision box of something", ".collisionbox"));
-				File f = fc.showSaveDialog(t.getScene().getWindow());
-				if (!f.exists()) try {
-					f.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					RandomAccessFile raf = new RandomAccessFile(f, "rws");
-					raf.seek(0l);
-					raf.writeInt(t.getPoly().getPoints().size());
-					for (Double element: t.getPoly().getPoints()) raf.writeDouble(element);
-					raf.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.out.println(f);
-			}
+			} else save(t.getPoly());
 		} else
 			if (target instanceof Building b
 					&& System.getProperty("coll").equals("true")) if (!save)
 						b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-					else {
-						FileChooser fc = new FileChooser();
-						fc.setInitialDirectory(new File("."));
-						fc.getExtensionFilters().add(new ExtensionFilter(
-								"A file containing the collision box of something", ".collisionbox"));
-						File f = fc.showSaveDialog(b.getScene().getWindow());
-						if (!f.exists()) try {
-							f.createNewFile();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						try {
-							RandomAccessFile raf = new RandomAccessFile(f, "rws");
-							raf.seek(0l);
-							raf.writeInt(b.getPolygon().getPoints().size());
-							for (Double element: b.getPolygon().getPoints()) raf.writeDouble(element);
-							raf.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						System.out.println(f);
-					}
+					else save(b.getPolygon());
 
 	}
 

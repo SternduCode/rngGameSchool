@@ -17,11 +17,16 @@ public class TextureHolder extends Pane {
 	private final Rectangle rect;
 	private final Polygon poly;
 
+	private final double fps = 8;
+
+	public long spriteCounter = 0;
+	public int spriteNum = 0;
+
 	private boolean dragging = false;
 
 	public TextureHolder(Tile tile, int layoutX, int layoutY) {
 		this.tile = tile;
-		iv = new ImageView(tile.Image);
+		iv = new ImageView(tile.images.get(0));
 		// tile.Image.getPixelReader();
 		// new WritableImage(null, layoutX, layoutY)
 		iv.setDisable(true);
@@ -58,8 +63,8 @@ public class TextureHolder extends Pane {
 	}
 
 	public void drawOutlines() {
-		rect.setWidth(tile.Image.getWidth());
-		rect.setHeight(tile.Image.getHeight());
+		rect.setWidth(tile.images.get(spriteNum).getWidth());
+		rect.setHeight(tile.images.get(spriteNum).getHeight());
 		rect.setVisible(true);
 	}
 
@@ -88,6 +93,15 @@ public class TextureHolder extends Pane {
 	}
 
 	public void update() {
+
+		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
+			spriteCounter = System.currentTimeMillis();
+			spriteNum++;
+		}
+
+		if (spriteNum >= tile.images.size()) spriteNum = 0;
+		iv.setImage(tile.images.get(spriteNum));
+
 		if (System.getProperty("coll").equals("true"))
 			poly.setVisible(true);
 		else
