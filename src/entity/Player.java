@@ -116,7 +116,7 @@ public class Player extends Entity implements Collidable {
 				this.nomovel.add(ImgUtil.resizeImage(wi,
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
-			
+
 			Image nomoveup = new Image(getClass().getResourceAsStream("/res/player/IdleUp.png"));
 
 			for (int i = 0; i < nomoveup.getWidth(); i += 32) {
@@ -188,9 +188,9 @@ public class Player extends Entity implements Collidable {
 		else if (keyH.rightPressed) {
 			direction = "right";
 			worldX += speed;
-		} else if (direction.equals("up") || direction.startsWith("up")) direction = "noneup";
+		} else if (direction.equals("up") || direction.contains("up")) direction = "noneup";
 		else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
-		
+
 		else direction = "none";
 
 		int div = switch (direction) {
@@ -251,7 +251,7 @@ public class Player extends Entity implements Collidable {
 			case "noneup":
 				if (spriteNum >= nomoveup.size()) spriteNum = 0;
 				image = nomoveup.get(spriteNum);
-				break;	
+				break;
 		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);
