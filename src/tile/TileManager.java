@@ -133,7 +133,7 @@ public class TileManager extends Pane {
 								.getResource(
 										"/res/collisions/" + dir + "/"
 												+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
-										+ ".collisionbox")
+												+ ".collisionbox")
 								.getFile(), "rws");
 						raf.seek(0l);
 						int length = raf.readInt();
@@ -212,7 +212,10 @@ public class TileManager extends Pane {
 				TextureHolder th = null;
 				if (group.getChildren().size() > worldRow * maxCol + worldCol)
 					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
-				if (th != null) th.setVisible(false);
+				if (th != null) {
+					th.setVisible(false);
+					th.update();
+				}
 				else {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
 					th.setVisible(false);
