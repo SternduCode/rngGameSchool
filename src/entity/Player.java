@@ -42,8 +42,9 @@ public class Player extends Entity implements Collidable {
 
 		iv = new ImageView();
 
-		shape = new Rectangle(48, 48);
+		shape = new Rectangle(22, 20);
 		shape.setFill(Color.color(1, 0, 1, 0.75));
+		shape.setDisable(true);
 
 		getChildren().addAll(iv, shape);
 	}
@@ -242,8 +243,8 @@ public class Player extends Entity implements Collidable {
 		iv.setFitHeight(gp.Bg);
 		iv.setImage(image);
 
-		shape.setTranslateX(worldX - this.oldWorldX);
-		shape.setTranslateY(worldY - this.oldWorldY);
+		shape.setTranslateX(12 + worldX - this.oldWorldX);
+		shape.setTranslateY(30 + worldY - this.oldWorldY);
 
 		if (System.getProperty("coll").equals("true"))
 			shape.setVisible(true);

@@ -49,8 +49,9 @@ public class NPC extends Entity implements Collidable {
 		npcData = (JsonObject) npc.get("npcData");
 		currentKey = "idle";
 		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
-		shape = new Rectangle(48, 48);
+		shape = new Rectangle(iv.getImage().getWidth(), iv.getImage().getHeight());
 		shape.setFill(Color.color(0, 1, 1, 0.75));
+		shape.setDisable(true);
 		getChildren().addAll(iv, shape);
 	}
 

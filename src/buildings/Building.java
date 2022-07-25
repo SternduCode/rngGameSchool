@@ -31,7 +31,9 @@ public class Building extends Pane {
 		poly = new Polygon();
 		poly.setVisible(false);
 		poly.setFill(Color.color(0, 0, 1, 0.75));
+		poly.setDisable(true);
 		iv = new ImageView();
+		iv.setDisable(true);
 		getChildren().addAll(iv, poly);
 		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
 		x = ((NumberValue) ((JsonArray) building.get("position")).get(0)).getValue().doubleValue();

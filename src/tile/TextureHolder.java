@@ -32,14 +32,14 @@ public class TextureHolder extends Pane {
 		rect.setStroke(Color.WHITE);
 		rect.setFill(Color.TRANSPARENT);
 		rect.setStrokeWidth(4.5);
-		rect.setDisable(false);
+		rect.setDisable(true);
 		rect.setVisible(false);
 
 		poly = new Polygon();
-		System.out.println("poly: " + (tile.poly != null));
+		poly.setDisable(true);
+		poly.setFill(Color.color(1, 0, 0, 0.75));
 		poly.getPoints()
-				.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
-		System.out.println("pol2: " + poly);
+		.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
 		getChildren().add(poly);
 		getChildren().add(rect);
 
@@ -68,6 +68,14 @@ public class TextureHolder extends Pane {
 		undrawOutlines();
 	}
 
+	public Polygon getPoly() {
+		return poly;
+	}
+
+	public Tile getTile() {
+		return tile;
+	}
+
 	public boolean isDragging() { return dragging; }
 
 	public void startDrag() {
@@ -77,6 +85,13 @@ public class TextureHolder extends Pane {
 
 	public void undrawOutlines() {
 		rect.setVisible(false);
+	}
+
+	public void update() {
+		if (System.getProperty("coll").equals("true"))
+			poly.setVisible(true);
+		else
+			poly.setVisible(false);
 	}
 
 }

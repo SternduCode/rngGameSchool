@@ -1,12 +1,11 @@
 package rngGAME;
 
 import java.io.*;
+import java.util.ArrayList;
 import buildings.Building;
 import javafx.event.EventTarget;
 import javafx.scene.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import tile.*;
@@ -106,41 +105,59 @@ public class Input {
 		if (target instanceof TextureHolder t) {
 			for (Node e: ((Group) t.getParent()).getChildren())
 				if (((TextureHolder) e).isDragging()) ((TextureHolder) e).endDrag();
-		} else
-			if ((target instanceof Building
-					|| target instanceof ImageView iv && iv.getParent() instanceof Building
-					|| target instanceof Polygon p && p.getParent() instanceof Building)
-					&& System.getProperty("coll").equals("true")) {
-				Building b = target instanceof Building ? (Building) target
-						: (Building) ((Node) target).getParent();
-				if (!save)
-					b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-				else {
-					FileChooser fc = new FileChooser();
-					fc.setInitialDirectory(new File("."));
-					fc.getExtensionFilters().add(new ExtensionFilter(
-							"A file containing the collision box of something", ".collisionbox"));
-					File f = fc.showSaveDialog(b.getScene().getWindow());
-					if (!f.exists()) try {
-						f.createNewFile();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					try {
-						RandomAccessFile raf = new RandomAccessFile(f, "rws");
-						raf.seek(0l);
-						raf.writeInt(b.getPolygon().getPoints().size());
-						for (Double element: b.getPolygon().getPoints()) raf.writeDouble(element);
-						raf.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					System.out.println(f);
+			if (System.getProperty("coll").equals("true")) if (!save) {
+				t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
+				if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
+				t.getTile().poly.add(me.getX() - t.getLayoutX());
+				t.getTile().poly.add(me.getY() - t.getLayoutY());
+			} else {
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing the collision box of something", ".collisionbox"));
+				File f = fc.showSaveDialog(t.getScene().getWindow());
+				if (!f.exists()) try {
+					f.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} else
-				if (target instanceof TextureHolder th) {
-
-				} // TODO ctrl+n coll bo ti
+				try {
+					RandomAccessFile raf = new RandomAccessFile(f, "rws");
+					raf.seek(0l);
+					raf.writeInt(t.getPoly().getPoints().size());
+					for (Double element: t.getPoly().getPoints()) raf.writeDouble(element);
+					raf.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				System.out.println(f);
+			}
+		} else
+			if (target instanceof Building b
+					&& System.getProperty("coll").equals("true")) if (!save)
+						b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+					else {
+						FileChooser fc = new FileChooser();
+						fc.setInitialDirectory(new File("."));
+						fc.getExtensionFilters().add(new ExtensionFilter(
+								"A file containing the collision box of something", ".collisionbox"));
+						File f = fc.showSaveDialog(b.getScene().getWindow());
+						if (!f.exists()) try {
+							f.createNewFile();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						try {
+							RandomAccessFile raf = new RandomAccessFile(f, "rws");
+							raf.seek(0l);
+							raf.writeInt(b.getPolygon().getPoints().size());
+							for (Double element: b.getPolygon().getPoints()) raf.writeDouble(element);
+							raf.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						System.out.println(f);
+					}
 
 	}
 

@@ -5,8 +5,9 @@ import java.util.*;
 import com.sterndu.json.*;
 import buildings.*;
 import entity.*;
-import javafx.scene.Group;
+import javafx.scene.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 import rngGAME.*;
 
 public class TileManager extends Pane {
@@ -33,6 +34,11 @@ public class TileManager extends Pane {
 	}
 
 	public boolean collides(Collidable collidable) {
+
+		for (Node th: group.getChildren()) if (((TextureHolder) th).getPoly().getPoints().size() > 0) {
+			Shape intersect = Shape.intersect(collidable.getPoly(), ((TextureHolder) th).getPoly());
+			if (!intersect.getBoundsInLocal().isEmpty()) return true;
+		}
 
 		return false;
 	}
@@ -120,12 +126,13 @@ public class TileManager extends Pane {
 				tile.add(t);
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
 				if (getClass()
-						.getResource("/res/collisions/tiles/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+						.getResource("/res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 						+ ".collisionbox") != null)
 					try {
 						RandomAccessFile raf = new RandomAccessFile(getClass()
 								.getResource(
-										"/res/collisions/tiles/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+										"/res/collisions/" + dir + "/"
+												+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 										+ ".collisionbox")
 								.getFile(), "rws");
 						raf.seek(0l);
@@ -198,6 +205,7 @@ public class TileManager extends Pane {
 				} else {
 					th.setLayoutX(screenX);
 					th.setLayoutY(screenY);
+					th.update();
 				}
 				th.setVisible(true);
 			} else {
