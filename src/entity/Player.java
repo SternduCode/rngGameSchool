@@ -193,21 +193,6 @@ public class Player extends Entity implements Collidable {
 
 		else direction = "none";
 
-		int div = switch (direction) {
-			case "up" -> up.size();
-			case "upL" -> upl.size();
-			case "down" -> down.size();
-			case "downL" -> downl.size();
-			case "left" -> left.size();
-			case "right" -> right.size();
-			case "none" -> nomover.size();
-			case "noneL" -> nomovel.size();
-			case "noneup" -> nomoveup.size();
-			default -> 1;
-		};
-
-		if (div == 0) div = 1;
-
 		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
 			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
