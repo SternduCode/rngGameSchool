@@ -13,9 +13,12 @@ import tile.*;
 
 public class Input {
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save;
-	private long timeout;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save, newC;
 
+
+	private void newC(Polygon p) {
+		p.getPoints().clear();
+	}
 
 	private void save(Polygon p) {
 		FileChooser fc = new FileChooser();
@@ -49,21 +52,21 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
-		if (timeout < System.currentTimeMillis()) {
 
 
-			if(code == KeyCode.W) upPressed = true;
+		if(code == KeyCode.W) upPressed = true;
 
-			if (code == KeyCode.S && !ctrlPressed) downPressed = true;
+		if (code == KeyCode.S && !ctrlPressed) downPressed = true;
 
-			if(code == KeyCode.A) leftPressed = true;
+		if(code == KeyCode.A) leftPressed = true;
 
-			if(code == KeyCode.D) rightPressed = true;
-		}
+		if (code == KeyCode.D) rightPressed = true;
 
 		if (code == KeyCode.CONTROL) ctrlPressed = true;
 
 		if (code == KeyCode.S && ctrlPressed) save = true;
+
+		if (code == KeyCode.N && ctrlPressed) newC = true;
 
 
 	}
@@ -91,9 +94,12 @@ public class Input {
 		if (code == KeyCode.CONTROL) {
 			ctrlPressed = false;
 			save = false;
+			newC = false;
 		}
 
 		if (code == KeyCode.S) save = false;
+
+		if (code == KeyCode.N) newC = false;
 
 	}
 
@@ -130,26 +136,21 @@ public class Input {
 		if (target instanceof TextureHolder t) {
 			for (Node e: ((Group) t.getParent()).getChildren())
 				if (((TextureHolder) e).isDragging()) ((TextureHolder) e).endDrag();
-			if (System.getProperty("coll").equals("true")) if (!save) {
+			if (System.getProperty("coll").equals("true")) if (!save && !newC) {
 				t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
 				if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 				t.getTile().poly.add(me.getX() - t.getLayoutX());
 				t.getTile().poly.add(me.getY() - t.getLayoutY());
-			} else save(t.getPoly());
+			} else if (save) save(t.getPoly());
+			else if (newC) newC(t.getPoly());
 		} else
 			if (target instanceof Building b
-					&& System.getProperty("coll").equals("true")) if (!save)
-						b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-					else save(b.getPolygon());
+					&& System.getProperty("coll").equals("true"))
+				if (!save && !newC)
+					b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+				else if (save) save(b.getPolygon());
+				else if (newC) newC(b.getPolygon());
 
-	}
-
-	public void setTimeout(long i) {
-		timeout = i;
-		upPressed = false;
-		downPressed = false;
-		leftPressed = false;
-		rightPressed = false;
 	}
 
 }
