@@ -4,6 +4,31 @@
 		"spawnPosition" : [18.5, 9.3],
 		"position" : [7, 12],
 	}, "buildings": [
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CTisch.png"
+				
+			},
+			"position" : [257, 150],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [110, 100], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CBett.png"
+				
+			},
+			"position" : [96, 200],
+			"originalSize" : [64, 128], 
+			"requestedSize" : [75, 130], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}	
 		
 	], "npcs": [
 	
@@ -38,7 +63,7 @@
 			"HalbBookWand.png",		
 			"LeerWand.png",			
 			"SchubWand.png",
-			"CTisch.png",	
+				
 			
 		],
 		"matrix" : 
@@ -46,7 +71,7 @@
 6 6 6 7 9 9 9 9 9 10 6 6 6
 6 6 7 8 15 16 16 17 18 11 10 6 6
 6 7 8 18 0 0 0 0 0 16 11 10 6
-6 3 16 0 0 0 19 0 0 0 17 12 6
+6 3 16 0 0 0 0 0 0 0 17 12 6
 6 3 0 0 0 0 0 0 0 0 0 12 6
 6 3 0 0 0 0 0 0 0 0 0 12 6
 6 3 0 0 0 0 0 0 0 0 0 12 6
