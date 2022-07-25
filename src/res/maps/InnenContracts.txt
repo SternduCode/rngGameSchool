@@ -28,7 +28,20 @@
 			"requestedSize" : [75, 130], 
 			"map" : "InnenContracts.txt",
 			"buildingData" : {}
-		}	
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CCarpet.png"
+				
+			},
+			"position" : [247, 300],
+			"originalSize" : [128, 128], 
+			"requestedSize" : [130, 130], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}			
 		
 	], "npcs": [
 	
