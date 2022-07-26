@@ -2,6 +2,7 @@ package tile;
 
 import java.util.ArrayList;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.Pane;
@@ -24,7 +25,11 @@ public class TextureHolder extends Pane {
 
 	private boolean dragging = false;
 
-	public TextureHolder(Tile tile, int layoutX, int layoutY) {
+	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm) {
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true"))
+				cm.show(TextureHolder.this, e.getScreenX(), e.getScreenY());
+		});
 		this.tile = tile;
 		iv = new ImageView(tile.images.get(0));
 		// tile.Image.getPixelReader();

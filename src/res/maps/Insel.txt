@@ -75,6 +75,7 @@
 			"position" : [-25, 195],
 			"originalSize" : [32, 32], 
 			"requestedSize" : [96, 96], 
+			"infront" : true,
 			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
@@ -114,7 +115,7 @@
 		"LochMiniEckeLinkU.png",
 		"LochMiniEckeRechts.png",
 		"LochMiniEckeRechtsO.png",
-		"Gehänge.png",
+		"Gehaenge.png",
 		"Mitte.png",
 		"Mitte2.png",
 			

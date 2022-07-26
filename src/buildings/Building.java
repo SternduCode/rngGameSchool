@@ -23,6 +23,7 @@ public class Building extends Pane {
 	protected String map;
 	protected Polygon poly;
 	protected ImageView iv;
+	protected boolean infront;
 
 	protected int spriteCounter = 0;
 	protected int spriteNum = 0;
@@ -42,6 +43,8 @@ public class Building extends Pane {
 		origHeight = ((NumberValue) ((JsonArray) building.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(0)).getValue().intValue();
 		reqHeight = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(1)).getValue().intValue();
+		if (building.containsKey("infront"))
+			infront = ((BoolValue) building.get("infront")).getValue();
 		images = ((JsonObject) building.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
@@ -111,6 +114,10 @@ public class Building extends Pane {
 			// iv.setY(screenY);
 		} else setVisible(false);
 		// setWidth(iv.getImage().getWidth());
+	}
+
+	public boolean isInfront() {
+		return infront;
 	}
 
 }
