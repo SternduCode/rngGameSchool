@@ -92,6 +92,7 @@ public class SpielPanel extends Pane {
 		npcs = tileM.getNPCSFromMap();
 		player.setPosition(tileM.getStartingPosition());
 		buildingsGroup.getChildren().clear();
+		ifbuildingsGroup.getChildren().clear();
 		npcsGroup.getChildren().clear();
 		addBuildings();
 		addNPCs();
@@ -104,6 +105,7 @@ public class SpielPanel extends Pane {
 		npcs = tileM.getNPCSFromMap();
 		player.setPosition(position);
 		buildingsGroup.getChildren().clear();
+		ifbuildingsGroup.getChildren().clear();
 		npcsGroup.getChildren().clear();
 		addBuildings();
 		addNPCs();
@@ -136,6 +138,9 @@ public class SpielPanel extends Pane {
 
 		if (!keyH.b) buildingsGroup.setVisible(true);
 		else buildingsGroup.setVisible(false);
+
+		if (!keyH.b) ifbuildingsGroup.setVisible(true);
+		else ifbuildingsGroup.setVisible(false);
 
 		if (!keyH.h) npcsGroup.setVisible(true);
 		else npcsGroup.setVisible(false);
