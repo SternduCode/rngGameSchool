@@ -13,14 +13,16 @@ import tile.*;
 
 public class Input {
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save, newC;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save, newC, p, b, h;
 
 
 	private void newC(Polygon p) {
+		ctrlPressed = false;
 		p.getPoints().clear();
 	}
 
 	private void save(Polygon p) {
+		ctrlPressed = false;
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(new File("."));
 		fc.getExtensionFilters().add(new ExtensionFilter(
@@ -37,6 +39,7 @@ public class Input {
 			raf.seek(0l);
 			raf.writeInt(p.getPoints().size());
 			for (Double element: p.getPoints()) raf.writeDouble(element);
+			raf.setLength(4l + p.getPoints().size() * 8l);
 			raf.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,11 +65,14 @@ public class Input {
 
 		if (code == KeyCode.D) rightPressed = true;
 
-		if (code == KeyCode.CONTROL) ctrlPressed = true;
+		if (code == KeyCode.CONTROL) {
+			ctrlPressed = true;
+			downPressed = false;
+		}
 
 		if (code == KeyCode.S && ctrlPressed) save = true;
 
-		if (code == KeyCode.N && ctrlPressed) newC = true;
+		if (code == KeyCode.N) if (ctrlPressed) newC = true;
 
 
 	}
@@ -77,13 +83,22 @@ public class Input {
 
 		if(code == KeyCode.W) upPressed = false;
 
-		if (code == KeyCode.S) downPressed = false;
+		if (code == KeyCode.S) {
+			downPressed = false;
+			save = false;
+		}
 
 		if(code == KeyCode.A) leftPressed = false;
 
 		if(code == KeyCode.D) rightPressed = false;
 
 		if(code == KeyCode.TAB) tabPressed = !tabPressed;
+
+		if (code == KeyCode.B) b = !b;
+
+		if (code == KeyCode.P) p = !p;
+
+		if (code == KeyCode.H) h = !h;
 
 		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
 		else System.setProperty("edit", "true");
@@ -96,8 +111,6 @@ public class Input {
 			save = false;
 			newC = false;
 		}
-
-		if (code == KeyCode.S) save = false;
 
 		if (code == KeyCode.N) newC = false;
 

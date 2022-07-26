@@ -129,6 +129,15 @@ public class SpielPanel extends Pane {
 
 		tileM.update();
 
+		if (!keyH.p) player.setVisible(true);
+		else player.setVisible(false);
+
+		if (!keyH.b) buildingsGroup.setVisible(true);
+		else buildingsGroup.setVisible(false);
+
+		if (!keyH.h) npcsGroup.setVisible(true);
+		else npcsGroup.setVisible(false);
+
 		if (keyH.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);
 
