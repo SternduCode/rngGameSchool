@@ -4,6 +4,20 @@
 		"spawnPosition" : [18.5, 9.3],
 		"position" : [7, 12],
 	}, "buildings": [
+
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CCarpet.png"
+				
+			},
+			"position" : [247, 300],
+			"originalSize" : [128, 128], 
+			"requestedSize" : [130, 130], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+
 	{
 			"type" : "",
 			"textures" : {
@@ -33,15 +47,74 @@
 	{
 			"type" : "",
 			"textures" : {
-				"default" : "CCarpet.png"
+				"default" : "CTisch2.png"
 				
 			},
-			"position" : [247, 300],
-			"originalSize" : [128, 128], 
-			"requestedSize" : [130, 130], 
+			"position" : [96, 295],
+			"originalSize" : [64, 128], 
+			"requestedSize" : [75, 150], 
 			"map" : "InnenContracts.txt",
 			"buildingData" : {}
-		}			
+		}	
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CPlant.png"
+				
+			},
+			"position" : [
+				[140, 475],
+				[433, 475],
+				
+			],
+			"infront": true,
+			"originalSize" : [64, 64], 
+			"requestedSize" : [50, 50], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CSofa.png"
+				
+			},
+			"position" : [488, 360],
+			"originalSize" : [64, 192], 
+			"requestedSize" : [40, 120], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CTreppe.png"
+				
+			},
+			"position" : [405, 150],
+			"originalSize" : [128, 160], 
+			"requestedSize" : [155, 140], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CHooka.png"
+				
+			},
+			"position" : [150, 335],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [45, 50], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}
+		
+							
 		
 	], "npcs": [
 	
