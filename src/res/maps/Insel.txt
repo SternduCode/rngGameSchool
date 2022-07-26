@@ -1,128 +1,74 @@
 {
 	"buildings": [
-	
-{
-			"type" : "",
-			"textures" : {
-				"default" : "Faggel.png"
-				
-			},
-			"position" : [-25, -50],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
-			"buildingData" : {}
-		}
-		
 		{
 			"type" : "",
 			"textures" : {
 				"default" : "Faggel.png"
 				
 			},
-			"position" : [605, -50],
+			"position" : [
+				[-25, -50],
+				[605, -50],
+				[655, 95],
+			],
 			"originalSize" : [32, 32], 
 			"requestedSize" : [96, 96], 
 			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
-		
 		{
 			"type" : "",
 			"textures" : {
 				"default" : "Faggel.png"
 				
 			},
-			"position" : [655, 95],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
-			"buildingData" : {}
-		}
-		
-		{
-			"type" : "",
-			"textures" : {
-				"default" : "Faggel.png"
-				
-			},
-			"position" : [655, 580],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
-			"buildingData" : {}
-		}
-		
-		{
-			"type" : "",
-			"textures" : {
-				"default" : "Faggel.png"
-				
-			},
-			"position" : [220, 580],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
-			"buildingData" : {}
-		}
-		
-		{
-			"type" : "",
-			"textures" : {
-				"default" : "Faggel.png"
-				
-			},
-			"position" : [-25, 195],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
+			"position" : [
+				[-25, 195],
+				[655, 580],
+				[220, 580]
+			],
 			"infront" : true,
+			"originalSize" : [32, 32], 
+			"requestedSize" : [96, 96], 
 			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
-		
 	], "npcs": [
 	
 	], "map": {
 	
 		"size" : [15, 15],
-
 	
 		"startingPosition" : [1, 1],
 		
-
-
 		"dir" : "Insel",
 		"textures" : [
-			
-		"Void.png",
-		"EckeLinksOben.png",
-		"EckeLinksUnten.png",
-		"EckeRechtsOben.png",
-		"EckeRechtsUnten.png",
-		"SeiteLinks.png",
-		"SeiteLinks2.png",	
-		"SeiteLinks3.png",
-		"SeiteOben.png",
-		"SeiteOben2.png",
-		"SeiteOben3.png",	
-		"SeiteRechts.png",
-		"SeiteRechts2.png",
-		"SeiteRechts3.png",
-		"SeiteUnten.png",
-		"SeiteUnten2.png",
-		"SeiteUnten3.png",
-		"LochMiniEckeLinks.png",
-		"LochMiniEckeLinkU.png",
-		"LochMiniEckeRechts.png",
-		"LochMiniEckeRechtsO.png",
-		"Gehaenge.png",
-		"Mitte.png",
-		"Mitte2.png",
-			
+			"Void.png",
+			"EckeLinksOben.png",
+			"EckeLinksUnten.png",
+			"EckeRechtsOben.png",
+			"EckeRechtsUnten.png",
+			"SeiteLinks.png",
+			"SeiteLinks2.png",	
+			"SeiteLinks3.png",
+			"SeiteOben.png",
+			"SeiteOben2.png",
+			"SeiteOben3.png",	
+			"SeiteRechts.png",
+			"SeiteRechts2.png",
+			"SeiteRechts3.png",
+			"SeiteUnten.png",
+			"SeiteUnten2.png",
+			"SeiteUnten3.png",
+			"LochMiniEckeLinks.png",
+			"LochMiniEckeLinkU.png",
+			"LochMiniEckeRechts.png",
+			"LochMiniEckeRechtsO.png",
+			"Gehaenge.png",
+			"Mitte.png",
+			"Mitte2.png",
 		],
-
 		"matrix" : 
-
 "1 9 8 10 9 8 9 8 9 8 9 10 10 3 0
 5 17 15 14 16 14 19 22 22 22 22 22 22 11 0
 6 13 21 21 21 21 5 22 23 22 22 23 22 12 0
@@ -138,6 +84,5 @@
 0 0 0 0 0 5 23 22 23 22 22 22 22 23 11
 0 0 0 0 0 2 16 14 14 15 16 14 15 14 4
 0 0 0 0 0 21 21 21 21 21 21 21 21 21 21"
-
 	}
 }
