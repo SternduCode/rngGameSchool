@@ -45,7 +45,7 @@ public class NPC extends Entity implements Collidable {
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 		iv = new ImageView();
-		iv.setImage(images.values().stream().findFirst().get().get(0));
+		iv.setImage(getFirstImage());
 		npcData = (JsonObject) npc.get("npcData");
 		currentKey = "idle";
 		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
@@ -59,6 +59,8 @@ public class NPC extends Entity implements Collidable {
 		Shape intersect = Shape.intersect(collidable.getPoly(), shape);
 		return !intersect.getBoundsInLocal().isEmpty();
 	}
+
+	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 
 	@Override
 	public Rectangle getPoly() { return shape; }

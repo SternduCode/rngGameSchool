@@ -6,6 +6,8 @@ import com.sterndu.json.*;
 import buildings.*;
 import entity.*;
 import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 import rngGAME.*;
@@ -20,11 +22,17 @@ public class TileManager extends Pane {
 	private List<NPC> npcs;
 	private int maxCol, maxRow;
 	private String exitMap, dir;
+	private final ContextMenu cm;
 
 	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
+	private Menu mtiles, mnpcs, mbuildings;
+
 
 	public TileManager(SpielPanel gp) {
+		cm = new ContextMenu();
+		cm.getItems().addAll(mtiles = new Menu("Tiles"), mnpcs = new Menu("NPCs"), mbuildings = new Menu("Buildings"));
+
 		this.gp = gp;
 
 		tile = new ArrayList<>();
@@ -65,19 +73,19 @@ public class TileManager extends Pane {
 			String[] lines = data.replaceAll("\r", "").split("\n");
 			int idx = 0;
 
-			while (col < maxCol && row < maxRow) {
+			while (row < lines.length && row < maxRow) {
 
 				String line = lines[idx];
-				String numbers[] = line.split(" ");
+				String[] numbers = line.split(" ");
 
-				while (col < maxCol) {
+				while (col < maxCol && col < numbers.length) {
 
 					int num = Integer.parseInt(numbers[col]);
 
 					mapTileNum[col][row] = num;
 					col++;
 				}
-				if (col == maxCol) {
+				if (col == maxCol || col == numbers.length) {
 					col = 0;
 					row++;
 					idx++;
@@ -98,6 +106,9 @@ public class TileManager extends Pane {
 
 			group.getChildren().clear();
 			tile.clear();
+			mtiles.getItems().clear();
+			mnpcs.getItems().clear();
+			mbuildings.getItems().clear();
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(getClass().getResourceAsStream(path));
 			JsonObject map = (JsonObject) jo.get("map");
@@ -119,11 +130,15 @@ public class TileManager extends Pane {
 				exitPosition = Map.entry(((NumberValue) position.get(0)).getValue().doubleValue(),
 						((NumberValue) position.get(1)).getValue().doubleValue());
 			}
-			for (Object texture: textures) {
+			for (Object texture: textures) try {
 				Tile t = new Tile(
 						getClass().getResourceAsStream("/res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tile.add(t);
+				mtiles.getItems()
+				.add(new MenuItem(((StringValue) texture).getValue(),
+						new ImageView(ImgUtil.resizeImage(t.images.get(0),
+								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16))));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
 				if (getClass()
 						.getResource("/res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
@@ -142,6 +157,10 @@ public class TileManager extends Pane {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+			} catch (NullPointerException e) {
+				String[] sp = ((StringValue) texture).getValue().split("[.]");
+				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
+				.printStackTrace();
 			}
 			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
 			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
@@ -151,17 +170,32 @@ public class TileManager extends Pane {
 			loadMap(((StringValue) map.get("matrix")).getValue());
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
-			for (Object building: buildings)
-				this.buildings.add(switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building);
-					default -> new Building((JsonObject) building);
-				});
-			for (Object npc: npcs)
+			for (Object building: buildings) {
+				switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
+					case "House" -> new House((JsonObject) building, this.buildings);
+					default -> new Building((JsonObject) building, this.buildings);
+				}
+				mbuildings.getItems().add(new MenuItem(((StringValue) ((JsonObject) building).get("type")).getValue(),
+						new ImageView(ImgUtil.resizeImage(this.buildings.get(this.buildings.size() - 1).getFirstImage(),
+								(int) this.buildings.get(this.buildings.size() - 1).getFirstImage().getWidth(),
+								(int) this.buildings.get(this.buildings.size() - 1).getFirstImage().getHeight(),
+								16, 16))));
+			}
+			for (Object npc: npcs) {
 				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
 					case "npc" -> new NPC((JsonObject) npc);
 					case "demon" -> new Demon((JsonObject) npc);
 					default -> new NPC((JsonObject) npc);
 				});
+				mnpcs.getItems().add(new MenuItem(((StringValue) ((JsonObject) npc).get("type")).getValue(),
+						new ImageView(ImgUtil.resizeImage(this.npcs.get(this.npcs.size() - 1).getFirstImage(),
+								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getWidth(),
+								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getHeight(),
+								16, 16))));
+			}
+			mtiles.getItems().add(new MenuItem("add Texture"));
+			mnpcs.getItems().add(new MenuItem("add Texture"));
+			mbuildings.getItems().add(new MenuItem("add Texture"));
 
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -200,7 +234,7 @@ public class TileManager extends Pane {
 				if (group.getChildren().size() > worldRow * maxCol + worldCol)
 					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
 				if (th == null) {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
+					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm);
 					group.getChildren().add(worldRow * maxCol + worldCol, th);
 				} else {
 					th.setLayoutX(screenX);
@@ -217,7 +251,7 @@ public class TileManager extends Pane {
 					th.update();
 				}
 				else {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY);
+					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm);
 					th.setVisible(false);
 					group.getChildren().add(worldRow * maxCol + worldCol, th);
 				}
