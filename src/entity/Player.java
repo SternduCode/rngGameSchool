@@ -169,8 +169,6 @@ public class Player extends Entity implements Collidable {
 	}
 
 	public void update() {
-		int oldWorldX = worldX;
-		int oldWorldY = worldY;
 		if (keyH.upPressed) {
 			if (direction.equals("left") || direction.endsWith("L")) direction = "upL";
 			else direction = "up";
@@ -244,8 +242,8 @@ public class Player extends Entity implements Collidable {
 		iv.setFitHeight(gp.Bg);
 		iv.setImage(image);
 
-		shape.setTranslateX(12 + worldX - this.oldWorldX);
-		shape.setTranslateY(30 + worldY - this.oldWorldY);
+		shape.setTranslateX(12 + worldX - oldWorldX);
+		shape.setTranslateY(30 + worldY - oldWorldY);
 
 		if (System.getProperty("coll").equals("true"))
 			shape.setVisible(true);
@@ -255,25 +253,25 @@ public class Player extends Entity implements Collidable {
 
 		gp.getBuildings().forEach(b -> {
 			if (b.collides(this)) {
-				worldX = this.oldWorldX;
-				worldY = this.oldWorldY;
+				worldX = oldWorldX;
+				worldY = oldWorldY;
 			}
 		});
 
 		gp.getNpcs().forEach(b -> {
 			if (b.collides(this)) {
-				worldX = this.oldWorldX;
-				worldY = this.oldWorldY;
+				worldX = oldWorldX;
+				worldY = oldWorldY;
 			}
 		});
 
 		if (gp.getTileM().collides(this)) {
-			worldX = this.oldWorldX;
-			worldY = this.oldWorldY;
+			worldX = oldWorldX;
+			worldY = oldWorldY;
 		}
 
-		this.oldWorldX = worldX;
-		this.oldWorldY = worldY;
+		oldWorldX = worldX;
+		oldWorldY = worldY;
 
 		//		shape.setTranslateX(0);
 		//		shape.setTranslateY(0);
