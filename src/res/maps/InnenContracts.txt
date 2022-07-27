@@ -125,7 +125,20 @@
 			"requestedSize" : [300, 300], 
 			"map" : "InnenContracts.txt",
 			"buildingData" : {}
-		}	
+		}
+		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CKatze.png"
+				
+			},
+			"position" : [480, 276],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [60, 60], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}			
 		
 							
 		
