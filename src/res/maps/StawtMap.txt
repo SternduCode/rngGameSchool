@@ -50,7 +50,7 @@
 		"LochMiniEckeLinkU.png",
 		"LochMiniEckeRechts.png",
 		"LochMiniEckeRechtsO.png",
-		"Gehänge.png",
+		"Gehaenge.png",
 		"Mitte.png",
 		"Mitte2.png",
 		"FackelSpot.png",
