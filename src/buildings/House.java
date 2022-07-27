@@ -1,13 +1,14 @@
 package buildings;
 
+import java.util.List;
 import com.sterndu.json.JsonObject;
 import entity.Player;
 import rngGAME.SpielPanel;
 
 public class House extends Building {
 
-	public House(JsonObject building) {
-		super(building);
+	public House(JsonObject building, List<Building> buildings) {
+		super(building, buildings);
 		currentKey = "closed";
 	}
 

@@ -9,7 +9,9 @@
 			"position" : [800, 250],
 			"originalSize" : [64, 64], 
 			"requestedSize" : [225, 225], 
+
 			"map" : "StawtMap.txt",
+
 			"buildingData" : {}
 		}
 	], "npcs": [
@@ -66,7 +68,7 @@
 			"position" : [750, 1600],
 			"originalSize" : [64, 64], 
 
-			"requestedSize" : [120, 120], 
+			"requestedSize" : [60, 60], 
 
 
 			"npcData" : {

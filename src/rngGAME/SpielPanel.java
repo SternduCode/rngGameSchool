@@ -27,7 +27,7 @@ public class SpielPanel extends Pane {
 	private final Input keyH;
 	private final Player player;
 	private final TileManager tileM;
-	private final Group buildingsGroup, npcsGroup;
+	private final Group ifbuildingsGroup, buildingsGroup, npcsGroup;
 	private List<Building> buildings;
 
 	private List<NPC> npcs;
@@ -46,16 +46,18 @@ public class SpielPanel extends Pane {
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 
 		buildingsGroup = new Group();
+		ifbuildingsGroup = new Group();
 		npcsGroup = new Group();
 
 		setMap("/res/maps/lavaMap2.txt");
 
-		getChildren().addAll(tileM, buildingsGroup, npcsGroup, player, inv);
+		getChildren().addAll(tileM, buildingsGroup, npcsGroup, player, ifbuildingsGroup, inv);
 
 	}
 
 	public void addBuildings() {
-		buildingsGroup.getChildren().addAll(buildings);
+		buildingsGroup.getChildren().addAll(buildings.stream().filter(b -> !b.isInfront()).toList());
+		ifbuildingsGroup.getChildren().addAll(buildings.stream().filter(Building::isInfront).toList());
 	}
 	public void addNPCs() {
 		npcsGroup.getChildren().addAll(npcs);
@@ -90,6 +92,7 @@ public class SpielPanel extends Pane {
 		npcs = tileM.getNPCSFromMap();
 		player.setPosition(tileM.getStartingPosition());
 		buildingsGroup.getChildren().clear();
+		ifbuildingsGroup.getChildren().clear();
 		npcsGroup.getChildren().clear();
 		addBuildings();
 		addNPCs();
@@ -102,6 +105,7 @@ public class SpielPanel extends Pane {
 		npcs = tileM.getNPCSFromMap();
 		player.setPosition(position);
 		buildingsGroup.getChildren().clear();
+		ifbuildingsGroup.getChildren().clear();
 		npcsGroup.getChildren().clear();
 		addBuildings();
 		addNPCs();
@@ -134,6 +138,9 @@ public class SpielPanel extends Pane {
 
 		if (!keyH.b) buildingsGroup.setVisible(true);
 		else buildingsGroup.setVisible(false);
+
+		if (!keyH.b) ifbuildingsGroup.setVisible(true);
+		else ifbuildingsGroup.setVisible(false);
 
 		if (!keyH.h) npcsGroup.setVisible(true);
 		else npcsGroup.setVisible(false);
