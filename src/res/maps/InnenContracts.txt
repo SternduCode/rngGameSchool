@@ -114,6 +114,19 @@
 			"buildingData" : {}
 		}
 		
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "CLicht.png"
+				
+			},
+			"position" : [161, 221],
+			"originalSize" : [128, 128], 
+			"requestedSize" : [300, 300], 
+			"map" : "InnenContracts.txt",
+			"buildingData" : {}
+		}	
+		
 							
 		
 	], "npcs": [
