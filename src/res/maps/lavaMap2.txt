@@ -9,7 +9,7 @@
 			"position" : [800, 250],
 			"originalSize" : [64, 64], 
 			"requestedSize" : [225, 225], 
-			"map" : "Insel.txt",
+			"map" : "StawtMap.txt",
 			"buildingData" : {}
 		}
 	], "npcs": [
