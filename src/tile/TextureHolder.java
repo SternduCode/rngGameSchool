@@ -1,6 +1,7 @@
 package tile;
 
 import java.util.ArrayList;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.ImageView;
@@ -11,7 +12,7 @@ import javafx.scene.shape.*;
 
 public class TextureHolder extends Pane {
 
-	private final Tile tile;
+	private Tile tile;
 
 	private final ImageView iv;
 
@@ -25,10 +26,12 @@ public class TextureHolder extends Pane {
 
 	private boolean dragging = false;
 
-	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm) {
+	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm, ObjectProperty<TextureHolder> requestor) {
 		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true"))
+			if (System.getProperty("edit").equals("true")) {
+				requestor.set(TextureHolder.this);
 				cm.show(TextureHolder.this, e.getScreenX(), e.getScreenY());
+			}
 		});
 		this.tile = tile;
 		iv = new ImageView(tile.images.get(0));
@@ -87,6 +90,14 @@ public class TextureHolder extends Pane {
 	}
 
 	public boolean isDragging() { return dragging; }
+
+	public void setTile(Tile tile) {
+		this.tile=tile;
+		poly.getPoints().clear();
+		poly.getPoints()
+		.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
+		iv.setImage(tile.images.get(0));
+	}
 
 	public void startDrag() {
 		dragging = true;

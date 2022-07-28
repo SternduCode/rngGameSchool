@@ -40,6 +40,24 @@ public class Building extends Pane {
 		currentKey = "default";
 	}
 
+	public Building(Building building, List<Building> buildings, SpielPanel gp) {
+		this();
+		x = building.x;
+		y = building.y;
+		poly.getPoints().addAll(building.poly.getPoints());
+		origWidth = building.origWidth;
+		origHeight = building.origHeight;
+		reqWidth = building.reqWidth;
+		reqHeight = building.reqHeight;
+		infront = building.infront;
+		images = building.images;
+		iv.setImage(building.getFirstImage());
+		buildingData = building.buildingData;
+		map = building.map;
+		buildings.add(this);
+		gp.getBuildingsGroup().getChildren().add(this);
+	}
+
 	public Building(JsonObject building, List<Building> buildings) {
 		this();
 		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
@@ -72,6 +90,7 @@ public class Building extends Pane {
 					b.images = images;
 					b.iv.setImage(b.getFirstImage());
 					b.buildingData = buildingData;
+					b.map = map;
 					buildings.add(b);
 				}
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -128,6 +147,11 @@ public class Building extends Pane {
 
 	public boolean isInfront() {
 		return infront;
+	}
+
+	public void setPosition(double layoutX, double layoutY) {
+		x = layoutX;
+		y = layoutY;
 	}
 
 	public void update(Player p, SpielPanel gp) {

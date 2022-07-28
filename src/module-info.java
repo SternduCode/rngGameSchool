@@ -6,7 +6,7 @@ module rngGAME {
 
 	requires javafx.base;
 	requires transitive javafx.graphics;
-	requires javafx.controls;
+	requires transitive javafx.controls;
 
 	requires transitive com.sterndu.JSONLib;
 

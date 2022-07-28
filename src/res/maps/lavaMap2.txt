@@ -10,7 +10,7 @@
 			"originalSize" : [64, 64], 
 			"requestedSize" : [225, 225], 
 
-			"map" : "StawtMap.txt",
+			"map" : "InnenContracts.txt",
 
 			"buildingData" : {}
 		}

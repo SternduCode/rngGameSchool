@@ -1,10 +1,9 @@
 package entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Polygon;
 
 public class Entity extends Pane {
 
@@ -16,7 +15,7 @@ public class Entity extends Pane {
 	public String direction;
 	public long spriteCounter = 0;
 	public int spriteNum = 0;
-	protected Rectangle shape;
+	protected Polygon shape;
 
 	public int getOldWorldX() { return oldWorldX; }
 	public int getOldWorldY() { return oldWorldY; }

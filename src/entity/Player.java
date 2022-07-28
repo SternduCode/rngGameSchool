@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Polygon;
 import rngGAME.*;
 import tile.ImgUtil;
 
@@ -43,9 +43,11 @@ public class Player extends Entity implements Collidable {
 
 		iv = new ImageView();
 
-		shape = new Rectangle(22, 20);
+		shape = new Polygon();
 		shape.setFill(Color.color(1, 0, 1, 0.75));
 		shape.setDisable(true);
+		shape.setVisible(false);
+		shape.getPoints().addAll(0d, 0d, 0d, 20d, 22d, 20d, 22d, 0d);
 
 		getChildren().addAll(iv, shape);
 	}
@@ -148,7 +150,7 @@ public class Player extends Entity implements Collidable {
 	}
 
 	@Override
-	public Rectangle getPoly() { return shape; }
+	public Polygon getPoly() { return shape; }
 
 
 	public void setDefaultValues() {

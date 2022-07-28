@@ -19,8 +19,38 @@ public class NPC extends Entity implements Collidable {
 	protected JsonObject npcData;
 	protected int fps;
 
+	protected NPC() {
+		iv = new ImageView();
+		iv.setDisable(true);
+		shape = new Polygon();
+		shape.setVisible(false);
+		shape.setFill(Color.color(0, 1, 1, 0.75));
+		shape.setDisable(true);
+		getChildren().addAll(iv, shape);
+		currentKey = "idle";
+	}
+
 	public NPC(JsonObject npc) {
+		this();
 		init(npc);
+	}
+
+	public NPC(NPC npc, List<NPC> npcs, SpielPanel gp) {
+		this();
+		x = npc.x;
+		y = npc.y;
+		shape.getPoints().addAll(npc.shape.getPoints());
+		origWidth = npc.origWidth;
+		origHeight = npc.origHeight;
+		reqWidth = npc.reqWidth;
+		reqHeight = npc.reqHeight;
+		//infront = npc.infront;
+		images = npc.images;
+		iv.setImage(npc.getFirstImage());
+		npcData = npc.npcData;
+		fps = npc.fps;
+		npcs.add(this);
+		gp.getNpcsGroup().getChildren().add(this);
 	}
 
 	protected List<Image> getAnimatedImages(String path) {
@@ -44,15 +74,11 @@ public class NPC extends Entity implements Collidable {
 		images = ((JsonObject) npc.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-		iv = new ImageView();
 		iv.setImage(getFirstImage());
 		npcData = (JsonObject) npc.get("npcData");
-		currentKey = "idle";
 		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
-		shape = new Rectangle(iv.getImage().getWidth(), iv.getImage().getHeight());
-		shape.setFill(Color.color(0, 1, 1, 0.75));
-		shape.setDisable(true);
-		getChildren().addAll(iv, shape);
+		shape.getPoints().addAll(0d, 0d, 0d, iv.getImage().getHeight(), iv.getImage().getWidth(),
+				iv.getImage().getHeight(), iv.getImage().getWidth(), 0d);
 	}
 
 	public boolean collides(Collidable collidable) {
@@ -63,7 +89,12 @@ public class NPC extends Entity implements Collidable {
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 
 	@Override
-	public Rectangle getPoly() { return shape; }
+	public Polygon getPoly() { return shape; }
+
+	public void setPosition(double layoutX, double layoutY) {
+		x = layoutX;
+		y = layoutY;
+	}
 
 	public void update(Player p, SpielPanel gp) {
 		double screenX = x - p.worldX + p.screenX;

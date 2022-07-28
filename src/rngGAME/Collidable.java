@@ -1,9 +1,9 @@
 package rngGAME;
 
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Polygon;
 
 public interface Collidable {
 
-	Rectangle getPoly();
+	Polygon getPoly();
 
 }

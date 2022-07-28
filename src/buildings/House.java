@@ -7,6 +7,11 @@ import rngGAME.SpielPanel;
 
 public class House extends Building {
 
+	public House(House building, List<Building> buildings, SpielPanel gp) {
+		super(building, buildings, gp);
+		currentKey = "closed";
+	}
+
 	public House(JsonObject building, List<Building> buildings) {
 		super(building, buildings);
 		currentKey = "closed";

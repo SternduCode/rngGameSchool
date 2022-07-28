@@ -59,20 +59,26 @@ public class SpielPanel extends Pane {
 		buildingsGroup.getChildren().addAll(buildings.stream().filter(b -> !b.isInfront()).toList());
 		ifbuildingsGroup.getChildren().addAll(buildings.stream().filter(Building::isInfront).toList());
 	}
+
 	public void addNPCs() {
 		npcsGroup.getChildren().addAll(npcs);
 	}
 
-
-
-
 	public List<Building> getBuildings() { return buildings; }
+
+	public Group getBuildingsGroup() { return buildingsGroup; }
+	public Group getIfbuildingsGroup() { return ifbuildingsGroup; }
+
+
+
 
 	public Input getKeyH() {
 		return keyH;
 	}
 
 	public List<NPC> getNpcs() { return npcs; }
+
+	public Group getNpcsGroup() { return npcsGroup; }
 
 	public Player getPlayer() { return player; }
 
