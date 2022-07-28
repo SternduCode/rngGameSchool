@@ -33,6 +33,7 @@
 			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
+
 	], "npcs": [
 	
 	], "map": {
