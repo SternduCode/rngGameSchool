@@ -7,6 +7,10 @@ import rngGAME.SpielPanel;
 
 public class House extends Building {
 
+	protected House() {
+		currentKey = "closed";
+	}
+
 	public House(House building, List<Building> buildings, SpielPanel gp) {
 		super(building, buildings, gp);
 		currentKey = "closed";

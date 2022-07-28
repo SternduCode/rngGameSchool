@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import entity.Player;
@@ -14,22 +15,25 @@ import javafx.scene.shape.*;
 import rngGAME.*;
 import tile.ImgUtil;
 
-public class Building extends Pane {
+public class Building extends Pane implements JsonValue {
 
 	protected Map<String, List<Image>> images;
 	protected String currentKey;
 	protected double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
-	protected JsonObject buildingData;
+	protected JsonObject buildingData, origTextures;
 	protected String map;
 	protected Polygon poly;
 	protected ImageView iv;
 	protected boolean infront;
+	private boolean slave = false;
+	private List<Building> slaves;
+	private Building master;
 
 	protected int spriteCounter = 0;
 	protected int spriteNum = 0;
 
-	private Building() {
+	protected Building() {
 		poly = new Polygon();
 		poly.setVisible(false);
 		poly.setFill(Color.color(0, 0, 1, 0.75));
@@ -54,6 +58,11 @@ public class Building extends Pane {
 		iv.setImage(building.getFirstImage());
 		buildingData = building.buildingData;
 		map = building.map;
+		master = building;
+		slave = true;
+		if (building.slaves == null)
+			building.slaves = new ArrayList<>();
+		building.slaves.add(this);
 		buildings.add(this);
 		gp.getBuildingsGroup().getChildren().add(this);
 	}
@@ -62,6 +71,7 @@ public class Building extends Pane {
 		this();
 		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
 		buildings.add(this);
+		origTextures = (JsonObject) building.get("textures");
 		origWidth = ((NumberValue) ((JsonArray) building.get("originalSize")).get(0)).getValue().intValue();
 		origHeight = ((NumberValue) ((JsonArray) building.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(0)).getValue().intValue();
@@ -75,6 +85,7 @@ public class Building extends Pane {
 		buildingData = (JsonObject) building.get("buildingData");
 		if (((JsonArray) building.get("position")).get(0) instanceof JsonArray ja) {
 			try {
+				slaves = new ArrayList<>();
 				for (int i = 1; i < ((JsonArray) building.get("position")).size(); i++) {
 					Building b = this.getClass().getDeclaredConstructor().newInstance();
 					b.x = ((NumberValue) ((JsonArray) ((JsonArray) building.get("position")).get(i)).get(0)).getValue()
@@ -91,6 +102,9 @@ public class Building extends Pane {
 					b.iv.setImage(b.getFirstImage());
 					b.buildingData = buildingData;
 					b.map = map;
+					b.master = this;
+					b.slave = true;
+					slaves.add(this);
 					buildings.add(b);
 				}
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -152,6 +166,49 @@ public class Building extends Pane {
 	public void setPosition(double layoutX, double layoutY) {
 		x = layoutX;
 		y = layoutY;
+	}
+
+	@Override
+	public String toJson() {
+		if (!slave) {
+			JsonObject jo = new JsonObject();
+			jo.put("type", getClass().getSimpleName());
+			jo.put("textures", origTextures);
+			JsonArray position = new JsonArray();
+			if (slaves == null || slaves.size() == 0) {
+				position.add(x);
+				position.add(y);
+			} else {
+				JsonArray pos = new JsonArray();
+				pos.add(x);
+				pos.add(y);
+				position.add(pos);
+				for (Building b: slaves) {
+					pos = new JsonArray();
+					pos.add(b.x);
+					pos.add(b.y);
+					position.add(pos);
+				}
+			}
+			jo.put("position", position);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(origWidth);
+			originalSize.add(origHeight);
+			jo.put("originalSize", originalSize);
+			JsonArray requestedSize = new JsonArray();
+			requestedSize.add(reqWidth);
+			requestedSize.add(reqHeight);
+			jo.put("requestedSize", requestedSize);
+			if (infront) jo.put("infront", infront);
+			if (map != null) jo.put("map", map);
+			jo.put("buildingData", buildingData);
+			return jo.toJson();
+		} else return "";
+	}
+
+	@Override
+	public String toJson(Function<Object, String> function) {
+		return toJson();
 	}
 
 	public void update(Player p, SpielPanel gp) {

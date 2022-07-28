@@ -2,6 +2,7 @@ package tile;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.util.*;
 import com.sterndu.json.*;
 import buildings.*;
@@ -17,6 +18,7 @@ import rngGAME.*;
 
 public class TileManager extends Pane {
 
+	private String path;
 	private final SpielPanel gp;
 	private final List<Tile> tile;
 	private int mapTileNum[][];
@@ -99,19 +101,18 @@ public class TileManager extends Pane {
 
 	public Map.Entry<Double, Double> getStartingPosition() { return startingPosition; }
 
-	public void loadMap(String data) {
+	public void loadMap(JsonArray data) {
 
 		int col = 0;
 		int row = 0;
 
 		try {
 
-			String[] lines = data.replaceAll("\r", "").split("\n");
 			int idx = 0;
 
-			while (row < lines.length && row < maxRow) {
+			while (row < data.size() && row < maxRow) {
 
-				String line = lines[idx];
+				String line = ((StringValue) data.get(idx)).getValue();
 				String[] numbers = line.split(" ");
 
 				while (col < maxCol && col < numbers.length) {
@@ -134,8 +135,31 @@ public class TileManager extends Pane {
 
 	}
 
+	public void save() {
+		try {
+			File out = new File(getClass().getResource(path).toURI());
+			System.out.println(out);
+			if (out.exists()) {
+				JsonObject jo = (JsonObject) JsonParser.parse(out);
+				JsonArray buildings = (JsonArray) jo.get("buildings");
+				buildings.clear();
+				buildings.addAll(this.buildings);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+				bw.write(jo.toJson());
+				bw.flush();
+				bw.close();
+			} else {
+
+			}
+		} catch (URISyntaxException | JsonParseException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void setMap(String path) {
 		try {
+			this.path=path;
+
 			exitPosition = null;
 			exitStartingPosition = null;
 			exitMap = null;
@@ -204,7 +228,10 @@ public class TileManager extends Pane {
 			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
 					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
 			mapTileNum = new int[maxCol][maxRow];
-			loadMap(((StringValue) map.get("matrix")).getValue());
+			if (map.get("matrix") instanceof StringValue sv) loadMap(new JsonArray(
+					Arrays.asList(sv.getValue().replaceAll("\r", "\n").replaceAll("\n\n", "\n").split("\n")).stream()
+							.map(StringValue::new).toList()));
+			else loadMap((JsonArray) map.get("matrix"));
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
@@ -228,14 +255,14 @@ public class TileManager extends Pane {
 					default -> new NPC((JsonObject) npc);
 				});
 				mnpcs.getItems()
-						.add(new MenuItemWNPC(
+				.add(new MenuItemWNPC(
 						((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
 						new ImageView(ImgUtil.resizeImage(this.npcs.get(this.npcs.size() - 1).getFirstImage(),
 								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getWidth(),
 								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getHeight(),
-										16, 16)),
-								this.npcs.get(this.npcs.size() - 1)));
+								16, 16)),
+						this.npcs.get(this.npcs.size() - 1)));
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));

@@ -15,6 +15,8 @@ public class Input {
 
 	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save, newC, p, b, h;
 
+	private SpielPanel gp;
+
 
 	private void newC(Polygon p) {
 		ctrlPressed = false;
@@ -47,6 +49,10 @@ public class Input {
 		System.out.println(f);
 	}
 
+	protected void setSpielPanel(SpielPanel gp) {
+		this.gp=gp;
+	}
+
 	public void dragDetected(MouseEvent me) {
 		System.out.println("Drag " + me);
 	}
@@ -54,8 +60,6 @@ public class Input {
 	public void keyPressed(KeyEvent e) {
 
 		KeyCode code = e.getCode();
-
-
 
 		if(code == KeyCode.W) upPressed = true;
 
@@ -100,6 +104,8 @@ public class Input {
 
 		if (code == KeyCode.H) h = !h;
 
+		if (e.getText().equalsIgnoreCase("ö")) saveMap();
+
 		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
 		else System.setProperty("edit", "true");
 
@@ -116,9 +122,7 @@ public class Input {
 
 	}
 
-	public void keyTyped(KeyEvent e) {
-
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
@@ -164,6 +168,10 @@ public class Input {
 				else if (save) save(b.getPolygon());
 				else if (newC) newC(b.getPolygon());
 
+	}
+
+	public void saveMap() {
+		gp.saveMap();
 	}
 
 }

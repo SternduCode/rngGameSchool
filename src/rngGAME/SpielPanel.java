@@ -91,6 +91,12 @@ public class SpielPanel extends Pane {
 	}
 
 
+	public void saveMap() {
+		System.out.println("don");
+		tileM.save();
+		System.out.println("don2");
+	}
+
 	public void setMap(String path) {
 		tileM.setMap(path);
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -103,6 +109,7 @@ public class SpielPanel extends Pane {
 		addBuildings();
 		addNPCs();
 	}
+
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
 		tileM.setMap(path);
@@ -128,11 +135,9 @@ public class SpielPanel extends Pane {
 		tl.play();
 	}
 
-
 	public void update() {
 
 		player.update();
-
 
 		for (Building b: buildings) b.update(player, this);
 		for (NPC n: npcs) n.update(player, this);
