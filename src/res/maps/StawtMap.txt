@@ -14,6 +14,18 @@
 			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
+		{
+			"type" : "",
+			"textures" : {
+				"default" : "InselLicht.png"
+				
+			},
+			"position" : [145, 145],
+			"originalSize" : [64, 64], 
+			"requestedSize" : [142, 142], 
+			"map" : "StawtMap.txt",
+			"buildingData" : {}
+		}		
 		
 	], "npcs": [
 	
