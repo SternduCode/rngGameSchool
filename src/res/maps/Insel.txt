@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
 	"buildings": [
 		{
@@ -117,4 +118,137 @@
 0 0 0 0 0 2 16 14 14 15 16 14 15 14 4
 0 0 0 0 0 21 21 21 21 21 21 21 21 21 21"
 	}
+=======
+{
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		{
+			"requestedSize" : [
+				96,
+				96
+			],
+			"textures" : {
+				"default" : "Faggel.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				[
+					-25.0,
+					-50.0
+				],
+				[
+					605.0,
+					-50.0
+				],
+				[
+					655.0,
+					95.0
+				]
+			],
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				32
+			],
+			"map" : "Insel.txt"
+		},
+		,
+		,
+		{
+			"requestedSize" : [
+				96,
+				96
+			],
+			"infront" : true,
+			"textures" : {
+				"default" : "Faggel.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				[
+					-25.0,
+					195.0
+				],
+				[
+					655.0,
+					580.0
+				],
+				[
+					220.0,
+					580.0
+				]
+			],
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				32
+			],
+			"map" : "Insel.txt"
+		},
+		,
+		
+	],
+	"dir" : "Insel",
+	"map" : {
+		"size" : [
+			15,
+			15
+		],
+		"textures" : [
+			"EckeLinksOben.png",
+			"SeiteOben2.png",
+			"SeiteOben.png",
+			"SeiteOben3.png",
+			"EckeRechtsOben.png",
+			"Void.png",
+			"SeiteLinks.png",
+			"LochMiniEckeLinks.png",
+			"SeiteUnten2.png",
+			"SeiteUnten.png",
+			"SeiteUnten3.png",
+			"LochMiniEckeRechts.png",
+			"Mitte.png",
+			"SeiteRechts.png",
+			"SeiteLinks2.png",
+			"SeiteRechts3.png",
+			"Gehaenge.png",
+			"Mitte2.png",
+			"SeiteRechts2.png",
+			"LochMiniEckeLinkU.png",
+			"SeiteLinks3.png",
+			"LochMiniEckeRechtsO.png",
+			"EckeLinksUnten.png",
+			"EckeRechtsUnten.png"
+		],
+		"background" : "Insel/Battlebackround.png",
+		"startingPosition" : [
+			1.0,
+			1.0
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 1 2 3 1 2 1 2 1 2 1 3 3 4 5",
+			"6 7 8 9 10 9 11 12 12 12 12 12 12 13 5",
+			"14 15 16 16 16 16 6 12 17 12 12 17 12 18 5",
+			"6 18 5 5 5 5 14 12 12 12 12 12 12 19 4",
+			"20 19 2 2 1 2 21 17 12 12 12 12 12 17 18",
+			"22 10 9 8 9 11 17 12 17 12 12 12 12 12 15",
+			"16 16 16 16 16 6 12 12 7 8 10 11 17 12 18",
+			"5 5 5 5 5 14 12 12 15 16 16 6 12 12 13",
+			"5 5 5 5 5 6 12 12 15 5 5 14 12 12 18",
+			"5 5 5 5 5 6 12 17 18 5 5 14 17 12 15",
+			"5 5 5 5 5 20 12 12 15 5 5 6 12 12 13",
+			"5 5 5 5 5 14 12 12 19 2 1 21 12 12 18",
+			"5 5 5 5 5 6 17 12 17 12 12 12 12 17 13",
+			"5 5 5 5 5 22 10 9 9 8 10 9 8 9 23",
+			"5 5 5 5 5 16 16 16 16 16 16 16 16 16 16"
+		]
+	}
+>>>>>>> branch 'main' of https://github.com/SternduCode/rngGame
 }

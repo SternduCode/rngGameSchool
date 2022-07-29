@@ -22,6 +22,7 @@
 			},
 			"position" : [145, 145],
 			"originalSize" : [64, 64], 
+			"fps" : 15,
 			"requestedSize" : [142, 142], 
 			"map" : "StawtMap.txt",
 			"buildingData" : {}
