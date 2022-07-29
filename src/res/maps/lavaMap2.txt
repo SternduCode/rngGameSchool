@@ -50,7 +50,7 @@
 				150
 			],
 			"textures" : {
-				"idle" : "TakumiIdle.png"
+				"idle" : "BOOMiIdle.png"
 			},
 			"npcData" : {
 				
