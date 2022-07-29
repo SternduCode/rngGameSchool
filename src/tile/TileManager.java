@@ -65,7 +65,7 @@ public class TileManager extends Pane {
 		return false;
 	}
 
-	public void contMen(ActionEvent e) {
+	public void contextMenu(ActionEvent e) {
 		try {
 			if (e.getSource() instanceof MenuItemWTile miwt)
 				requestor.get().setTile(miwt.getTile());
@@ -81,8 +81,16 @@ public class TileManager extends Pane {
 				.newInstance(miwn.getNPC(), npcs, gp)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().worldX,
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().worldY);
-			else if (e.getSource() instanceof MenuItem mi) if (mi.getText().equals("add Texture"))
-				System.out.println(mi.getText());
+			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
+				System.out.println("npcs");
+				System.out.println("pfuck");
+			} else if (mi.getParentMenu() == mbuildings){
+				System.out.println("buzildib");
+				System.out.println("pfuck");
+			} else if (mi.getParentMenu() == mtiles) {
+				System.out.println("tiles");
+				System.out.println("pfuck");
+			}
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException ex) {
 			ex.printStackTrace();
@@ -141,8 +149,11 @@ public class TileManager extends Pane {
 
 	public void save() {
 		try {
-			File out = new File(getClass().getResource(path).toURI());
-			System.out.println(out);
+			File out = new File(new File(getClass().getResource("/res").toURI()).getAbsolutePath() + "/../../src"
+					+ path)
+					.getAbsoluteFile().getCanonicalFile();
+			File outb = new File(getClass().getResource(path).toURI()).getAbsoluteFile();
+			System.out.println(out + " " + outb);
 			if (out.exists()) {
 				JsonObject jo = (JsonObject) JsonParser.parse(out);
 				JsonArray buildings = (JsonArray) jo.get("buildings");
@@ -172,6 +183,10 @@ public class TileManager extends Pane {
 					matrix.add(sb.toString().substring(0, sb.toString().length() - 1));
 				}
 				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+				bw.write(jo.toJson());
+				bw.flush();
+				bw.close();
+				bw = new BufferedWriter(new FileWriter(outb));
 				bw.write(jo.toJson());
 				bw.flush();
 				bw.close();
@@ -292,9 +307,9 @@ public class TileManager extends Pane {
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));
 			mbuildings.getItems().add(new MenuItem("add Texture"));
-			for (MenuItem mi: mtiles.getItems()) mi.setOnAction(this::contMen);
-			for (MenuItem mi: mnpcs.getItems()) mi.setOnAction(this::contMen);
-			for (MenuItem mi: mbuildings.getItems()) mi.setOnAction(this::contMen);
+			for (MenuItem mi: mtiles.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi: mnpcs.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi: mbuildings.getItems()) mi.setOnAction(this::contextMenu);
 
 		} catch (JsonParseException e) {
 			e.printStackTrace();
