@@ -134,6 +134,7 @@
 				
 			},
 			"position" : [480, 276],
+			"fps" : 2,
 			"originalSize" : [64, 64], 
 			"requestedSize" : [60, 60], 
 			"map" : "InnenContracts.txt",
