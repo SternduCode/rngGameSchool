@@ -199,8 +199,6 @@ public class Player extends Entity implements Collidable {
 			spriteNum++;
 		}
 
-		System.out.println(direction);
-
 		Image image = null;
 
 		switch(direction) {
