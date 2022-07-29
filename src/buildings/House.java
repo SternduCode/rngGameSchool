@@ -3,6 +3,8 @@ package buildings;
 import java.util.List;
 import com.sterndu.json.JsonObject;
 import entity.Player;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContextMenu;
 import rngGAME.SpielPanel;
 
 public class House extends Building {
@@ -16,8 +18,8 @@ public class House extends Building {
 		currentKey = "closed";
 	}
 
-	public House(JsonObject building, List<Building> buildings) {
-		super(building, buildings);
+	public House(JsonObject building, List<Building> buildings, ContextMenu cm, ObjectProperty<Building> requestorB) {
+		super(building, buildings, cm, requestorB);
 		currentKey = "closed";
 	}
 

@@ -45,6 +45,9 @@
 		"startingPosition" : [1, 1],
 		
 		"dir" : "Insel",
+		
+		"background":"Insel/Battlebackround.png",
+		
 		"textures" : [
 
 			

@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -31,8 +33,14 @@ public class NPC extends Entity implements Collidable, JsonValue {
 		currentKey = "idle";
 	}
 
-	public NPC(JsonObject npc) {
+	public NPC(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
 		this();
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				requestorN.set(NPC.this);
+				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
+			}
+		});
 		init(npc);
 	}
 

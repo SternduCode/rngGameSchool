@@ -98,25 +98,23 @@ public class SpielPanel extends Pane {
 	}
 
 	public void setMap(String path) {
-		tileM.setMap(path);
-		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		buildings = tileM.getBuildingsFromMap();
-		npcs = tileM.getNPCSFromMap();
-		player.setPosition(tileM.getStartingPosition());
-		buildingsGroup.getChildren().clear();
-		ifbuildingsGroup.getChildren().clear();
-		npcsGroup.getChildren().clear();
-		addBuildings();
-		addNPCs();
+		setMap(path, null);
 	}
-
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
 		tileM.setMap(path);
-		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		if (tileM.getBackgroundPath() != null)
+			setBackground(new Background(
+					new BackgroundImage(new Image(getClass().getResourceAsStream("/res/" + tileM.getBackgroundPath())),
+							BackgroundRepeat.NO_REPEAT,
+							BackgroundRepeat.NO_REPEAT, null,
+							new BackgroundSize(SpielLaenge, SpielHoehe, false, false, false, false))));
+		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
-		player.setPosition(position);
+		if (position != null)
+			player.setPosition(position);
+		else player.setPosition(tileM.getStartingPosition());
 		buildingsGroup.getChildren().clear();
 		ifbuildingsGroup.getChildren().clear();
 		npcsGroup.getChildren().clear();

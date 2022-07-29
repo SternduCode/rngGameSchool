@@ -3,6 +3,8 @@ package entity;
 import java.io.ByteArrayInputStream;
 import java.util.*;
 import com.sterndu.json.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.*;
 import tile.ImgUtil;
 
@@ -10,8 +12,8 @@ public class Demon extends NPC implements JsonValue {
 
 	private String dir;
 
-	public Demon(JsonObject npc) {
-		super(npc);
+	public Demon(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
+		super(npc, npcs, cm, requestorN);
 	}
 
 	@Override

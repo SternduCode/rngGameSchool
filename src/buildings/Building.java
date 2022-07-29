@@ -8,6 +8,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import entity.Player;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -69,8 +71,15 @@ public class Building extends Pane implements JsonValue {
 		gp.getBuildingsGroup().getChildren().add(this);
 	}
 
-	public Building(JsonObject building, List<Building> buildings) {
+	public Building(JsonObject building, List<Building> buildings, ContextMenu cm,
+			ObjectProperty<Building> requestorB) {
 		this();
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				requestorB.set(Building.this);
+				cm.show(Building.this, e.getScreenX(), e.getScreenY());
+			}
+		});
 		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
 		buildings.add(this);
 		origTextures = (JsonObject) building.get("textures");

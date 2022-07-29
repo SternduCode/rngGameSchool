@@ -29,9 +29,25 @@ public class TileManager extends Pane {
 	private final Group group;
 	private List<Building> buildings;
 	private List<NPC> npcs;
-	private String exitMap, dir;
-	private final ContextMenu cm;
+	private String exitMap, dir, backgroundPath;
+	private final ContextMenu cm, npcCM, buildingCM;
 	private final ObjectProperty<TextureHolder> requestor = new ObjectPropertyBase<>() {
+
+		@Override
+		public Object getBean() { return this; }
+
+		@Override
+		public String getName() { return "requestor"; }
+	};
+	private final ObjectProperty<Building> requestorB = new ObjectPropertyBase<>() {
+
+		@Override
+		public Object getBean() { return this; }
+
+		@Override
+		public String getName() { return "requestor"; }
+	};
+	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
@@ -48,6 +64,8 @@ public class TileManager extends Pane {
 	public TileManager(SpielPanel gp) {
 		cm = new ContextMenu();
 		cm.getItems().addAll(mtiles = new Menu("Tiles"), mnpcs = new Menu("NPCs"), mbuildings = new Menu("Buildings"));
+		buildingCM = new ContextMenu();
+		npcCM = new ContextMenu();
 
 		this.gp = gp;
 
@@ -126,6 +144,8 @@ public class TileManager extends Pane {
 		}
 	}
 
+	public String getBackgroundPath() { return backgroundPath; }
+
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
 	public String getExitMap() { return exitMap; }
@@ -190,6 +210,8 @@ public class TileManager extends Pane {
 				npcs.clear();
 				npcs.addAll(this.npcs);
 				JsonObject map = (JsonObject) jo.get("map");
+				if (backgroundPath != null)
+					map.put("background", backgroundPath);
 				JsonArray textures = (JsonArray) map.get("textures");
 				textures.clear();
 				JsonArray startingPosition = (JsonArray) map.get("startingPosition");
@@ -197,8 +219,11 @@ public class TileManager extends Pane {
 				startingPosition.add(this.startingPosition.getKey());
 				startingPosition.add(this.startingPosition.getValue());
 				jo.put("dir", dir);
-				JsonArray matrix = (JsonArray) map.get("matrix");
-				matrix.clear();
+				JsonArray matrix;
+				if (map.get("matrix") instanceof JsonArray mat) {
+					matrix = mat;
+					matrix.clear();
+				} else matrix = new JsonArray();
 				for (List<TextureHolder> mapi: this.map) {
 					StringBuilder sb = new StringBuilder();
 					for (TextureHolder th: mapi) if (textures.contains(th.getTile().name))
@@ -247,6 +272,8 @@ public class TileManager extends Pane {
 			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
 
 			dir = ((StringValue) map.get("dir")).getValue();
+
+			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
 
 			if (jo.containsKey("exit")) {
 				JsonObject exit = (JsonObject) jo.get("exit");
@@ -303,8 +330,8 @@ public class TileManager extends Pane {
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
 				switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building, this.buildings);
-					default -> new Building((JsonObject) building, this.buildings);
+					case "House" -> new House((JsonObject) building, this.buildings, cm, requestorB);
+					default -> new Building((JsonObject) building, this.buildings, cm, requestorB);
 				}
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
@@ -317,9 +344,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc: npcs) {
 				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "npc", "NPC" -> new NPC((JsonObject) npc);
-					case "Demon", "demon" -> new Demon((JsonObject) npc);
-					default -> new NPC((JsonObject) npc);
+					case "Demon", "demon" -> new Demon((JsonObject) npc, this.npcs, cm, requestorN);
+					default -> new NPC((JsonObject) npc, this.npcs, cm, requestorN);
 				});
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(
@@ -395,8 +421,7 @@ public class TileManager extends Pane {
 				if (th != null) {
 					th.setVisible(false);
 					th.update();
-				}
-				else {
+				} else {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm,
 							requestor);
 					th.setVisible(false);
