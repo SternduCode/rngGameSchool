@@ -150,7 +150,7 @@ public class TileManager extends Pane {
 				buildings.addAll(this.buildings);
 				JsonArray npcs = (JsonArray) jo.get("npcs");
 				npcs.clear();
-				npcs.addAll(npcs);
+				npcs.addAll(this.npcs);
 				JsonObject map = (JsonObject) jo.get("map");
 				JsonArray textures = (JsonArray) map.get("textures");
 				textures.clear();
@@ -159,7 +159,7 @@ public class TileManager extends Pane {
 				startingPosition.add(this.startingPosition.getKey());
 				startingPosition.add(this.startingPosition.getValue());
 				jo.put("dir", dir);
-				JsonArray matrix = (JsonArray) map.get("matrix");// TODO matrix gen and textures gen
+				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
 				for (List<TextureHolder> mapi: this.map) {
 					StringBuilder sb = new StringBuilder();
@@ -275,8 +275,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc: npcs) {
 				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "npc" -> new NPC((JsonObject) npc);
-					case "demon" -> new Demon((JsonObject) npc);
+					case "npc", "NPC" -> new NPC((JsonObject) npc);
+					case "Demon", "demon" -> new Demon((JsonObject) npc);
 					default -> new NPC((JsonObject) npc);
 				});
 				mnpcs.getItems()

@@ -2,6 +2,7 @@ package entity;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import javafx.scene.image.*;
@@ -10,13 +11,13 @@ import javafx.scene.shape.*;
 import rngGAME.*;
 import tile.ImgUtil;
 
-public class NPC extends Entity implements Collidable {
+public class NPC extends Entity implements Collidable, JsonValue {
 
 	protected Map<String, List<Image>> images;
 	protected String currentKey;
 	protected double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
-	protected JsonObject npcData;
+	protected JsonObject npcData, origTextures;
 	protected double fps;
 
 	protected NPC() {
@@ -44,6 +45,7 @@ public class NPC extends Entity implements Collidable {
 		origHeight = npc.origHeight;
 		reqWidth = npc.reqWidth;
 		reqHeight = npc.reqHeight;
+		origTextures = npc.origTextures;
 		//infront = npc.infront;
 		images = npc.images;
 		iv.setImage(npc.getFirstImage());
@@ -71,6 +73,7 @@ public class NPC extends Entity implements Collidable {
 		origHeight = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(0)).getValue().intValue();
 		reqHeight = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(1)).getValue().intValue();
+		origTextures = (JsonObject) npc.get("textures");
 		images = ((JsonObject) npc.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
@@ -94,6 +97,33 @@ public class NPC extends Entity implements Collidable {
 	public void setPosition(double layoutX, double layoutY) {
 		x = layoutX;
 		y = layoutY;
+	}
+
+	@Override
+	public String toJson() {
+		JsonObject jo = new JsonObject();
+		JsonArray requestedSize = new JsonArray();
+		requestedSize.add(reqWidth);
+		requestedSize.add(reqHeight);
+		jo.put("requestedSize", requestedSize);
+		jo.put("textures", origTextures);
+		jo.put("npcData", npcData);
+		JsonArray position = new JsonArray();
+		position.add(x);
+		position.add(y);
+		jo.put("position", position);
+		JsonArray originalSize = new JsonArray();
+		originalSize.add(origWidth);
+		originalSize.add(origHeight);
+		jo.put("originalSize", originalSize);
+		jo.put("fps", fps);
+		jo.put("type", getClass().getSimpleName());
+		return jo.toJson();
+	}
+
+	@Override
+	public String toJson(Function<Object, String> function) {
+		return toJson();
 	}
 
 	public void update(Player p, SpielPanel gp) {

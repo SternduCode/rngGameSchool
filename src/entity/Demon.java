@@ -1,11 +1,12 @@
-package tile;
+package entity;
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
 import com.sterndu.json.*;
-import entity.NPC;
 import javafx.scene.image.*;
+import tile.ImgUtil;
 
-public class Demon extends NPC {
+public class Demon extends NPC implements JsonValue {
 
 	private String dir;
 
@@ -29,6 +30,19 @@ public class Demon extends NPC {
 	protected void init(JsonObject npc) {
 		dir = ((StringValue) npc.get("dir")).getValue();
 		super.init(npc);
+	}
+
+	@Override
+	public String toJson() {
+		try {
+			ByteArrayInputStream bais = new ByteArrayInputStream(super.toJson().getBytes());
+			JsonObject jo = (JsonObject) JsonParser.parse(bais);
+			jo.put("dir", dir);
+			return jo.toJson();
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 }
