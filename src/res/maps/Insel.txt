@@ -46,7 +46,7 @@
 		
 		"dir" : "Insel",
 		
-		"background":"Insel/Battlebackround.png",
+		"background":"backrounds/dungeonhintergrund1.png",
 		
 		"textures" : [
 
