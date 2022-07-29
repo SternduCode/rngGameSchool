@@ -92,6 +92,24 @@
 		}
 	],
 	"buildings" : [
+	
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "Laterne.png"
+				
+			},
+			"position" : [1000, 1000],
+			"originalSize" : [128, 128], 
+			"requestedSize" : [128, 128], 
+			"fps" : 5,
+			"map" : "lavaMap2.txt",
+			"buildingData" : {}
+		}
+	
+	
+	
+	
 		{
 			"requestedSize" : [
 				225,
