@@ -188,7 +188,8 @@ public class Player extends Entity implements Collidable {
 		else if (keyH.rightPressed) {
 			direction = "right";
 			worldX += speed;
-		} else if (direction.equals("up") || direction.contains("up")) direction = "noneup";
+		} else if (direction.endsWith("L") && direction.contains("up")) direction = "noneupL";
+		else if (direction.equals("up") || direction.contains("up")) direction = "noneup";
 		else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
 
 		else direction = "none";
@@ -197,6 +198,8 @@ public class Player extends Entity implements Collidable {
 			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
 		}
+
+		System.out.println(direction);
 
 		Image image = null;
 
@@ -233,10 +236,10 @@ public class Player extends Entity implements Collidable {
 				if (spriteNum >= nomovel.size()) spriteNum = 0;
 				image = nomovel.get(spriteNum);
 				break;
-			case "noneup":
+			case "noneup", "noneupL":
 				if (spriteNum >= nomoveup.size()) spriteNum = 0;
-				image = nomoveup.get(spriteNum);
-				break;
+			image = nomoveup.get(spriteNum);
+			break;
 		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);
