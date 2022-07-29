@@ -3,6 +3,7 @@ package tile;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.nio.file.*;
 import java.util.*;
 import com.sterndu.json.*;
 import buildings.*;
@@ -14,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import rngGAME.*;
 
 public class TileManager extends Pane {
@@ -67,8 +70,7 @@ public class TileManager extends Pane {
 
 	public void contextMenu(ActionEvent e) {
 		try {
-			if (e.getSource() instanceof MenuItemWTile miwt)
-				requestor.get().setTile(miwt.getTile());
+			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
 			else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class, gp.getClass())
@@ -90,6 +92,33 @@ public class TileManager extends Pane {
 			} else if (mi.getParentMenu() == mtiles) {
 				System.out.println("tiles");
 				System.out.println("pfuck");
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				try {
+					Path p1 = f.toPath();
+					Path p2 = new File("./src/res/" + dir + "/" + f.getName()).toPath();
+					Path p3 = new File("./bin/res/" + dir + "/" + f.getName()).toPath();
+					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					Files.copy(p1, p3, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println(p2 + " " + p3);
+					Tile t = new Tile(f.getName(),
+							getClass().getResourceAsStream("/res/" + dir + "/" + f.getName()),
+							gp);
+					tile.add(t);
+					mtiles.getItems().remove(mi);
+					mtiles.getItems()
+					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images.get(0),
+							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)), t));
+					mtiles.getItems().get(mtiles.getItems().size() - 1).setOnAction(this::contextMenu);
+					mtiles.getItems().add(mi);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				System.out.println(f);
 			}
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException ex) {
@@ -143,12 +172,10 @@ public class TileManager extends Pane {
 		} catch (Exception e) {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
-		//		for (var mapi: mapTileNum)
-		//			System.out.println(mapi);
 	}
 
 	public void save() {
-		try {
+		try {// TODO rem src
 			File out = new File(new File(getClass().getResource("/res").toURI()).getAbsolutePath() + "/../../src"
 					+ path)
 					.getAbsoluteFile().getCanonicalFile();
