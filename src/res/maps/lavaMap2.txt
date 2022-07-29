@@ -15,18 +15,18 @@
 			"position" : [
 				870,
 				870
-			],
+			], 
 			"type" : "npc",
 			"originalSize" : [
 				64,
 				32
 			]
-		},
+		}, 
 		{
 			"requestedSize" : [
 				55,
 				65
-			],
+			], 
 			"textures" : {
 				"idle" : "GandalfA.png"
 			},
@@ -106,7 +106,7 @@
 			},
 			"position" : [
 				800.0,
-				250.0
+				250.0 
 			],
 			"type" : "House",
 			"originalSize" : [
@@ -117,10 +117,6 @@
 		}
 	],
 	"map" : {
-		"size" : [
-			50,
-			50
-		],
 		"textures" : [
 			"Stein.png",
 			"LavaS3.png",

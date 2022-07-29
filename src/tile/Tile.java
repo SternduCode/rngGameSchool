@@ -9,8 +9,11 @@ public class Tile {
 
 	public List<Image> images;
 	public List<Double> poly;
+	public String name;
 
-	public Tile(InputStream image, SpielPanel gp) {
+	public Tile(String name, InputStream image, SpielPanel gp) {
+
+		this.name = name;
 
 		images = new ArrayList<>();
 

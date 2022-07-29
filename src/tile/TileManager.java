@@ -21,11 +21,11 @@ public class TileManager extends Pane {
 	private String path;
 	private final SpielPanel gp;
 	private final List<Tile> tile;
-	private int mapTileNum[][];
+	private List<List<Integer>> mapTileNum;
+	private List<List<TextureHolder>> map;
 	private final Group group;
 	private List<Building> buildings;
 	private List<NPC> npcs;
-	private int maxCol, maxRow;
 	private String exitMap, dir;
 	private final ContextMenu cm;
 	private final ObjectProperty<TextureHolder> requestor = new ObjectPropertyBase<>() {
@@ -110,19 +110,22 @@ public class TileManager extends Pane {
 
 			int idx = 0;
 
-			while (row < data.size() && row < maxRow) {
+			while (row < data.size()) {
 
 				String line = ((StringValue) data.get(idx)).getValue();
 				String[] numbers = line.split(" ");
 
-				while (col < maxCol && col < numbers.length) {
+				if (mapTileNum.size() == row)
+					mapTileNum.add(new ArrayList<>());
+
+				while (col < numbers.length) {
 
 					int num = Integer.parseInt(numbers[col]);
 
-					mapTileNum[col][row] = num;
+					mapTileNum.get(row).add(num);
 					col++;
 				}
-				if (col == maxCol || col == numbers.length) {
+				if (col == numbers.length) {
 					col = 0;
 					row++;
 					idx++;
@@ -132,7 +135,8 @@ public class TileManager extends Pane {
 		} catch (Exception e) {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
-
+		//		for (var mapi: mapTileNum)
+		//			System.out.println(mapi);
 	}
 
 	public void save() {
@@ -144,6 +148,29 @@ public class TileManager extends Pane {
 				JsonArray buildings = (JsonArray) jo.get("buildings");
 				buildings.clear();
 				buildings.addAll(this.buildings);
+				JsonArray npcs = (JsonArray) jo.get("npcs");
+				npcs.clear();
+				npcs.addAll(npcs);
+				JsonObject map = (JsonObject) jo.get("map");
+				JsonArray textures = (JsonArray) map.get("textures");
+				textures.clear();
+				JsonArray startingPosition = (JsonArray) map.get("startingPosition");
+				startingPosition.clear();
+				startingPosition.add(this.startingPosition.getKey());
+				startingPosition.add(this.startingPosition.getValue());
+				jo.put("dir", dir);
+				JsonArray matrix = (JsonArray) map.get("matrix");// TODO matrix gen and textures gen
+				matrix.clear();
+				for (List<TextureHolder> mapi: this.map) {
+					StringBuilder sb = new StringBuilder();
+					for (TextureHolder th: mapi) if (textures.contains(th.getTile().name))
+						sb.append(textures.indexOf(th.getTile().name) + " ");
+					else {
+						sb.append(textures.size() + " ");
+						textures.add(th.getTile().name);
+					}
+					matrix.add(sb.toString().substring(0, sb.toString().length() - 1));
+				}
 				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 				bw.write(jo.toJson());
 				bw.flush();
@@ -175,7 +202,6 @@ public class TileManager extends Pane {
 			JsonArray textures = (JsonArray) map.get("textures");
 			JsonArray npcs = (JsonArray) jo.get("npcs");
 			JsonArray buildings = (JsonArray) jo.get("buildings");
-			JsonArray size = (JsonArray) map.get("size");
 			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
 
 			dir = ((StringValue) map.get("dir")).getValue();
@@ -191,7 +217,7 @@ public class TileManager extends Pane {
 						((NumberValue) position.get(1)).getValue().doubleValue());
 			}
 			for (Object texture: textures) try {
-				Tile t = new Tile(
+				Tile t = new Tile(((StringValue) texture).getValue(),
 						getClass().getResourceAsStream("/res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tile.add(t);
@@ -223,14 +249,13 @@ public class TileManager extends Pane {
 				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
 				.printStackTrace();
 			}
-			maxCol = ((NumberValue) size.get(0)).getValue().intValue();
-			maxRow = ((NumberValue) size.get(1)).getValue().intValue();
 			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
 					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
-			mapTileNum = new int[maxCol][maxRow];
+			mapTileNum = new ArrayList<>();
+			this.map = new ArrayList<>();
 			if (map.get("matrix") instanceof StringValue sv) loadMap(new JsonArray(
 					Arrays.asList(sv.getValue().replaceAll("\r", "\n").replaceAll("\n\n", "\n").split("\n")).stream()
-							.map(StringValue::new).toList()));
+					.map(StringValue::new).toList()));// TODO rem
 			else loadMap((JsonArray) map.get("matrix"));
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
@@ -292,25 +317,29 @@ public class TileManager extends Pane {
 		int worldCol = 0;
 		int worldRow = 0;
 
-		while (worldCol < maxCol && worldRow < maxRow) {
-			int tileNum = mapTileNum[worldCol][worldRow];
+		while (worldRow < mapTileNum.size() && worldCol < mapTileNum.get(worldRow).size()) {
+			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
 			int worldX = worldCol * gp.Bg;
 			int worldY = worldRow * gp.Bg;
 			int screenX = worldX - p.worldX + p.screenX;
 			int screenY = worldY - p.worldY + p.screenY;
 
+			if (map.size() == worldCol)
+				map.add(new ArrayList<>());
+
 			if (worldX + gp.Bg > p.worldX - p.screenX
 				&& worldX - gp.Bg < p.worldX + p.screenX
 				&& worldY + gp.Bg > p.worldY - p.screenY
 				&& worldY - gp.Bg < p.worldY + p.screenY) {
 				TextureHolder th = null;
-				if (group.getChildren().size() > worldRow * maxCol + worldCol)
-					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
+				if (map.get(worldRow).size() > worldCol)
+					th = map.get(worldRow).get(worldCol);
 				if (th == null) {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm,
 							requestor);
-					group.getChildren().add(worldRow * maxCol + worldCol, th);
+					group.getChildren().add(th);
+					map.get(worldRow).add(th);
 				} else {
 					th.setLayoutX(screenX);
 					th.setLayoutY(screenY);
@@ -319,8 +348,8 @@ public class TileManager extends Pane {
 				th.setVisible(true);
 			} else {
 				TextureHolder th = null;
-				if (group.getChildren().size() > worldRow * maxCol + worldCol)
-					th = (TextureHolder) group.getChildren().get(worldRow * maxCol + worldCol);
+				if (map.get(worldRow).size() > worldCol)
+					th = map.get(worldRow).get(worldCol);
 				if (th != null) {
 					th.setVisible(false);
 					th.update();
@@ -329,13 +358,14 @@ public class TileManager extends Pane {
 					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm,
 							requestor);
 					th.setVisible(false);
-					group.getChildren().add(worldRow * maxCol + worldCol, th);
+					group.getChildren().add(th);
+					map.get(worldRow).add(th);
 				}
 			}
 
 			worldCol++;
 
-			if (worldCol == maxCol) {
+			if (worldCol == mapTileNum.size()) {
 				worldCol = 0;
 				worldRow++;
 			}
