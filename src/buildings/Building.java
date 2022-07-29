@@ -119,7 +119,7 @@ public class Building extends Pane implements JsonValue {
 					b.map = map;
 					b.master = this;
 					b.slave = true;
-					slaves.add(this);
+					slaves.add(b);
 					buildings.add(b);
 				}
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -217,6 +217,8 @@ public class Building extends Pane implements JsonValue {
 			if (infront) jo.put("infront", infront);
 			if (map != null) jo.put("map", map);
 			jo.put("buildingData", buildingData);
+			System.out.println(slaves);
+			System.out.println(jo.toJson());
 			return jo.toJson();
 		} else return "";
 	}

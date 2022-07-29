@@ -223,7 +223,10 @@ public class TileManager extends Pane {
 				if (map.get("matrix") instanceof JsonArray mat) {
 					matrix = mat;
 					matrix.clear();
-				} else matrix = new JsonArray();
+				} else {
+					matrix = new JsonArray();
+					map.put("matrix", matrix);
+				}
 				for (List<TextureHolder> mapi: this.map) {
 					StringBuilder sb = new StringBuilder();
 					for (TextureHolder th: mapi) if (textures.contains(th.getTile().name))
