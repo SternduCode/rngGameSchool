@@ -17,7 +17,7 @@ public class NPC extends Entity implements Collidable {
 	protected double x, y;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 	protected JsonObject npcData;
-	protected int fps;
+	protected double fps;
 
 	protected NPC() {
 		iv = new ImageView();
@@ -76,7 +76,7 @@ public class NPC extends Entity implements Collidable {
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 		iv.setImage(getFirstImage());
 		npcData = (JsonObject) npc.get("npcData");
-		fps = ((NumberValue) npc.get("fps")).getValue().intValue();
+		fps = ((NumberValue) npc.get("fps")).getValue().doubleValue();
 		shape.getPoints().addAll(0d, 0d, 0d, iv.getImage().getHeight(), iv.getImage().getWidth(),
 				iv.getImage().getHeight(), iv.getImage().getWidth(), 0d);
 	}

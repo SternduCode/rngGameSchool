@@ -25,12 +25,13 @@ public class Building extends Pane implements JsonValue {
 	protected String map;
 	protected Polygon poly;
 	protected ImageView iv;
+	protected double fps;
 	protected boolean infront;
 	private boolean slave = false;
 	private List<Building> slaves;
 	private Building master;
 
-	protected int spriteCounter = 0;
+	protected long spriteCounter = 0;
 	protected int spriteNum = 0;
 
 	protected Building() {
@@ -54,6 +55,7 @@ public class Building extends Pane implements JsonValue {
 		reqWidth = building.reqWidth;
 		reqHeight = building.reqHeight;
 		infront = building.infront;
+		fps = building.fps;
 		images = building.images;
 		iv.setImage(building.getFirstImage());
 		buildingData = building.buildingData;
@@ -76,6 +78,9 @@ public class Building extends Pane implements JsonValue {
 		origHeight = ((NumberValue) ((JsonArray) building.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(0)).getValue().intValue();
 		reqHeight = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(1)).getValue().intValue();
+		if (building.containsKey("fps"))
+			fps = ((NumberValue) building.get("fps")).getValue().doubleValue();
+		else fps = 7;
 		if (building.containsKey("infront"))
 			infront = ((BoolValue) building.get("infront")).getValue();
 		images = ((JsonObject) building.get("textures")).entrySet().parallelStream()
@@ -98,6 +103,7 @@ public class Building extends Pane implements JsonValue {
 					b.reqWidth = reqWidth;
 					b.reqHeight = reqHeight;
 					b.infront = infront;
+					b.fps = fps;
 					b.images = images;
 					b.iv.setImage(b.getFirstImage());
 					b.buildingData = buildingData;
@@ -217,10 +223,9 @@ public class Building extends Pane implements JsonValue {
 		else
 			poly.setVisible(false);
 
-		spriteCounter++;
-		if (spriteCounter > 30 / images.get(currentKey).size()) {
+		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
+			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
-			spriteCounter = 0;
 		}
 
 		if (spriteNum >= images.get(currentKey).size()) spriteNum = 0;
