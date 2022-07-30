@@ -24,6 +24,8 @@ public class TextureHolder extends Pane {
 	public long spriteCounter = 0;
 	public int spriteNum = 0;
 
+	private int hc;
+
 	private boolean dragging = false;
 
 	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm, ObjectProperty<TextureHolder> requestor) {
@@ -53,6 +55,8 @@ public class TextureHolder extends Pane {
 		poly.setFill(Color.color(1, 0, 0, 0.75));
 		poly.getPoints()
 		.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
+		if (tile.poly != null)
+			hc = tile.poly.hashCode();
 		getChildren().add(poly);
 		getChildren().add(rect);
 
@@ -110,6 +114,12 @@ public class TextureHolder extends Pane {
 
 	public void update() {
 
+		if (tile.poly != null && tile.poly.hashCode() != hc) {
+			poly.getPoints().clear();
+			poly.getPoints().addAll(tile.poly);
+			hc = tile.poly.hashCode();
+		}
+
 		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
 			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
@@ -118,7 +128,7 @@ public class TextureHolder extends Pane {
 		if (spriteNum >= tile.images.size()) spriteNum = 0;
 		iv.setImage(tile.images.get(spriteNum));
 
-		if (System.getProperty("coll").equals("true"))
+		if (System.getProperty("coll").equals("true") && poly.getPoints().size() > 0)
 			poly.setVisible(true);
 		else
 			poly.setVisible(false);

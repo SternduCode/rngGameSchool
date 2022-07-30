@@ -13,7 +13,7 @@ import tile.*;
 
 public class Input {
 
-	public boolean upPressed, downPressed, leftPressed, rightPressed, tabPressed, ctrlPressed, save, newC, p, b, h;
+	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n;
 
 	private SpielPanel gp;
 
@@ -21,12 +21,14 @@ public class Input {
 	private void newC(Polygon p) {
 		ctrlPressed = false;
 		p.getPoints().clear();
+		p.setVisible(false);
+		if (p.getParent() instanceof TextureHolder th) th.getTile().poly.clear();
 	}
 
 	private void save(Polygon p) {
 		ctrlPressed = false;
 		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(new File("."));
+		fc.setInitialDirectory(new File("./src/res"));
 		fc.getExtensionFilters().add(new ExtensionFilter(
 				"A file containing the collision box of something", "*.collisionbox"));
 		File f = fc.showSaveDialog(p.getScene().getWindow());
@@ -43,9 +45,11 @@ public class Input {
 			for (Double element: p.getPoints()) raf.writeDouble(element);
 			raf.setLength(4l + p.getPoints().size() * 8l);
 			raf.close();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		System.out.println(f);
 	}
 
@@ -61,22 +65,18 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
-		if(code == KeyCode.W) upPressed = true;
+		if (code == KeyCode.W) w = true;
 
-		if (code == KeyCode.S && !ctrlPressed) downPressed = true;
+		if (code == KeyCode.S) s = true;
 
-		if(code == KeyCode.A) leftPressed = true;
+		if (code == KeyCode.A) a = true;
 
-		if (code == KeyCode.D) rightPressed = true;
+		if (code == KeyCode.D) d = true;
 
-		if (code == KeyCode.CONTROL) {
-			ctrlPressed = true;
-			downPressed = false;
-		}
+		if (code == KeyCode.CONTROL) ctrlPressed = true;
 
-		if (code == KeyCode.S && ctrlPressed) save = true;
 
-		if (code == KeyCode.N) if (ctrlPressed) newC = true;
+		if (code == KeyCode.N) n = true;
 
 
 	}
@@ -85,16 +85,13 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
-		if(code == KeyCode.W) upPressed = false;
+		if (code == KeyCode.W) w = false;
 
-		if (code == KeyCode.S) {
-			downPressed = false;
-			save = false;
-		}
+		if (code == KeyCode.S) s = false;
 
-		if(code == KeyCode.A) leftPressed = false;
+		if (code == KeyCode.A) a = false;
 
-		if(code == KeyCode.D) rightPressed = false;
+		if (code == KeyCode.D) d = false;
 
 		if(code == KeyCode.TAB) tabPressed = !tabPressed;
 
@@ -112,13 +109,9 @@ public class Input {
 		if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
 		else System.setProperty("coll", "true");
 
-		if (code == KeyCode.CONTROL) {
-			ctrlPressed = false;
-			save = false;
-			newC = false;
-		}
+		if (code == KeyCode.CONTROL) ctrlPressed = false;
 
-		if (code == KeyCode.N) newC = false;
+		if (code == KeyCode.N) n = false;
 
 	}
 
@@ -153,20 +146,20 @@ public class Input {
 		if (target instanceof TextureHolder t) {
 			for (Node e: ((Group) t.getParent()).getChildren())
 				if (((TextureHolder) e).isDragging()) ((TextureHolder) e).endDrag();
-			if (System.getProperty("coll").equals("true")) if (!save && !newC) {
+			if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
 				t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
 				if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 				t.getTile().poly.add(me.getX() - t.getLayoutX());
 				t.getTile().poly.add(me.getY() - t.getLayoutY());
-			} else if (save) save(t.getPoly());
-			else if (newC) newC(t.getPoly());
+			} else if (ctrlPressed && s) save(t.getPoly());
+			else if (ctrlPressed && n) newC(t.getPoly());
 		} else
 			if (target instanceof Building b
 					&& System.getProperty("coll").equals("true"))
-				if (!save && !newC)
+				if ((!ctrlPressed || !s) && (!ctrlPressed || !n))
 					b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-				else if (save) save(b.getPolygon());
-				else if (newC) newC(b.getPolygon());
+				else if (ctrlPressed && s) save(b.getPolygon());
+				else if (ctrlPressed && n) newC(b.getPolygon());
 
 	}
 
