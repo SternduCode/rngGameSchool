@@ -99,6 +99,7 @@
 				"default" : "Laterne.png"
 				
 			},
+			"infront" : true,
 			"position" : [1000, 1000],
 			"originalSize" : [128, 128], 
 			"requestedSize" : [128, 128], 
@@ -107,6 +108,19 @@
 			"buildingData" : {}
 		}
 	
+	{
+			"type" : "",
+			"textures" : {
+				"default" : "Portal.png"
+				
+			},
+			"position" : [1500, 1000],
+			"originalSize" : [128, 128], 
+			"requestedSize" : [128, 128], 
+			"fps" : 3,
+			"map" : "lavaMap2.txt",
+			"buildingData" : {}
+		}
 	
 	
 	
