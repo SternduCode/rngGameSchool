@@ -13,7 +13,7 @@ public class Player extends Entity implements Collidable {
 	private final SpielPanel gp;
 	private final Input keyH;
 	private final double fps = 7.5;
-	private final int size = 70;
+	private final int size = 48;
 
 	public final int screenX;
 	public final int screenY;
