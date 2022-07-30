@@ -105,16 +105,16 @@ public class Player extends Entity implements Collidable {
 
 			Image nomover = new Image(getClass().getResourceAsStream("/res/player/Stehen.png"));
 
-			for (int i = 0; i < nomover.getWidth(); i += 32) {
-				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, 32, 32);
+			for (int i = 0; i < nomover.getWidth(); i += 64) {
+				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, 64, 64);
 				this.nomover.add(ImgUtil.resizeImage(wi,
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
 
 			Image nomovel = new Image(getClass().getResourceAsStream("/res/player/Stehen2.png"));
 
-			for (int i = 0; i < nomovel.getWidth(); i += 32) {
-				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, 32, 32);
+			for (int i = 0; i < nomovel.getWidth(); i += 64) {
+				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, 64, 64);
 				this.nomovel.add(ImgUtil.resizeImage(wi,
 						(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
 			}
