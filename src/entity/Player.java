@@ -34,8 +34,8 @@ public class Player extends Entity implements Collidable {
 		nomover = new ArrayList<>();
 		nomoveup = new ArrayList<>();
 
-		screenX = gp.SpielLaenge/2 - gp.Bg/2;
-		screenY = gp.SpielHoehe/2 - gp.Bg/2;
+		screenX = gp.SpielLaenge / 2 - size / 2;
+		screenY = gp.SpielHoehe / 2 - size / 2;
 
 		setDisable(true);
 
@@ -235,8 +235,6 @@ public class Player extends Entity implements Collidable {
 		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);
-		iv.setFitWidth(gp.Bg);
-		iv.setFitHeight(gp.Bg);
 		iv.setImage(image);
 
 		shape.setTranslateX(12 + worldX - oldWorldX);
