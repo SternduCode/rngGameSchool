@@ -111,7 +111,7 @@ public class Player extends Entity implements Collidable {
 			}
 
 			Image nomover = new Image(getClass().getResourceAsStream("/res/player/Stehen.png"));
-
+			
 			for (int i = 0; i < nomover.getWidth(); i += nomover.getHeight()) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, (int) nomover.getHeight(),
 						(int) nomover.getHeight());
