@@ -165,21 +165,21 @@ public class Player extends Entity implements Collidable {
 	}
 
 	public void update() {
-		if (keyH.upPressed) {
+		if (keyH.w) {
 			if (direction.equals("left") || direction.endsWith("L")) direction = "upL";
 			else direction = "up";
 			worldY -= speed;
 		}
-		else if (keyH.downPressed) {
+		else if (keyH.s && !keyH.ctrlPressed) {
 			if (direction.equals("left") || direction.endsWith("L")) direction = "downL";
 			else direction = "down";
 			worldY += speed;
 		}
-		else if (keyH.leftPressed) {
+		else if (keyH.a) {
 			direction = "left";
 			worldX -= speed;
 		}
-		else if (keyH.rightPressed) {
+		else if (keyH.d) {
 			direction = "right";
 			worldX += speed;
 		} else if (direction.endsWith("L") && direction.contains("up")) direction = "noneupL";
