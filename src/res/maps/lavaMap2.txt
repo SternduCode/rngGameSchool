@@ -111,7 +111,7 @@
 			"originalSize" : [
 				128,
 				128
-			],
+			]
 		},
 		{
 			"requestedSize" : [
@@ -132,7 +132,7 @@
 			"originalSize" : [
 				128,
 				128
-			],
+			]
 		},
 		{
 			"requestedSize" : [
@@ -155,7 +155,7 @@
 				64,
 				64
 			],
-			"map" : "InnenContracts.txt"
+			"map" : "StawtMap.txt"
 		},
 		{
 			"requestedSize" : [
@@ -176,7 +176,7 @@
 			"originalSize" : [
 				128,
 				128
-			],
+			]
 		}
 	],
 	"dir" : "tiles",

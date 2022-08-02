@@ -1,104 +1,106 @@
 {
-	"buildings": [
+	"npcs" : [
+		
+	],
+	"buildings" : [
 		{
-			"type" : "",
+			"requestedSize" : [
+				96,
+				96
+			],
 			"textures" : {
 				"default" : "Faggel.png"
+			},
+			"buildingData" : {
 				
 			},
 			"position" : [
-				[-25, -50],
-				[605, -50],
-				[655, 95],
-				[-25, 195],
-				[655, 580],
-				[220, 580]
+				[
+					-25.0,
+					-50.0
+				],
+				[
+					605.0,
+					-50.0
+				],
+				[
+					655.0,
+					95.0
+				],
+				[
+					-25.0,
+					195.0
+				],
+				[
+					655.0,
+					580.0
+				],
+				[
+					220.0,
+					580.0
+				]
 			],
-			"fps" : 6,
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"buildingData" : {}
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				32
+			]
 		}
-
-	], "npcs": [
-	
-	], "map": {
-	
-		"size" : [15, 15],
-	
-		"startingPosition" : [1, 1],
-		
-		"dir" : "Insel",
-		
-		"background":"backgrounds/dungeonhintergrund1.png",
-		
-		"textures" : [
-
-			
-		"Void.png",
-		"EckeLinksOben.png",
-		"EckeLinksUnten.png",
-		"EckeRechtsOben.png",
-		"EckeRechtsUnten.png",
-		"SeiteLinks.png",
-		"SeiteLinks2.png",	
-		"SeiteLinks3.png",
-		"SeiteOben.png",
-		"SeiteOben2.png",
-		"SeiteOben3.png",	
-		"SeiteRechts.png",
-		"SeiteRechts2.png",
-		"SeiteRechts3.png",
-		"SeiteUnten.png",
-		"SeiteUnten2.png",
-		"SeiteUnten3.png",
-		"LochMiniEckeLinks.png",
-		"LochMiniEckeLinkU.png",
-		"LochMiniEckeRechts.png",
-		"LochMiniEckeRechtsO.png",
-		"Gehaenge.png",
-		"Mitte.png",
-		"Mitte2.png",
-		"FackelSpot.png",
-		"WasserMiniEckeLinksO.png",
-		"WasserMiniEckeLinksU.png",
-		"WasserMiniEckeRechtsO.png",
-		"WasserMiniEckeRechtsU.png",
-		"WasserStrom.png",
-		"WasserFall.png",
-		"WasserEckeLinksO.png",
-		"WasserEckeLinksU.png",
-		"WasserEckeRechtsO.png",
-		"WasserEckeRechtsU.png",
-		"WasserSeiteOben.png",
-		"WasserSeiteLinks.png",
-		"WasserSeiteRechts.png",
-		"BrueckeH.png",
-		"BrueckeV.png",
-		"WasserMiniEcke2.png",
-		"SeiteLinksB.png",
-		"SeiteObenB.png",
-		"SeiteRechtsB.png",
-		"SeiteUntenB.png",
-		"BrueckeH2.png",
-		"BrueckeV2.png",
-
+	],
+	"dir" : "Insel",
+	"map" : {
+		"size" : [
+			15,
+			15
 		],
-		"matrix" : 
-"1 9 8 10 9 8 9 8 9 8 9 10 10 3 0
-5 17 15 14 16 14 19 22 22 22 22 22 22 11 0
-6 13 21 21 21 21 5 22 23 22 22 23 22 12 0
-5 12 0 0 0 0 6 22 22 22 22 22 22 18 3
-7 18 8 8 9 8 20 23 22 22 22 22 22 23 12
-2 16 14 15 14 19 23 22 23 22 22 22 22 22 13
-21 21 21 21 21 5 22 22 17 15 16 19 23 22 12
-0 0 0 0 0 6 22 22 13 21 21 5 22 22 11
-0 0 0 0 0 5 22 22 13 0 0 6 22 22 12
-0 0 0 0 0 5 22 23 12 0 0 6 23 22 13
-0 0 0 0 0 7 22 22 13 0 0 5 22 22 11
-0 0 0 0 0 6 22 22 18 8 9 20 22 22 12
-0 0 0 0 0 5 23 22 23 22 22 22 22 23 11
-0 0 0 0 0 2 16 14 14 15 16 14 15 14 4
-0 0 0 0 0 21 21 21 21 21 21 21 21 21 21"
+		"textures" : [
+			"EckeLinksOben.png",
+			"SeiteOben2.png",
+			"SeiteOben.png",
+			"SeiteOben3.png",
+			"EckeRechtsOben.png",
+			"Void.png",
+			"SeiteLinks.png",
+			"LochMiniEckeLinks.png",
+			"SeiteUnten2.png",
+			"SeiteUnten.png",
+			"SeiteUnten3.png",
+			"LochMiniEckeRechts.png",
+			"Mitte.png",
+			"SeiteRechts.png",
+			"SeiteLinks2.png",
+			"SeiteRechts3.png",
+			"Gehaenge.png",
+			"Mitte2.png",
+			"SeiteRechts2.png",
+			"LochMiniEckeLinkU.png",
+			"SeiteLinks3.png",
+			"LochMiniEckeRechtsO.png",
+			"EckeLinksUnten.png",
+			"EckeRechtsUnten.png"
+		],
+		"background" : "backgrounds/dungeonhintergrund1.png",
+		"startingPosition" : [
+			1.0,
+			1.0
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 1 2 3 1 2 1 2 1 2 1 3 3 4 5",
+			"6 7 8 9 10 9 11 12 12 12 12 12 12 13 5",
+			"14 15 16 16 16 16 6 12 17 12 12 17 12 18 5",
+			"6 18 5 5 5 5 14 12 12 12 12 12 12 19 4",
+			"20 19 2 2 1 2 21 17 12 12 12 12 12 17 18",
+			"22 10 9 8 9 11 17 12 17 12 12 12 12 12 15",
+			"16 16 16 16 16 6 12 12 7 8 10 11 17 12 18",
+			"5 5 5 5 5 14 12 12 15 16 16 6 12 12 13",
+			"5 5 5 5 5 6 12 12 15 5 5 14 12 12 18",
+			"5 5 5 5 5 6 12 17 18 5 5 14 17 12 15",
+			"5 5 5 5 5 20 12 12 15 5 5 6 12 12 13",
+			"5 5 5 5 5 14 12 12 19 2 1 21 12 12 18",
+			"5 5 5 5 5 6 17 12 17 12 12 12 12 17 13",
+			"5 5 5 5 5 22 10 9 9 8 10 9 8 9 23",
+			"5 5 5 5 5 16 16 16 16 16 16 16 16 16 16"
+		]
 	}
 }

@@ -66,10 +66,8 @@ public class SelectTool extends Rectangle {
 	}
 
 	public void update() {
-		System.out.println(x + " " + y);
 		double screenX = x - gp.getPlayer().worldX + gp.getPlayer().screenX;
 		double screenY = y - gp.getPlayer().worldY + gp.getPlayer().screenY;
-		System.out.println(screenX + " " + screenY);
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 	}

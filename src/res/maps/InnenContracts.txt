@@ -1,188 +1,283 @@
 {
 	"exit" : {
-		"map" : "lavaMap2.txt",
-		"spawnPosition" : [18.3, 9.3],
-		"position" : [7, 12],
-	}, "buildings": [
-
-	{
-			"type" : "",
+		"spawnPosition" : [
+			18.3,
+			9.3
+		],
+		"position" : [
+			7,
+			12
+		],
+		"map" : "lavaMap2.txt"
+	},
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		{
+			"requestedSize" : [
+				130,
+				130
+			],
 			"textures" : {
 				"default" : "CCarpet.png"
-				
 			},
 			"background" : true,
-			"position" : [247, 300],
-			"originalSize" : [128, 128], 
-			"requestedSize" : [130, 130], 
-			"buildingData" : {}
-		}
-
-	{
-			"type" : "",
-			"textures" : {
-				"default" : "CTisch.png"
-				
-			},
-			"position" : [257, 150],
-			"originalSize" : [64, 64], 
-			"requestedSize" : [110, 100], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
-			"textures" : {
-				"default" : "CBett.png"
-				
-			},
-			"position" : [96, 200],
-			"originalSize" : [64, 128], 
-			"requestedSize" : [75, 130], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
-			"textures" : {
-				"default" : "CTisch2.png"
-				
-			},
-			"position" : [96, 295],
-			"originalSize" : [64, 128], 
-			"requestedSize" : [75, 150], 
-			"buildingData" : {}
-		}	
-		
-	{
-			"type" : "",
-			"textures" : {
-				"default" : "CPlant.png"
+			"buildingData" : {
 				
 			},
 			"position" : [
-				[140, 475],
-				[433, 475],
-				
+				247.0,
+				300.0
 			],
-			"originalSize" : [64, 64], 
-			"requestedSize" : [50, 50], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
+			"type" : "Building",
+			"originalSize" : [
+				128,
+				128
+			]
+		},
+		{
+			"requestedSize" : [
+				110,
+				100
+			],
+			"textures" : {
+				"default" : "CTisch.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				257.0,
+				150.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
+		},
+		{
+			"requestedSize" : [
+				75,
+				130
+			],
+			"textures" : {
+				"default" : "CBett.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				96.0,
+				200.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				128
+			]
+		},
+		{
+			"requestedSize" : [
+				75,
+				150
+			],
+			"textures" : {
+				"default" : "CTisch2.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				96.0,
+				295.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				128
+			]
+		},
+		{
+			"requestedSize" : [
+				50,
+				50
+			],
+			"textures" : {
+				"default" : "CPlant.png"
+			},
+			"buildingData" : {
+				
+			},
+			"position" : [
+				[
+					140.0,
+					475.0
+				],
+				[
+					433.0,
+					475.0
+				]
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
+		},
+		{
+			"requestedSize" : [
+				40,
+				120
+			],
 			"textures" : {
 				"default" : "CSofa.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [488, 360],
-			"originalSize" : [64, 192], 
-			"requestedSize" : [40, 120], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
+			"position" : [
+				488.0,
+				360.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				192
+			]
+		},
+		{
+			"requestedSize" : [
+				155,
+				140
+			],
 			"textures" : {
 				"default" : "CTreppe.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [405, 150],
-			"originalSize" : [128, 160], 
-			"requestedSize" : [155, 140], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
+			"position" : [
+				405.0,
+				150.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				128,
+				160
+			]
+		},
+		{
+			"requestedSize" : [
+				45,
+				50
+			],
 			"textures" : {
 				"default" : "CHooka.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [150, 335],
-			"originalSize" : [64, 64], 
-			"requestedSize" : [45, 50], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
+			"position" : [
+				150.0,
+				335.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
+		},
+		{
+			"requestedSize" : [
+				300,
+				300
+			],
 			"textures" : {
 				"default" : "CLicht.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [161, 221],
-			"originalSize" : [128, 128], 
-			"requestedSize" : [300, 300], 
-			"buildingData" : {}
-		}
-		
-	{
-			"type" : "",
+			"position" : [
+				161.0,
+				221.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				128,
+				128
+			]
+		},
+		{
+			"requestedSize" : [
+				60,
+				60
+			],
 			"textures" : {
 				"default" : "CKatze.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [480, 276],
-			"fps" : 2,
-			"originalSize" : [64, 64], 
-			"requestedSize" : [60, 60], 
-			"buildingData" : {}
-		}			
-		
-							
-		
-	], "npcs": [
-	
-	], "map": {
-	
-		"size" : [13, 13],
-
-	
-		"startingPosition" : [5.8, 11.8],
-		
-
-
-		"dir" : "buildingInside",
-		"textures" : [
-			
-			"Boden.png",			
-			"BodenAusgang.png",		
-			"Unten.png",			
-			"Rechts.png",			
-			"RechtsEcke.png",		
-			"RechtsEckeM.png",		
-			"Void.png",				
-			"RechtsEckeMU.png",		
-			"RechtsEckeU.png",		
-			"Oben.png",				
-			"LinksEckeM.png",		
-			"LinksEckeU.png",		
-			"Links.png",			
-			"LinksEckeO.png",		
-			"LinksEckeMO.png",		
-			"BookWand.png",			
-			"HalbBookWand.png",		
-			"LeerWand.png",			
-			"SchubWand.png",
-				
-			
+			"position" : [
+				480.0,
+				276.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
+		}
+	],
+	"dir" : "buildingInside",
+	"map" : {
+		"size" : [
+			13,
+			13
 		],
-		"matrix" : 
-"6 6 6 6 6 6 6 6 6 6 6 6 6
-6 6 6 7 9 9 9 9 9 10 6 6 6
-6 6 7 8 15 16 16 17 18 11 10 6 6
-6 7 8 18 0 0 0 0 0 16 11 10 6
-6 3 16 0 0 0 0 0 0 0 17 12 6
-6 3 0 0 0 0 0 0 0 0 0 12 6
-6 3 0 0 0 0 0 0 0 0 0 12 6
-6 3 0 0 0 0 0 0 0 0 0 12 6
-6 3 0 0 0 0 0 0 0 0 0 12 6
-6 3 0 0 0 0 0 0 0 0 0 12 6
-6 5 4 0 0 0 0 0 0 0 13 14 6
-6 6 5 2 4 0 0 0 13 2 14 6 6
-6 6 6 6 5 4 1 13 14 6 6 6 6"
-
+		"textures" : [
+			"Void.png",
+			"RechtsEckeMU.png",
+			"Oben.png",
+			"LinksEckeM.png",
+			"RechtsEckeU.png",
+			"BookWand.png",
+			"HalbBookWand.png",
+			"LeerWand.png",
+			"SchubWand.png",
+			"LinksEckeU.png",
+			"Boden.png",
+			"Rechts.png",
+			"Links.png",
+			"RechtsEckeM.png",
+			"RechtsEcke.png",
+			"LinksEckeO.png",
+			"LinksEckeMO.png",
+			"Unten.png",
+			"BodenAusgang.png"
+		],
+		"startingPosition" : [
+			5.8,
+			11.8
+		],
+		"dir" : "buildingInside",
+		"matrix" : [
+			"0 0 0 0 0 0 0 0 0 0 0 0 0",
+			"0 0 0 1 2 2 2 2 2 3 0 0 0",
+			"0 0 1 4 5 6 6 7 8 9 3 0 0",
+			"0 1 4 8 10 10 10 10 10 6 9 3 0",
+			"0 11 6 10 10 10 10 10 10 10 7 12 0",
+			"0 11 10 10 10 10 10 10 10 10 10 12 0",
+			"0 11 10 10 10 10 10 10 10 10 10 12 0",
+			"0 11 10 10 10 10 10 10 10 10 10 12 0",
+			"0 11 10 10 10 10 10 10 10 10 10 12 0",
+			"0 11 10 10 10 10 10 10 10 10 10 12 0",
+			"0 13 14 10 10 10 10 10 10 10 15 16 0",
+			"0 0 13 17 14 10 10 10 15 17 16 0 0",
+			"0 0 0 0 13 14 18 15 16 0 0 0 0"
+		]
 	}
 }

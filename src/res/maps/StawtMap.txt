@@ -1,110 +1,116 @@
-
 {
-	"buildings": [
-	
-{
-			"type" : "",
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		{
+			"requestedSize" : [
+				96,
+				96
+			],
 			"textures" : {
 				"default" : "Faggel.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [-200, -500],
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"buildingData" : {}
-		}
+			"position" : [
+				-200.0,
+				-500.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				32
+			]
+		},
 		{
-			"type" : "",
+			"requestedSize" : [
+				142,
+				142
+			],
 			"textures" : {
 				"default" : "InselLicht.png"
+			},
+			"buildingData" : {
 				
 			},
-			"position" : [145, 145],
-			"originalSize" : [64, 64], 
-			"fps" : 15,
-			"requestedSize" : [142, 142], 
-			"buildingData" : {}
-		}		
-		
-	], "npcs": [
-	
-	], "map": {
-	
-		"size" : [10, 10],
-
-	
-		"startingPosition" : [1, 1],
-		
-
-
-		"dir" : "Insel",
-		"textures" : [
-			
-		"Void.png",
-		"EckeLinksOben.png",
-		"EckeLinksUnten.png",
-		"EckeRechtsOben.png",
-		"EckeRechtsUnten.png",
-		"SeiteLinks.png",
-		"SeiteLinks2.png",	
-		"SeiteLinks3.png",
-		"SeiteOben.png",
-		"SeiteOben2.png",
-		"SeiteOben3.png",	
-		"SeiteRechts.png",
-		"SeiteRechts2.png",
-		"SeiteRechts3.png",
-		"SeiteUnten.png",
-		"SeiteUnten2.png",
-		"SeiteUnten3.png",
-		"LochMiniEckeLinks.png",
-		"LochMiniEckeLinkU.png",
-		"LochMiniEckeRechts.png",
-		"LochMiniEckeRechtsO.png",
-		"Gehaenge.png",
-		"Mitte.png",
-		"Mitte2.png",
-		"FackelSpot.png",
-		"WasserMiniEckeLinksO.png",
-		"WasserMiniEckeLinksU.png",
-		"WasserMiniEckeRechtsO.png",
-		"WasserMiniEckeRechtsU.png",
-		"WasserStrom.png",
-		"WasserFall.png",
-		"WasserEckeLinksO.png",
-		"WasserEckeLinksU.png",
-		"WasserEckeRechtsO.png",
-		"WasserEckeRechtsU.png",
-		"WasserSeiteOben.png",
-		"WasserSeiteLinks.png",
-		"WasserSeiteRechts.png",
-		"BrueckeH.png",
-		"BrueckeV.png",
-		"WasserMiniEcke2.png",
-		"SeiteLinksB.png",
-		"SeiteObenB.png",
-		"SeiteRechtsB.png",
-		"SeiteUntenB.png",
-		"BrueckeH2.png",
-		"BrueckeV2.png",
-		"Spawn.png",
-		"WasserS.png",
-		
-			
+			"position" : [
+				145.0,
+				145.0
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
+		}
+	],
+	"dir" : "Insel",
+	"map" : {
+		"size" : [
+			10,
+			10
 		],
-		
-		"matrix" :
-
-"0 1 9 10 42 9 9 3 0 0
-1 20 31 35 39 35 33 18 3 0
-5 31 25 48 39 48 27 33 12 0
-7 36 48 28 39 26 48 37 13 0
-41 38 38 38 47 38 38 38 43 0
-6 36 48 27 39 25 48 37 13 0
-7 32 26 48 39 48 28 34 13 0
-2 19 32 40 39 40 34 17 4 0
-21 2 15 29 44 29 16 4 21 0
-0 21 21 30 0 30 21 21 0 0"
-
+		"textures" : [
+			"Void.png",
+			"EckeLinksOben.png",
+			"SeiteOben2.png",
+			"SeiteOben3.png",
+			"SeiteObenB.png",
+			"EckeRechtsOben.png",
+			"LochMiniEckeRechtsO.png",
+			"WasserEckeLinksO.png",
+			"WasserSeiteOben.png",
+			"BrueckeV.png",
+			"WasserEckeRechtsO.png",
+			"LochMiniEckeLinkU.png",
+			"SeiteLinks.png",
+			"WasserMiniEckeLinksO.png",
+			"WasserS.png",
+			"WasserMiniEckeRechtsO.png",
+			"SeiteRechts2.png",
+			"SeiteLinks3.png",
+			"WasserSeiteLinks.png",
+			"WasserMiniEckeRechtsU.png",
+			"WasserMiniEckeLinksU.png",
+			"WasserSeiteRechts.png",
+			"SeiteRechts3.png",
+			"SeiteLinksB.png",
+			"BrueckeH.png",
+			"Spawn.png",
+			"SeiteRechtsB.png",
+			"SeiteLinks2.png",
+			"WasserEckeLinksU.png",
+			"WasserEckeRechtsU.png",
+			"EckeLinksUnten.png",
+			"LochMiniEckeRechts.png",
+			"WasserMiniEcke2.png",
+			"LochMiniEckeLinks.png",
+			"EckeRechtsUnten.png",
+			"Gehaenge.png",
+			"SeiteUnten2.png",
+			"WasserStrom.png",
+			"SeiteUntenB.png",
+			"SeiteUnten3.png",
+			"WasserFall.png"
+		],
+		"startingPosition" : [
+			1.0,
+			1.0
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 1 2 3 4 2 2 5 0 0",
+			"1 6 7 8 9 8 10 11 5 0",
+			"12 7 13 14 9 14 15 10 16 0",
+			"17 18 14 19 9 20 14 21 22 0",
+			"23 24 24 24 25 24 24 24 26 0",
+			"27 18 14 15 9 13 14 21 22 0",
+			"17 28 20 14 9 14 19 29 22 0",
+			"30 31 28 32 9 32 29 33 34 0",
+			"35 30 36 37 38 37 39 34 35 0",
+			"0 35 35 40 0 40 35 35 0 0"
+		]
 	}
 }

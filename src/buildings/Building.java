@@ -177,6 +177,10 @@ public class Building extends Pane implements JsonValue {
 	public boolean isBackground() { return background;
 	}
 
+	public boolean isMaster() { return !slave; }
+
+	public boolean isSlave() { return slave; }
+
 	public void setPosition(double layoutX, double layoutY) {
 		x = layoutX;
 		y = layoutY;
@@ -216,8 +220,6 @@ public class Building extends Pane implements JsonValue {
 			if (background) jo.put("background", background);
 			if (map != null) jo.put("map", map);
 			jo.put("buildingData", buildingData);
-			System.out.println(slaves);
-			System.out.println(jo.toJson());
 			return jo.toJson();
 		} else return "";
 	}

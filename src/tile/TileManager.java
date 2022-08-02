@@ -205,7 +205,7 @@ public class TileManager extends Pane {
 				JsonObject jo = (JsonObject) JsonParser.parse(out);
 				JsonArray buildings = (JsonArray) jo.get("buildings");
 				buildings.clear();
-				buildings.addAll(this.buildings);
+				buildings.addAll(this.buildings.stream().filter(Building::isMaster).toList());
 				JsonArray npcs = (JsonArray) jo.get("npcs");
 				npcs.clear();
 				npcs.addAll(this.npcs);
@@ -219,14 +219,8 @@ public class TileManager extends Pane {
 				startingPosition.add(this.startingPosition.getKey());
 				startingPosition.add(this.startingPosition.getValue());
 				jo.put("dir", dir);
-				JsonArray matrix;
-				if (map.get("matrix") instanceof JsonArray mat) {
-					matrix = mat;
-					matrix.clear();
-				} else {
-					matrix = new JsonArray();
-					map.put("matrix", matrix);
-				}
+				JsonArray matrix = (JsonArray) map.get("matrix");
+				matrix.clear();
 				for (List<TextureHolder> mapi: this.map) {
 					StringBuilder sb = new StringBuilder();
 					for (TextureHolder th: mapi) if (textures.contains(th.getTile().name))
@@ -237,12 +231,13 @@ public class TileManager extends Pane {
 					}
 					matrix.add(sb.toString().substring(0, sb.toString().length() - 1));
 				}
+				String jsonOut = jo.toJson();
 				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
-				bw.write(jo.toJson());
+				bw.write(jsonOut);
 				bw.flush();
 				bw.close();
 				bw = new BufferedWriter(new FileWriter(outb));
-				bw.write(jo.toJson());
+				bw.write(jsonOut);
 				bw.flush();
 				bw.close();
 			} else {
@@ -325,10 +320,7 @@ public class TileManager extends Pane {
 					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
 			mapTileNum = new ArrayList<>();
 			this.map = new ArrayList<>();
-			if (map.get("matrix") instanceof StringValue sv) loadMap(new JsonArray(
-					Arrays.asList(sv.getValue().replaceAll("\r", "\n").replaceAll("\n\n", "\n").split("\n")).stream()
-					.map(StringValue::new).toList()));// TODO rem
-			else loadMap((JsonArray) map.get("matrix"));
+			loadMap((JsonArray) map.get("matrix"));
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
