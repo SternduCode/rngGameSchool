@@ -3,13 +3,13 @@ package rngGAME;
 import java.io.*;
 import java.util.ArrayList;
 import buildings.Building;
+import entity.NPC;
 import javafx.event.EventTarget;
-import javafx.scene.*;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import tile.*;
+import tile.TextureHolder;
 
 public class Input {
 
@@ -119,40 +119,37 @@ public class Input {
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
-		EventTarget target = me.getTarget();
-		if (target instanceof TextureHolder t) if (!t.isDragging())
-			t.startDrag();
-		else t.doDrag(me.getPickResult());
+		if (!gp.getSelectTool().isDragging() && me.getTarget() instanceof TextureHolder)
+			gp.getSelectTool().startDrag(me);
+		else if (me.getTarget() instanceof TextureHolder) gp.getSelectTool().doDrag(me);
+		else if (me.getTarget() instanceof Building) {
+
+		} else if (me.getTarget() instanceof NPC) {
+
+		} else {
+
+		}
 	}
 
 	public void mouseMoved(MouseEvent me) {
-		if (System.getProperty("edit").equals("true")) {
-			EventTarget et= me.getTarget();
-			if (et instanceof TextureHolder t) {
-				for (Node e: ((Group) t.getParent()).getChildren()) ((TextureHolder) e).undrawOutlines();
-				t.drawOutlines();
-			} else if (et instanceof TileManager tm) {
-			} else {
-			}
-		} else {
-			EventTarget et = me.getTarget();
-			if (et instanceof TextureHolder t) for (Node e: ((Group) t.getParent()).getChildren()) ((TextureHolder) e).undrawOutlines();
-		}
+		if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
+		else gp.getSelectTool().undrawOutlines();
 	}
 
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
 		EventTarget target = me.getTarget();
 		if (target instanceof TextureHolder t) {
-			for (Node e: ((Group) t.getParent()).getChildren())
-				if (((TextureHolder) e).isDragging()) ((TextureHolder) e).endDrag();
-			if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
-				t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
-				if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
-				t.getTile().poly.add(me.getX() - t.getLayoutX());
-				t.getTile().poly.add(me.getY() - t.getLayoutY());
-			} else if (ctrlPressed && s) save(t.getPoly());
-			else if (ctrlPressed && n) newC(t.getPoly());
+
+			if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();
+			else
+				if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
+					t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
+					if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
+					t.getTile().poly.add(me.getX() - t.getLayoutX());
+					t.getTile().poly.add(me.getY() - t.getLayoutY());
+				} else if (ctrlPressed && s) save(t.getPoly());
+				else if (ctrlPressed && n) newC(t.getPoly());
 		} else
 			if (target instanceof Building b
 					&& System.getProperty("coll").equals("true"))

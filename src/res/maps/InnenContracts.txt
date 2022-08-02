@@ -1,7 +1,7 @@
 {
 	"exit" : {
 		"map" : "lavaMap2.txt",
-		"spawnPosition" : [18.5, 9.3],
+		"spawnPosition" : [18.3, 9.3],
 		"position" : [7, 12],
 	}, "buildings": [
 
@@ -11,10 +11,10 @@
 				"default" : "CCarpet.png"
 				
 			},
+			"background" : true,
 			"position" : [247, 300],
 			"originalSize" : [128, 128], 
 			"requestedSize" : [130, 130], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 
@@ -27,7 +27,6 @@
 			"position" : [257, 150],
 			"originalSize" : [64, 64], 
 			"requestedSize" : [110, 100], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -40,7 +39,6 @@
 			"position" : [96, 200],
 			"originalSize" : [64, 128], 
 			"requestedSize" : [75, 130], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -53,7 +51,6 @@
 			"position" : [96, 295],
 			"originalSize" : [64, 128], 
 			"requestedSize" : [75, 150], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}	
 		
@@ -68,10 +65,8 @@
 				[433, 475],
 				
 			],
-			"infront": true,
 			"originalSize" : [64, 64], 
 			"requestedSize" : [50, 50], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -84,7 +79,6 @@
 			"position" : [488, 360],
 			"originalSize" : [64, 192], 
 			"requestedSize" : [40, 120], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -97,7 +91,6 @@
 			"position" : [405, 150],
 			"originalSize" : [128, 160], 
 			"requestedSize" : [155, 140], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -110,7 +103,6 @@
 			"position" : [150, 335],
 			"originalSize" : [64, 64], 
 			"requestedSize" : [45, 50], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -123,7 +115,6 @@
 			"position" : [161, 221],
 			"originalSize" : [128, 128], 
 			"requestedSize" : [300, 300], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}
 		
@@ -137,7 +128,6 @@
 			"fps" : 2,
 			"originalSize" : [64, 64], 
 			"requestedSize" : [60, 60], 
-			"map" : "InnenContracts.txt",
 			"buildingData" : {}
 		}			
 		
@@ -150,7 +140,7 @@
 		"size" : [13, 13],
 
 	
-		"startingPosition" : [6, 11.8],
+		"startingPosition" : [5.8, 11.8],
 		
 
 

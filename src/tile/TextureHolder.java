@@ -2,21 +2,17 @@ package tile;
 
 import java.util.ArrayList;
 import javafx.beans.property.ObjectProperty;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.PickResult;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Polygon;
 
 public class TextureHolder extends Pane {
 
 	private Tile tile;
 
 	private final ImageView iv;
-
-	private final Rectangle rect;
 	private final Polygon poly;
 
 	private final double fps = 8;
@@ -25,8 +21,6 @@ public class TextureHolder extends Pane {
 	public int spriteNum = 0;
 
 	private int hc;
-
-	private boolean dragging = false;
 
 	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm, ObjectProperty<TextureHolder> requestor) {
 		setOnContextMenuRequested(e -> {
@@ -43,12 +37,6 @@ public class TextureHolder extends Pane {
 		getChildren().add(iv);
 		setLayoutX(layoutX);
 		setLayoutY(layoutY);
-		rect = new Rectangle();
-		rect.setStroke(Color.WHITE);
-		rect.setFill(Color.TRANSPARENT);
-		rect.setStrokeWidth(4.5);
-		rect.setDisable(true);
-		rect.setVisible(false);
 
 		poly = new Polygon();
 		poly.setDisable(true);
@@ -58,32 +46,11 @@ public class TextureHolder extends Pane {
 		if (tile.poly != null)
 			hc = tile.poly.hashCode();
 		getChildren().add(poly);
-		getChildren().add(rect);
 
 		// TODO lighing iv.setOpacity(0.5);
 	}
 
-	public void doDrag(PickResult pickResult) {
-		if (dragging) {
-			Node node = pickResult.getIntersectedNode();
-			if (node instanceof TextureHolder t) {
-				rect.setWidth(t.getLayoutX() + t.getWidth() - rect.getParent().getLayoutX());
-				rect.setHeight(t.getLayoutY() + t.getHeight() - rect.getParent().getLayoutY());
-			}
-			System.out.println(pickResult.getIntersectedNode());
-		}
-	}
 
-	public void drawOutlines() {
-		rect.setWidth(tile.images.get(spriteNum).getWidth());
-		rect.setHeight(tile.images.get(spriteNum).getHeight());
-		rect.setVisible(true);
-	}
-
-	public void endDrag() {
-		dragging = false;
-		undrawOutlines();
-	}
 
 	public Polygon getPoly() {
 		return poly;
@@ -93,23 +60,12 @@ public class TextureHolder extends Pane {
 		return tile;
 	}
 
-	public boolean isDragging() { return dragging; }
-
 	public void setTile(Tile tile) {
 		this.tile=tile;
 		poly.getPoints().clear();
 		poly.getPoints()
 		.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
 		iv.setImage(tile.images.get(0));
-	}
-
-	public void startDrag() {
-		dragging = true;
-		drawOutlines();
-	}
-
-	public void undrawOutlines() {
-		rect.setVisible(false);
 	}
 
 	public void update() {

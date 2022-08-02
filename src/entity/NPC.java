@@ -54,13 +54,12 @@ public class NPC extends Entity implements Collidable, JsonValue {
 		reqWidth = npc.reqWidth;
 		reqHeight = npc.reqHeight;
 		origTextures = npc.origTextures;
-		//infront = npc.infront;
 		images = npc.images;
 		iv.setImage(npc.getFirstImage());
 		npcData = npc.npcData;
 		fps = npc.fps;
 		npcs.add(this);
-		gp.getNpcsGroup().getChildren().add(this);
+		gp.getViewGroup().getChildren().add(this);
 	}
 
 	protected List<Image> getAnimatedImages(String path) {
@@ -154,12 +153,13 @@ public class NPC extends Entity implements Collidable, JsonValue {
 			image = frames.get(spriteNum);
 			iv.setImage(image);
 
-			shape.setTranslateX(0);
-			shape.setTranslateY(0);
 			if (System.getProperty("coll").equals("true"))
 				shape.setVisible(true);
 			else
 				shape.setVisible(false);
+
+			if (!gp.getKeyH().h) setVisible(true);
+			else setVisible(false);
 
 		} else setVisible(false);
 	}

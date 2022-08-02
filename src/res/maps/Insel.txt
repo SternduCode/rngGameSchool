@@ -10,29 +10,13 @@
 				[-25, -50],
 				[605, -50],
 				[655, 95],
-			],
-			"fps" : 6,
-			"originalSize" : [32, 32], 
-			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
-			"buildingData" : {}
-		}
-		{
-			"type" : "",
-			"textures" : {
-				"default" : "Faggel.png"
-				
-			},
-			"position" : [
 				[-25, 195],
 				[655, 580],
 				[220, 580]
 			],
 			"fps" : 6,
-			"infront" : true,
 			"originalSize" : [32, 32], 
 			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
 
@@ -46,7 +30,7 @@
 		
 		"dir" : "Insel",
 		
-		"background":"backrounds/dungeonhintergrund1.png",
+		"background":"backgrounds/dungeonhintergrund1.png",
 		
 		"textures" : [
 

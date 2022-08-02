@@ -11,7 +11,6 @@
 			"position" : [-200, -500],
 			"originalSize" : [32, 32], 
 			"requestedSize" : [96, 96], 
-			"map" : "Insel.txt",
 			"buildingData" : {}
 		}
 		{
@@ -24,7 +23,6 @@
 			"originalSize" : [64, 64], 
 			"fps" : 15,
 			"requestedSize" : [142, 142], 
-			"map" : "StawtMap.txt",
 			"buildingData" : {}
 		}		
 		

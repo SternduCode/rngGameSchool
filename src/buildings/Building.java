@@ -28,7 +28,7 @@ public class Building extends Pane implements JsonValue {
 	protected Polygon poly;
 	protected ImageView iv;
 	protected double fps;
-	protected boolean infront;
+	protected boolean background;
 	private boolean slave = false;
 	private List<Building> slaves;
 	private Building master;
@@ -56,7 +56,7 @@ public class Building extends Pane implements JsonValue {
 		origHeight = building.origHeight;
 		reqWidth = building.reqWidth;
 		reqHeight = building.reqHeight;
-		infront = building.infront;
+		background = building.background;
 		fps = building.fps;
 		images = building.images;
 		iv.setImage(building.getFirstImage());
@@ -68,7 +68,7 @@ public class Building extends Pane implements JsonValue {
 			building.slaves = new ArrayList<>();
 		building.slaves.add(this);
 		buildings.add(this);
-		gp.getBuildingsGroup().getChildren().add(this);
+		gp.getViewGroup().getChildren().add(this);
 	}
 
 	public Building(JsonObject building, List<Building> buildings, ContextMenu cm,
@@ -90,8 +90,8 @@ public class Building extends Pane implements JsonValue {
 		if (building.containsKey("fps"))
 			fps = ((NumberValue) building.get("fps")).getValue().doubleValue();
 		else fps = 7;
-		if (building.containsKey("infront"))
-			infront = ((BoolValue) building.get("infront")).getValue();
+		if (building.containsKey("background"))
+			background = ((BoolValue) building.get("background")).getValue();
 		images = ((JsonObject) building.get("textures")).entrySet().parallelStream()
 				.map(s -> Map.entry(s.getKey(), getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue())))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
@@ -111,7 +111,7 @@ public class Building extends Pane implements JsonValue {
 					b.origHeight = origHeight;
 					b.reqWidth = reqWidth;
 					b.reqHeight = reqHeight;
-					b.infront = infront;
+					b.background = background;
 					b.fps = fps;
 					b.images = images;
 					b.iv.setImage(b.getFirstImage());
@@ -174,8 +174,7 @@ public class Building extends Pane implements JsonValue {
 
 	public Polygon getPolygon() { return poly; }
 
-	public boolean isInfront() {
-		return infront;
+	public boolean isBackground() { return background;
 	}
 
 	public void setPosition(double layoutX, double layoutY) {
@@ -214,7 +213,7 @@ public class Building extends Pane implements JsonValue {
 			requestedSize.add(reqWidth);
 			requestedSize.add(reqHeight);
 			jo.put("requestedSize", requestedSize);
-			if (infront) jo.put("infront", infront);
+			if (background) jo.put("background", background);
 			if (map != null) jo.put("map", map);
 			jo.put("buildingData", buildingData);
 			System.out.println(slaves);
@@ -250,10 +249,10 @@ public class Building extends Pane implements JsonValue {
 			setVisible(true);
 			setLayoutX(screenX);
 			setLayoutY(screenY);
-			// iv.setX(screenX);
-			// iv.setY(screenY);
+
+			if (!gp.getKeyH().b) setVisible(true);
+			else setVisible(false);
 		} else setVisible(false);
-		// setWidth(iv.getImage().getWidth());
 	}
 
 }

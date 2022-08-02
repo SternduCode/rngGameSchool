@@ -4,12 +4,12 @@ import java.util.*;
 import buildings.Building;
 import entity.*;
 import javafx.animation.*;
-import javafx.scene.Group;
+import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import tile.TileManager;
+import tile.*;
 
 public class SpielPanel extends Pane {
 
@@ -27,7 +27,8 @@ public class SpielPanel extends Pane {
 	private final Input keyH;
 	private final Player player;
 	private final TileManager tileM;
-	private final Group ifbuildingsGroup, buildingsGroup, npcsGroup;
+	private final SelectTool selectTool;
+	private final Group view;
 	private List<Building> buildings;
 
 	private List<NPC> npcs;
@@ -39,38 +40,32 @@ public class SpielPanel extends Pane {
 
 		player = new Player(this, getKeyH());
 
+		selectTool = new SelectTool(this);
+
 		tileM = new TileManager(this);
 
 		inv = new ImageView(new Image(getClass().getResourceAsStream("/res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
+		inv.setVisible(false);
 
-		buildingsGroup = new Group();
-		ifbuildingsGroup = new Group();
-		npcsGroup = new Group();
+		view = new Group();
 
 		setMap("/res/maps/lavaMap2.txt");
 
-		getChildren().addAll(tileM, buildingsGroup, npcsGroup, player, ifbuildingsGroup, inv);
+		getChildren().addAll(tileM, view, selectTool, inv);
 
 	}
 
 	public void addBuildings() {
-		buildingsGroup.getChildren().addAll(buildings.stream().filter(b -> !b.isInfront()).toList());
-		ifbuildingsGroup.getChildren().addAll(buildings.stream().filter(Building::isInfront).toList());
+		view.getChildren().addAll(buildings);
 	}
 
 	public void addNPCs() {
-		npcsGroup.getChildren().addAll(npcs);
+		view.getChildren().addAll(npcs);
 	}
 
 	public List<Building> getBuildings() { return buildings; }
-
-	public Group getBuildingsGroup() { return buildingsGroup; }
-	public Group getIfbuildingsGroup() { return ifbuildingsGroup; }
-
-
-
 
 	public Input getKeyH() {
 		return keyH;
@@ -78,18 +73,20 @@ public class SpielPanel extends Pane {
 
 	public List<NPC> getNpcs() { return npcs; }
 
-	public Group getNpcsGroup() { return npcsGroup; }
-
 	public Player getPlayer() { return player; }
+
+	public SelectTool getSelectTool() { return selectTool; }
 
 
 	public TileManager getTileM() { return tileM; }
+
+	public Group getViewGroup() { return view; }
+
 
 	public void run() {
 		update();
 
 	}
-
 
 	public void saveMap() {
 		System.out.println("don");
@@ -100,6 +97,7 @@ public class SpielPanel extends Pane {
 	public void setMap(String path) {
 		setMap(path, null);
 	}
+
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
 		tileM.setMap(path);
@@ -115,13 +113,11 @@ public class SpielPanel extends Pane {
 		if (position != null)
 			player.setPosition(position);
 		else player.setPosition(tileM.getStartingPosition());
-		buildingsGroup.getChildren().clear();
-		ifbuildingsGroup.getChildren().clear();
-		npcsGroup.getChildren().clear();
+		view.getChildren().clear();
+		view.getChildren().add(player);
 		addBuildings();
 		addNPCs();
 	}
-
 
 	public void SST() {
 		Timeline tl = new Timeline(
@@ -137,22 +133,32 @@ public class SpielPanel extends Pane {
 
 		player.update();
 
+		selectTool.update();
+
 		for (Building b: buildings) b.update(player, this);
 		for (NPC n: npcs) n.update(player, this);
 
+		List<Node> nodes = new ArrayList<>(view.getChildren());
+
+		nodes.sort((n1, n2) -> {
+			if (n1 instanceof Building b1) {
+				if (n2 instanceof Building b2) return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
+						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
+								n2.getLayoutY() + ((Pane) n2).getHeight());
+				else return b1.isBackground() ? -1
+						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
+								n2.getLayoutY() + ((Pane) n2).getHeight());
+			} else if (n2 instanceof Building b2) return b2.isBackground() ? 1
+					: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
+							n2.getLayoutY() + ((Pane) n2).getHeight());
+			else return Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
+					n2.getLayoutY() + ((Pane) n2).getHeight());
+		});
+
+		view.getChildren().clear();
+		view.getChildren().addAll(nodes);
+
 		tileM.update();
-
-		if (!keyH.p) player.setVisible(true);
-		else player.setVisible(false);
-
-		if (!keyH.b) buildingsGroup.setVisible(true);
-		else buildingsGroup.setVisible(false);
-
-		if (!keyH.b) ifbuildingsGroup.setVisible(true);
-		else ifbuildingsGroup.setVisible(false);
-
-		if (!keyH.h) npcsGroup.setVisible(true);
-		else npcsGroup.setVisible(false);
 
 		if (keyH.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);

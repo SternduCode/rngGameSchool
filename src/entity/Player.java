@@ -48,7 +48,8 @@ public class Player extends Entity implements Collidable {
 		shape.setFill(Color.color(1, 0, 1, 0.75));
 		shape.setDisable(true);
 		shape.setVisible(false);
-		shape.getPoints().addAll(0d, 0d, 0d, 20d, 22d, 20d, 22d, 0d);
+		double x = 4, y = 0, width = 33, height = 27;
+		shape.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
 
 		getChildren().addAll(iv, shape);
 	}
@@ -111,7 +112,7 @@ public class Player extends Entity implements Collidable {
 			}
 
 			Image nomover = new Image(getClass().getResourceAsStream("/res/player/Stehen.png"));
-			
+
 			for (int i = 0; i < nomover.getWidth(); i += nomover.getHeight()) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, (int) nomover.getHeight(),
 						(int) nomover.getHeight());
@@ -244,6 +245,9 @@ public class Player extends Entity implements Collidable {
 			shape.setVisible(true);
 		else
 			shape.setVisible(false);
+
+		if (!keyH.p) setVisible(true);
+		else setVisible(false);
 
 
 		gp.getBuildings().forEach(b -> {
