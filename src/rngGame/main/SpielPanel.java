@@ -1,15 +1,15 @@
-package rngGAME;
+package rngGame.main;
 
 import java.util.*;
-import buildings.Building;
-import entity.*;
 import javafx.animation.*;
 import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import tile.*;
+import rngGame.buildings.Building;
+import rngGame.entity.*;
+import rngGame.tile.*;
 
 public class SpielPanel extends Pane {
 
@@ -38,6 +38,8 @@ public class SpielPanel extends Pane {
 
 		this.keyH = keyH;
 
+		view = new Group();
+
 		player = new Player(this, getKeyH());
 
 		selectTool = new SelectTool(this);
@@ -49,16 +51,10 @@ public class SpielPanel extends Pane {
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 		inv.setVisible(false);
 
-		view = new Group();
-
 		setMap("/res/maps/lavaMap2.txt");
 
 		getChildren().addAll(tileM, view, selectTool, inv);
 
-	}
-
-	public void addBuildings() {
-		view.getChildren().addAll(buildings);
 	}
 
 	public void addNPCs() {
@@ -100,6 +96,7 @@ public class SpielPanel extends Pane {
 
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
+		view.getChildren().clear();
 		tileM.setMap(path);
 		if (tileM.getBackgroundPath() != null)
 			setBackground(new Background(
@@ -113,9 +110,7 @@ public class SpielPanel extends Pane {
 		if (position != null)
 			player.setPosition(position);
 		else player.setPosition(tileM.getStartingPosition());
-		view.getChildren().clear();
 		view.getChildren().add(player);
-		addBuildings();
 		addNPCs();
 	}
 
@@ -135,7 +130,7 @@ public class SpielPanel extends Pane {
 
 		selectTool.update();
 
-		for (Building b: buildings) b.update(player, this);
+		for (Building b: buildings) b.update();
 		for (NPC n: npcs) n.update(player, this);
 
 		List<Node> nodes = new ArrayList<>(view.getChildren());

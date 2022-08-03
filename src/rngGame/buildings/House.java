@@ -1,31 +1,37 @@
-package buildings;
+package rngGame.buildings;
 
 import java.util.List;
 import com.sterndu.json.JsonObject;
-import entity.Player;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import rngGAME.SpielPanel;
+import rngGame.entity.Player;
+import rngGame.main.SpielPanel;
 
 public class House extends Building {
 
-	protected House() {
+	protected House(SpielPanel gp) {
+		super(gp);
 		currentKey = "closed";
 	}
 
-	public House(House building, List<Building> buildings, SpielPanel gp) {
-		super(building, buildings, gp);
+	public House(House building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+			ObjectProperty<Building> requestorB) {
+		super(building, gp, buildings, cm, requestorB);
 		currentKey = "closed";
 	}
 
-	public House(JsonObject building, List<Building> buildings, ContextMenu cm, ObjectProperty<Building> requestorB) {
-		super(building, buildings, cm, requestorB);
+	public House(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+			ObjectProperty<Building> requestorB) {
+		super(building, gp, buildings, cm, requestorB);
 		currentKey = "closed";
 	}
 
 	@Override
-	public void update(Player p, SpielPanel gp) {
-		super.update(p, gp);
+	public void update() {
+		super.update();
+
+		Player p = gp.getPlayer();
+
 		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
 				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -135)
 			currentKey = "open";

@@ -1,4 +1,4 @@
-package entity;
+package rngGame.entity;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -10,10 +10,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import rngGAME.*;
-import tile.ImgUtil;
+import rngGame.main.*;
+import rngGame.tile.ImgUtil;
 
-public class NPC extends Entity implements Collidable, JsonValue {
+public class NPC extends Entity implements JsonValue {
 
 	protected Map<String, List<Image>> images;
 	protected String currentKey;
@@ -91,14 +91,13 @@ public class NPC extends Entity implements Collidable, JsonValue {
 				iv.getImage().getHeight(), iv.getImage().getWidth(), 0d);
 	}
 
-	public boolean collides(Collidable collidable) {
-		Shape intersect = Shape.intersect(collidable.getPoly(), shape);
+	public boolean collides(GameObject collidable) {
+		Shape intersect = Shape.intersect(collidable.getCollisionBox(), shape);
 		return !intersect.getBoundsInLocal().isEmpty();
 	}
 
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 
-	@Override
 	public Polygon getPoly() { return shape; }
 
 	public void setPosition(double layoutX, double layoutY) {

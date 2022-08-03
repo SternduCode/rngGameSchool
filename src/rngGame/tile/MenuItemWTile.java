@@ -1,4 +1,4 @@
-package tile;
+package rngGame.tile;
 
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;

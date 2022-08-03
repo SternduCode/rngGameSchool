@@ -1,8 +1,9 @@
 module rngGAME {
-	exports rngGAME;
-	exports tile;
-	exports entity;
-	exports buildings;
+	exports rngGame.main;
+	exports rngGame.tile;
+	exports rngGame.entity;
+	exports rngGame.buildings;
+	exports rngGame.ui;
 
 	requires javafx.base;
 	requires transitive javafx.graphics;
@@ -10,5 +11,5 @@ module rngGAME {
 
 	requires transitive com.sterndu.JSONLib;
 
-	opens rngGAME to javafx.graphics;
+	opens rngGame.main to javafx.graphics;
 }

@@ -1,4 +1,4 @@
-package entity;
+package rngGame.entity;
 
 import java.io.ByteArrayInputStream;
 import java.util.*;
@@ -6,7 +6,7 @@ import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.*;
-import tile.ImgUtil;
+import rngGame.tile.ImgUtil;
 
 public class Demon extends NPC implements JsonValue {
 

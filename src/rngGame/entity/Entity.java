@@ -1,4 +1,4 @@
-package entity;
+package rngGame.entity;
 
 import java.util.List;
 import javafx.scene.image.*;

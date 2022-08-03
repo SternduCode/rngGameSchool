@@ -1,14 +1,14 @@
-package entity;
+package rngGame.entity;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import rngGAME.*;
-import tile.ImgUtil;
+import rngGame.main.*;
+import rngGame.tile.ImgUtil;
 
-public class Player extends Entity implements Collidable {
+public class Player extends Entity {
 
 	private final SpielPanel gp;
 	private final Input keyH;
@@ -144,7 +144,6 @@ public class Player extends Entity implements Collidable {
 
 	}
 
-	@Override
 	public Polygon getPoly() { return shape; }
 
 
@@ -251,20 +250,29 @@ public class Player extends Entity implements Collidable {
 
 
 		gp.getBuildings().forEach(b -> {
-			if (b.collides(this)) {
+			if (b.collides(new GameObject(gp, "") {
+				@Override
+				public Polygon getCollisionBox() { return getPoly(); }
+			})) {
 				worldX = oldWorldX;
 				worldY = oldWorldY;
 			}
 		});
 
 		gp.getNpcs().forEach(b -> {
-			if (b.collides(this)) {
+			if (b.collides(new GameObject(gp, "") {
+				@Override
+				public Polygon getCollisionBox() { return getPoly(); }
+			})) {
 				worldX = oldWorldX;
 				worldY = oldWorldY;
 			}
 		});
 
-		if (gp.getTileM().collides(this)) {
+		if (gp.getTileM().collides(new GameObject(gp, "") {
+			@Override
+			public Polygon getCollisionBox() { return getPoly(); }
+		})) {
 			worldX = oldWorldX;
 			worldY = oldWorldY;
 		}

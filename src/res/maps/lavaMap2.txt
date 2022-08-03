@@ -155,7 +155,7 @@
 				64,
 				64
 			],
-			"map" : "StawtMap.txt"
+			"map" : "InnenContracts.txt"
 		},
 		{
 			"requestedSize" : [

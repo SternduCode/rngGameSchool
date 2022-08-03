@@ -1,10 +1,10 @@
-package tile;
+package rngGame.tile;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import rngGAME.SpielPanel;
+import rngGame.main.SpielPanel;
 
 public class SelectTool extends Rectangle {
 

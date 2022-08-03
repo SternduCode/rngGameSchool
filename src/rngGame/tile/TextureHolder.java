@@ -1,4 +1,4 @@
-package tile;
+package rngGame.tile;
 
 import java.util.ArrayList;
 import javafx.beans.property.ObjectProperty;
@@ -15,7 +15,7 @@ public class TextureHolder extends Pane {
 	private final ImageView iv;
 	private final Polygon poly;
 
-	private final double fps = 8;
+	private final double fps = 7.5;
 
 	public long spriteCounter = 0;
 	public int spriteNum = 0;

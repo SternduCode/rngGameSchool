@@ -1,9 +1,9 @@
-package tile;
+package rngGame.tile;
 
 import java.io.InputStream;
 import java.util.*;
 import javafx.scene.image.*;
-import rngGAME.SpielPanel;
+import rngGame.main.SpielPanel;
 
 public class Tile {
 

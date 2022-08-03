@@ -1,4 +1,4 @@
-package ui;
+package rngGame.ui;
 
 import javafx.scene.layout.Pane;
 

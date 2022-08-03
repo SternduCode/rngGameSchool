@@ -1,4 +1,4 @@
-package rngGAME;
+package rngGame.main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

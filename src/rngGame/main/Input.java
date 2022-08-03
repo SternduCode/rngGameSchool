@@ -1,15 +1,15 @@
-package rngGAME;
+package rngGame.main;
 
 import java.io.*;
 import java.util.ArrayList;
-import buildings.Building;
-import entity.NPC;
 import javafx.event.EventTarget;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import tile.TextureHolder;
+import rngGame.buildings.Building;
+import rngGame.entity.NPC;
+import rngGame.tile.TextureHolder;
 
 public class Input {
 
@@ -154,9 +154,9 @@ public class Input {
 			if (target instanceof Building b
 					&& System.getProperty("coll").equals("true"))
 				if ((!ctrlPressed || !s) && (!ctrlPressed || !n))
-					b.getPolygon().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-				else if (ctrlPressed && s) save(b.getPolygon());
-				else if (ctrlPressed && n) newC(b.getPolygon());
+					b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+				else if (ctrlPressed && s) save(b.getCollisionBox());
+				else if (ctrlPressed && n) newC(b.getCollisionBox());
 
 	}
 

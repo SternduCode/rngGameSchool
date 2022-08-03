@@ -1,4 +1,4 @@
-package tile;
+package rngGame.tile;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -6,8 +6,6 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 import com.sterndu.json.*;
-import buildings.*;
-import entity.*;
 import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.scene.*;
@@ -17,7 +15,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import rngGAME.*;
+import rngGame.buildings.*;
+import rngGame.entity.*;
+import rngGame.main.*;
 
 public class TileManager extends Pane {
 
@@ -67,6 +67,13 @@ public class TileManager extends Pane {
 		buildingCM = new ContextMenu();
 		npcCM = new ContextMenu();
 
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				requestor.set(null);
+				cm.show(this, e.getScreenX(), e.getScreenY());
+			}
+		});
+
 		this.gp = gp;
 
 		tile = new ArrayList<>();
@@ -75,11 +82,11 @@ public class TileManager extends Pane {
 		getChildren().add(group);
 	}
 
-	public boolean collides(Collidable collidable) {
+	public boolean collides(GameObject collidable) {
 
 		for (Node th: group.getChildren())
 			if (((TextureHolder) th).getPoly().getPoints().size() > 0) {
-				Shape intersect = Shape.intersect(collidable.getPoly(), ((TextureHolder) th).getPoly());
+				Shape intersect = Shape.intersect(collidable.getCollisionBox(), ((TextureHolder) th).getPoly());
 				if (!intersect.getBoundsInLocal().isEmpty()) return true;
 			}
 
@@ -325,8 +332,8 @@ public class TileManager extends Pane {
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
 				switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building, this.buildings, cm, requestorB);
-					default -> new Building((JsonObject) building, this.buildings, cm, requestorB);
+					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
+					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
 				}
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()

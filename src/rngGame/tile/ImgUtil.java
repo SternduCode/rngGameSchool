@@ -1,4 +1,4 @@
-package tile;
+package rngGame.tile;
 
 import java.util.Map;
 import java.util.Map.Entry;

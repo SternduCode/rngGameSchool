@@ -1,8 +1,8 @@
-package tile;
+package rngGame.tile;
 
-import entity.NPC;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import rngGame.entity.NPC;
 
 public class MenuItemWNPC extends MenuItem {
 

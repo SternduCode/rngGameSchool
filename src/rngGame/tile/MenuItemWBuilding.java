@@ -1,8 +1,8 @@
-package tile;
+package rngGame.tile;
 
-import buildings.Building;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import rngGame.buildings.Building;
 
 public class MenuItemWBuilding extends MenuItem {
 
