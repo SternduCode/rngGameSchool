@@ -1,12 +1,12 @@
 plugins {
     id 'java-library'
+    id 'application'
 }
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
-    mainClass = 'rngGame.main.MainClass' 
 }
 sourceSets {
     main {
@@ -20,6 +20,10 @@ sourceSets {
             srcDirs = ['test']
         }
     }
+}
+
+application {
+    mainClass = 'rngGame.main.MainClass' 
 }
 
 version = '1.2.1'
