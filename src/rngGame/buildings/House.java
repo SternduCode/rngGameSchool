@@ -52,7 +52,7 @@ public class House extends Building {
 		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
 				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -65)
 			if (map != null) try {
-				gp.setMap("/res/maps/" + map);
+				gp.setMap("./res/maps/" + map);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
