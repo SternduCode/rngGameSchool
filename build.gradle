@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.SternduCode:JSONLIB:main-SNAPSHOT'
+    implementation 'com.github.SternduCode:JSONLIB:1.0'
 }
 
 java {
