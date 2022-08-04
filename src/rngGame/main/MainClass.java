@@ -12,23 +12,6 @@ public class MainClass extends Application {
 		System.setProperty("edit", "false");
 		System.setProperty("coll", "false");
 
-		//		JFrame Spiel = new JFrame();
-		//		Spiel.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//		Spiel.setResizable(false);
-		//		Spiel.setTitle("RNG fun");
-		//
-		//
-		//		SpielPanel spielebene = new SpielPanel();
-		//		Spiel.add(spielebene);
-		//
-		//		Spiel.pack();
-		//
-		//
-		//		Spiel.setLocationRelativeTo(null);
-		//		Spiel.setVisible(true);
-		//
-		//		spielebene.SST();
-
 		launch(args);
 
 	}
