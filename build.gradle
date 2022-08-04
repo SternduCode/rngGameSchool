@@ -3,12 +3,8 @@ plugins {
     id 'application'
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
-}
-
 dependencies {
-    implementation 'com.github.SternduCode:JSONLIB:1.0'
+    fileTree(dir: 'lib/lib', include: '*.jar')
 }
 
 java {
