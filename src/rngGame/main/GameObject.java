@@ -23,6 +23,7 @@ public abstract class GameObject extends Pane {
 	protected long spriteCounter = 0;
 	protected int spriteNum = 0;
 	private String lastKey;
+	protected boolean background;
 
 	public GameObject(SpielPanel gp, String directory) {
 		images = new HashMap<>();
@@ -41,9 +42,9 @@ public abstract class GameObject extends Pane {
 		this.directory = directory;
 	}
 
-	protected List<Image> getAnimatedImages(String key, String path) {
+	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream("/res/" + directory + "/" + path));
+		Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
@@ -51,22 +52,20 @@ public abstract class GameObject extends Pane {
 					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 		}
 		String[] sp = path.split("[.]");
-		if (getClass()
-				.getResource("/res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
-				+ ".collisionbox") != null) try {
-					RandomAccessFile raf = new RandomAccessFile(getClass()
-							.getResource("/res/collisions/" + directory + "/"
-									+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
-									+ ".collisionbox")
-							.getFile(), "rws");
-					raf.seek(0l);
-					int length = raf.readInt();
-					Polygon collisionBox = collisionBoxes.get(key);
-					if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
-					for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		if (new File("./res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+		+ ".collisionbox").exists())
+			try {
+				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + directory + "/"
+						+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+						+ ".collisionbox"), "rws");
+				raf.seek(0l);
+				int length = raf.readInt();
+				Polygon collisionBox = collisionBoxes.get(key);
+				if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
+				for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		images.put(key, li);
 		textureFiles.put(key, path);
 		return li;

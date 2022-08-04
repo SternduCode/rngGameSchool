@@ -1,5 +1,6 @@
 package rngGame.entity;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import javafx.scene.image.*;
@@ -57,7 +58,7 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			Image up = new Image(getClass().getResourceAsStream("/res/player/LaufenHochL.png"));
+			Image up = new Image(new FileInputStream("./res/player/LaufenHochL.png"));
 
 			for (int i = 0; i < up.getWidth(); i += up.getHeight()) {
 				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, (int) up.getHeight(),
@@ -66,7 +67,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image upl = new Image(getClass().getResourceAsStream("/res/player/LaufenHochL.png"));
+			Image upl = new Image(new FileInputStream("./res/player/LaufenHochL.png"));
 
 			for (int i = 0; i < upl.getWidth(); i += upl.getHeight()) {
 				WritableImage wi = new WritableImage(upl.getPixelReader(), i, 0, (int) upl.getHeight(),
@@ -75,7 +76,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image down = new Image(getClass().getResourceAsStream("/res/player/LaufenRunter.png"));
+			Image down = new Image(new FileInputStream("./res/player/LaufenRunter.png"));
 
 			for (int i = 0; i < down.getWidth(); i += down.getHeight()) {
 				WritableImage wi = new WritableImage(down.getPixelReader(), i, 0, (int) down.getHeight(),
@@ -84,7 +85,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image downl = new Image(getClass().getResourceAsStream("/res/player/LaufenRunterL.png"));
+			Image downl = new Image(new FileInputStream("./res/player/LaufenRunterL.png"));
 
 			for (int i = 0; i < downl.getWidth(); i += downl.getHeight()) {
 				WritableImage wi = new WritableImage(downl.getPixelReader(), i, 0, (int) downl.getHeight(),
@@ -93,7 +94,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image right = new Image(getClass().getResourceAsStream("/res/player/LaufenRechts.png"));
+			Image right = new Image(new FileInputStream("./res/player/LaufenRechts.png"));
 
 			for (int i = 0; i < right.getWidth(); i += right.getHeight()) {
 				WritableImage wi = new WritableImage(right.getPixelReader(), i, 0, (int) right.getHeight(),
@@ -102,7 +103,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image left = new Image(getClass().getResourceAsStream("/res/player/LaufenLinks.png"));
+			Image left = new Image(new FileInputStream("./res/player/LaufenLinks.png"));
 
 			for (int i = 0; i < left.getWidth(); i += left.getHeight()) {
 				WritableImage wi = new WritableImage(left.getPixelReader(), i, 0, (int) left.getHeight(),
@@ -111,7 +112,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image nomover = new Image(getClass().getResourceAsStream("/res/player/Stehen.png"));
+			Image nomover = new Image(new FileInputStream("./res/player/Stehen.png"));
 
 			for (int i = 0; i < nomover.getWidth(); i += nomover.getHeight()) {
 				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, (int) nomover.getHeight(),
@@ -120,7 +121,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image nomovel = new Image(getClass().getResourceAsStream("/res/player/Stehen2.png"));
+			Image nomovel = new Image(new FileInputStream("./res/player/Stehen2.png"));
 
 			for (int i = 0; i < nomovel.getWidth(); i += nomovel.getHeight()) {
 				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, (int) nomovel.getHeight(),
@@ -129,7 +130,7 @@ public class Player extends Entity {
 						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
 			}
 
-			Image nomoveup = new Image(getClass().getResourceAsStream("/res/player/IdleUp.png"));
+			Image nomoveup = new Image(new FileInputStream("./res/player/IdleUp.png"));
 
 			for (int i = 0; i < nomoveup.getWidth(); i += nomoveup.getHeight()) {
 				WritableImage wi = new WritableImage(nomoveup.getPixelReader(), i, 0, (int) nomoveup.getHeight(),

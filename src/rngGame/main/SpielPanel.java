@@ -1,5 +1,6 @@
 package rngGame.main;
 
+import java.io.*;
 import java.util.*;
 import javafx.animation.*;
 import javafx.scene.*;
@@ -33,7 +34,7 @@ public class SpielPanel extends Pane {
 
 	private List<NPC> npcs;
 
-	public SpielPanel(Input keyH) {
+	public SpielPanel(Input keyH) throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
 		this.keyH = keyH;
@@ -46,12 +47,12 @@ public class SpielPanel extends Pane {
 
 		tileM = new TileManager(this);
 
-		inv = new ImageView(new Image(getClass().getResourceAsStream("/res/gui/Inv.png")));
+		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 		inv.setVisible(false);
 
-		setMap("/res/maps/lavaMap2.txt");
+		setMap("./res/maps/lavaMap2.txt");
 
 		getChildren().addAll(tileM, view, selectTool, inv);
 
@@ -90,17 +91,17 @@ public class SpielPanel extends Pane {
 		System.out.println("don2");
 	}
 
-	public void setMap(String path) {
+	public void setMap(String path) throws FileNotFoundException {
 		setMap(path, null);
 	}
 
 
-	public void setMap(String path, Map.Entry<Double, Double> position) {
+	public void setMap(String path, Map.Entry<Double, Double> position) throws FileNotFoundException {
 		view.getChildren().clear();
 		tileM.setMap(path);
 		if (tileM.getBackgroundPath() != null)
 			setBackground(new Background(
-					new BackgroundImage(new Image(getClass().getResourceAsStream("/res/" + tileM.getBackgroundPath())),
+					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
 							BackgroundRepeat.NO_REPEAT,
 							BackgroundRepeat.NO_REPEAT, null,
 							new BackgroundSize(SpielLaenge, SpielHoehe, false, false, false, false))));

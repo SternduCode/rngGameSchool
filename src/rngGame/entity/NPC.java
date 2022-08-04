@@ -1,5 +1,6 @@
 package rngGame.entity;
 
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -62,9 +63,9 @@ public class NPC extends Entity implements JsonValue {
 		gp.getViewGroup().getChildren().add(this);
 	}
 
-	protected List<Image> getAnimatedImages(String path) {
+	protected List<Image> getAnimatedImages(String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream("/res/npc/" + path));
+		Image img = new Image(new FileInputStream("./res/npc/" + path));
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
 			li.add(ImgUtil.resizeImage(wi,
@@ -82,7 +83,14 @@ public class NPC extends Entity implements JsonValue {
 		reqHeight = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(1)).getValue().intValue();
 		origTextures = (JsonObject) npc.get("textures");
 		images = ((JsonObject) npc.get("textures")).entrySet().parallelStream()
-				.map(s -> Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue())))
+				.map(s -> {
+					try {
+						return Map.entry(s.getKey(), getAnimatedImages(((StringValue) s.getValue()).getValue()));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+						return null;
+					}
+				})
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 		iv.setImage(getFirstImage());
 		npcData = (JsonObject) npc.get("npcData");
@@ -106,7 +114,7 @@ public class NPC extends Entity implements JsonValue {
 	}
 
 	@Override
-	public String toJson() {
+	public JsonValue toJsonValue() {
 		JsonObject jo = new JsonObject();
 		JsonArray requestedSize = new JsonArray();
 		requestedSize.add(reqWidth);
@@ -124,12 +132,12 @@ public class NPC extends Entity implements JsonValue {
 		jo.put("originalSize", originalSize);
 		jo.put("fps", fps);
 		jo.put("type", getClass().getSimpleName());
-		return jo.toJson();
+		return jo;
 	}
 
 	@Override
-	public String toJson(Function<Object, String> function) {
-		return toJson();
+	public JsonValue toJsonValue(Function<Object, String> function) {
+		return toJsonValue();
 	}
 
 	public void update(Player p, SpielPanel gp) {

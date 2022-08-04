@@ -11,10 +11,10 @@
 			"npcData" : {
 				
 			},
-			"fps" : 7.0,
+			"fps" : 7.00000,
 			"position" : [
-				870.0,
-				870.0
+				870.000,
+				870.000
 			],
 			"originalSize" : [
 				64,
@@ -33,10 +33,10 @@
 			"npcData" : {
 				
 			},
-			"fps" : 7.0,
+			"fps" : 7.00000,
 			"position" : [
-				840.0,
-				430.0
+				840.000,
+				430.000
 			],
 			"originalSize" : [
 				32,
@@ -55,10 +55,10 @@
 			"npcData" : {
 				
 			},
-			"fps" : 5,
+			"fps" : 5.00000,
 			"position" : [
-				600,
-				1600
+				600.000,
+				1600.00
 			],
 			"originalSize" : [
 				64,
@@ -78,10 +78,10 @@
 			"npcData" : {
 				
 			},
-			"fps" : 7,
+			"fps" : 7.00000,
 			"position" : [
-				750,
-				1600
+				750.000,
+				1600.00
 			],
 			"originalSize" : [
 				64,
@@ -104,8 +104,8 @@
 				
 			},
 			"position" : [
-				1000.0,
-				1000.0
+				1000.00,
+				1000.00
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -125,8 +125,8 @@
 				
 			},
 			"position" : [
-				1500.0,
-				1000.0
+				1500.00,
+				1000.00
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -147,8 +147,8 @@
 				
 			},
 			"position" : [
-				800.0,
-				250.0
+				800.000,
+				250.000
 			],
 			"type" : "House",
 			"originalSize" : [
@@ -169,8 +169,8 @@
 				
 			},
 			"position" : [
-				1650.0,
-				1350.0
+				1650.00,
+				1350.00
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -242,8 +242,8 @@
 			"LavaS3.png"
 		],
 		"startingPosition" : [
-			13.0,
-			37.0
+			13.0000,
+			37.0000
 		],
 		"dir" : "tiles",
 		"matrix" : [

@@ -1,5 +1,6 @@
 package rngGame.buildings;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Function;
@@ -13,8 +14,6 @@ import rngGame.main.*;
 public class Building extends GameObject implements JsonValue {
 
 	protected JsonObject buildingData;
-	protected String map;
-	protected boolean background;
 	private boolean slave = false;
 	private List<Building> slaves;
 	@SuppressWarnings("unused")
@@ -41,7 +40,6 @@ public class Building extends GameObject implements JsonValue {
 		reqHeight = building.reqHeight;
 		fps = building.fps;
 
-		map = building.map;
 		background = building.background;
 		currentKey = building.currentKey;
 		images = building.images;
@@ -83,11 +81,16 @@ public class Building extends GameObject implements JsonValue {
 			fps = ((NumberValue) building.get("fps")).getValue().doubleValue();
 		else fps = 7;
 
-		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
 		if (building.containsKey("background"))
 			background = ((BoolValue) building.get("background")).getValue();
 		((JsonObject) building.get("textures")).entrySet().parallelStream()
-		.forEach(s -> getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue()));
+				.forEach(s -> {
+					try {
+						getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+				});
 		iv.setImage(getFirstImage());
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 0, 1, 0.75)));
 
@@ -135,7 +138,7 @@ public class Building extends GameObject implements JsonValue {
 	}
 
 	@Override
-	public String toJson() {
+	public JsonValue toJsonValue() {
 		if (!slave) {
 			JsonObject jo = new JsonObject();
 			jo.put("type", getClass().getSimpleName());
@@ -166,15 +169,14 @@ public class Building extends GameObject implements JsonValue {
 			requestedSize.add(reqHeight);
 			jo.put("requestedSize", requestedSize);
 			if (background) jo.put("background", background);
-			if (map != null) jo.put("map", map);
 			jo.put("buildingData", buildingData);
-			return jo.toJson();
-		} else return "";
+			return jo;
+		} else return new StringValue("");
 	}
 
 	@Override
-	public String toJson(Function<Object, String> function) {
-		return toJson();
+	public JsonValue toJsonValue(Function<Object, String> function) {
+		return toJsonValue();
 	}
 
 }

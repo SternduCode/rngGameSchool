@@ -2,7 +2,6 @@ package rngGame.tile;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 import com.sterndu.json.*;
@@ -68,7 +67,8 @@ public class TileManager extends Pane {
 		npcCM = new ContextMenu();
 
 		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
+			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
+				System.out.println("dg");
 				requestor.set(null);
 				cm.show(this, e.getScreenX(), e.getScreenY());
 			}
@@ -95,7 +95,8 @@ public class TileManager extends Pane {
 
 	public void contextMenu(ActionEvent e) {
 		try {
-			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
+			if (requestor.get() == null) System.out.println(e);
+			else if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
 			else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class, gp.getClass())
@@ -125,13 +126,11 @@ public class TileManager extends Pane {
 				if (f == null || !f.exists()) return;
 				try {
 					Path p1 = f.toPath();
-					Path p2 = new File("./src/res/" + dir + "/" + f.getName()).toPath();
-					Path p3 = new File("./bin/res/" + dir + "/" + f.getName()).toPath();
+					Path p2 = new File("./res/" + dir + "/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-					Files.copy(p1, p3, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-					System.out.println(p2 + " " + p3);
+					System.out.println(p2);
 					Tile t = new Tile(f.getName(),
-							getClass().getResourceAsStream("/res/" + dir + "/" + f.getName()),
+							new FileInputStream("./res/" + dir + "/" + f.getName()),
 							gp);
 					tile.add(t);
 					mtiles.getItems().remove(mi);
@@ -202,12 +201,9 @@ public class TileManager extends Pane {
 	}
 
 	public void save() {
-		try {// TODO rem src
-			File out = new File(new File(getClass().getResource("/res").toURI()).getAbsolutePath() + "/../../src"
-					+ path)
-					.getAbsoluteFile().getCanonicalFile();
-			File outb = new File(getClass().getResource(path).toURI()).getAbsoluteFile();
-			System.out.println(out + " " + outb);
+		try {
+			File out = new File(path).getAbsoluteFile();
+			System.out.println(out);
 			if (out.exists()) {
 				JsonObject jo = (JsonObject) JsonParser.parse(out);
 				JsonArray buildings = (JsonArray) jo.get("buildings");
@@ -243,14 +239,10 @@ public class TileManager extends Pane {
 				bw.write(jsonOut);
 				bw.flush();
 				bw.close();
-				bw = new BufferedWriter(new FileWriter(outb));
-				bw.write(jsonOut);
-				bw.flush();
-				bw.close();
 			} else {
 
 			}
-		} catch (URISyntaxException | JsonParseException | IOException e) {
+		} catch (JsonParseException | IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -269,7 +261,7 @@ public class TileManager extends Pane {
 			mnpcs.getItems().clear();
 			mbuildings.getItems().clear();
 			JsonObject jo = (JsonObject) JsonParser
-					.parse(getClass().getResourceAsStream(path));
+					.parse(new FileInputStream(path));
 			JsonObject map = (JsonObject) jo.get("map");
 			JsonArray textures = (JsonArray) map.get("textures");
 			JsonArray npcs = (JsonArray) jo.get("npcs");
@@ -292,7 +284,7 @@ public class TileManager extends Pane {
 			}
 			for (Object texture: textures) try {
 				Tile t = new Tile(((StringValue) texture).getValue(),
-						getClass().getResourceAsStream("/res/" + dir + "/" + ((StringValue) texture).getValue()),
+						new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tile.add(t);
 				mtiles.getItems()
@@ -301,16 +293,12 @@ public class TileManager extends Pane {
 								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
-				if (getClass()
-						.getResource("/res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
-						+ ".collisionbox") != null)
+				if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				+ ".collisionbox").exists())
 					try {
-						RandomAccessFile raf = new RandomAccessFile(getClass()
-								.getResource(
-										"/res/collisions/" + dir + "/"
-												+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
-												+ ".collisionbox")
-								.getFile(), "rws");
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox"), "rws");
 						raf.seek(0l);
 						int length = raf.readInt();
 						t.poly = new ArrayList<>();
@@ -332,8 +320,8 @@ public class TileManager extends Pane {
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
 				switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
-					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
+					case "House" -> new House((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
+					default -> new Building((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
 				}
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
@@ -346,8 +334,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc: npcs) {
 				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new Demon((JsonObject) npc, this.npcs, cm, requestorN);
-					default -> new NPC((JsonObject) npc, this.npcs, cm, requestorN);
+					case "Demon", "demon" -> new Demon((JsonObject) npc, this.npcs, npcCM, requestorN);
+					default -> new NPC((JsonObject) npc, this.npcs, npcCM, requestorN);
 				});
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(
@@ -366,7 +354,7 @@ public class TileManager extends Pane {
 			for (MenuItem mi: mnpcs.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi: mbuildings.getItems()) mi.setOnAction(this::contextMenu);
 
-		} catch (JsonParseException e) {
+		} catch (JsonParseException | FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -381,7 +369,11 @@ public class TileManager extends Pane {
 
 			if (worldX + gp.Bg / 2 - p.worldX < 105 && worldX + gp.Bg / 2 - p.worldX > -45 &&
 					worldY + gp.Bg / 2 - p.worldY < 25 && worldY + gp.Bg / 2 - p.worldY > 0)
-				gp.setMap("/res/maps/" + exitMap, exitStartingPosition);
+				try {
+					gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 		}
 
 		int worldCol = 0;

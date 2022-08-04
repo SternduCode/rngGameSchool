@@ -28,7 +28,7 @@ public class Input {
 	private void save(Polygon p) {
 		ctrlPressed = false;
 		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(new File("./src/res"));
+		fc.setInitialDirectory(new File("./res"));
 		fc.getExtensionFilters().add(new ExtensionFilter(
 				"A file containing the collision box of something", "*.collisionbox"));
 		File f = fc.showSaveDialog(p.getScene().getWindow());

@@ -1,6 +1,6 @@
 package rngGame.entity;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
 import java.util.*;
 import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
@@ -17,9 +17,9 @@ public class Demon extends NPC implements JsonValue {
 	}
 
 	@Override
-	protected List<Image> getAnimatedImages(String path) {
+	protected List<Image> getAnimatedImages(String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(getClass().getResourceAsStream("/res/demons/" + dir + "/" + path));
+		Image img = new Image(new FileInputStream("./res/demons/" + dir + "/" + path));
 		for (int i = 0; i < img.getWidth(); i += origWidth) {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
 			li.add(ImgUtil.resizeImage(wi,
@@ -35,16 +35,10 @@ public class Demon extends NPC implements JsonValue {
 	}
 
 	@Override
-	public String toJson() {
-		try {
-			ByteArrayInputStream bais = new ByteArrayInputStream(super.toJson().getBytes());
-			JsonObject jo = (JsonObject) JsonParser.parse(bais);
-			jo.put("dir", dir);
-			return jo.toJson();
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-			return "";
-		}
+	public JsonValue toJsonValue() {
+		JsonObject jo = (JsonObject) super.toJsonValue();
+		jo.put("dir", dir);
+		return jo;
 	}
 
 }
