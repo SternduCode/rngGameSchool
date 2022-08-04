@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    fileTree(dir: 'lib/lib', include: '*.jar')
+   implementation fileTree(dir: 'lib/lib', include: '*.jar')
 }
 
 java {
