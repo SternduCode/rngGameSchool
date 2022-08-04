@@ -101,14 +101,14 @@ public class TileManager extends Pane {
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class, gp.getClass())
 				.newInstance(miwb.getBuilding(), buildings, gp)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().worldX,
-						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().worldY);
+				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
 				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, gp.getClass())
 				.newInstance(miwn.getNPC(), npcs, gp)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().worldX,
-						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().worldY);
+				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
 				System.out.println("npcs");
 				System.out.println("pfuck");
@@ -334,8 +334,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc: npcs) {
 				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new Demon((JsonObject) npc, this.npcs, npcCM, requestorN);
-					default -> new NPC((JsonObject) npc, this.npcs, npcCM, requestorN);
+					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
+					default -> new NPC((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
 				});
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(
@@ -367,13 +367,9 @@ public class TileManager extends Pane {
 			int worldX = (int) (gp.Bg * exitPosition.getKey());
 			int worldY = (int) (gp.Bg * exitPosition.getValue());
 
-			if (worldX + gp.Bg / 2 - p.worldX < 105 && worldX + gp.Bg / 2 - p.worldX > -45 &&
-					worldY + gp.Bg / 2 - p.worldY < 25 && worldY + gp.Bg / 2 - p.worldY > 0)
-				try {
-					gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
+			if (worldX + gp.Bg / 2 - p.getX() < 105 && worldX + gp.Bg / 2 - p.getX() > -45 &&
+					worldY + gp.Bg / 2 - p.getY() < 25 && worldY + gp.Bg / 2 - p.getY() > 0)
+				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
 		int worldCol = 0;
@@ -384,21 +380,22 @@ public class TileManager extends Pane {
 
 			int worldX = worldCol * gp.Bg;
 			int worldY = worldRow * gp.Bg;
-			int screenX = worldX - p.worldX + p.screenX;
-			int screenY = worldY - p.worldY + p.screenY;
+			double screenX = worldX - p.getX() + p.screenX;
+			double screenY = worldY - p.getY() + p.screenY;
 
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.size > p.worldX - p.screenX
-					&& worldX - p.size < p.worldX + p.screenX
-					&& worldY + p.size > p.worldY - p.screenY
-					&& worldY - p.size < p.worldY + p.screenY) {
+			if (worldX + p.size > p.getX() - p.screenX
+					&& worldX - p.size < p.getX() + p.screenX
+					&& worldY + p.size > p.getY() - p.screenY
+					&& worldY - p.size < p.getY() + p.screenY) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);
 				if (th == null) {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm,
+					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY,
+							cm,
 							requestor);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);

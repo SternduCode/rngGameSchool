@@ -41,7 +41,7 @@ public class SpielPanel extends Pane {
 
 		view = new Group();
 
-		player = new Player(this, getKeyH());
+		player = new Player(this);
 
 		selectTool = new SelectTool(this);
 
@@ -79,32 +79,29 @@ public class SpielPanel extends Pane {
 
 	public Group getViewGroup() { return view; }
 
-
-	public void run() {
-		update();
-
-	}
-
 	public void saveMap() {
 		System.out.println("don");
 		tileM.save();
 		System.out.println("don2");
 	}
 
-	public void setMap(String path) throws FileNotFoundException {
+	public void setMap(String path) {
 		setMap(path, null);
 	}
 
 
-	public void setMap(String path, Map.Entry<Double, Double> position) throws FileNotFoundException {
+	public void setMap(String path, Map.Entry<Double, Double> position) {
 		view.getChildren().clear();
 		tileM.setMap(path);
-		if (tileM.getBackgroundPath() != null)
+		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
 							BackgroundRepeat.NO_REPEAT,
 							BackgroundRepeat.NO_REPEAT, null,
 							new BackgroundSize(SpielLaenge, SpielHoehe, false, false, false, false))));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
@@ -112,14 +109,13 @@ public class SpielPanel extends Pane {
 			player.setPosition(position);
 		else player.setPosition(tileM.getStartingPosition());
 		view.getChildren().add(player);
-		addNPCs();
 	}
 
 	public void SST() {
 		Timeline tl = new Timeline(
 				new KeyFrame(Duration.millis(1000 / FPS),
 						event -> {
-							run();
+							update();
 						}));
 		tl.setCycleCount(Animation.INDEFINITE);
 		tl.play();
@@ -132,7 +128,7 @@ public class SpielPanel extends Pane {
 		selectTool.update();
 
 		for (Building b: buildings) b.update();
-		for (NPC n: npcs) n.update(player, this);
+		for (NPC n: npcs) n.update();
 
 		List<Node> nodes = new ArrayList<>(view.getChildren());
 

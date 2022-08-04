@@ -22,7 +22,8 @@ public class TextureHolder extends Pane {
 
 	private int hc;
 
-	public TextureHolder(Tile tile, int layoutX, int layoutY, ContextMenu cm, ObjectProperty<TextureHolder> requestor) {
+	public TextureHolder(Tile tile, double layoutX, double layoutY, ContextMenu cm,
+			ObjectProperty<TextureHolder> requestor) {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				System.out.println("fth");

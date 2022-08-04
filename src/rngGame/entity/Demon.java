@@ -1,36 +1,23 @@
 package rngGame.entity;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
 import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.image.*;
-import rngGame.tile.ImgUtil;
+import rngGame.main.SpielPanel;
 
-public class Demon extends NPC implements JsonValue {
+public class Demon extends NPC {
 
-	private String dir;
+	protected String dir;
 
-	public Demon(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
-		super(npc, npcs, cm, requestorN);
-	}
-
-	@Override
-	protected List<Image> getAnimatedImages(String path) throws FileNotFoundException {
-		List<Image> li = new ArrayList<>();
-		Image img = new Image(new FileInputStream("./res/demons/" + dir + "/" + path));
-		for (int i = 0; i < img.getWidth(); i += origWidth) {
-			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
-			li.add(ImgUtil.resizeImage(wi,
-					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
-		}
-		return li;
+	public Demon(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
+		super(npc, gp, npcs, cm, requestorN);
 	}
 
 	@Override
 	protected void init(JsonObject npc) {
 		dir = ((StringValue) npc.get("dir")).getValue();
+		directory = "demons/" + dir;
 		super.init(npc);
 	}
 

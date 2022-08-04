@@ -1,26 +1,18 @@
 package rngGame.entity;
 
-import java.util.List;
-import javafx.scene.image.*;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Polygon;
+import rngGame.main.*;
 
-public class Entity extends Pane {
+public class Entity extends GameObject {
 
-	protected ImageView iv;
+	protected double speed;
 
-	public int worldX, worldY, oldWorldX, oldWorldY;
-	public int speed;
-	public List<Image> up, upl, down, downl, left, right, nomovel, nomover, nomoveup;
-	public String direction;
-	public long spriteCounter = 0;
-	public int spriteNum = 0;
-	protected Polygon shape;
+	public Entity(SpielPanel gp, String directory, double speed) {
+		super(gp, directory);
+		this.speed = speed;
 
-	public int getOldWorldX() { return oldWorldX; }
-	public int getOldWorldY() { return oldWorldY; }
+	}
 
-	public int getWorldX() { return worldX; }
-	public int getWorldY() { return worldY; }
+	public double getSpeed() { return speed; }
+	public void setSpeed(double speed) { this.speed = speed; }
 
 }

@@ -1,143 +1,70 @@
 package rngGame.entity;
 
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Map.Entry;
-import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.*;
-import rngGame.tile.ImgUtil;
 
 public class Player extends Entity {
 
-	private final SpielPanel gp;
 	private final Input keyH;
-	private final double fps = 7.5;
 	public final int size = 64;
 
 	public final int screenX;
 	public final int screenY;
 
+	private double oldX, oldY;
 
-	public Player(SpielPanel gp2, Input keyH2) {
 
-		gp = gp2;
-		keyH = keyH2;
+	public Player(SpielPanel gp) {
+		super(gp, "player", 3);
+		currentKey = "down";
 
-		up = new ArrayList<>();
-		upl = new ArrayList<>();
-		down = new ArrayList<>();
-		downl = new ArrayList<>();
-		left = new ArrayList<>();
-		right = new ArrayList<>();
-		nomovel = new ArrayList<>();
-		nomover = new ArrayList<>();
-		nomoveup = new ArrayList<>();
+		fps = 7.5;
+
+		reqWidth = reqHeight = size;
+
+		this.gp = gp;
+		keyH = gp.getKeyH();
 
 		screenX = gp.SpielLaenge / 2 - size / 2;
 		screenY = gp.SpielHoehe / 2 - size / 2;
 
-		setDisable(true);
+		x = gp.Bg * 13;
+		y = gp.Bg * 37;
+		oldX = x;
+		oldY = y;
 
-		setDefaultValues();
 		getPlayerImage();
 
-		iv = new ImageView();
+		textureFiles.forEach((key, file) -> {
+			collisionBoxes.put(key, new Polygon());
+		});
 
-		shape = new Polygon();
-		shape.setFill(Color.color(1, 0, 1, 0.75));
-		shape.setDisable(true);
-		shape.setVisible(false);
-		double x = 4, y = 0, width = 33, height = 27;
-		shape.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
+		double x = 16, y = 30, width = 33, height = 27;
 
-		getChildren().addAll(iv, shape);
+		collisionBoxes.forEach((key, poly) -> {
+			poly.setFill(Color.color(1, 0, 1, 0.75));
+			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
+		});
 	}
 
 	public void getPlayerImage() {
 
 		try {
-			Image up = new Image(new FileInputStream("./res/player/LaufenHochL.png"));
+			origHeight = origWidth = 32;
+			getAnimatedImages("up", "LaufenHochL.png");
+			getAnimatedImages("upL", "LaufenHochL.png");
+			getAnimatedImages("idleup", "IdleUp.png");
+			getAnimatedImages("idleupL", "IdleUp.png");
 
-			for (int i = 0; i < up.getWidth(); i += up.getHeight()) {
-				WritableImage wi = new WritableImage(up.getPixelReader(), i, 0, (int) up.getHeight(),
-						(int) up.getHeight());
-				this.up.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image upl = new Image(new FileInputStream("./res/player/LaufenHochL.png"));
-
-			for (int i = 0; i < upl.getWidth(); i += upl.getHeight()) {
-				WritableImage wi = new WritableImage(upl.getPixelReader(), i, 0, (int) upl.getHeight(),
-						(int) upl.getHeight());
-				this.upl.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image down = new Image(new FileInputStream("./res/player/LaufenRunter.png"));
-
-			for (int i = 0; i < down.getWidth(); i += down.getHeight()) {
-				WritableImage wi = new WritableImage(down.getPixelReader(), i, 0, (int) down.getHeight(),
-						(int) down.getHeight());
-				this.down.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image downl = new Image(new FileInputStream("./res/player/LaufenRunterL.png"));
-
-			for (int i = 0; i < downl.getWidth(); i += downl.getHeight()) {
-				WritableImage wi = new WritableImage(downl.getPixelReader(), i, 0, (int) downl.getHeight(),
-						(int) downl.getHeight());
-				this.downl.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image right = new Image(new FileInputStream("./res/player/LaufenRechts.png"));
-
-			for (int i = 0; i < right.getWidth(); i += right.getHeight()) {
-				WritableImage wi = new WritableImage(right.getPixelReader(), i, 0, (int) right.getHeight(),
-						(int) right.getHeight());
-				this.right.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image left = new Image(new FileInputStream("./res/player/LaufenLinks.png"));
-
-			for (int i = 0; i < left.getWidth(); i += left.getHeight()) {
-				WritableImage wi = new WritableImage(left.getPixelReader(), i, 0, (int) left.getHeight(),
-						(int) left.getHeight());
-				this.left.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image nomover = new Image(new FileInputStream("./res/player/Stehen.png"));
-
-			for (int i = 0; i < nomover.getWidth(); i += nomover.getHeight()) {
-				WritableImage wi = new WritableImage(nomover.getPixelReader(), i, 0, (int) nomover.getHeight(),
-						(int) nomover.getHeight());
-				this.nomover.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image nomovel = new Image(new FileInputStream("./res/player/Stehen2.png"));
-
-			for (int i = 0; i < nomovel.getWidth(); i += nomovel.getHeight()) {
-				WritableImage wi = new WritableImage(nomovel.getPixelReader(), i, 0, (int) nomovel.getHeight(),
-						(int) nomovel.getHeight());
-				this.nomovel.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
-
-			Image nomoveup = new Image(new FileInputStream("./res/player/IdleUp.png"));
-
-			for (int i = 0; i < nomoveup.getWidth(); i += nomoveup.getHeight()) {
-				WritableImage wi = new WritableImage(nomoveup.getPixelReader(), i, 0, (int) nomoveup.getHeight(),
-						(int) nomoveup.getHeight());
-				this.nomoveup.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), size, size));
-			}
+			origHeight = origWidth = 64;
+			getAnimatedImages("down", "LaufenRunter.png");
+			getAnimatedImages("downL", "LaufenRunterL.png");
+			getAnimatedImages("right", "LaufenRechts.png");
+			getAnimatedImages("left", "LaufenLinks.png");
+			getAnimatedImages("idle", "Stehen.png");
+			getAnimatedImages("idleL", "Stehen2.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,141 +72,71 @@ public class Player extends Entity {
 
 	}
 
-	public Polygon getPoly() { return shape; }
-
-
-	public void setDefaultValues() {
-
-		worldX = gp.Bg * 13;
-		worldY = gp.Bg * 37;
-		oldWorldX = worldX;
-		oldWorldY = worldY;
-		speed = 3;
-		direction = "down";
-	}
-
 	public void setPosition(Entry<Double, Double> startingPosition) {
-		worldX = (int) (gp.Bg * startingPosition.getKey());
-		worldY = (int) (gp.Bg * startingPosition.getValue());
-		oldWorldX = worldX;
-		oldWorldY = worldY;
+		x = gp.Bg * startingPosition.getKey();
+		y = gp.Bg * startingPosition.getValue();
+		oldX = x;
+		oldY = y;
 	}
 
+	@Override
 	public void update() {
 		if (keyH.w) {
-			if (direction.equals("left") || direction.endsWith("L")) direction = "upL";
-			else direction = "up";
-			worldY -= speed;
+			if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "upL";
+			else currentKey = "up";
+			y -= speed;
 		}
 		else if (keyH.s && !keyH.ctrlPressed) {
-			if (direction.equals("left") || direction.endsWith("L")) direction = "downL";
-			else direction = "down";
-			worldY += speed;
+			if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "downL";
+			else currentKey = "down";
+			y += speed;
 		}
 		else if (keyH.a) {
-			direction = "left";
-			worldX -= speed;
+			currentKey = "left";
+			x -= speed;
 		}
 		else if (keyH.d) {
-			direction = "right";
-			worldX += speed;
-		} else if (direction.endsWith("L") && direction.contains("up")) direction = "noneupL";
-		else if (direction.equals("up") || direction.contains("up")) direction = "noneup";
-		else if (direction.equals("left") || direction.endsWith("L")) direction = "noneL";
+			currentKey = "right";
+			x += speed;
+		} else if (currentKey.endsWith("L") && currentKey.contains("up")) currentKey = "idleupL";
+		else if (currentKey.equals("up") || currentKey.contains("up")) currentKey = "idleup";
+		else if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "idleL";
 
-		else direction = "none";
+		else currentKey = "idle";
 
-		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
-			spriteCounter = System.currentTimeMillis();
-			spriteNum++;
-		}
+		super.update();
 
-		Image image = null;
-
-		switch(direction) {
-			case "up":
-				if (spriteNum >= up.size()) spriteNum = 0;
-				image = up.get(spriteNum);
-				break;
-			case "upL":
-				if (spriteNum >= upl.size()) spriteNum = 0;
-				image = upl.get(spriteNum);
-				break;
-			case "down":
-				if (spriteNum >= down.size()) spriteNum = 0;
-				image = down.get(spriteNum);
-				break;
-			case "downL":
-				if (spriteNum >= downl.size()) spriteNum = 0;
-				image = downl.get(spriteNum);
-				break;
-			case "left":
-				if (spriteNum >= left.size()) spriteNum = 0;
-				image = left.get(spriteNum);
-				break;
-			case "right":
-				if (spriteNum >= right.size()) spriteNum = 0;
-				image = right.get(spriteNum);
-				break;
-			case "none":
-				if (spriteNum >= nomover.size()) spriteNum = 0;
-				image = nomover.get(spriteNum);
-				break;
-			case "noneL":
-				if (spriteNum >= nomovel.size()) spriteNum = 0;
-				image = nomovel.get(spriteNum);
-				break;
-			case "noneup", "noneupL":
-				if (spriteNum >= nomoveup.size()) spriteNum = 0;
-			image = nomoveup.get(spriteNum);
-			break;
-		}
 		setLayoutX(screenX);
 		setLayoutY(screenY);
-		iv.setImage(image);
 
-		shape.setTranslateX(12 + worldX - oldWorldX);
-		shape.setTranslateY(30 + worldY - oldWorldY);
-
-		if (System.getProperty("coll").equals("true"))
-			shape.setVisible(true);
-		else
-			shape.setVisible(false);
+		getCollisionBox().setTranslateX(x - oldX);
+		getCollisionBox().setTranslateY(y - oldY);
 
 		if (!keyH.p) setVisible(true);
 		else setVisible(false);
 
 
 		gp.getBuildings().forEach(b -> {
-			if (b.collides(new GameObject(gp, "") {
-				@Override
-				public Polygon getCollisionBox() { return getPoly(); }
-			})) {
-				worldX = oldWorldX;
-				worldY = oldWorldY;
+			if (b.collides(this)) {
+				x = oldX;
+				y = oldY;
 			}
 		});
 
 		gp.getNpcs().forEach(b -> {
-			if (b.collides(new GameObject(gp, "") {
-				@Override
-				public Polygon getCollisionBox() { return getPoly(); }
-			})) {
-				worldX = oldWorldX;
-				worldY = oldWorldY;
+			if (b.collides(this)) {
+				x = oldX;
+				y = oldY;
 			}
 		});
 
-		if (gp.getTileM().collides(new GameObject(gp, "") {
-			@Override
-			public Polygon getCollisionBox() { return getPoly(); }
-		})) {
-			worldX = oldWorldX;
-			worldY = oldWorldY;
+		if (gp.getTileM().collides(this)) {
+			x = oldX;
+			y = oldY;
 		}
 
-		oldWorldX = worldX;
-		oldWorldY = worldY;
+		oldX = x;
+		oldY = y;
 
 		//		shape.setTranslateX(0);
 		//		shape.setTranslateY(0);

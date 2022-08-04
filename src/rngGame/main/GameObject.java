@@ -13,7 +13,9 @@ public abstract class GameObject extends Pane {
 
 	protected double x = 0d, y = 0d, fps = 7.5;
 	protected Map<String, List<Image>> images;
+
 	protected Map<String, Polygon> collisionBoxes;
+
 	protected ImageView iv;
 	protected String currentKey, directory;
 	protected Map<String, String> textureFiles;
@@ -24,7 +26,6 @@ public abstract class GameObject extends Pane {
 	protected int spriteNum = 0;
 	private String lastKey;
 	protected boolean background;
-
 	public GameObject(SpielPanel gp, String directory) {
 		images = new HashMap<>();
 		textureFiles = new HashMap<>();
@@ -41,7 +42,6 @@ public abstract class GameObject extends Pane {
 		this.gp = gp;
 		this.directory = directory;
 	}
-
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
@@ -84,6 +84,17 @@ public abstract class GameObject extends Pane {
 
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 
+	public double getX() { return x; }
+
+	public double getY() { return y; }
+
+	public boolean isBackground() { return background; }
+
+	public void setPosition(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+
 	public void update() {
 		if (System.getProperty("coll").equals("true"))
 			collisionBoxViewGroup.setVisible(true);
@@ -97,6 +108,7 @@ public abstract class GameObject extends Pane {
 			iv.setImage(images.get(currentKey).get(spriteNum));
 		}
 		if (!lastKey.equals(currentKey)) {
+			if (spriteNum >= images.get(currentKey).size()) spriteNum = 0;
 			iv.setImage(images.get(currentKey).get(spriteNum));
 			lastKey = currentKey;
 			collisionBoxViewGroup.getChildren().clear();
@@ -105,17 +117,17 @@ public abstract class GameObject extends Pane {
 
 		Player p = gp.getPlayer();
 
-		double screenX = x - p.worldX + p.screenX;
-		double screenY = y - p.worldY + p.screenY;
+		double screenX = x - p.x + p.screenX;
+		double screenY = y - p.y + p.screenY;
 
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 
-		if (x + reqWidth > p.worldX - p.screenX
-				&& x - reqWidth < p.worldX + p.screenX
-				&& y + reqHeight > p.worldY - p.screenY
-				&& y - reqHeight < p.worldY + p.screenY
-				&& !gp.getKeyH().b) setVisible(true);
+		if (x + reqWidth > p.x - p.screenX
+				&& x - reqWidth < p.x + p.screenX
+				&& y + reqHeight > p.y - p.screenY
+				&& y - reqHeight < p.y + p.screenY)
+			setVisible(true);
 		else setVisible(true);
 	}
 

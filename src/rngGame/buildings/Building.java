@@ -84,13 +84,13 @@ public class Building extends GameObject implements JsonValue {
 		if (building.containsKey("background"))
 			background = ((BoolValue) building.get("background")).getValue();
 		((JsonObject) building.get("textures")).entrySet().parallelStream()
-				.forEach(s -> {
-					try {
-						getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
-					} catch (FileNotFoundException e1) {
-						e1.printStackTrace();
-					}
-				});
+		.forEach(s -> {
+			try {
+				getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
 		iv.setImage(getFirstImage());
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 0, 1, 0.75)));
 
@@ -125,17 +125,9 @@ public class Building extends GameObject implements JsonValue {
 		}
 	}
 
-	public boolean isBackground() { return background;
-	}
-
 	public boolean isMaster() { return !slave; }
 
 	public boolean isSlave() { return slave; }
-
-	public void setPosition(double layoutX, double layoutY) {
-		x = layoutX;
-		y = layoutY;
-	}
 
 	@Override
 	public JsonValue toJsonValue() {
@@ -177,6 +169,12 @@ public class Building extends GameObject implements JsonValue {
 	@Override
 	public JsonValue toJsonValue(Function<Object, String> function) {
 		return toJsonValue();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (isVisible() && gp.getKeyH().b) setVisible(false);
 	}
 
 }

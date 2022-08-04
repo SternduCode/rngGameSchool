@@ -1,6 +1,5 @@
 package rngGame.buildings;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
@@ -45,17 +44,13 @@ public class House extends Building {
 
 		Player p = gp.getPlayer();
 
-		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
-				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -135)
+		if (x + reqWidth / 2 - p.getX() < 105 && x + reqWidth / 2 - p.getX() > -45 &&
+				y + reqHeight / 2 - p.getY() < -10 && y + reqHeight / 2 - p.getY() > -135)
 			currentKey = "open";
 		else currentKey = "closed";
-		if (x + reqWidth / 2 - p.worldX < 105 && x + reqWidth / 2 - p.worldX > -45 &&
-				y + reqHeight / 2 - p.worldY < -10 && y + reqHeight / 2 - p.worldY > -65)
-			if (map != null) try {
-				gp.setMap("./res/maps/" + map);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+		if (x + reqWidth / 2 - p.getX() < 105 && x + reqWidth / 2 - p.getX() > -45 &&
+				y + reqHeight / 2 - p.getY() < -10 && y + reqHeight / 2 - p.getY() > -65)
+			if (map != null) gp.setMap("./res/maps/" + map);
 	}
 
 }

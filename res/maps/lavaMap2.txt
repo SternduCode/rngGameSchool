@@ -6,7 +6,7 @@
 				75
 			],
 			"textures" : {
-				"idle" : "FritzA.png"
+				"default" : "FritzA.png"
 			},
 			"npcData" : {
 				
@@ -28,7 +28,7 @@
 				65
 			],
 			"textures" : {
-				"idle" : "GandalfA.png"
+				"default" : "GandalfA.png"
 			},
 			"npcData" : {
 				
@@ -50,7 +50,7 @@
 				150
 			],
 			"textures" : {
-				"idle" : "BOOMiIdle.png"
+				"default" : "BOOMiIdle.png"
 			},
 			"npcData" : {
 				
@@ -73,7 +73,7 @@
 				60
 			],
 			"textures" : {
-				"idle" : "MelloAVoid.png"
+				"default" : "MelloAVoid.png"
 			},
 			"npcData" : {
 				
