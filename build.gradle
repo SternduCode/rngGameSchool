@@ -3,6 +3,14 @@ plugins {
     id 'application'
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'com.github.SternduCode:JSONLib:main-SNAPSHOT'
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
