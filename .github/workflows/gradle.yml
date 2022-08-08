@@ -30,16 +30,13 @@ jobs:
         distribution: 'temurin'
         architecture: x64
     - name: pull JsonLib
-      run: git clone https://github.com/SternduCode/JSONLIB.git && cd JSONLIB
-    - name: Build JsonLib with Gradle
+      run: git clone https://github.com/SternduCode/JSONLIB.git
+    - name: Setuo Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
-        arguments: build
         gradle-version: current
-    - run: cd ..
+    - name: Build JSONLIB with Gradle
+      run: cd JSONLIB && gradle build
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
-        gradle-version: current
+      run: gradle build
     - run: ls -al && ls -al JSONLIB
