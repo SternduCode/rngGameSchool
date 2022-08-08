@@ -22,6 +22,10 @@ public class NPC extends Entity implements JsonValue {
 				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
 			}
 		});
+		init(npc);
+
+		npcs.add(this);
+		gp.getViewGroup().getChildren().add(this);
 	}
 
 	protected NPC(SpielPanel gp, String directory) {
@@ -66,6 +70,7 @@ public class NPC extends Entity implements JsonValue {
 		npc.collisionBoxes.forEach((key, poly) -> {
 			Polygon collisionBox = collisionBoxes.get(key);
 			if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
+			collisionBox.getPoints().clear();
 			collisionBox.getPoints().addAll(poly.getPoints());
 			collisionBox.setFill(poly.getFill());
 		});
@@ -93,8 +98,8 @@ public class NPC extends Entity implements JsonValue {
 		.forEach(s -> {
 			try {
 				getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
-				collisionBoxes.put(s.getKey(), new Polygon());
-				collisionBoxes.get(s.getKey()).getPoints().addAll(0d, 0d, 0d,
+				if (!collisionBoxes.containsKey(s.getKey())) collisionBoxes.put(s.getKey(), new Polygon());
+				if (collisionBoxes.get(s.getKey()).getPoints().size() == 0) collisionBoxes.get(s.getKey()).getPoints().addAll(0d, 0d, 0d,
 						images.get(s.getKey()).get(0).getHeight(),
 						images.get(s.getKey()).get(0).getWidth(),
 						images.get(s.getKey()).get(0).getHeight(), images.get(s.getKey()).get(0).getWidth(),

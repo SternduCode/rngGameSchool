@@ -1,4 +1,4 @@
-module rngGAME {
+module rngGame {
 	exports rngGame.main;
 	exports rngGame.tile;
 	exports rngGame.entity;
@@ -10,6 +10,9 @@ module rngGAME {
 	requires transitive javafx.controls;
 
 	requires transitive com.sterndu.JSONLib;
+	requires javafx.swing;
+	requires java.desktop;
+	requires jdk.zipfs;
 
 	opens rngGame.main to javafx.graphics;
 }

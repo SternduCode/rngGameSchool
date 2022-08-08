@@ -116,8 +116,6 @@ public class TileManager extends Pane {
 				System.out.println("buzildib");
 				System.out.println("pfuck");
 			} else if (mi.getParentMenu() == mtiles) {
-				System.out.println("tiles");
-				System.out.println("pfuck");
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
