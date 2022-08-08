@@ -42,3 +42,4 @@ jobs:
       with:
         arguments: build
         gradle-version: current
+    - run: ls -al && ls -al JSONLIB
