@@ -37,7 +37,7 @@ jobs:
         gradle-version: current
     - name: Build JSONLIB with Gradle
       run: cd JSONLIB && gradle build
-    - run: ls -al && ls -al JSONLIB && ls -al build
+    - run: ls -al && ls -al JSONLIB && ls -al JSONLIB/build
     - name: Build with Gradle
       run: gradle build
     - run: ls -al && ls -al JSONLIB && ls -al build
