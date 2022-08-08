@@ -30,7 +30,7 @@ jobs:
         distribution: 'temurin'
         architecture: x64
     - name: pull JsonLib
-      run: git clone https://github.com/SternduCode/JSONLIB.git
+      run: git clone https://github.com/SternduCode/JSONLIB.git && ls -al && ls -al JSONLIB
     - name: Build JsonLib with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
