@@ -319,33 +319,29 @@ public class TileManager extends Pane {
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
-				switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
+				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
 					case "House" -> new House((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
 					default -> new Building((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
-				}
+				};
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
-						new ImageView(ImgUtil.resizeImage(this.buildings.get(this.buildings.size() - 1).getFirstImage(),
-								(int) this.buildings.get(this.buildings.size() - 1).getFirstImage().getWidth(),
-								(int) this.buildings.get(this.buildings.size() - 1).getFirstImage().getHeight(),
-								16, 16)),
-						this.buildings.get(this.buildings.size() - 1)));
+						new ImageView(ImgUtil.resizeImage(b.getFirstImage(), (int) b.getFirstImage().getWidth(),
+								(int) b.getFirstImage().getHeight(), 16, 16)),
+						b));
 			}
 			for (Object npc: npcs) {
-				switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
+				NPC n = switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
 					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
-				}
+				};
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(
 						((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
-						new ImageView(ImgUtil.resizeImage(this.npcs.get(this.npcs.size() - 1).getFirstImage(),
-								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getWidth(),
-								(int) this.npcs.get(this.npcs.size() - 1).getFirstImage().getHeight(),
-								16, 16)),
-						this.npcs.get(this.npcs.size() - 1)));
+								new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
+										(int) n.getFirstImage().getHeight(), 16, 16)),
+								n));
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));

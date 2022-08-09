@@ -87,8 +87,8 @@ public class TestCollBoxGen extends Application {
 			});
 			System.out.println(ai.get());
 			li2.add(ap.get());
-			if (ai.get() < 2)
-				li.remove(ap.get());
+			// if (ai.get() < 2)
+			li.remove(ap.get());
 			lastPoint.set(ap.get());
 		}
 		System.out.println(li2.size());
@@ -107,7 +107,8 @@ public class TestCollBoxGen extends Application {
 		Pane p = new Pane();
 		p.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		ImageView iv = new ImageView();
-		iv.setImage(ImgUtil.resizeImage(new Image(fis), 64, 32, 135, 75));
+		iv.setImage(ImgUtil.resizeImage(new Image(fis), 64, 32, 300, 150));
+
 		img = iv.getImage();
 		pl = new Polyline();
 		pl.setVisible(true);
