@@ -39,4 +39,4 @@ jobs:
       run: cd JSONLIB && gradle build
     - run: cp JSONLIB/build/libs/JSONLIB.jar lib/lib/
     - name: Build with Gradle
-      run: gradle build
+      run: gradle build 
