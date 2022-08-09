@@ -99,14 +99,16 @@ public class TileManager extends Pane {
 			else if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
 			else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
-				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class, gp.getClass())
-				.newInstance(miwb.getBuilding(), buildings, gp)
+				.getDeclaredConstructor(miwb.getBuilding().getClass(), gp.getClass(), List.class,
+						ContextMenu.class, ObjectProperty.class)
+				.newInstance(miwb.getBuilding(), gp, buildings, buildingCM, requestorB)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
-				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, gp.getClass())
-				.newInstance(miwn.getNPC(), npcs, gp)
+				.getDeclaredConstructor(miwn.getNPC().getClass(), gp.getClass(), List.class, ContextMenu.class,
+						ObjectProperty.class)
+				.newInstance(miwn.getNPC(), gp, npcs, npcCM, requestorN)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
@@ -209,7 +211,7 @@ public class TileManager extends Pane {
 				buildings.addAll(this.buildings.stream().filter(Building::isMaster).toList());
 				JsonArray npcs = (JsonArray) jo.get("npcs");
 				npcs.clear();
-				npcs.addAll(this.npcs);
+				npcs.addAll(this.npcs.stream().filter(NPC::isMaster).toList());
 				JsonObject map = (JsonObject) jo.get("map");
 				if (backgroundPath != null)
 					map.put("background", backgroundPath);
@@ -331,10 +333,10 @@ public class TileManager extends Pane {
 						this.buildings.get(this.buildings.size() - 1)));
 			}
 			for (Object npc: npcs) {
-				this.npcs.add(switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
+				switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
 					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
-				});
+				}
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(
 						((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()

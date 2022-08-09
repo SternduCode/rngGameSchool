@@ -1,7 +1,8 @@
 package rngGame.entity;
 
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.function.Function;
 import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
@@ -13,6 +14,9 @@ import rngGame.main.SpielPanel;
 public class NPC extends Entity implements JsonValue {
 
 	protected JsonObject npcData;
+	protected NPC master;
+	protected List<NPC> slaves;
+	protected boolean slave;
 
 	protected NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN,String directory) {
 		this(gp, directory);
@@ -22,7 +26,7 @@ public class NPC extends Entity implements JsonValue {
 				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
 			}
 		});
-		init(npc);
+		init(npc, npcs, cm, requestorN);
 
 		npcs.add(this);
 		gp.getViewGroup().getChildren().add(this);
@@ -40,7 +44,7 @@ public class NPC extends Entity implements JsonValue {
 				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
 			}
 		});
-		init(npc);
+		init(npc, npcs, cm, requestorN);
 
 		npcs.add(this);
 		gp.getViewGroup().getChildren().add(this);
@@ -77,13 +81,17 @@ public class NPC extends Entity implements JsonValue {
 
 		npcData = npc.npcData;
 
+		master = npc;
+		slave = true;
+		if (npc.slaves == null)
+			npc.slaves = new ArrayList<>();
+		npc.slaves.add(this);
+
 		npcs.add(this);
 		gp.getViewGroup().getChildren().add(this);
 	}
 
-	protected void init(JsonObject npc) {
-		x = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
-		y = ((NumberValue) ((JsonArray) npc.get("position")).get(1)).getValue().doubleValue();
+	protected void init(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
 		origWidth = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(0)).getValue().intValue();
 		origHeight = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(0)).getValue().intValue();
@@ -112,29 +120,74 @@ public class NPC extends Entity implements JsonValue {
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 1, 1, 0.75)));
 
 		npcData = (JsonObject) npc.get("npcData");
+
+		if (((JsonArray) npc.get("position")).get(0) instanceof JsonArray ja) {
+			try {
+				slaves = new ArrayList<>();
+				for (int i = 1; i < ((JsonArray) npc.get("position")).size(); i++) {
+					NPC n = this
+							.getClass().getDeclaredConstructor(this.getClass(), SpielPanel.class, List.class,
+									ContextMenu.class, ObjectProperty.class)
+							.newInstance(this, gp, npcs, cm, requestorN);
+					n.x = ((NumberValue) ((JsonArray) ((JsonArray) npc.get("position")).get(i)).get(0)).getValue()
+							.doubleValue();
+					n.y = ((NumberValue) ((JsonArray) ((JsonArray) npc.get("position")).get(i)).get(1)).getValue()
+							.doubleValue();
+				}
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
+			x = ((NumberValue) ((JsonArray) ((JsonArray) npc.get("position")).get(0)).get(0)).getValue()
+					.doubleValue();
+			y = ((NumberValue) ((JsonArray) ((JsonArray) npc.get("position")).get(0)).get(1)).getValue()
+					.doubleValue();
+		} else {
+			x = ((NumberValue) ((JsonArray) npc.get("position")).get(0)).getValue().doubleValue();
+			y = ((NumberValue) ((JsonArray) npc.get("position")).get(1)).getValue().doubleValue();
+		}
 	}
+
+	public boolean isMaster() { return !slave; }
+
+	public boolean isSlave() { return slave; }
 
 	@Override
 	public JsonValue toJsonValue() {
-		JsonObject jo = new JsonObject();
-		JsonArray requestedSize = new JsonArray();
-		requestedSize.add(reqWidth);
-		requestedSize.add(reqHeight);
-		jo.put("requestedSize", requestedSize);
-		jo.put("textures", textureFiles);
-		jo.put("npcData", npcData);
-		JsonArray position = new JsonArray();
-		position.add(x);
-		position.add(y);
-		jo.put("position", position);
-		JsonArray originalSize = new JsonArray();
-		originalSize.add(origWidth);
-		originalSize.add(origHeight);
-		jo.put("originalSize", originalSize);
-		jo.put("fps", fps);
-		jo.put("type", getClass().getSimpleName());
-		if (background) jo.put("background", background);
-		return jo;
+		if (!slave) {
+			JsonObject jo = new JsonObject();
+			JsonArray requestedSize = new JsonArray();
+			requestedSize.add(reqWidth);
+			requestedSize.add(reqHeight);
+			jo.put("requestedSize", requestedSize);
+			jo.put("textures", textureFiles);
+			jo.put("npcData", npcData);
+			JsonArray position = new JsonArray();
+			if (slaves == null || slaves.size() == 0) {
+				position.add(x);
+				position.add(y);
+			} else {
+				JsonArray pos = new JsonArray();
+				pos.add(x);
+				pos.add(y);
+				position.add(pos);
+				for (NPC n: slaves) {
+					pos = new JsonArray();
+					pos.add(n.x);
+					pos.add(n.y);
+					position.add(pos);
+				}
+			}
+			jo.put("position", position);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(origWidth);
+			originalSize.add(origHeight);
+			jo.put("originalSize", originalSize);
+			jo.put("fps", fps);
+			jo.put("type", getClass().getSimpleName());
+			if (background) jo.put("background", background);
+			return jo;
+		} else return new StringValue("");
 	}
 
 	@Override

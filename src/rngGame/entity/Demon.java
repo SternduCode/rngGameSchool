@@ -15,10 +15,10 @@ public class Demon extends NPC {
 	}
 
 	@Override
-	protected void init(JsonObject npc) {
+	protected void init(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
 		dir = ((StringValue) npc.get("dir")).getValue();
 		directory = "demons/" + dir;
-		super.init(npc);
+		super.init(npc, npcs, cm, requestorN);
 	}
 
 	@Override

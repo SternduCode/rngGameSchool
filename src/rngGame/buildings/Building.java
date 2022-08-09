@@ -98,6 +98,7 @@ public class Building extends GameObject implements JsonValue {
 
 		buildings.add(this);
 		gp.getViewGroup().getChildren().add(this);
+
 		if (((JsonArray) building.get("position")).get(0) instanceof JsonArray ja) {
 			try {
 				slaves = new ArrayList<>();
