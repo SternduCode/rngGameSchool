@@ -29,8 +29,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         architecture: x64
-    - name: Build with Gradle
+    - name: pull JsonLib
+      run: git clone https://github.com/SternduCode/JSONLIB.git
+    - name: Setup Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
-        arguments: build
         gradle-version: current
+    - name: Build JSONLIB with Gradle
+      run: cd JSONLIB && gradle build
+    - run: cp JSONLIB/build/libs/JSONLIB.jar lib/lib/
+    - name: Build with Gradle
+      run: gradle build
+    - run: ls -al && ls -al JSONLIB && ls -al build/libs
