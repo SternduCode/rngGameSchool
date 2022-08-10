@@ -112,8 +112,55 @@ public class TileManager extends Pane {
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
-				System.out.println("npcs");
-				System.out.println("pfuck");
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				try {
+					Path p1 = f.toPath();
+					Path p2 = new File("./res/npc/" + f.getName()).toPath();
+					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println(p2);
+					Image img = new Image(new FileInputStream(p2.toFile()));
+					JsonObject joN = new JsonObject();
+					JsonArray requestedSize = new JsonArray();
+					requestedSize.add(new DoubleValue(img.getWidth()));
+					requestedSize.add(new DoubleValue(img.getHeight()));
+					joN.put("requestedSize", requestedSize);
+					JsonObject textures = new JsonObject();
+					textures.put("default", new StringValue(f.getName()));
+					joN.put("textures", textures);
+					JsonObject npcData = new JsonObject();
+					joN.put("npcData", npcData);
+					joN.put("type", new StringValue("NPC"));
+					joN.put("fps", new DoubleValue(7d));
+					JsonArray position = new JsonArray();
+					position.add(new DoubleValue(
+							requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX()));
+					position.add(new DoubleValue(
+							requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+					joN.put("position", position);
+					JsonArray originalSize = new JsonArray();
+					originalSize.add(new DoubleValue(img.getWidth()));
+					originalSize.add(new DoubleValue(img.getHeight()));
+					joN.put("originalSize", originalSize);
+
+					NPC n = new NPC(joN, gp, npcs, npcCM, requestorN);
+					mnpcs.getItems().remove(mi);
+					mnpcs.getItems()
+					.add(new MenuItemWNPC(f.getName(),
+							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
+							n));
+					mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
+					mnpcs.getItems().add(mi);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				System.out.println(f);
 			} else if (mi.getParentMenu() == mbuildings){
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
