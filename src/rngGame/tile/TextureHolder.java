@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import rngGame.main.Input;
 
 public class TextureHolder extends Pane {
 
@@ -28,6 +29,7 @@ public class TextureHolder extends Pane {
 			if (System.getProperty("edit").equals("true")) {
 				System.out.println("fth");
 				requestor.set(TextureHolder.this);
+				Input.instance.comp.add(TextureHolder.this.tile.images.get(0));
 				cm.show(TextureHolder.this, e.getScreenX(), e.getScreenY());
 			}
 		});

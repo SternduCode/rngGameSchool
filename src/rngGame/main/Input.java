@@ -1,8 +1,9 @@
 package rngGame.main;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import javafx.event.EventTarget;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
@@ -13,10 +14,17 @@ import rngGame.tile.TextureHolder;
 
 public class Input {
 
+	public static Input instance;
+
 	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n;
+
+	public List<Image> comp = new ArrayList<>();
 
 	private SpielPanel gp;
 
+	public Input() {
+		instance = this;
+	}
 
 	private void newC(Polygon p) {
 		ctrlPressed = false;
@@ -24,6 +32,7 @@ public class Input {
 		p.setVisible(false);
 		if (p.getParent() instanceof TextureHolder th) th.getTile().poly.clear();
 	}
+
 
 	private void save(Polygon p) {
 		ctrlPressed = false;
@@ -101,6 +110,8 @@ public class Input {
 
 		if (code == KeyCode.H) h = !h;
 
+		if (code == KeyCode.L) print();
+
 		if (e.getText().equalsIgnoreCase("ö")) saveMap();
 
 		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
@@ -160,8 +171,25 @@ public class Input {
 
 	}
 
+	public void print() {
+		for (Image img:comp) {
+			long result = 1;
+
+			for (int i =0;i<img.getWidth();i++)for (int j=0;j<img.getHeight();j++)
+				result = 31 * result + img.getPixelReader().getArgb(i, j);
+			System.out.println(result);
+		}
+	}
+
 	public void saveMap() {
 		gp.saveMap();
+	}
+
+	@Override
+	public String toString() {
+		return "Input [w=" + w + ", s=" + s + ", a=" + a + ", d=" + d + ", tabPressed="
+				+ tabPressed + ", ctrlPressed=" + ctrlPressed + ", p=" + p + ", b=" + b + ", h="
+				+ h + ", n=" + n + "]";
 	}
 
 }

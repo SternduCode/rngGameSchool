@@ -11,10 +11,9 @@ public class Player extends Entity {
 	public final int size = 64;
 
 	public final int screenX;
+
 	public final int screenY;
-
 	private double oldX, oldY;
-
 
 	public Player(SpielPanel gp) {
 		super(gp, "player", 3);
@@ -49,6 +48,7 @@ public class Player extends Entity {
 		});
 	}
 
+
 	public void getPlayerImage() {
 
 		try {
@@ -77,6 +77,16 @@ public class Player extends Entity {
 		y = gp.Bg * startingPosition.getValue();
 		oldX = x;
 		oldY = y;
+	}
+
+	@Override
+	public String toString() {
+		return "Player [size=" + size + ", screenX=" + screenX + ", screenY=" + screenY + ", speed="
+				+ speed + ", x=" + x + ", y=" + y + ", fps=" + fps + ", images=" + images
+				+ ", collisionBoxes=" + collisionBoxes + ", currentKey=" + currentKey + ", textureFiles="
+				+ textureFiles + ", reqWidth=" + reqWidth + ", reqHeight=" + reqHeight + ", origWidth="
+				+ origWidth + ", origHeight=" + origHeight + ", spriteCounter=" + spriteCounter
+				+ ", spriteNum=" + spriteNum + ", background=" + background + "]";
 	}
 
 	@Override

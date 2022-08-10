@@ -74,8 +74,8 @@ public class SpielPanel extends Pane {
 
 	public SelectTool getSelectTool() { return selectTool; }
 
-
 	public TileManager getTileM() { return tileM; }
+
 
 	public Group getViewGroup() { return view; }
 
@@ -88,7 +88,6 @@ public class SpielPanel extends Pane {
 	public void setMap(String path) {
 		setMap(path, null);
 	}
-
 
 	public void setMap(String path, Map.Entry<Double, Double> position) {
 		view.getChildren().clear();
@@ -111,6 +110,7 @@ public class SpielPanel extends Pane {
 		view.getChildren().add(player);
 	}
 
+
 	public void SST() {
 		Timeline tl = new Timeline(
 				new KeyFrame(Duration.millis(1000 / FPS),
@@ -119,6 +119,14 @@ public class SpielPanel extends Pane {
 						}));
 		tl.setCycleCount(Animation.INDEFINITE);
 		tl.play();
+	}
+
+	@Override
+	public String toString() {
+		return "SpielPanel [inv=" + inv
+				+ ", keyH=" + keyH + ", player=" + player + ", tileM=" + tileM + ", selectTool="
+				+ selectTool + ", view=" + view.getChildren().size() + ", buildings=" + buildings + ", npcs=" + npcs
+				+ "]";
 	}
 
 	public void update() {
