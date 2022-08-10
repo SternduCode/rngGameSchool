@@ -23,6 +23,8 @@ public class TestCollBoxGen extends Application {
 	private Image img;
 	private Polyline pl;
 
+	private double wr, hr;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -95,8 +97,8 @@ public class TestCollBoxGen extends Application {
 		System.out.println(li2);
 		synchronized (this.li) {
 			li2.forEach(p -> {
-				this.li.add(p.x());
-				this.li.add(p.y());
+				this.li.add(p.x() * wr);
+				this.li.add(p.y() * hr);
 			});
 		}
 	}
@@ -108,6 +110,9 @@ public class TestCollBoxGen extends Application {
 		p.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		ImageView iv = new ImageView();
 		iv.setImage(ImgUtil.resizeImage(new Image(fis), 64, 32, 300, 150));
+		int w = 135, h = 75;
+		wr = w / iv.getImage().getWidth();
+		hr = h / iv.getImage().getHeight();
 
 		img = iv.getImage();
 		pl = new Polyline();

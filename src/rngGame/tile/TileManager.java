@@ -9,7 +9,7 @@ import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 import javafx.stage.FileChooser;
@@ -115,8 +115,54 @@ public class TileManager extends Pane {
 				System.out.println("npcs");
 				System.out.println("pfuck");
 			} else if (mi.getParentMenu() == mbuildings){
-				System.out.println("buzildib");
-				System.out.println("pfuck");
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				try {
+					Path p1 = f.toPath();
+					Path p2 = new File("./res/building/" + f.getName()).toPath();
+					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println(p2);
+					Image img = new Image(new FileInputStream(p2.toFile()));
+					JsonObject joB = new JsonObject();
+					JsonArray requestedSize = new JsonArray();
+					requestedSize.add(new DoubleValue(img.getWidth()));
+					requestedSize.add(new DoubleValue(img.getHeight()));
+					joB.put("requestedSize", requestedSize);
+					JsonObject textures = new JsonObject();
+					textures.put("default", new StringValue(f.getName()));
+					joB.put("textures", textures);
+					JsonObject buildingData = new JsonObject();
+					joB.put("buildingData", buildingData);
+					joB.put("type", new StringValue("Building"));
+					JsonArray position = new JsonArray();
+					position.add(new DoubleValue(
+							requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX()));
+					position.add(new DoubleValue(
+							requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+					joB.put("position", position);
+					JsonArray originalSize = new JsonArray();
+					originalSize.add(new DoubleValue(img.getWidth()));
+					originalSize.add(new DoubleValue(img.getHeight()));
+					joB.put("originalSize", originalSize);
+
+					Building b = new Building(joB, gp, buildings, buildingCM, requestorB);
+					mbuildings.getItems().remove(mi);
+					mbuildings.getItems()
+					.add(new MenuItemWBuilding(f.getName(),
+							new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+									(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+									(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16)),
+							b));
+					mbuildings.getItems().get(mbuildings.getItems().size() - 1).setOnAction(this::contextMenu);
+					mbuildings.getItems().add(mi);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				System.out.println(f);
 			} else if (mi.getParentMenu() == mtiles) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
@@ -339,9 +385,9 @@ public class TileManager extends Pane {
 				.add(new MenuItemWNPC(
 						((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
-								new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
-										(int) n.getFirstImage().getHeight(), 16, 16)),
-								n));
+						new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
+								(int) n.getFirstImage().getHeight(), 16, 16)),
+						n));
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));

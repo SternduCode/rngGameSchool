@@ -17,8 +17,10 @@ public abstract class GameObject extends Pane {
 	protected Map<String, Polygon> collisionBoxes;
 
 	protected ImageView iv;
+
 	protected String currentKey, directory;
 	protected Map<String, String> textureFiles;
+
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 	protected SpielPanel gp;
 	protected Group collisionBoxViewGroup;
@@ -42,6 +44,7 @@ public abstract class GameObject extends Pane {
 		this.gp = gp;
 		this.directory = directory;
 	}
+
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
@@ -70,19 +73,21 @@ public abstract class GameObject extends Pane {
 		textureFiles.put(key, path);
 		return li;
 	}
-
 	public boolean collides(GameObject collidable) {
 		if (getCollisionBox().getPoints().size() > 0) {
 			Shape intersect = Shape.intersect(collidable.getCollisionBox(), getCollisionBox());
 			return !intersect.getBoundsInLocal().isEmpty();
 		} else return false;
 	}
-
 	public Polygon getCollisionBox() {
 		return collisionBoxes.get(currentKey);
 	}
 
+	public String getCurrentKey() { return currentKey; }
+
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
+
+	public Map<String, List<Image>> getImages() { return images; }
 
 	public double getX() { return x; }
 
