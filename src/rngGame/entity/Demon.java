@@ -10,6 +10,10 @@ public class Demon extends NPC {
 
 	protected String dir;
 
+	public Demon(Demon npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
+		super(npc, gp, npcs, cm, requestorN);
+	}
+
 	public Demon(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
 		super(npc, gp, npcs, cm, requestorN);
 	}
