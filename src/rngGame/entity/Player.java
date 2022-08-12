@@ -73,8 +73,8 @@ public class Player extends Entity {
 	}
 
 	public void setPosition(Entry<Double, Double> startingPosition) {
-		x = gp.Bg * startingPosition.getKey();
-		y = gp.Bg * startingPosition.getValue();
+		x = (int) (gp.Bg * startingPosition.getKey());
+		y = (int) (gp.Bg * startingPosition.getValue());
 		oldX = x;
 		oldY = y;
 	}
