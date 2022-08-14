@@ -255,6 +255,14 @@ public class TileManager extends Pane {
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
+	public Node getObjectAt(double x, double y) {
+		List<Node> nodes = gp.getViewGroup().getChildren()
+				.filtered(n -> n.contains(x - ((GameObject) n).getX(), y - ((GameObject) n).getY()) && n.isVisible());
+		if (nodes.size() != 0) return nodes.get(nodes.size() - 1);
+		else
+			return map.get((int) Math.floor(y / gp.Bg)).get((int) Math.floor(x / gp.Bg));
+	}
+
 	public Map.Entry<Double, Double> getStartingPosition() { return startingPosition; }
 
 	public void loadMap(JsonArray data) {
@@ -291,6 +299,10 @@ public class TileManager extends Pane {
 		} catch (Exception e) {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
+	}
+
+	public void reload() {
+		setMap(path);
 	}
 
 	public void save() {

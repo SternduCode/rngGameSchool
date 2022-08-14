@@ -23,7 +23,9 @@ public class NPC extends Entity implements JsonValue {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestorN.set(NPC.this);
-				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
 			}
 		});
 		init(npc, npcs, cm, requestorN);
@@ -41,7 +43,9 @@ public class NPC extends Entity implements JsonValue {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestorN.set(NPC.this);
-				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
 			}
 		});
 		init(npc, npcs, cm, requestorN);
@@ -55,7 +59,9 @@ public class NPC extends Entity implements JsonValue {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestorN.set(NPC.this);
-				cm.show(NPC.this, e.getScreenX(), e.getScreenY());
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
 			}
 		});
 		x = npc.x;

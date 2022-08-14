@@ -41,11 +41,11 @@ public class SpielPanel extends Pane {
 
 		view = new Group();
 
-		player = new Player(this);
-
 		selectTool = new SelectTool(this);
 
 		tileM = new TileManager(this);
+
+		player = new Player(this);
 
 		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
@@ -56,10 +56,6 @@ public class SpielPanel extends Pane {
 
 		getChildren().addAll(tileM, view, selectTool, inv);
 
-	}
-
-	public void addNPCs() {
-		view.getChildren().addAll(npcs);
 	}
 
 	public List<Building> getBuildings() { return buildings; }
@@ -78,6 +74,24 @@ public class SpielPanel extends Pane {
 
 
 	public Group getViewGroup() { return view; }
+
+	public void reload() {
+		view.getChildren().clear();
+		tileM.reload();
+		if (tileM.getBackgroundPath() != null) try {
+			setBackground(new Background(
+					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
+							BackgroundRepeat.NO_REPEAT,
+							BackgroundRepeat.NO_REPEAT, null,
+							new BackgroundSize(SpielLaenge, SpielHoehe, false, false, false, false))));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		buildings = tileM.getBuildingsFromMap();
+		npcs = tileM.getNPCSFromMap();
+		view.getChildren().add(player);
+	}
 
 	public void saveMap() {
 		System.out.println("don");

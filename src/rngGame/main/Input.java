@@ -2,7 +2,7 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
-import javafx.event.EventTarget;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
@@ -16,7 +16,7 @@ public class Input {
 
 	public static Input instance;
 
-	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n;
+	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
 
 	public List<Image> comp = new ArrayList<>();
 
@@ -27,10 +27,13 @@ public class Input {
 	}
 
 	private void newC(Polygon p) {
-		ctrlPressed = false;
 		p.getPoints().clear();
 		p.setVisible(false);
-		if (p.getParent() instanceof TextureHolder th) th.getTile().poly.clear();
+		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
+	}
+
+	private void reload() {
+		gp.reload();
 	}
 
 
@@ -87,6 +90,10 @@ public class Input {
 
 		if (code == KeyCode.N) n = true;
 
+		if (code == KeyCode.R) r = true;
+
+		if (ctrlPressed && r) reload();
+
 
 	}
 
@@ -124,6 +131,8 @@ public class Input {
 
 		if (code == KeyCode.N) n = false;
 
+		if (code == KeyCode.R) r = false;
+
 	}
 
 	public void keyTyped(KeyEvent e) {}
@@ -149,7 +158,7 @@ public class Input {
 
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
-		EventTarget target = me.getTarget();
+		Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 		if (target instanceof TextureHolder t) {
 
 			if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();

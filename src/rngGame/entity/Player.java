@@ -73,8 +73,8 @@ public class Player extends Entity {
 	}
 
 	public void setPosition(Entry<Double, Double> startingPosition) {
-		x = (int) (gp.Bg * startingPosition.getKey());
-		y = (int) (gp.Bg * startingPosition.getValue());
+		x = (long) (gp.Bg * startingPosition.getKey());
+		y = (long) (gp.Bg * startingPosition.getValue());
 		oldX = x;
 		oldY = y;
 	}
@@ -122,8 +122,7 @@ public class Player extends Entity {
 		getCollisionBox().setTranslateX(x - oldX);
 		getCollisionBox().setTranslateY(y - oldY);
 
-		if (!keyH.p) setVisible(true);
-		else setVisible(false);
+		if (isVisible() && keyH.p) setVisible(false);
 
 
 		gp.getBuildings().forEach(b -> {

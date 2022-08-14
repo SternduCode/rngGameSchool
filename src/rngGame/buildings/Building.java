@@ -29,7 +29,9 @@ public class Building extends GameObject implements JsonValue {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestorB.set(Building.this);
-				cm.show(Building.this, e.getScreenX(), e.getScreenY());
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
 			}
 		});
 		x = building.x;
@@ -70,7 +72,9 @@ public class Building extends GameObject implements JsonValue {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestorB.set(Building.this);
-				cm.show(Building.this, e.getScreenX(), e.getScreenY());
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
 			}
 		});
 		origWidth = ((NumberValue) ((JsonArray) building.get("originalSize")).get(0)).getValue().intValue();
