@@ -79,81 +79,143 @@ public abstract class GameObject extends Pane {
 
 	private void handleContextMenu(ActionEvent e) {
 		MenuItem source = (MenuItem) e.getSource();
-		ContextMenu cm = source.getParentPopup();
+		ContextMenu cm = source.getParentMenu().getParentPopup();
 		if (source == position) {
 
 		} else if (source == fpsI) {
+			TextInputDialog dialog = new TextInputDialog("" + fps);
+			dialog.setTitle("FPS");
+			dialog.setContentText("Please enter the new FPS value:");
 
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()) try {
+				fps = Double.parseDouble(result.get());
+			} catch (NumberFormatException e2) {
+			}
 		} else if (source == currentKeyI) {
+			TextInputDialog dialog = new TextInputDialog(currentKey);
+			dialog.setTitle("Current Key");
+			dialog.setContentText("Please enter the new Key:");
+
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()) if (images.containsKey(result.get())) currentKey = result.get();
 
 		} else if (source == directoryI) {
+			TextInputDialog dialog = new TextInputDialog(directory);
+			dialog.setTitle("Directory");
+			dialog.setContentText("Please enter the name of an Directory located in res/ :");
+
+			Optional<String> result = dialog.showAndWait();
+
+			if (result.isPresent()) if (new File("./res/" + result.get()).exists()) directory = result.get();
 
 		} else if (source == origDim) {
 
 		} else if (source == reqDim) {
 
 		} else if (source == backgroundI) {
-
+			Alert alert = new Alert(Alert.AlertType.NONE);
+			alert.setTitle("Background");
+			alert.setContentText("Set the value for Background");
+			ButtonType okButton = new ButtonType("true", ButtonBar.ButtonData.YES);
+			ButtonType noButton = new ButtonType("false", ButtonBar.ButtonData.NO);
+			ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+			Optional<ButtonType> res = alert.showAndWait();
+			if (res.isPresent()) if (res.get() == okButton) background = true;
+			else if (res.get() == noButton) background = false;
+			System.out.println(background);
 		} else if (source == reloadTextures) {
-
-		} else if (source.getText().equals("add Texture")) {
-			FileChooser fc = new FileChooser();
-			fc.setInitialDirectory(new File("."));
-			fc.getExtensionFilters().add(new ExtensionFilter(
-					"A file containing an Image", "*.png"));
-			File f = fc.showOpenDialog(cm.getScene().getWindow());
-			if (f == null || !f.exists()) return;
-			try {
-				Path p1 = f.toPath();
-				Path p2 = new File("./res/" + directory + "/" + f.getName()).toPath();
-				Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-				System.out.println(p2);
-				TextInputDialog dialog = new TextInputDialog("walter");
-				dialog.setTitle("Text Input Dialog");
-				dialog.setHeaderText("Look, a Text Input Dialog");
-				dialog.setContentText("Please enter your name:");
-
-				// Traditional way to get the response value.
-				Optional<String> result = dialog.showAndWait();
-				if (result.isPresent()) System.out.println("Your name: " + result.get());
-
-				// The Java 8 way to get the response value (with lambda expression).
-				result.ifPresent(name -> System.out.println("Your name: " + name));
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
+			for (Entry<String, String> en: textures) try {
+				getAnimatedImages(en.getKey(), en.getValue());
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
 			}
-			System.out.println(f);
 		} else {
+			cm = source.getParentMenu().getParentMenu().getParentPopup();
+			if (source.getText().equals("add Texture")) {
 
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				TextInputDialog dialog = new TextInputDialog("");
+				dialog.setTitle("Naming a new State");
+				dialog.setContentText("Please enter a name for that State:");
+
+				Optional<String> result = dialog.showAndWait();
+				result.ifPresent(name -> {
+
+					try {
+						Path p1 = f.toPath();
+						Path p2 = new File("./res/" + directory + "/" + f.getName()).toPath();
+						if (Files.exists(p2)) {
+							Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+							alert.setTitle("The file already exists");
+							alert.setContentText("Do you want to Override it?");
+							ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+							ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+							ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+							alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+							Optional<ButtonType> res = alert.showAndWait();
+							if (res.isPresent()) {
+								if (res.get() == okButton) try {
+									Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES,
+											StandardCopyOption.REPLACE_EXISTING);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+								else if (res.get() == cancelButton) return;
+							} else return;
+
+						} else Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+						System.out.println(f);
+						System.out.println(p2);
+						getAnimatedImages(name, f.getName());
+						if (!collisionBoxes.containsKey(name)) collisionBoxes.put(name, new Polygon());
+
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				});
+			} else {
+
+			}
 		}
 	}
 
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
-		Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
+		try {
+			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
-		for (int i = 0; i < img.getWidth(); i += origWidth) {
-			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
-			li.add(ImgUtil.resizeImage(wi,
-					(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
-		}
-		String[] sp = path.split("[.]");
-		if (new File("./res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
-		+ ".collisionbox").exists())
-			try {
-				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + directory + "/"
-						+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
-						+ ".collisionbox"), "rws");
-				raf.seek(0l);
-				int length = raf.readInt();
-				Polygon collisionBox = collisionBoxes.get(key);
-				if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
-				for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
-			} catch (IOException e) {
-				e.printStackTrace();
+			for (int i = 0; i < img.getWidth(); i += origWidth) {
+				WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
+				li.add(ImgUtil.resizeImage(wi,
+						(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 			}
-		images.put(key, li);
-		textureFiles.put(key, path);
+			String[] sp = path.split("[.]");
+			if (new File("./res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+			+ ".collisionbox").exists())
+				try {
+					RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + directory + "/"
+							+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+							+ ".collisionbox"), "rws");
+					raf.seek(0l);
+					int length = raf.readInt();
+					Polygon collisionBox = collisionBoxes.get(key);
+					if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
+					for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			images.put(key, li);
+			textureFiles.put(key, path);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 		return li;
 	}
 
@@ -182,7 +244,10 @@ public abstract class GameObject extends Pane {
 		backgroundI.setText("Background: " + background);
 		imagesM.getItems().clear();
 		for (Entry<String, String> en: textureFiles.entrySet()) {
-			MenuItem img = new MenuItem(en.getKey() + " : " + en.getValue());
+			MenuItem img = new MenuItem(en.getKey() + " : " + en.getValue(),
+					new ImageView(ImgUtil.resizeImage(images.get(en.getKey()).get(0),
+							(int) images.get(en.getKey()).get(0).getWidth(),
+							(int) images.get(en.getKey()).get(0).getHeight(), 16, 16)));
 			img.setOnAction(this::handleContextMenu);
 			imagesM.getItems().add(img);
 		}

@@ -155,14 +155,15 @@ public class SpielPanel extends Pane {
 		List<Node> nodes = new ArrayList<>(view.getChildren());
 
 		nodes.sort((n1, n2) -> {
-			if (n1 instanceof Building b1) {
-				if (n2 instanceof Building b2) return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
+			if (n1 instanceof GameObject b1) {
+				if (n2 instanceof GameObject b2)
+					return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
 						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
 								n2.getLayoutY() + ((Pane) n2).getHeight());
 				else return b1.isBackground() ? -1
 						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
 								n2.getLayoutY() + ((Pane) n2).getHeight());
-			} else if (n2 instanceof Building b2) return b2.isBackground() ? 1
+			} else if (n2 instanceof GameObject b2) return b2.isBackground() ? 1
 					: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
 							n2.getLayoutY() + ((Pane) n2).getHeight());
 			else return Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),

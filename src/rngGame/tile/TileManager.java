@@ -253,6 +253,8 @@ public class TileManager extends Pane {
 
 	public Map.Entry<Double, Double> getExitStartingPosition() { return exitStartingPosition; }
 
+	public MenuItem[] getMenus() { return new MenuItem[] {mtiles, mnpcs, mbuildings}; }
+
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
 	public Node getObjectAt(double x, double y) {
@@ -495,9 +497,8 @@ public class TileManager extends Pane {
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);
 				if (th == null) {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY,
-							cm,
-							requestor);
+					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), gp, screenX, screenY,
+							cm, requestor, worldX, worldY);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);
 				} else {
@@ -514,8 +515,8 @@ public class TileManager extends Pane {
 					th.setVisible(false);
 					th.update();
 				} else {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), screenX, screenY, cm,
-							requestor);
+					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), gp, screenX, screenY, cm,
+							requestor, worldX, worldY);
 					th.setVisible(false);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);
