@@ -11,10 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
-import javafx.stage.FileChooser;
+import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.entity.Player;
 import rngGame.tile.ImgUtil;
+import rngGame.ui.TwoTextInputDialog;
 
 public abstract class GameObject extends Pane {
 
@@ -81,7 +82,20 @@ public abstract class GameObject extends Pane {
 		MenuItem source = (MenuItem) e.getSource();
 		ContextMenu cm = source.getParentMenu().getParentPopup();
 		if (source == position) {
-
+			TwoTextInputDialog dialog = new TwoTextInputDialog(x + "", "X", y + "", "Y");
+			dialog.initModality(Modality.NONE);
+			dialog.setTitle("Position");
+			Optional<List<String>> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				try {
+					x = Double.parseDouble(result.get().get(0));
+				} catch (NumberFormatException e2) {
+				}
+				try {
+					y = Double.parseDouble(result.get().get(1));
+				} catch (NumberFormatException e2) {
+				}
+			}
 		} else if (source == fpsI) {
 			TextInputDialog dialog = new TextInputDialog("" + fps);
 			dialog.setTitle("FPS");
@@ -110,9 +124,36 @@ public abstract class GameObject extends Pane {
 			if (result.isPresent()) if (new File("./res/" + result.get()).exists()) directory = result.get();
 
 		} else if (source == origDim) {
-
+			TwoTextInputDialog dialog = new TwoTextInputDialog(origWidth + "", "Width", origHeight + "", "Height");
+			dialog.setTitle("Original Dimension");
+			Optional<List<String>> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				try {
+					origWidth = Integer.parseInt(result.get().get(0));
+				} catch (NumberFormatException e2) {
+				}
+				try {
+					origHeight = Integer.parseInt(result.get().get(1));
+				} catch (NumberFormatException e2) {
+				}
+			}
 		} else if (source == reqDim) {
-
+			TwoTextInputDialog dialog = new TwoTextInputDialog(reqWidth + "", "Width", reqHeight + "", "Height");
+			dialog.setTitle("Requested Dimension");
+			dialog.initModality(Modality.NONE);
+			Optional<List<String>> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				try {
+					reqWidth = Integer.parseInt(result.get().get(0));
+					reloadTextures();
+				} catch (NumberFormatException e2) {
+				}
+				try {
+					reqHeight = Integer.parseInt(result.get().get(1));
+					reloadTextures();
+				} catch (NumberFormatException e2) {
+				}
+			}
 		} else if (source == backgroundI) {
 			Alert alert = new Alert(Alert.AlertType.NONE);
 			alert.setTitle("Background");
@@ -125,14 +166,8 @@ public abstract class GameObject extends Pane {
 			if (res.isPresent()) if (res.get() == okButton) background = true;
 			else if (res.get() == noButton) background = false;
 			System.out.println(background);
-		} else if (source == reloadTextures) {
-			List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
-			for (Entry<String, String> en: textures) try {
-				getAnimatedImages(en.getKey(), en.getValue());
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-		} else {
+		} else if (source == reloadTextures) reloadTextures();
+		else {
 			cm = source.getParentMenu().getParentMenu().getParentPopup();
 			if (source.getText().equals("add Texture")) {
 
@@ -182,7 +217,7 @@ public abstract class GameObject extends Pane {
 					}
 				});
 			} else {
-
+				//TODO click on texture
 			}
 		}
 	}
@@ -264,6 +299,15 @@ public abstract class GameObject extends Pane {
 	public double getY() { return y; }
 
 	public boolean isBackground() { return background; }
+
+	public void reloadTextures() {
+		List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
+		for (Entry<String, String> en: textures) try {
+			getAnimatedImages(en.getKey(), en.getValue());
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
 
 	public void setPosition(double x, double y) {
 		this.x = x;
