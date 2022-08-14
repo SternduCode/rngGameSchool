@@ -73,7 +73,7 @@
 				80
 			],
 			"textures" : {
-				"default" : "MayAwater.png"
+				"default" : "MayAshadow.png"
 			},
 			"npcData" : {
 				
@@ -88,7 +88,7 @@
 				64
 			],
 			"type" : "Demon",
-			"dir" : "water"
+			"dir" : "shadow"
 		}
 	],
 	"buildings" : [
