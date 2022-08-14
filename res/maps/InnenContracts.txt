@@ -225,6 +225,7 @@
 				480.0,
 				276.0
 			],
+			"fps" : 3.00000,
 			"type" : "Building",
 			"originalSize" : [
 				64,

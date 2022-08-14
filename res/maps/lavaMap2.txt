@@ -69,11 +69,11 @@
 		},
 		{
 			"requestedSize" : [
-				60,
-				60
+				80,
+				80
 			],
 			"textures" : {
-				"default" : "MelloAVoid.png"
+				"default" : "MayAwater.png"
 			},
 			"npcData" : {
 				
@@ -88,7 +88,7 @@
 				64
 			],
 			"type" : "Demon",
-			"dir" : "void"
+			"dir" : "water"
 		}
 	],
 	"buildings" : [

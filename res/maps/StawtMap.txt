@@ -94,6 +94,10 @@
 			"SeiteUntenB.png",
 			"SeiteUnten3.png",
 			"WasserFall.png"
+			"WasserMiniEckeRechtsO.png",
+			"WasserMiniEckeLinksU.png",
+			"WasserMiniEckeLinksO.png",
+			"WasserMiniEckeRechtsU.png"
 		],
 		"startingPosition" : [
 			1.0,
