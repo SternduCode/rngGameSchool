@@ -424,7 +424,7 @@
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
-			25.0000,
+			20.0000,
 			25.0000
 		],
 		"dir" : "Insel",
