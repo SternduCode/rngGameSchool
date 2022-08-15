@@ -155,7 +155,7 @@
 				64,
 				64
 			],
-			"map" : "InselL7.txt"
+			"map" : "InselL8.txt"
 		},
 		{
 			"requestedSize" : [
