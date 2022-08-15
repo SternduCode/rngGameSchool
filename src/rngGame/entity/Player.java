@@ -19,7 +19,7 @@ public class Player extends Entity {
 		super(gp, "player", 3);
 		currentKey = "down";
 
-		fps = 7.5;
+		fps = 10.5;
 
 		reqWidth = reqHeight = size;
         
@@ -54,18 +54,19 @@ public class Player extends Entity {
 		try {
 
 			origHeight = origWidth = 64;
-			getAnimatedImages("down", "LaufenRunter.png");
-			getAnimatedImages("downL", "LaufenRunterL.png");
-			getAnimatedImages("right", "LaufenRechts.png");
-			getAnimatedImages("left", "LaufenLinks.png");
-			getAnimatedImages("idleup", "IdleUp.png");
-			getAnimatedImages("idleupL", "IdleUp.png");
-			getAnimatedImages("up", "LaufenHochL.png");
-			getAnimatedImages("upL", "LaufenHochL.png");
+
 			
 			origWidth = reqWidth = 96;
 			getAnimatedImages("idle", "Stehen.png");
 			getAnimatedImages("idleL", "Stehen2.png");
+			getAnimatedImages("right", "LaufenRechts.png");
+			getAnimatedImages("left", "LaufenLinks.png");
+			getAnimatedImages("down", "LaufenRunter.png");
+			getAnimatedImages("downL", "LaufenRunterL.png");
+			getAnimatedImages("up", "LaufenHochL.png");
+			getAnimatedImages("upL", "LaufenHochL.png");
+			getAnimatedImages("idleup", "IdleUp.png");
+			getAnimatedImages("idleupL", "IdleUp.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
