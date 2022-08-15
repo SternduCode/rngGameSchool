@@ -21,7 +21,7 @@ public class Player extends Entity {
 
 		fps = 7.5;
 
-		reqWidth = reqHeight = size;
+		reqWidth = (int) ((reqHeight = size) * 1.5);
 
 		this.gp = gp;
 		keyH = gp.getKeyH();
@@ -54,7 +54,6 @@ public class Player extends Entity {
 
 		try {
 
-			reqWidth = 96;
 			origHeight = origWidth = 64;
 			getAnimatedImages("down", "LaufenRunter.png");
 			getAnimatedImages("downL", "LaufenRunterL.png");
