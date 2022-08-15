@@ -57,14 +57,26 @@ public class TileManager extends Pane {
 
 	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
-	private Menu mtiles, mnpcs, mbuildings;
+	private Menu mtiles, mnpcs, mbuildings, mextra;
 
 
 	public TileManager(SpielPanel gp) {
 		cm = new ContextMenu();
-		cm.getItems().addAll(mtiles = new Menu("Tiles"), mnpcs = new Menu("NPCs"), mbuildings = new Menu("Buildings"));
+		cm.getItems().addAll(mtiles = new Menu("Tiles"), mnpcs = new Menu("NPCs"), mbuildings = new Menu("Buildings"),
+				mextra = new Menu("Extras"));
 		buildingCM = new ContextMenu();
 		npcCM = new ContextMenu();
+
+		MenuItem save = new MenuItem("save");
+		save.setOnAction(ae -> gp.saveMap());
+		mextra.getItems().add(save);
+
+		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
+		backToSpawn.setOnAction(ae -> gp.getPlayer().setPosition(getStartingPosition()));
+		mextra.getItems().add(backToSpawn);
+
+		Menu maps = new Menu("Maps");
+		mextra.getItems().add(maps);
 
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
@@ -257,7 +269,16 @@ public class TileManager extends Pane {
 		return map;
 	}
 
-	public MenuItem[] getMenus() { return new MenuItem[] {mtiles, mnpcs, mbuildings}; }
+	public MenuItem[] getMenus() {
+		((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().clear();
+		for (File f: new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[] sp = f.getName().split("[.]");
+			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
+			((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().add(map);
+		}
+		return new MenuItem[] {mtiles, mnpcs, mbuildings, mextra};
+	}
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
@@ -382,6 +403,7 @@ public class TileManager extends Pane {
 			dir = ((StringValue) map.get("dir")).getValue();
 
 			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
+			else backgroundPath = null;
 
 			if (jo.containsKey("exit")) {
 				JsonObject exit = (JsonObject) jo.get("exit");

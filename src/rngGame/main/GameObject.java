@@ -17,7 +17,7 @@ import rngGame.entity.Player;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.TwoTextInputDialog;
 
-public abstract class GameObject extends Pane {
+public class GameObject extends Pane {
 
 	protected double x = 0d, y = 0d, fps = 7.5;
 	protected Map<String, List<Image>> images;
