@@ -52,7 +52,7 @@ public class SpielPanel extends Pane {
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
 		inv.setVisible(false);
 
-		setMap("./res/maps/lavaMap2.txt");
+		setMap("./res/maps/lavaMap2.json");
 
 		getChildren().addAll(tileM, view, selectTool, inv);
 
@@ -158,8 +158,8 @@ public class SpielPanel extends Pane {
 			if (n1 instanceof GameObject b1) {
 				if (n2 instanceof GameObject b2)
 					return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
-						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
-								n2.getLayoutY() + ((Pane) n2).getHeight());
+							: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
+									n2.getLayoutY() + ((Pane) n2).getHeight());
 				else return b1.isBackground() ? -1
 						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
 								n2.getLayoutY() + ((Pane) n2).getHeight());
