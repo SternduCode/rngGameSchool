@@ -155,7 +155,7 @@
 				64,
 				64
 			],
-			"map" : "InnenContracts.txt"
+			"map" : "InselL7.txt"
 		},
 		{
 			"requestedSize" : [
