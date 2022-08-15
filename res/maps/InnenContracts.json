@@ -8,7 +8,7 @@
 			7,
 			12
 		],
-		"map" : "lavaMap2.txt"
+		"map" : "lavaMap2.json"
 	},
 	"npcs" : [
 		
