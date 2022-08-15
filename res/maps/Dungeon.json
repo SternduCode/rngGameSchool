@@ -1,23 +1,15 @@
 {
-	"npcs" : [
-		
-	],
-	"buildings" : [
-	
-	],
-	"map" : {
-		"generated" : true,
-		"background" : "backgrounds/dungeonhintergrund1.png",
-		"mainmap": "StawtMap",
-		"maps": [
-			"InselL1.txt",
-			"InselL2.txt",
-			"InselL3.txt",
-			"InselL4.txt",
-			"InselL5.txt",
-			"InselL6.txt",
-			"InselL7.txt",
-			"InselL8.txt"
-		]
-	}
+	"generated" : true,
+	"background" : "backgrounds/dungeonhintergrund1.png",
+	"mainmap": "StawtMap.json",
+	"maps": [
+		"InselL1.json",
+		"InselL2.json",
+		"InselL3.json",
+		"InselL4.json",
+		"InselL5.json",
+		"InselL6.json",
+		"InselL7.json",
+		"InselL8.json"
+	]
 }
