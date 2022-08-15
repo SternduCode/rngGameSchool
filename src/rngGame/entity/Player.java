@@ -22,7 +22,7 @@ public class Player extends Entity {
 		fps = 7.5;
 
 		reqWidth = reqHeight = size;
-
+        
 		this.gp = gp;
 		keyH = gp.getKeyH();
 
@@ -52,7 +52,7 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			origHeight = origWidth = 32;
+
 
 			
 
@@ -61,12 +61,14 @@ public class Player extends Entity {
 			getAnimatedImages("downL", "LaufenRunterL.png");
 			getAnimatedImages("right", "LaufenRechts.png");
 			getAnimatedImages("left", "LaufenLinks.png");
-			getAnimatedImages("idle", "Stehen.png");
-			getAnimatedImages("idleL", "Stehen2.png");
 			getAnimatedImages("idleup", "IdleUp.png");
 			getAnimatedImages("idleupL", "IdleUp.png");
 			getAnimatedImages("up", "LaufenHochL.png");
 			getAnimatedImages("upL", "LaufenHochL.png");
+			
+			origWidth = reqWidth = 96;
+			getAnimatedImages("idle", "Stehen.png");
+			getAnimatedImages("idleL", "Stehen2.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
