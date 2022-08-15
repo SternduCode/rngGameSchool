@@ -24,27 +24,6 @@
 				32
 			]
 		},
-		{
-			"requestedSize" : [
-				142,
-				142
-			],
-			"textures" : {
-				"default" : "InselLicht.png"
-			},
-			"buildingData" : {
-				
-			},
-			"position" : [
-				145.0,
-				145.0
-			],
-			"type" : "Building",
-			"originalSize" : [
-				64,
-				64
-			]
-		}
 	],
 	"dir" : "Insel",
 	"map" : {

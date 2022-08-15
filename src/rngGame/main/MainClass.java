@@ -13,7 +13,7 @@ public class MainClass extends Application {
 		System.setProperty("coll", "false");
 
 		launch(args);
-
+		
 	}
 
 	@Override
