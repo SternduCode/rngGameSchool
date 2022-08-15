@@ -53,10 +53,8 @@ public class Player extends Entity {
 
 		try {
 			origHeight = origWidth = 32;
-			getAnimatedImages("up", "LaufenHochL.png");
-			getAnimatedImages("upL", "LaufenHochL.png");
-			getAnimatedImages("idleup", "IdleUp.png");
-			getAnimatedImages("idleupL", "IdleUp.png");
+
+			
 
 			origHeight = origWidth = 64;
 			getAnimatedImages("down", "LaufenRunter.png");
@@ -65,6 +63,10 @@ public class Player extends Entity {
 			getAnimatedImages("left", "LaufenLinks.png");
 			getAnimatedImages("idle", "Stehen.png");
 			getAnimatedImages("idleL", "Stehen2.png");
+			getAnimatedImages("idleup", "IdleUp.png");
+			getAnimatedImages("idleupL", "IdleUp.png");
+			getAnimatedImages("up", "LaufenHochL.png");
+			getAnimatedImages("upL", "LaufenHochL.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
