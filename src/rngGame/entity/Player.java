@@ -10,9 +10,9 @@ public class Player extends Entity {
 	private final Input keyH;
 	public final int size = 64;
 
-	public final int screenX;
+	public int screenX;
 
-	public final int screenY;
+	public int screenY;
 	private double oldX, oldY;
 
 	public Player(SpielPanel gp) {
@@ -52,9 +52,6 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-
-
-			
 
 			origHeight = origWidth = 64;
 			getAnimatedImages("down", "LaufenRunter.png");
@@ -150,6 +147,9 @@ public class Player extends Entity {
 
 		oldX = x;
 		oldY = y;
+
+		screenX = (int) (gp.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
+		screenY = (int) (gp.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
 
 		//		shape.setTranslateX(0);
 		//		shape.setTranslateY(0);
