@@ -9,9 +9,11 @@ import javafx.scene.layout.*;
 
 public class TwoTextInputDialog extends Dialog<List<String>> {
 
-	GridPane grid = new GridPane();
-	TextField textField1, textField2;
-	Label label1, label2, space = new Label("");
+	private final GridPane grid = new GridPane();
+	private TextField textField1, textField2;
+	private Label label1, label2;
+
+	private final Label space = new Label("");
 
 	public TwoTextInputDialog(String textField1defaultText, String label1text, String textField2defaultText,
 			String label2text) {
@@ -68,7 +70,6 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 					: null;
 		});
 	}
-
 	private void updateGrid() {
 		grid.getChildren().clear();
 
@@ -81,5 +82,9 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 
 		Platform.runLater(() -> textField1.requestFocus());
 	}
+
+	public TextField getTextField1() { return textField1; }
+
+	public TextField getTextField2() { return textField2; }
 
 }

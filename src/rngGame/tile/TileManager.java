@@ -253,6 +253,10 @@ public class TileManager extends Pane {
 
 	public Map.Entry<Double, Double> getExitStartingPosition() { return exitStartingPosition; }
 
+	public List<List<TextureHolder>> getMap() {
+		return map;
+	}
+
 	public MenuItem[] getMenus() { return new MenuItem[] {mtiles, mnpcs, mbuildings}; }
 
 	public List<NPC> getNPCSFromMap() { return npcs; }

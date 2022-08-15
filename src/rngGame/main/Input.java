@@ -9,7 +9,6 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.buildings.Building;
-import rngGame.entity.NPC;
 import rngGame.tile.TextureHolder;
 
 public class Input {
@@ -17,6 +16,8 @@ public class Input {
 	public static Input instance;
 
 	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
+
+	private GameObject move, resize;
 
 	public List<Image> comp = new ArrayList<>();
 
@@ -139,15 +140,26 @@ public class Input {
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
-		if (!gp.getSelectTool().isDragging() && me.getTarget() instanceof TextureHolder)
-			gp.getSelectTool().startDrag(me);
-		else if (me.getTarget() instanceof TextureHolder) gp.getSelectTool().doDrag(me);
-		else if (me.getTarget() instanceof Building) {
-
-		} else if (me.getTarget() instanceof NPC) {
-
+		if (move != null) {
+			move.setX((long) (me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX() - move.getWidth() / 2));
+			move.setY((long) (me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY() - move.getHeight() / 2));
+		}
+		else if (resize != null) {
+			resize.setReqWidth((int) (me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX() - resize.getX()));
+			resize.setReqHeight(
+					(int) (me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY() - resize.getY()));
+			resize.reloadTextures();
 		} else {
+			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+			if (!gp.getSelectTool().isDragging() && target instanceof TextureHolder)
+				gp.getSelectTool().startDrag(me);
+			else if (gp.getSelectTool().isDragging()) gp.getSelectTool().doDrag(me);
+			else if (target instanceof GameObject go) {
 
+			} else {
+
+			}
 		}
 	}
 
@@ -158,7 +170,8 @@ public class Input {
 
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
-		Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+		Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+				me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 		if (target instanceof TextureHolder t) {
 
 			if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();
@@ -180,6 +193,10 @@ public class Input {
 
 	}
 
+	public void moveGameObject(GameObject go) {
+		move = go;
+	}
+
 	public void print() {
 		for (Image img:comp) {
 			long result = 1;
@@ -190,8 +207,20 @@ public class Input {
 		}
 	}
 
+	public void resizeGameObject(GameObject go) {
+		resize = go;
+	}
+
 	public void saveMap() {
 		gp.saveMap();
+	}
+
+	public void stopMoveingGameObject(GameObject go) {
+		move = null;
+	}
+
+	public void stopResizeingGameObject(GameObject go) {
+		resize = null;
 	}
 
 	@Override

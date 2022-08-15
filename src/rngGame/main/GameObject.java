@@ -26,9 +26,12 @@ public abstract class GameObject extends Pane {
 
 	protected ImageView iv;
 
+	private Runnable updateXY,updateReqDim;
+
 	private final Menu menu, imagesM;
 
 	protected String currentKey, directory;
+
 	protected Map<String, String> textureFiles;
 
 	protected int reqWidth, reqHeight, origWidth, origHeight;
@@ -83,8 +86,17 @@ public abstract class GameObject extends Pane {
 		ContextMenu cm = source.getParentMenu().getParentPopup();
 		if (source == position) {
 			TwoTextInputDialog dialog = new TwoTextInputDialog(x + "", "X", y + "", "Y");
+
+			updateXY = () -> {
+				if (!dialog.getTextField1().getText().equals(x + ""))
+					dialog.getTextField1().setText(x + "");
+				if (!dialog.getTextField2().getText().equals(y + ""))
+					dialog.getTextField2().setText(y + "");
+			};
+
 			dialog.initModality(Modality.NONE);
 			dialog.setTitle("Position");
+			gp.getKeyH().moveGameObject(this);
 			Optional<List<String>> result = dialog.showAndWait();
 			if (result.isPresent()) {
 				try {
@@ -96,6 +108,7 @@ public abstract class GameObject extends Pane {
 				} catch (NumberFormatException e2) {
 				}
 			}
+			gp.getKeyH().stopMoveingGameObject(this);
 		} else if (source == fpsI) {
 			TextInputDialog dialog = new TextInputDialog("" + fps);
 			dialog.setTitle("FPS");
@@ -139,8 +152,17 @@ public abstract class GameObject extends Pane {
 			}
 		} else if (source == reqDim) {
 			TwoTextInputDialog dialog = new TwoTextInputDialog(reqWidth + "", "Width", reqHeight + "", "Height");
+
+			updateReqDim = () -> {
+				if (!dialog.getTextField1().getText().equals(reqWidth + ""))
+					dialog.getTextField1().setText(reqWidth + "");
+				if (!dialog.getTextField2().getText().equals(reqHeight + ""))
+					dialog.getTextField2().setText(reqHeight + "");
+			};
+
 			dialog.setTitle("Requested Dimension");
 			dialog.initModality(Modality.NONE);
+			gp.getKeyH().resizeGameObject(this);
 			Optional<List<String>> result = dialog.showAndWait();
 			if (result.isPresent()) {
 				try {
@@ -154,6 +176,7 @@ public abstract class GameObject extends Pane {
 				} catch (NumberFormatException e2) {
 				}
 			}
+			gp.getKeyH().stopResizeingGameObject(this);
 		} else if (source == backgroundI) {
 			Alert alert = new Alert(Alert.AlertType.NONE);
 			alert.setTitle("Background");
@@ -253,7 +276,6 @@ public abstract class GameObject extends Pane {
 		}
 		return li;
 	}
-
 	public boolean collides(GameObject collidable) {
 		if (getCollisionBox().getPoints().size() > 0) {
 			Shape intersect = Shape.intersect(collidable.getCollisionBox(), getCollisionBox());
@@ -264,11 +286,8 @@ public abstract class GameObject extends Pane {
 		return collisionBoxes.get(currentKey);
 	}
 	public String getCurrentKey() { return currentKey; }
-
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
-
 	public Map<String, List<Image>> getImages() { return images; }
-
 	public List<Menu> getMenus() {
 		position.setText("Position: " + x + " " + y);
 		fpsI.setText("FPS: " + fps);
@@ -293,11 +312,15 @@ public abstract class GameObject extends Pane {
 		li.add(menu);
 		return li;
 	}
+	public int getOrigHeight() { return origHeight; }
+	public int getOrigWidth() { return origWidth; }
+
+	public int getReqHeight() { return reqHeight; }
+
+	public int getReqWidth() { return reqWidth; }
 
 	public double getX() { return x; }
-
 	public double getY() { return y; }
-
 	public boolean isBackground() { return background; }
 
 	public void reloadTextures() {
@@ -309,12 +332,41 @@ public abstract class GameObject extends Pane {
 		}
 	}
 
+	public void setOrigHeight(int origHeight) { this.origHeight = origHeight; }
+
+	public void setOrigWidth(int origWidth) { this.origWidth = origWidth; }
+
 	public void setPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	public void setReqHeight(int reqHeight) {
+		this.reqHeight = reqHeight;
+		if (updateReqDim != null)
+			updateReqDim.run();
+	}
+
+	public void setReqWidth(int reqWidth) {
+		this.reqWidth = reqWidth;
+		if (updateReqDim != null)
+			updateReqDim.run();
+	}
+
+	public void setX(double x) {
+		this.x = x;
+		if (updateXY != null)
+			updateXY.run();
+	}
+
+	public void setY(double y) {
+		this.y = y;
+		if (updateXY != null)
+			updateXY.run();
+	}
+
 	public void update() {
+
 		if (System.getProperty("coll").equals("true"))
 			collisionBoxViewGroup.setVisible(true);
 		else
