@@ -436,10 +436,10 @@ public class GameObject extends Pane {
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 
-		if (x + reqWidth > p.x - p.screenX
-				&& x - reqWidth < p.x + p.screenX
+		if (x + getWidth() > p.x - p.screenX
+				&& x < p.x + p.screenX + p.getWidth()
 				&& y + reqHeight > p.y - p.screenY
-				&& y - reqHeight < p.y + p.screenY)
+				&& y < p.y + p.screenY + p.getHeight())
 			setVisible(true);
 		else setVisible(false);
 	}
