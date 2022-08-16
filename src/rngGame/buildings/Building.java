@@ -16,7 +16,6 @@ public class Building extends GameObject implements JsonValue {
 	protected JsonObject buildingData;
 	private boolean slave = false;
 	private List<Building> slaves;
-	@SuppressWarnings("unused")
 	private Building master;
 
 	protected Building(SpielPanel gp, List<Building> buildings, ContextMenu cm, ObjectProperty<Building> requestorB) {

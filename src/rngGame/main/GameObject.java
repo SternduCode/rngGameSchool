@@ -273,7 +273,45 @@ public class GameObject extends Pane {
 					}
 				});
 			} else {
-				//TODO click on texture
+				FileChooser fc = new FileChooser();
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				try {
+					Path p1 = f.toPath();
+					Path p2 = new File("./res/" + directory + "/" + f.getName()).toPath();
+					if (Files.exists(p2)) {
+						Alert alert = new Alert(Alert.AlertType.NONE);
+						alert.setTitle("The file already exists");
+						alert.setContentText("Do you want to Override it?");
+						ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+						ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+						ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+						alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+						Optional<ButtonType> res = alert.showAndWait();
+						if (res.isPresent()) {
+							if (res.get() == okButton) try {
+								Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES,
+										StandardCopyOption.REPLACE_EXISTING);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							else if (res.get() == cancelButton) return;
+						} else return;
+
+					} else Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println(f);
+					System.out.println(p2);
+					String name = source.getText().split(":")[0];
+					name = name.substring(0, name.length() - 1);
+					getAnimatedImages(name, f.getName());
+					if (!collisionBoxes.containsKey(name)) collisionBoxes.put(name, new Polygon());
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
