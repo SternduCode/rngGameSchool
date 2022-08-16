@@ -1,6 +1,8 @@
 package rngGame.entity;
 
 import java.util.Map.Entry;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.*;
@@ -15,8 +17,8 @@ public class Player extends Entity {
 	public int screenY;
 	private double oldX, oldY;
 
-	public Player(SpielPanel gp) {
-		super(gp, "player", 3);
+	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
+		super(gp, "player", 3, null, cm, requestor);
 		currentKey = "down";
 
 		fps = 7.5;
@@ -73,6 +75,12 @@ public class Player extends Entity {
 		}
 
 	}
+
+	@Override
+	public boolean isMaster() { return true; }
+
+	@Override
+	public boolean isSlave() { return false; }
 
 	public void setPosition(Entry<Double, Double> startingPosition) {
 		x = (long) (gp.Bg * startingPosition.getKey());

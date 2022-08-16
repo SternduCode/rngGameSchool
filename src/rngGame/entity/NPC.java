@@ -18,52 +18,30 @@ public class NPC extends Entity implements JsonValue {
 	protected List<NPC> slaves;
 	protected boolean slave;
 
-	protected NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN,String directory) {
-		this(gp, directory);
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				requestorN.set(NPC.this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
-			}
-		});
+	protected NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
+			ObjectProperty<? extends Entity> requestorN, String directory) {
+		this(gp, directory, npcs, cm, requestorN);
 		init(npc, npcs, cm, requestorN);
 
-		npcs.add(this);
-		gp.getViewGroup().getChildren().add(this);
+		addToView();
 	}
 
-	protected NPC(SpielPanel gp, String directory) {
-		super(gp, directory, 0);
+	protected NPC(SpielPanel gp, String directory, List<NPC> npcs, ContextMenu cm,
+			ObjectProperty<? extends Entity> requestorN) {
+		super(gp, directory, 0d, npcs, cm, requestorN);
 	}
 
-	public NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
-		this(gp, "npc");
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				requestorN.set(NPC.this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
-			}
-		});
+	public NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
+			ObjectProperty<? extends Entity> requestorN) {
+		this(gp, "npc", npcs, cm, requestorN);
 		init(npc, npcs, cm, requestorN);
 
-		npcs.add(this);
-		gp.getViewGroup().getChildren().add(this);
+		addToView();
 	}
 
-	public NPC(NPC npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
-		this(gp, "npc");
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				requestorN.set(NPC.this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
-			}
-		});
+	public NPC(NPC npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
+			ObjectProperty<? extends Entity> requestorN) {
+		this(gp, "npc", npcs, cm, requestorN);
 		x = npc.x;
 		y = npc.y;
 		origWidth = npc.origWidth;
@@ -93,11 +71,10 @@ public class NPC extends Entity implements JsonValue {
 			npc.slaves = new ArrayList<>();
 		npc.slaves.add(this);
 
-		npcs.add(this);
-		gp.getViewGroup().getChildren().add(this);
+		addToView();
 	}
 
-	protected void init(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
+	protected void init(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<? extends Entity> requestorN) {
 		origWidth = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(0)).getValue().intValue();
 		origHeight = ((NumberValue) ((JsonArray) npc.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) npc.get("requestedSize")).get(0)).getValue().intValue();
@@ -154,8 +131,10 @@ public class NPC extends Entity implements JsonValue {
 		}
 	}
 
+	@Override
 	public boolean isMaster() { return !slave; }
 
+	@Override
 	public boolean isSlave() { return slave; }
 
 	@Override

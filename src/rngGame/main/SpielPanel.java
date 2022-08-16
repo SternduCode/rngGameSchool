@@ -45,7 +45,7 @@ public class SpielPanel extends Pane {
 
 		tileM = new TileManager(this);
 
-		player = new Player(this);
+		player = new Player(this, tileM.getNpcCM(), tileM.getRequestorN());
 
 		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
@@ -150,7 +150,7 @@ public class SpielPanel extends Pane {
 		selectTool.update();
 
 		for (Building b: buildings) b.update();
-		for (NPC n: npcs) n.update();
+		for (Entity n: npcs) n.update();
 
 		List<Node> nodes = new ArrayList<>(view.getChildren());
 

@@ -19,21 +19,13 @@ public class Building extends GameObject implements JsonValue {
 	@SuppressWarnings("unused")
 	private Building master;
 
-	protected Building(SpielPanel gp) {
-		super(gp, "building");
+	protected Building(SpielPanel gp, List<Building> buildings, ContextMenu cm, ObjectProperty<Building> requestorB) {
+		super(gp, "building", buildings, cm, requestorB);
 	}
 
 	public Building(Building building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
-		this(gp);
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				requestorB.set(Building.this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
-			}
-		});
+		this(gp, buildings, cm, requestorB);
 		x = building.x;
 		y = building.y;
 		origWidth = building.origWidth;
@@ -58,25 +50,18 @@ public class Building extends GameObject implements JsonValue {
 
 		master = building;
 		slave = true;
-		if (building.slaves == null)
+		if (building.slaves == null) {
+			System.out.println("Remove hooks");// TODO
 			building.slaves = new ArrayList<>();
+		}
 		building.slaves.add(this);
 
-		buildings.add(this);
-		gp.getViewGroup().getChildren().add(this);
+		addToView();
 	}
 
 	public Building(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
-		this(gp);
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				requestorB.set(Building.this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
-			}
-		});
+		this(gp, buildings, cm, requestorB);
 		origWidth = ((NumberValue) ((JsonArray) building.get("originalSize")).get(0)).getValue().intValue();
 		origHeight = ((NumberValue) ((JsonArray) building.get("originalSize")).get(1)).getValue().intValue();
 		reqWidth = ((NumberValue) ((JsonArray) building.get("requestedSize")).get(0)).getValue().intValue();
@@ -100,8 +85,7 @@ public class Building extends GameObject implements JsonValue {
 
 		buildingData = (JsonObject) building.get("buildingData");
 
-		buildings.add(this);
-		gp.getViewGroup().getChildren().add(this);
+		addToView();
 
 		if (((JsonArray) building.get("position")).get(0) instanceof JsonArray ja) {
 			try {

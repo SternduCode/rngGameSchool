@@ -38,6 +38,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
+
 	private final ObjectProperty<Building> requestorB = new ObjectPropertyBase<>() {
 
 		@Override
@@ -46,7 +47,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
+	private final ObjectProperty<? extends Entity> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
@@ -54,11 +55,9 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-
 	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
 	private Menu mtiles, mnpcs, mbuildings, mextra;
-
 
 	public TileManager(SpielPanel gp) {
 		cm = new ContextMenu();
@@ -104,6 +103,7 @@ public class TileManager extends Pane {
 
 		return false;
 	}
+
 
 	public void contextMenu(ActionEvent e) {
 		try {
@@ -280,6 +280,8 @@ public class TileManager extends Pane {
 		return new MenuItem[] {mtiles, mnpcs, mbuildings, mextra};
 	}
 
+	public ContextMenu getNpcCM() { return npcCM; }
+
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
 	public Node getObjectAt(double x, double y) {
@@ -289,6 +291,8 @@ public class TileManager extends Pane {
 		else
 			return map.get((int) Math.floor(y / gp.Bg)).get((int) Math.floor(x / gp.Bg));
 	}
+
+	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
 	public Map.Entry<Double, Double> getStartingPosition() { return startingPosition; }
 
@@ -343,7 +347,7 @@ public class TileManager extends Pane {
 				buildings.addAll(this.buildings.stream().filter(Building::isMaster).toList());
 				JsonArray npcs = (JsonArray) jo.get("npcs");
 				npcs.clear();
-				npcs.addAll(this.npcs.stream().filter(NPC::isMaster).toList());
+				npcs.addAll(this.npcs.stream().filter(Entity::isMaster).toList());
 				JsonObject map = (JsonObject) jo.get("map");
 				if (backgroundPath != null)
 					map.put("background", backgroundPath);
@@ -417,7 +421,7 @@ public class TileManager extends Pane {
 						((JsonArray) jo.get("connections")).stream().map(sv -> ((StringValue) sv).getValue()).toList(),
 						((JsonArray) jo.get("replacments")).stream().map(sv -> ((StringValue) sv).getValue()).toList());
 
-				d.findConnectors();
+				d.findConnectors();// TODO fiax that it expects List<String> insted of JsonObject's
 
 				return;
 			}

@@ -5,6 +5,7 @@ import java.nio.file.*;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.control.*;
@@ -26,6 +27,8 @@ public class GameObject extends Pane {
 
 	protected ImageView iv;
 
+	protected List<Runnable> removeCallbacks;
+
 	private Runnable updateXY,updateReqDim;
 
 	private final Menu menu, imagesM;
@@ -41,9 +44,21 @@ public class GameObject extends Pane {
 	protected int spriteNum = 0;
 	private String lastKey;
 	protected boolean background;
-	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, reloadTextures;
+	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, reloadTextures,
+	remove;
 
-	public GameObject(SpielPanel gp, String directory) {
+	@SuppressWarnings("unchecked")
+	public GameObject(SpielPanel gp, String directory, List<? extends GameObject> gameObjects, ContextMenu cm,
+			ObjectProperty<? extends GameObject> requestor) {
+		removeCallbacks = new ArrayList<>();
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				((ObjectProperty<GameObject>) requestor).set(this);
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
+			}
+		});
 		images = new HashMap<>();
 		textureFiles = new HashMap<>();
 		collisionBoxes = new HashMap<>();
@@ -69,6 +84,7 @@ public class GameObject extends Pane {
 		reqDim = new MenuItem();
 		backgroundI = new MenuItem();
 		reloadTextures = new MenuItem("Reload Textures");
+		remove = new MenuItem("Remove");
 		position.setOnAction(this::handleContextMenu);
 		fpsI.setOnAction(this::handleContextMenu);
 		currentKeyI.setOnAction(this::handleContextMenu);
@@ -77,8 +93,16 @@ public class GameObject extends Pane {
 		reqDim.setOnAction(this::handleContextMenu);
 		backgroundI.setOnAction(this::handleContextMenu);
 		reloadTextures.setOnAction(this::handleContextMenu);
+		remove.setOnAction(this::handleContextMenu);
 		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI,
-				reloadTextures);
+				reloadTextures, remove);
+
+		if (gameObjects != null) {
+			((List<GameObject>) gameObjects).add(this);
+			removeCallbacks.add(() -> {
+				gameObjects.remove(this);
+			});
+		}
 	}
 
 	private void handleContextMenu(ActionEvent e) {
@@ -111,6 +135,8 @@ public class GameObject extends Pane {
 			gp.getKeyH().stopMoveingGameObject(this);
 		} else if (source == fpsI) {
 			TextInputDialog dialog = new TextInputDialog("" + fps);
+			dialog.setHeaderText("");
+			dialog.getDialogPane().getStyleClass().remove("text-input-dialog");
 			dialog.setTitle("FPS");
 			dialog.setContentText("Please enter the new FPS value:");
 
@@ -121,6 +147,8 @@ public class GameObject extends Pane {
 			}
 		} else if (source == currentKeyI) {
 			TextInputDialog dialog = new TextInputDialog(currentKey);
+			dialog.setHeaderText("");
+			dialog.getDialogPane().getStyleClass().remove("text-input-dialog");
 			dialog.setTitle("Current Key");
 			dialog.setContentText("Please enter the new Key:");
 
@@ -129,6 +157,8 @@ public class GameObject extends Pane {
 
 		} else if (source == directoryI) {
 			TextInputDialog dialog = new TextInputDialog(directory);
+			dialog.setHeaderText("");
+			dialog.getDialogPane().getStyleClass().remove("text-input-dialog");
 			dialog.setTitle("Directory");
 			dialog.setContentText("Please enter the name of an Directory located in res/ :");
 
@@ -190,6 +220,7 @@ public class GameObject extends Pane {
 			else if (res.get() == noButton) background = false;
 			System.out.println(background);
 		} else if (source == reloadTextures) reloadTextures();
+		else if (source == remove) remove();
 		else {
 			cm = source.getParentMenu().getParentMenu().getParentPopup();
 			if (source.getText().equals("add Texture")) {
@@ -201,6 +232,8 @@ public class GameObject extends Pane {
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				TextInputDialog dialog = new TextInputDialog("");
+				dialog.setHeaderText("");
+				dialog.getDialogPane().getStyleClass().remove("text-input-dialog");
 				dialog.setTitle("Naming a new State");
 				dialog.setContentText("Please enter a name for that State:");
 
@@ -211,7 +244,7 @@ public class GameObject extends Pane {
 						Path p1 = f.toPath();
 						Path p2 = new File("./res/" + directory + "/" + f.getName()).toPath();
 						if (Files.exists(p2)) {
-							Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+							Alert alert = new Alert(Alert.AlertType.NONE);
 							alert.setTitle("The file already exists");
 							alert.setContentText("Do you want to Override it?");
 							ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
@@ -245,6 +278,10 @@ public class GameObject extends Pane {
 		}
 	}
 
+	protected void addToView() {
+		gp.getViewGroup().getChildren().add(this);
+	}
+
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		try {
@@ -276,6 +313,7 @@ public class GameObject extends Pane {
 		}
 		return li;
 	}
+
 	public boolean collides(GameObject collidable) {
 		if (getCollisionBox().getPoints().size() > 0) {
 			Shape intersect = Shape.intersect(collidable.getCollisionBox(), getCollisionBox());
@@ -314,15 +352,14 @@ public class GameObject extends Pane {
 	}
 	public int getOrigHeight() { return origHeight; }
 	public int getOrigWidth() { return origWidth; }
-
 	public int getReqHeight() { return reqHeight; }
 
 	public int getReqWidth() { return reqWidth; }
 
 	public double getX() { return x; }
+
 	public double getY() { return y; }
 	public boolean isBackground() { return background; }
-
 	public void reloadTextures() {
 		List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
 		for (Entry<String, String> en: textures) try {
@@ -330,6 +367,11 @@ public class GameObject extends Pane {
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	public void remove() {
+		gp.getViewGroup().getChildren().remove(this);
+		removeCallbacks.forEach(Runnable::run);
 	}
 
 	public void setOrigHeight(int origHeight) { this.origHeight = origHeight; }

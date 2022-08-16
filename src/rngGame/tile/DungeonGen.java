@@ -60,7 +60,10 @@ public class DungeonGen {
 	}
 
 	public void findConnectors() {
-
+		Map<Integer, Tile> connectorTile = new HashMap<>();
+		for (int i = 0; i < mainMapTiles.size(); i++) if (connectors.contains(mainMapTiles.get(i).name))
+			connectorTile.put(i, mainMapTiles.get(i));
+		System.out.println(connectorTile);
 	}
 
 }
