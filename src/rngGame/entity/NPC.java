@@ -67,9 +67,22 @@ public class NPC extends Entity implements JsonValue {
 
 		master = npc;
 		slave = true;
-		if (npc.slaves == null)
+		if (npc.slaves == null) {
+			Runnable[] r = new Runnable[1];
+			master.removeCallbacks.add(r[0] = () -> {
+				NPC m = master.slaves.remove(0);
+				m.slave = false;
+				m.slaves = master.slaves;
+				for (NPC s: m.slaves)
+					s.master = m;
+				m.removeCallbacks.add(r[0]);
+			});
 			npc.slaves = new ArrayList<>();
+		}
 		npc.slaves.add(this);
+		removeCallbacks.add(() -> {
+			if (slave) master.slaves.remove(this);
+		});
 
 		addToView();
 	}

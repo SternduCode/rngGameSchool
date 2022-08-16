@@ -51,10 +51,21 @@ public class Building extends GameObject implements JsonValue {
 		master = building;
 		slave = true;
 		if (building.slaves == null) {
-			System.out.println("Remove hooks");// TODO
+			Runnable[] r = new Runnable[1];
+			master.removeCallbacks.add(r[0] = () -> {
+				Building m = master.slaves.remove(0);
+				m.slave = false;
+				m.slaves = master.slaves;
+				for (Building s: m.slaves)
+					s.master = m;
+				m.removeCallbacks.add(r[0]);
+			});
 			building.slaves = new ArrayList<>();
 		}
 		building.slaves.add(this);
+		removeCallbacks.add(() -> {
+			if (slave) master.slaves.remove(this);
+		});
 
 		addToView();
 	}
