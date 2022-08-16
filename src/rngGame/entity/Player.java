@@ -21,8 +21,8 @@ public class Player extends Entity {
 
 		fps = 10.5;
 
-		reqWidth = reqHeight = size;
-        
+		reqWidth = (int) ((reqHeight = size) * 1.5);
+
 		this.gp = gp;
 		keyH = gp.getKeyH();
 
@@ -40,7 +40,8 @@ public class Player extends Entity {
 			collisionBoxes.put(key, new Polygon());
 		});
 
-		double x = 16, y = 30, width = 33, height = 27;
+		// double x = 16, y = 30, width = 33, height = 27;
+		double x = 33, y = 45, width = 31, height = 20;
 
 		collisionBoxes.forEach((key, poly) -> {
 			poly.setFill(Color.color(1, 0, 1, 0.75));
@@ -53,10 +54,11 @@ public class Player extends Entity {
 
 		try {
 
-			origHeight = origWidth = 64;
+			origHeight = 64;
 
-			
-			origWidth = reqWidth = 96;
+
+			origWidth = reqWidth;
+
 			getAnimatedImages("idle", "Stehen.png");
 			getAnimatedImages("idleL", "Stehen2.png");
 			getAnimatedImages("right", "LaufenRechts.png");

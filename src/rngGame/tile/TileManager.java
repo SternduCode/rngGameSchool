@@ -543,8 +543,8 @@ public class TileManager extends Pane {
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.size > p.getX() - p.screenX
-					&& worldX - p.size < p.getX() + p.screenX
+			if (worldX + p.size * 1.5 > p.getX() - p.screenX
+					&& worldX - p.size * 1.5 < p.getX() + p.screenX
 					&& worldY + p.size > p.getY() - p.screenY
 					&& worldY - p.size < p.getY() + p.screenY) {
 				TextureHolder th = null;

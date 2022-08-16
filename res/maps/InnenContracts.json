@@ -1,12 +1,12 @@
 {
 	"exit" : {
 		"spawnPosition" : [
-			18.3,
-			9.3
+			18,
+			9.30000
 		],
 		"position" : [
-			7,
-			12
+			6.8000,
+			11.5000
 		],
 		"map" : "lavaMap2.json"
 	},
@@ -27,8 +27,8 @@
 				
 			},
 			"position" : [
-				247.0,
-				300.0
+				247.000,
+				300.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -44,12 +44,13 @@
 			"textures" : {
 				"default" : "CTisch.png"
 			},
+			"background" : true,
 			"buildingData" : {
 				
 			},
 			"position" : [
-				257.0,
-				150.0
+				257.000,
+				150.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -65,12 +66,13 @@
 			"textures" : {
 				"default" : "CBett.png"
 			},
+			"background" : true,
 			"buildingData" : {
 				
 			},
 			"position" : [
-				96.0,
-				200.0
+				96.0000,
+				200.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -86,12 +88,13 @@
 			"textures" : {
 				"default" : "CTisch2.png"
 			},
+			"background" : true,
 			"buildingData" : {
 				
 			},
 			"position" : [
-				96.0,
-				295.0
+				96.0000,
+				295.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -112,12 +115,12 @@
 			},
 			"position" : [
 				[
-					140.0,
-					475.0
+					140.000,
+					475.000
 				],
 				[
-					433.0,
-					475.0
+					433.000,
+					475.000
 				]
 			],
 			"type" : "Building",
@@ -138,8 +141,8 @@
 				
 			},
 			"position" : [
-				488.0,
-				360.0
+				488.000,
+				360.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -155,12 +158,13 @@
 			"textures" : {
 				"default" : "CTreppe.png"
 			},
+			"background" : true,
 			"buildingData" : {
 				
 			},
 			"position" : [
-				405.0,
-				150.0
+				405.000,
+				150.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -180,8 +184,8 @@
 				
 			},
 			"position" : [
-				150.0,
-				335.0
+				150.000,
+				335.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -201,8 +205,8 @@
 				
 			},
 			"position" : [
-				161.0,
-				221.0
+				161.000,
+				221.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -218,14 +222,14 @@
 			"textures" : {
 				"default" : "CKatze.png"
 			},
+			"background" : true,
 			"buildingData" : {
 				
 			},
 			"position" : [
-				480.0,
-				276.0
+				480.000,
+				276.000
 			],
-			"fps" : 3.00000,
 			"type" : "Building",
 			"originalSize" : [
 				64,
@@ -261,8 +265,8 @@
 			"BodenAusgang.png"
 		],
 		"startingPosition" : [
-			5.8,
-			11.8
+			5.50000,
+			11.0000
 		],
 		"dir" : "buildingInside",
 		"matrix" : [
