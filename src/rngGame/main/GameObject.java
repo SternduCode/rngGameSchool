@@ -35,10 +35,14 @@ public class GameObject extends Pane {
 
 	protected String currentKey, directory;
 
+	private int layer;
+
 	protected Map<String, String> textureFiles;
 
 	protected int reqWidth, reqHeight, origWidth, origHeight;
+
 	protected SpielPanel gp;
+
 	protected Group collisionBoxViewGroup;
 	protected long spriteCounter = 0;
 	protected int spriteNum = 0;
@@ -46,7 +50,6 @@ public class GameObject extends Pane {
 	protected boolean background;
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, reloadTextures,
 	remove;
-
 	@SuppressWarnings("unchecked")
 	public GameObject(SpielPanel gp, String directory, List<? extends GameObject> gameObjects, ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
@@ -56,7 +59,7 @@ public class GameObject extends Pane {
 				((ObjectProperty<GameObject>) requestor).set(this);
 				cm.getItems().clear();
 				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroup(), e.getScreenX(), e.getScreenY());
+				cm.show(gp.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
 			}
 		});
 		images = new HashMap<>();
@@ -104,7 +107,6 @@ public class GameObject extends Pane {
 			});
 		}
 	}
-
 	private void handleContextMenu(ActionEvent e) {
 		MenuItem source = (MenuItem) e.getSource();
 		ContextMenu cm = source.getParentMenu().getParentPopup();
@@ -317,7 +319,7 @@ public class GameObject extends Pane {
 	}
 
 	protected void addToView() {
-		gp.getViewGroup().getChildren().add(this);
+		gp.getViewGroups().get(layer).getChildren().add(this);
 	}
 
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
@@ -358,12 +360,15 @@ public class GameObject extends Pane {
 			return !intersect.getBoundsInLocal().isEmpty();
 		} else return false;
 	}
+
 	public Polygon getCollisionBox() {
 		return collisionBoxes.get(currentKey);
 	}
+
 	public String getCurrentKey() { return currentKey; }
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 	public Map<String, List<Image>> getImages() { return images; }
+	public int getLayer() { return layer; }
 	public List<Menu> getMenus() {
 		position.setText("Position: " + x + " " + y);
 		fpsI.setText("FPS: " + fps);
@@ -391,12 +396,12 @@ public class GameObject extends Pane {
 	public int getOrigHeight() { return origHeight; }
 	public int getOrigWidth() { return origWidth; }
 	public int getReqHeight() { return reqHeight; }
-
 	public int getReqWidth() { return reqWidth; }
 
 	public double getX() { return x; }
 
 	public double getY() { return y; }
+
 	public boolean isBackground() { return background; }
 	public void reloadTextures() {
 		List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
@@ -406,10 +411,17 @@ public class GameObject extends Pane {
 			e1.printStackTrace();
 		}
 	}
-
 	public void remove() {
-		gp.getViewGroup().getChildren().remove(this);
+		if (gp.getViewGroups().get(layer).getChildren().contains(this))
+			gp.getViewGroups().get(layer).getChildren().remove(this);
 		removeCallbacks.forEach(Runnable::run);
+	}
+
+	public void setLayer(int layer) {
+		if (gp.getViewGroups().get(layer).getChildren().contains(this))
+			gp.getViewGroups().get(this.layer).getChildren().remove(this);
+		this.layer = layer;
+		addToView();
 	}
 
 	public void setOrigHeight(int origHeight) { this.origHeight = origHeight; }
