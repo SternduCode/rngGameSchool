@@ -56,10 +56,6 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 
 		dialogPane.contentTextProperty().addListener(o -> updateGrid());
 
-		TextInputDialog dialog = new TextInputDialog();
-
-		//		setTitle(dialog.getTitle());
-		//		dialogPane.getStyleClass().add("text-input-dialog");
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
 		updateGrid();

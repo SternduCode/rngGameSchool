@@ -6,6 +6,7 @@ import java.nio.file.*;
 import java.util.*;
 import com.sterndu.json.*;
 import javafx.beans.property.*;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -57,6 +58,8 @@ public class TileManager extends Pane {
 	};
 	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
 
+	private int playerLayer;
+
 	private Menu mtiles, mnpcs, mbuildings, mextra;
 
 	public TileManager(SpielPanel gp) {
@@ -103,7 +106,6 @@ public class TileManager extends Pane {
 
 		return false;
 	}
-
 
 	public void contextMenu(ActionEvent e) {
 		try {
@@ -255,6 +257,7 @@ public class TileManager extends Pane {
 		}
 	}
 
+
 	public String getBackgroundPath() { return backgroundPath; }
 
 	public List<Building> getBuildingsFromMap() { return buildings; }
@@ -285,12 +288,15 @@ public class TileManager extends Pane {
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
 	public Node getObjectAt(double x, double y) {
-		List<Node> nodes = gp.getViewGroup().getChildren()
-				.filtered(n -> n.contains(x - ((GameObject) n).getX(), y - ((GameObject) n).getY()) && n.isVisible());
+		List<Node> nodes = gp.getViewGroups().stream().map(v -> v.getChildren()
+				.filtered(n -> n.contains(x - ((GameObject) n).getX(), y - ((GameObject) n).getY()) && n.isVisible()))
+				.flatMap(FilteredList::stream).toList();
 		if (nodes.size() != 0) return nodes.get(nodes.size() - 1);
 		else
 			return map.get((int) Math.floor(y / gp.Bg)).get((int) Math.floor(x / gp.Bg));
 	}
+
+	public int getPlayerLayer() { return playerLayer; }
 
 	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
@@ -349,6 +355,11 @@ public class TileManager extends Pane {
 				npcs.clear();
 				npcs.addAll(this.npcs.stream().filter(Entity::isMaster).toList());
 				JsonObject map = (JsonObject) jo.get("map");
+				for (int i = 0; i < gp.getViewGroups().size(); i++) {
+					Group v = gp.getViewGroups().get(i);
+					if (v.getChildren().contains(gp.getPlayer()))
+						map.put("playerLayer", i);
+				}
 				if (backgroundPath != null)
 					map.put("background", backgroundPath);
 				JsonArray textures = (JsonArray) map.get("textures");
@@ -478,6 +489,9 @@ public class TileManager extends Pane {
 			}
 			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
 					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
+			if (map.containsKey("playerLayer"))
+				playerLayer = ((NumberValue) map.get("playerLayer")).getValue().intValue();
+			else playerLayer = 0;
 			mapTileNum = new ArrayList<>();
 			this.map = new ArrayList<>();
 			loadMap((JsonArray) map.get("matrix"));
