@@ -315,6 +315,30 @@
 				64,
 				64
 			]
+		},
+		{
+			"requestedSize" : [
+				225,
+				225
+			],
+			"textures" : {
+				"closed" : "Shop.png",
+				"default" : "Shop.png",
+				"open" : "ShopOpen.png"
+			},
+			"background" : true,
+			"buildingData" : {
+				
+			},
+			"position" : [
+				1536.00,
+				1008.00
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			]
 		}
 	],
 	"dir" : "tiles",
