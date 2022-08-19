@@ -3,7 +3,6 @@ package rngGame.buildings;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.function.Function;
 import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
@@ -11,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.*;
 
-public class Building extends GameObject implements JsonValue {
+public class Building extends GameObject {
 
 	protected JsonObject buildingData;
 	private boolean slave = false;
@@ -127,48 +126,6 @@ public class Building extends GameObject implements JsonValue {
 	public boolean isMaster() { return !slave; }
 
 	public boolean isSlave() { return slave; }
-
-	@Override
-	public JsonValue toJsonValue() {
-		if (!slave) {
-			JsonObject jo = new JsonObject();
-			jo.put("type", getClass().getSimpleName());
-			jo.put("textures", textureFiles);
-			JsonArray position = new JsonArray();
-			if (slaves == null || slaves.size() == 0) {
-				position.add(x);
-				position.add(y);
-			} else {
-				JsonArray pos = new JsonArray();
-				pos.add(x);
-				pos.add(y);
-				position.add(pos);
-				for (Building b: slaves) {
-					pos = new JsonArray();
-					pos.add(b.x);
-					pos.add(b.y);
-					position.add(pos);
-				}
-			}
-			jo.put("position", position);
-			JsonArray originalSize = new JsonArray();
-			originalSize.add(origWidth);
-			originalSize.add(origHeight);
-			jo.put("originalSize", originalSize);
-			JsonArray requestedSize = new JsonArray();
-			requestedSize.add(reqWidth);
-			requestedSize.add(reqHeight);
-			jo.put("requestedSize", requestedSize);
-			if (background) jo.put("background", background);
-			jo.put("buildingData", buildingData);
-			return jo;
-		} else return new StringValue("");
-	}
-
-	@Override
-	public JsonValue toJsonValue(Function<Object, String> function) {
-		return toJsonValue();
-	}
 
 	@Override
 	public void update() {

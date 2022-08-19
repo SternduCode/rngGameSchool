@@ -5,6 +5,8 @@ import java.nio.file.*;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
+import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -18,7 +20,7 @@ import rngGame.entity.Player;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.TwoTextInputDialog;
 
-public class GameObject extends Pane {
+public class GameObject extends Pane implements JsonValue {
 
 	protected double x = 0d, y = 0d, fps = 7.5;
 	protected Map<String, List<Image>> images;
@@ -29,14 +31,19 @@ public class GameObject extends Pane {
 
 	protected List<Runnable> removeCallbacks;
 
-	private Runnable updateXY,updateReqDim;
+	private Runnable updateXY, updateReqDim;
 
 	private final Menu menu, imagesM;
 
 	protected String currentKey, directory;
 
-	private int layer;
+	protected int layer;
 
+	protected JsonObject extraData;
+
+	protected boolean slave = false;
+	protected List<GameObject> slaves;
+	protected GameObject master;
 	protected Map<String, String> textureFiles;
 
 	protected int reqWidth, reqHeight, origWidth, origHeight;
@@ -44,6 +51,7 @@ public class GameObject extends Pane {
 	protected SpielPanel gp;
 
 	protected Group collisionBoxViewGroup;
+
 	protected long spriteCounter = 0;
 	protected int spriteNum = 0;
 	private String lastKey;
@@ -317,7 +325,6 @@ public class GameObject extends Pane {
 			}
 		}
 	}
-
 	protected void addToView() {
 		gp.getViewGroups().get(layer).getChildren().add(this);
 	}
@@ -455,6 +462,50 @@ public class GameObject extends Pane {
 		this.y = y;
 		if (updateXY != null)
 			updateXY.run();
+	}
+
+	@Override
+	public JsonValue toJsonValue() {
+		if (!slave) {
+			JsonObject jo = new JsonObject();
+			jo.put("type", getClass().getSimpleName());
+			jo.put("textures", textureFiles);
+			JsonArray position = new JsonArray();
+			if (slaves == null || slaves.size() == 0) {
+				position.add(x);
+				position.add(y);
+			} else {
+				JsonArray pos = new JsonArray();
+				pos.add(x);
+				pos.add(y);
+				position.add(pos);
+				for (GameObject b: slaves) {
+					pos = new JsonArray();
+					pos.add(b.x);
+					pos.add(b.y);
+					position.add(pos);
+				}
+			}
+			jo.put("extraData", extraData);
+			jo.put("position", position);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(origWidth);
+			originalSize.add(origHeight);
+			jo.put("fps", fps);
+			jo.put("originalSize", originalSize);
+			JsonArray requestedSize = new JsonArray();
+			requestedSize.add(reqWidth);
+			requestedSize.add(reqHeight);
+			jo.put("requestedSize", requestedSize);
+			if (background) jo.put("background", background);
+			jo.put("layer", layer);
+			return jo;
+		} else return new StringValue("");
+	}
+
+	@Override
+	public JsonValue toJsonValue(Function<Object, String> function) {
+		return toJsonValue();
 	}
 
 	public void update() {
