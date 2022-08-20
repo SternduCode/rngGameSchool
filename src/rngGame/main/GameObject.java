@@ -340,6 +340,8 @@ public class GameObject extends Pane implements JsonValue {
 						(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 			}
 			String[] sp = path.split("[.]");
+			Polygon collisionBox = collisionBoxes.get(key);
+			if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
 			if (new File("./res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 			+ ".collisionbox").exists())
 				try {
@@ -348,8 +350,6 @@ public class GameObject extends Pane implements JsonValue {
 							+ ".collisionbox"), "rws");
 					raf.seek(0l);
 					int length = raf.readInt();
-					Polygon collisionBox = collisionBoxes.get(key);
-					if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
 					for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
 				} catch (IOException e) {
 					e.printStackTrace();
