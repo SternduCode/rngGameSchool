@@ -146,7 +146,7 @@ public class SpielPanel extends Pane {
 		setMap(path, null);
 	}
 
-	public void setMap(String path, Map.Entry<Double, Double> position) {
+	public void setMap(String path, Double[] position) {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		tileM.setMap(path);
 		if (tileM.getBackgroundPath() != null) try {

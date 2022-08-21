@@ -48,7 +48,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-	private final ObjectProperty<? extends Entity> requestorN = new ObjectPropertyBase<>() {
+	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
@@ -56,7 +56,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-	private Map.Entry<Double, Double> startingPosition, exitStartingPosition, exitPosition;
+	private Double[] startingPosition, exitStartingPosition, exitPosition;
 
 	private int playerLayer;
 
@@ -264,9 +264,9 @@ public class TileManager extends Pane {
 
 	public String getExitMap() { return exitMap; }
 
-	public Map.Entry<Double, Double> getExitPosition() { return exitPosition; }
+	public Double[] getExitPosition() { return exitPosition; }
 
-	public Map.Entry<Double, Double> getExitStartingPosition() { return exitStartingPosition; }
+	public Double[] getExitStartingPosition() { return exitStartingPosition; }
 
 	public List<List<TextureHolder>> getMap() {
 		return map;
@@ -300,7 +300,7 @@ public class TileManager extends Pane {
 
 	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
-	public Map.Entry<Double, Double> getStartingPosition() { return startingPosition; }
+	public Double[] getStartingPosition() { return startingPosition; }
 
 	public void loadMap(JsonArray data) {
 
@@ -366,8 +366,8 @@ public class TileManager extends Pane {
 				textures.clear();
 				JsonArray startingPosition = (JsonArray) map.get("startingPosition");
 				startingPosition.clear();
-				startingPosition.add(this.startingPosition.getKey());
-				startingPosition.add(this.startingPosition.getValue());
+				startingPosition.add(this.startingPosition[0]);
+				startingPosition.add(this.startingPosition[1]);
 				jo.put("dir", dir);
 				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
@@ -453,10 +453,14 @@ public class TileManager extends Pane {
 				exitMap = ((StringValue) exit.get("map")).getValue();
 				JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
 				JsonArray position = (JsonArray) exit.get("position");
-				exitStartingPosition = Map.entry(((NumberValue) spawnPosition.get(0)).getValue().doubleValue(),
-						((NumberValue) spawnPosition.get(1)).getValue().doubleValue());
-				exitPosition = Map.entry(((NumberValue) position.get(0)).getValue().doubleValue(),
-						((NumberValue) position.get(1)).getValue().doubleValue());
+				exitStartingPosition = new Double[] {
+						((NumberValue) spawnPosition.get(0)).getValue().doubleValue(),
+						((NumberValue) spawnPosition.get(1)).getValue().doubleValue()
+				};
+				exitPosition = new Double[] {
+						((NumberValue) position.get(0)).getValue().doubleValue(),
+						((NumberValue) position.get(1)).getValue().doubleValue()
+				};
 			}
 			for (Object texture: textures) try {
 				Tile t = new Tile(((StringValue) texture).getValue(),
@@ -487,8 +491,10 @@ public class TileManager extends Pane {
 				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
 				.printStackTrace();
 			}
-			this.startingPosition = Map.entry(((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
-					((NumberValue) startingPosition.get(1)).getValue().doubleValue());
+			this.startingPosition = new Double[] {
+					((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
+					((NumberValue) startingPosition.get(1)).getValue().doubleValue()
+			};
 			if (map.containsKey("playerLayer"))
 				playerLayer = ((NumberValue) map.get("playerLayer")).getValue().intValue();
 			else playerLayer = 0;
@@ -539,8 +545,8 @@ public class TileManager extends Pane {
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int worldX = (int) (gp.Bg * exitPosition.getKey());
-			int worldY = (int) (gp.Bg * exitPosition.getValue());
+			int worldX = (int) (gp.Bg * exitPosition[0]);
+			int worldY = (int) (gp.Bg * exitPosition[1]);
 
 			if (worldX + gp.Bg / 2 - p.getX() < 105 && worldX + gp.Bg / 2 - p.getX() > -45 &&
 					worldY + gp.Bg / 2 - p.getY() < 25 && worldY + gp.Bg / 2 - p.getY() > 0)

@@ -1,6 +1,7 @@
 package rngGame.main;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.*;
 import java.nio.file.Path;
 import java.util.*;
@@ -59,17 +60,11 @@ public class GameObject extends Pane implements JsonValue {
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, reloadTextures,
 	remove;
 	@SuppressWarnings("unchecked")
-	public GameObject(SpielPanel gp, String directory, List<? extends GameObject> gameObjects, ContextMenu cm,
+	public GameObject(GameObject gameObject, List<? extends GameObject> gameObjects,
+			ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
 		removeCallbacks = new ArrayList<>();
-		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
-				((ObjectProperty<GameObject>) requestor).set(this);
-				cm.getItems().clear();
-				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
-			}
-		});
+
 		images = new HashMap<>();
 		textureFiles = new HashMap<>();
 		collisionBoxes = new HashMap<>();
@@ -82,8 +77,40 @@ public class GameObject extends Pane implements JsonValue {
 		iv = new ImageView();
 		iv.setDisable(true);
 		getChildren().addAll(iv, collisionBoxViewGroup);
-		this.gp = gp;
-		this.directory = directory;
+
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				((ObjectProperty<GameObject>) requestor).set(this);
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
+			}
+		});
+
+		x = gameObject.x;
+		y = gameObject.y;
+		origWidth = gameObject.origWidth;
+		origHeight = gameObject.origHeight;
+		reqWidth = gameObject.reqWidth;
+		reqHeight = gameObject.reqHeight;
+		fps = gameObject.fps;
+		layer = gameObject.layer;
+
+		gp = gameObject.gp;
+		directory = gameObject.directory;
+		background = gameObject.background;
+		currentKey = gameObject.currentKey;
+		images = gameObject.images;
+		iv.setImage(gameObject.getFirstImage());
+		textureFiles = gameObject.textureFiles;
+		gameObject.collisionBoxes.forEach((key, poly) -> {
+			Polygon collisionBox = collisionBoxes.get(key);
+			if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
+			collisionBox.getPoints().addAll(poly.getPoints());
+			collisionBox.setFill(poly.getFill());
+		});
+
+		extraData = gameObject.extraData;
 
 		menu = new Menu("GameObject");
 		imagesM = new Menu("Images");
@@ -108,12 +135,158 @@ public class GameObject extends Pane implements JsonValue {
 		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI,
 				reloadTextures, remove);
 
+		master = gameObject;
+		slave = true;
+		if (master.slaves == null) {
+			Runnable[] r = new Runnable[1];
+			master.removeCallbacks.add(r[0] = () -> {
+				GameObject m = master.slaves.remove(0);
+				m.slave = false;
+				if (master.slaves.size() > 0) {
+					m.slaves = master.slaves;
+					for (GameObject s: m.slaves)
+						s.master = m;
+					m.removeCallbacks.add(r[0]);
+				}
+			});
+			master.slaves = new ArrayList<>();
+		}
+		master.slaves.add(this);
+		removeCallbacks.add(() -> {
+			if (slave) master.slaves.remove(this);
+		});
 		if (gameObjects != null) {
 			((List<GameObject>) gameObjects).add(this);
 			removeCallbacks.add(() -> {
 				gameObjects.remove(this);
 			});
 		}
+
+		addToView();
+	}
+
+	@SuppressWarnings("unchecked")
+	public GameObject(JsonObject gameObject, SpielPanel gp, String directory, List<? extends GameObject> gameObjects,
+			ContextMenu cm,
+			ObjectProperty<? extends GameObject> requestor) {
+		this.gp = gp;
+		this.directory = directory;
+
+		images = new HashMap<>();
+		textureFiles = new HashMap<>();
+		collisionBoxes = new HashMap<>();
+		currentKey = "default";
+		lastKey = currentKey;
+		collisionBoxes.put(currentKey, new Polygon());
+		collisionBoxViewGroup = new Group(collisionBoxes.get(currentKey));
+		collisionBoxViewGroup.setDisable(true);
+		collisionBoxViewGroup.setVisible(false);
+		iv = new ImageView();
+		iv.setDisable(true);
+		getChildren().addAll(iv, collisionBoxViewGroup);
+
+		removeCallbacks = new ArrayList<>();
+		setOnContextMenuRequested(e -> {
+			if (System.getProperty("edit").equals("true")) {
+				((ObjectProperty<GameObject>) requestor).set(this);
+				cm.getItems().clear();
+				cm.getItems().addAll(getMenus());
+				cm.show(gp.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
+			}
+		});
+
+		if (gameObject != null) {
+			origWidth = ((NumberValue) ((JsonArray) gameObject.get("originalSize")).get(0)).getValue().intValue();
+			origHeight = ((NumberValue) ((JsonArray) gameObject.get("originalSize")).get(1)).getValue().intValue();
+			reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue().intValue();
+			reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue().intValue();
+		}
+		if (gameObject != null && gameObject.containsKey("fps"))
+			fps = ((NumberValue) gameObject.get("fps")).getValue().doubleValue();
+		else fps = 7;
+		if (gameObject != null && gameObject.containsKey("layer"))
+			layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
+		else layer = 0;
+
+		if (gameObject != null && gameObject.containsKey("background"))
+			background = ((BoolValue) gameObject.get("background")).getValue();
+
+		if (gameObject != null && gameObject.containsKey("extraData"))
+			extraData = (JsonObject) gameObject.get("extraData");
+		else extraData = new JsonObject();
+
+		if (gameObject != null) {
+			((JsonObject) gameObject.get("textures")).entrySet().parallelStream()
+			.forEach(s -> {
+				try {
+					getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			});
+			iv.setImage(getFirstImage());
+		}
+
+		menu = new Menu("GameObject");
+		imagesM = new Menu("Images");
+		position = new MenuItem();
+		fpsI = new MenuItem();
+		currentKeyI = new MenuItem();
+		directoryI = new MenuItem();
+		origDim = new MenuItem();
+		reqDim = new MenuItem();
+		backgroundI = new MenuItem();
+		reloadTextures = new MenuItem("Reload Textures");
+		remove = new MenuItem("Remove");
+		position.setOnAction(this::handleContextMenu);
+		fpsI.setOnAction(this::handleContextMenu);
+		currentKeyI.setOnAction(this::handleContextMenu);
+		directoryI.setOnAction(this::handleContextMenu);
+		origDim.setOnAction(this::handleContextMenu);
+		reqDim.setOnAction(this::handleContextMenu);
+		backgroundI.setOnAction(this::handleContextMenu);
+		reloadTextures.setOnAction(this::handleContextMenu);
+		remove.setOnAction(this::handleContextMenu);
+		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI,
+				reloadTextures, remove);
+
+		if (gameObject != null)
+			if (((JsonArray) gameObject.get("position")).get(0) instanceof JsonArray ja) {
+				try {
+					slaves = new ArrayList<>();
+					for (int i = 1; i < ((JsonArray) gameObject.get("position")).size(); i++) {
+						GameObject b = this
+								.getClass().getDeclaredConstructor(this.getClass(), SpielPanel.class, List.class,
+										ContextMenu.class, ObjectProperty.class)
+								.newInstance(this, gp, gameObjects, cm, requestor);
+						b.x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
+								.getValue()
+								.doubleValue();
+						b.y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
+								.getValue()
+								.doubleValue();
+					}
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				}
+				x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(0)).getValue()
+						.doubleValue();
+				y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(1)).getValue()
+						.doubleValue();
+			} else {
+				x = ((NumberValue) ((JsonArray) gameObject.get("position")).get(0)).getValue().doubleValue();
+				y = ((NumberValue) ((JsonArray) gameObject.get("position")).get(1)).getValue().doubleValue();
+			}
+
+		if (gameObjects != null) {
+			((List<GameObject>) gameObjects).add(this);
+			removeCallbacks.add(() -> {
+				gameObjects.remove(this);
+			});
+		}
+
+		addToView();
 	}
 	private void handleContextMenu(ActionEvent e) {
 		MenuItem source = (MenuItem) e.getSource();
@@ -340,6 +513,8 @@ public class GameObject extends Pane implements JsonValue {
 						(int) wi.getWidth(), (int) wi.getHeight(), reqWidth, reqHeight));
 			}
 			String[] sp = path.split("[.]");
+			Polygon collisionBox = collisionBoxes.get(key);
+			if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
 			if (new File("./res/collisions/" + directory + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 			+ ".collisionbox").exists())
 				try {
@@ -348,8 +523,6 @@ public class GameObject extends Pane implements JsonValue {
 							+ ".collisionbox"), "rws");
 					raf.seek(0l);
 					int length = raf.readInt();
-					Polygon collisionBox = collisionBoxes.get(key);
-					if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
 					for (int i = 0; i < length; i++) collisionBox.getPoints().add(raf.readDouble());
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -410,6 +583,11 @@ public class GameObject extends Pane implements JsonValue {
 	public double getY() { return y; }
 
 	public boolean isBackground() { return background; }
+
+	public boolean isMaster() { return !slave; }
+
+	public boolean isSlave() { return slave; }
+
 	public void reloadTextures() {
 		List<Entry<String, String>> textures = new ArrayList<>(textureFiles.entrySet());
 		for (Entry<String, String> en: textures) try {

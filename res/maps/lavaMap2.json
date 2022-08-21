@@ -323,7 +323,6 @@
 			],
 			"textures" : {
 				"closed" : "Shop.png",
-				"default" : "Shop.png",
 				"open" : "ShopOpen.png"
 			},
 			"background" : true,
@@ -334,11 +333,12 @@
 				1536.00,
 				1008.00
 			],
-			"type" : "Building",
+			"type" : "House",
 			"originalSize" : [
 				64,
 				64
-			]
+			],
+			"map" : "InnenContracts.json"
 		}
 	],
 	"dir" : "tiles",

@@ -11,12 +11,6 @@ public class House extends Building {
 
 	protected String map;
 
-	protected House(SpielPanel gp, List<Building> buildings, ContextMenu cm,
-			ObjectProperty<Building> requestorB) {
-		super(gp, buildings, cm, requestorB);
-		currentKey = "closed";
-	}
-
 	public House(House building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);

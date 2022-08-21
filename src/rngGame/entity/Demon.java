@@ -10,21 +10,15 @@ public class Demon extends NPC {
 
 	protected String dir;
 
-	public Demon(Demon npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
-			ObjectProperty<? extends Entity> requestorN) {
-		super(npc, gp, npcs, cm, requestorN);
+	public Demon(Demon npc, List<NPC> npcs, ContextMenu cm,
+			ObjectProperty<NPC> requestorN) {
+		super(npc, npcs, cm, requestorN);
 	}
 
 	public Demon(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
-			ObjectProperty<? extends Entity> requestorN) {
-		super(npc, gp, npcs, cm, requestorN);
-	}
-
-	@Override
-	protected void init(JsonObject npc, List<NPC> npcs, ContextMenu cm, ObjectProperty<? extends Entity> requestorN) {
+			ObjectProperty<NPC> requestorN) {
+		super(npc, gp, "demons/" + ((StringValue) npc.get("dir")).getValue(),npcs, cm, requestorN);
 		dir = ((StringValue) npc.get("dir")).getValue();
-		directory = "demons/" + dir;
-		super.init(npc, npcs, cm, requestorN);
 	}
 
 	@Override

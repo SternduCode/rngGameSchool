@@ -1,6 +1,5 @@
 package rngGame.entity;
 
-import java.util.Map.Entry;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
@@ -18,7 +17,7 @@ public class Player extends Entity {
 	private double oldX, oldY;
 
 	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
-		super(gp, "player", 3, null, cm, requestor);
+		super(null, 3, gp, "player", null, cm, requestor);
 		currentKey = "down";
 
 		fps = 10.5;
@@ -31,10 +30,7 @@ public class Player extends Entity {
 		screenX = gp.SpielLaenge / 2 - size / 2;
 		screenY = gp.SpielHoehe / 2 - size / 2;
 
-		x = gp.Bg * 13;
-		y = gp.Bg * 37;
-		oldX = x;
-		oldY = y;
+		setPosition(13, 37);
 
 		getPlayerImage();
 
@@ -42,7 +38,6 @@ public class Player extends Entity {
 			collisionBoxes.put(key, new Polygon());
 		});
 
-		// double x = 16, y = 30, width = 33, height = 27;
 		double x = 33, y = 45, width = 31, height = 20;
 
 		collisionBoxes.forEach((key, poly) -> {
@@ -55,10 +50,7 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-
 			origHeight = 64;
-
-
 			origWidth = reqWidth;
 
 			getAnimatedImages("idle", "Stehen.png");
@@ -79,14 +71,13 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public boolean isMaster() { return true; }
+	public void setPosition(double x, double y) {
+		setPosition(new Double[] {x,y});
+	}
 
-	@Override
-	public boolean isSlave() { return false; }
-
-	public void setPosition(Entry<Double, Double> startingPosition) {
-		x = (long) (gp.Bg * startingPosition.getKey());
-		y = (long) (gp.Bg * startingPosition.getValue());
+	public void setPosition(Double[] position) {
+		x = (long) (gp.Bg * position[0]);
+		y = (long) (gp.Bg * position[1]);
 		oldX = x;
 		oldY = y;
 	}
