@@ -19,7 +19,7 @@ import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.entity.Player;
 import rngGame.tile.ImgUtil;
-import rngGame.ui.TwoTextInputDialog;
+import rngGame.ui.*;
 
 public class GameObject extends Pane implements JsonValue {
 
@@ -57,7 +57,8 @@ public class GameObject extends Pane implements JsonValue {
 	protected int spriteNum = 0;
 	private String lastKey;
 	protected boolean background;
-	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, reloadTextures,
+	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
+	reloadTextures,
 	remove;
 	@SuppressWarnings("unchecked")
 	public GameObject(GameObject gameObject, List<? extends GameObject> gameObjects,
@@ -121,6 +122,7 @@ public class GameObject extends Pane implements JsonValue {
 		origDim = new MenuItem();
 		reqDim = new MenuItem();
 		backgroundI = new MenuItem();
+		layerI = new MenuItem();
 		reloadTextures = new MenuItem("Reload Textures");
 		remove = new MenuItem("Remove");
 		position.setOnAction(this::handleContextMenu);
@@ -130,9 +132,10 @@ public class GameObject extends Pane implements JsonValue {
 		origDim.setOnAction(this::handleContextMenu);
 		reqDim.setOnAction(this::handleContextMenu);
 		backgroundI.setOnAction(this::handleContextMenu);
+		layerI.setOnAction(this::handleContextMenu);
 		reloadTextures.setOnAction(this::handleContextMenu);
 		remove.setOnAction(this::handleContextMenu);
-		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI,
+		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
 				reloadTextures, remove);
 
 		master = gameObject;
@@ -236,6 +239,7 @@ public class GameObject extends Pane implements JsonValue {
 		origDim = new MenuItem();
 		reqDim = new MenuItem();
 		backgroundI = new MenuItem();
+		layerI = new MenuItem();
 		reloadTextures = new MenuItem("Reload Textures");
 		remove = new MenuItem("Remove");
 		position.setOnAction(this::handleContextMenu);
@@ -245,9 +249,10 @@ public class GameObject extends Pane implements JsonValue {
 		origDim.setOnAction(this::handleContextMenu);
 		reqDim.setOnAction(this::handleContextMenu);
 		backgroundI.setOnAction(this::handleContextMenu);
+		layerI.setOnAction(this::handleContextMenu);
 		reloadTextures.setOnAction(this::handleContextMenu);
 		remove.setOnAction(this::handleContextMenu);
-		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI,
+		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
 				reloadTextures, remove);
 
 		if (gameObject != null)
@@ -402,6 +407,14 @@ public class GameObject extends Pane implements JsonValue {
 			if (res.isPresent()) if (res.get() == okButton) background = true;
 			else if (res.get() == noButton) background = false;
 			System.out.println(background);
+		} else if (source == layerI) {
+			int origLayer = layer;
+			LayerInputDialog lid = new LayerInputDialog(this::getLayer, this::setLayer);
+
+			lid.setTitle("Layer");
+			Optional<Boolean> result = lid.showAndWait();
+			if (result.isPresent() && !result.get() || !result.isPresent()) layer = origLayer;
+
 		} else if (source == reloadTextures) reloadTextures();
 		else if (source == remove) remove();
 		else {
@@ -557,6 +570,7 @@ public class GameObject extends Pane implements JsonValue {
 		origDim.setText("Original Dimensions: " + origWidth + " " + origHeight);
 		reqDim.setText("Requested Dimensions: " + reqWidth + " " + reqHeight);
 		backgroundI.setText("Background: " + background);
+		layerI.setText("Layer: " + layer);
 		imagesM.getItems().clear();
 		for (Entry<String, String> en: textureFiles.entrySet()) {
 			MenuItem img = new MenuItem(en.getKey() + " : " + en.getValue(),
@@ -603,7 +617,7 @@ public class GameObject extends Pane implements JsonValue {
 	}
 
 	public void setLayer(int layer) {
-		if (gp.getViewGroups().get(layer).getChildren().contains(this))
+		if (gp.getViewGroups().get(this.layer).getChildren().contains(this))
 			gp.getViewGroups().get(this.layer).getChildren().remove(this);
 		this.layer = layer;
 		addToView();

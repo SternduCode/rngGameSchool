@@ -37,7 +37,6 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 		label1.setMaxHeight(Double.MAX_VALUE);
 		label1.getStyleClass().add("content");
 		label1.setWrapText(true);
-		label1.setPrefWidth(360);
 		label1.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
 		label2 = new Label(label2text);
@@ -45,7 +44,6 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 		label2.setMaxHeight(Double.MAX_VALUE);
 		label2.getStyleClass().add("content");
 		label2.setWrapText(true);
-		label2.setPrefWidth(360);
 		label2.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
 		space.setMaxHeight(Double.MAX_VALUE);
@@ -66,6 +64,7 @@ public class TwoTextInputDialog extends Dialog<List<String>> {
 					: null;
 		});
 	}
+
 	private void updateGrid() {
 		grid.getChildren().clear();
 
