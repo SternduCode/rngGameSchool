@@ -31,7 +31,8 @@ public class SpielPanel extends Pane {
 
 			@Override
 			public Group get(int index) {
-				if (index >= li.size()) for (int i = 0; i <= index - size(); i++) li.add(new Group());
+				int size = size();
+				if (index >= li.size()) for (int i = 0; i <= index - size; i++) li.add(new Group());
 				return (Group) li.get(index);
 			}
 
