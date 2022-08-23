@@ -261,9 +261,9 @@ public class GameObject extends Pane implements JsonValue {
 					slaves = new ArrayList<>();
 					for (int i = 1; i < ((JsonArray) gameObject.get("position")).size(); i++) {
 						GameObject b = this
-								.getClass().getDeclaredConstructor(this.getClass(), SpielPanel.class, List.class,
+								.getClass().getDeclaredConstructor(this.getClass(), List.class,
 										ContextMenu.class, ObjectProperty.class)
-								.newInstance(this, gp, gameObjects, cm, requestor);
+								.newInstance(this, gameObjects, cm, requestor);
 						b.x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
 								.getValue()
 								.doubleValue();

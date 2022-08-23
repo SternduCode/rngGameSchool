@@ -9,7 +9,7 @@ public class Tile {
 
 	public List<Image> images;
 	public List<Double> poly;
-	public String name;
+	public final String name;
 	public double fps = 7.5;
 
 	public Tile(String name, InputStream image, SpielPanel gp) {

@@ -21,6 +21,26 @@ import rngGame.main.*;
 
 public class TileManager extends Pane {
 
+	private class FakeTextureHolder extends TextureHolder {
+
+		public FakeTextureHolder(double x, double y) {
+			super(new Tile("", new ByteArrayInputStream(new byte[0]), null) {
+				{
+					images.add(new Image(new ByteArrayInputStream(new byte[0])));
+				}
+			}, null, x, y, null, null, 0, 0);
+		}
+		
+		@Override
+		public void setTile(Tile tile) {
+			//TODO add row/column       show cm on drag end
+			for (List<TextureHolder> x: map) {
+				
+			}
+		}
+
+	}
+
 	private String path;
 	private final SpielPanel gp;
 	private final List<Tile> tile;
@@ -83,7 +103,9 @@ public class TileManager extends Pane {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
 				System.out.println("dg");
-				requestor.set(null);
+				System.out.println();
+				requestor.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+						e.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
 				cm.show(this, e.getScreenX(), e.getScreenY());
 			}
 		});
@@ -109,20 +131,23 @@ public class TileManager extends Pane {
 
 	public void contextMenu(ActionEvent e) {
 		try {
-			if (requestor.get() == null) System.out.println(e);
-			else if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
+			if (requestor.get() instanceof FakeTextureHolder fth) {
+				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().screenX - gp.getPlayer().getX());
+				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().screenY - gp.getPlayer().getY());
+			}
+			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
 			else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
-				.getDeclaredConstructor(miwb.getBuilding().getClass(), gp.getClass(), List.class,
+				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
-				.newInstance(miwb.getBuilding(), gp, buildings, buildingCM, requestorB)
+				.newInstance(miwb.getBuilding(), buildings, buildingCM, requestorB)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
-				.getDeclaredConstructor(miwn.getNPC().getClass(), gp.getClass(), List.class, ContextMenu.class,
+				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
-				.newInstance(miwn.getNPC(), gp, npcs, npcCM, requestorN)
+				.newInstance(miwn.getNPC(), npcs, npcCM, requestorN)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
@@ -292,6 +317,7 @@ public class TileManager extends Pane {
 				.filtered(n -> n.contains(x - ((GameObject) n).getX(), y - ((GameObject) n).getY()) && n.isVisible()))
 				.flatMap(FilteredList::stream).toList();
 		if (nodes.size() != 0) return nodes.get(nodes.size() - 1);
+		else if (x < 0 || y < 0) return null;
 		else
 			return map.get((int) Math.floor(y / gp.Bg)).get((int) Math.floor(x / gp.Bg));
 	}

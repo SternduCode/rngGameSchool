@@ -9,7 +9,7 @@ import rngGame.main.*;
 
 public class Building extends GameObject {
 
-	public Building(Building building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+	public Building(Building building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
 
