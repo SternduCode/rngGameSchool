@@ -25,7 +25,9 @@ public class LayerInputDialog extends Dialog<Boolean> {
 		textField.textProperty().addListener(
 				(ChangeListener<String>) (observable, oldValue, newValue) -> {
 					try {
-						consumer.accept(Integer.parseInt(newValue));
+						int i = Integer.parseInt(newValue);
+						consumer.accept(i < 0 ? 0 : i);
+						if (i < 0) textField.setText(0 + "");
 					} catch (NumberFormatException e) {
 						if (!newValue.equals("")) textField.setText(oldValue);
 					}
