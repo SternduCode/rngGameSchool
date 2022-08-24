@@ -30,12 +30,12 @@ public class TileManager extends Pane {
 				}
 			}, null, x, y, null, null, 0, 0);
 		}
-		
+
 		@Override
 		public void setTile(Tile tile) {
 			//TODO add row/column       show cm on drag end
 			for (List<TextureHolder> x: map) {
-				
+
 			}
 		}
 
@@ -50,7 +50,7 @@ public class TileManager extends Pane {
 	private List<Building> buildings;
 	private List<NPC> npcs;
 	private String exitMap, dir, backgroundPath;
-	private final ContextMenu cm, npcCM, buildingCM;
+	private final ContextMenu cm;
 	private final ObjectProperty<TextureHolder> requestor = new ObjectPropertyBase<>() {
 
 		@Override
@@ -80,15 +80,14 @@ public class TileManager extends Pane {
 
 	private int playerLayer;
 
-	private Menu mtiles, mnpcs, mbuildings, mextra;
+	private final Menu mtiles, mnpcs, mbuildings, mextra;
 
 	public TileManager(SpielPanel gp) {
 		cm = new ContextMenu();
-		cm.getItems().addAll(mtiles = new Menu("Tiles"), mnpcs = new Menu("NPCs"), mbuildings = new Menu("Buildings"),
-				mextra = new Menu("Extras"));
-		buildingCM = new ContextMenu();
-		npcCM = new ContextMenu();
-
+		mtiles = new Menu("Tiles");
+		mnpcs = new Menu("NPCs");
+		mbuildings = new Menu("Buildings");
+		mextra = new Menu("Extras");
 		MenuItem save = new MenuItem("save");
 		save.setOnAction(ae -> gp.saveMap());
 		mextra.getItems().add(save);
@@ -106,6 +105,8 @@ public class TileManager extends Pane {
 				System.out.println();
 				requestor.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						e.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+				cm.getItems().clear();
+				cm.getItems().addAll(gp.getTileM().getMenus());
 				cm.show(this, e.getScreenX(), e.getScreenY());
 			}
 		});
@@ -140,14 +141,14 @@ public class TileManager extends Pane {
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
-				.newInstance(miwb.getBuilding(), buildings, buildingCM, requestorB)
+				.newInstance(miwb.getBuilding(), buildings, cm, requestorB)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
 				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
-				.newInstance(miwn.getNPC(), npcs, npcCM, requestorN)
+				.newInstance(miwn.getNPC(), npcs, cm, requestorN)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
@@ -186,7 +187,7 @@ public class TileManager extends Pane {
 					originalSize.add(new DoubleValue(img.getHeight()));
 					joN.put("originalSize", originalSize);
 
-					NPC n = new NPC(joN, gp, npcs, npcCM, requestorN);
+					NPC n = new NPC(joN, gp, npcs, cm, requestorN);
 					mnpcs.getItems().remove(mi);
 					mnpcs.getItems()
 					.add(new MenuItemWNPC(f.getName(),
@@ -235,7 +236,7 @@ public class TileManager extends Pane {
 					originalSize.add(new DoubleValue(img.getHeight()));
 					joB.put("originalSize", originalSize);
 
-					Building b = new Building(joB, gp, buildings, buildingCM, requestorB);
+					Building b = new Building(joB, gp, buildings, cm, requestorB);
 					mbuildings.getItems().remove(mi);
 					mbuildings.getItems()
 					.add(new MenuItemWBuilding(f.getName(),
@@ -287,6 +288,8 @@ public class TileManager extends Pane {
 
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
+	public ContextMenu getCM() { return cm; }
+
 	public String getExitMap() { return exitMap; }
 
 	public Double[] getExitPosition() { return exitPosition; }
@@ -307,8 +310,6 @@ public class TileManager extends Pane {
 		}
 		return new MenuItem[] {mtiles, mnpcs, mbuildings, mextra};
 	}
-
-	public ContextMenu getNpcCM() { return npcCM; }
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
@@ -531,8 +532,8 @@ public class TileManager extends Pane {
 			this.npcs = new ArrayList<>();
 			for (Object building: buildings) {
 				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
-					default -> new Building((JsonObject) building, gp, this.buildings, buildingCM, requestorB);
+					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
+					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
 				};
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
@@ -543,8 +544,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc: npcs) {
 				NPC n = switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
-					default -> new NPC((JsonObject) npc, gp, this.npcs, npcCM, requestorN);
+					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, cm, requestorN);
+					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
 				mnpcs.getItems()
 				.add(new MenuItemWNPC(

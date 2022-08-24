@@ -90,7 +90,7 @@ public class SpielPanel extends Pane {
 
 		tileM = new TileManager(this);
 
-		player = new Player(this, tileM.getNpcCM(), tileM.getRequestorN());
+		player = new Player(this, tileM.getCM(), tileM.getRequestorN());
 
 		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
