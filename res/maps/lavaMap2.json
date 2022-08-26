@@ -8,7 +8,7 @@
 			"textures" : {
 				"default" : "FritzA.png"
 			},
-			"npcData" : {
+			"extraData" : {
 				
 			},
 			"fps" : 7.00000,
@@ -16,11 +16,12 @@
 				870.000,
 				870.000
 			],
+			"type" : "NPC",
 			"originalSize" : [
 				64,
 				32
 			],
-			"type" : "NPC"
+			"layer" : 0
 		},
 		{
 			"requestedSize" : [
@@ -30,7 +31,7 @@
 			"textures" : {
 				"default" : "GandalfA.png"
 			},
-			"npcData" : {
+			"extraData" : {
 				
 			},
 			"fps" : 7.00000,
@@ -38,11 +39,12 @@
 				840.000,
 				430.000
 			],
+			"type" : "NPC",
 			"originalSize" : [
 				32,
 				32
 			],
-			"type" : "NPC"
+			"layer" : 0
 		},
 		{
 			"requestedSize" : [
@@ -52,7 +54,7 @@
 			"textures" : {
 				"default" : "BOOMiIdle.png"
 			},
-			"npcData" : {
+			"extraData" : {
 				
 			},
 			"fps" : 5.00000,
@@ -60,12 +62,13 @@
 				600.000,
 				1600.00
 			],
+			"type" : "Demon",
 			"originalSize" : [
 				64,
 				64
 			],
-			"type" : "Demon",
-			"dir" : "void"
+			"dir" : "void",
+			"layer" : 0
 		},
 		{
 			"requestedSize" : [
@@ -75,7 +78,7 @@
 			"textures" : {
 				"default" : "MayAshadow.png"
 			},
-			"npcData" : {
+			"extraData" : {
 				
 			},
 			"fps" : 7.00000,
@@ -83,12 +86,13 @@
 				750.000,
 				1600.00
 			],
+			"type" : "Demon",
 			"originalSize" : [
 				64,
 				64
 			],
-			"type" : "Demon",
-			"dir" : "shadow"
+			"dir" : "shadow",
+			"layer" : 0
 		}
 	],
 	"buildings" : [
@@ -98,32 +102,12 @@
 				128
 			],
 			"textures" : {
-				"default" : "Laterne.png"
-			},
-			"buildingData" : {
-				
-			},
-			"position" : [
-				1000.00,
-				1000.00
-			],
-			"type" : "Building",
-			"originalSize" : [
-				128,
-				128
-			]
-		},
-		{
-			"requestedSize" : [
-				128,
-				128
-			],
-			"textures" : {
 				"default" : "Portal.png"
 			},
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"fps" : 7.00000,
 			"position" : [
 				1452.00,
 				370.000
@@ -132,7 +116,8 @@
 			"originalSize" : [
 				128,
 				128
-			]
+			],
+			"layer" : 6
 		},
 		{
 			"requestedSize" : [
@@ -143,9 +128,10 @@
 				"closed" : "A11Haus.png",
 				"open" : "A1Haus.png"
 			},
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"fps" : 7.00000,
 			"position" : [
 				800.000,
 				250.000
@@ -155,7 +141,8 @@
 				64,
 				64
 			],
-			"map" : "InnenContracts.json"
+			"map" : "InnenContracts.json",
+			"layer" : 0
 		},
 		{
 			"requestedSize" : [
@@ -165,9 +152,10 @@
 			"textures" : {
 				"default" : "FischHaus.png"
 			},
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"fps" : 7.00000,
 			"position" : [
 				1650.00,
 				1350.00
@@ -176,7 +164,8 @@
 			"originalSize" : [
 				128,
 				128
-			]
+			],
+			"layer" : 0
 		},
 		{
 			"requestedSize" : [
@@ -186,33 +175,21 @@
 			"textures" : {
 				"default" : "PLeckeUntenLinks2.png"
 			},
-			"background" : true,
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"background" : true,
+			"fps" : 7.00000,
 			"position" : [
-				[
-					1344.00,
-					480.000
-				],
-				[
-					1344.00,
-					528.000
-				],
-				[
-					1440.00,
-					528.000
-				],
-				[
-					1584.00,
-					528.000
-				]
+				1344.00,
+				480.000
 			],
 			"type" : "Building",
 			"originalSize" : [
 				32,
 				32
-			]
+			],
+			"layer" : 5
 		},
 		{
 			"requestedSize" : [
@@ -222,10 +199,11 @@
 			"textures" : {
 				"default" : "PLUnten.png"
 			},
-			"background" : true,
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"background" : true,
+			"fps" : 7.00000,
 			"position" : [
 				[
 					1392.00,
@@ -246,17 +224,14 @@
 				[
 					1584.00,
 					480.000
-				],
-				[
-					1488.00,
-					528.000
 				]
 			],
 			"type" : "Building",
 			"originalSize" : [
 				32,
 				32
-			]
+			],
+			"layer" : 5
 		},
 		{
 			"requestedSize" : [
@@ -266,55 +241,21 @@
 			"textures" : {
 				"default" : "PLeckeUntenRechts2.png"
 			},
-			"background" : true,
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"background" : true,
+			"fps" : 7.00000,
 			"position" : [
-				[
-					1632.00,
-					480.000
-				],
-				[
-					1392.00,
-					528.000
-				],
-				[
-					1536.00,
-					528.000
-				],
-				[
-					1632.00,
-					528.000
-				]
+				1632.00,
+				480.000
 			],
 			"type" : "Building",
 			"originalSize" : [
 				32,
 				32
-			]
-		},
-		{
-			"requestedSize" : [
-				165,
-				140
 			],
-			"textures" : {
-				"default" : "PLTreppe.png"
-			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
-			"position" : [
-				1428.00,
-				519.000
-			],
-			"type" : "Building",
-			"originalSize" : [
-				64,
-				64
-			]
+			"layer" : 5
 		},
 		{
 			"requestedSize" : [
@@ -325,24 +266,84 @@
 				"closed" : "Shop.png",
 				"open" : "ShopOpen.png"
 			},
-			"background" : true,
-			"buildingData" : {
+			"extraData" : {
 				
 			},
+			"fps" : 7.00000,
 			"position" : [
-				1536.00,
-				1008.00
+				1530.00,
+				775.000
 			],
 			"type" : "House",
 			"originalSize" : [
 				64,
 				64
 			],
-			"map" : "InnenContracts.json"
+			"map" : "Shop.json",
+			"layer" : 0
+		},
+		{
+			"requestedSize" : [
+				110,
+				100
+			],
+			"textures" : {
+				"default" : "PLTreppe.png"
+			},
+			"extraData" : {
+				
+			},
+			"background" : true,
+			"fps" : 7.00000,
+			"position" : [
+				[
+					1381.00,
+					462.000
+				],
+				[
+					1538.00,
+					463.000
+				],
+				[
+					1461.00,
+					476.000
+				],
+				[
+					1524.00,
+					493.000
+				],
+				[
+					1402.00,
+					493.000
+				],
+				[
+					1460.00,
+					513.000
+				],
+				[
+					1422.00,
+					526.000
+				],
+				[
+					1496.00,
+					526.000
+				],
+				[
+					1457.00,
+					550.000
+				]
+			],
+			"type" : "Building",
+			"originalSize" : [
+				64,
+				64
+			],
+			"layer" : 4
 		}
 	],
 	"dir" : "tiles",
 	"map" : {
+		"playerLayer" : 0,
 		"textures" : [
 			"Wasser.png",
 			"SteinWandWasserEckeF.png",
