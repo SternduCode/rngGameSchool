@@ -320,7 +320,7 @@ public class TileManager extends Pane {
 		if (nodes.size() != 0) return nodes.get(nodes.size() - 1);
 		else if (x < 0 || y < 0) return null;
 		else
-			return map.get((int) Math.floor(y / gp.Bg)).get((int) Math.floor(x / gp.Bg));
+			return getTileAt(x, y);
 	}
 
 	public int getPlayerLayer() { return playerLayer; }

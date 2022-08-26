@@ -60,9 +60,8 @@ public class SelectTool extends Rectangle {
 
 	public void doDrag(MouseEvent me) {
 		if (dragging) {
-			Node node = gp.getTileM().getMap()
-					.get((int) Math.floor((me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY()) / gp.Bg))
-					.get((int) Math.floor((me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX()) / gp.Bg));
+			Node node = gp.getTileM().getTileAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
 			if (node instanceof TextureHolder t) {
 				setWidth(t.getLayoutX() + t.getWidth() - getLayoutX());
 				setHeight(t.getLayoutY() + t.getHeight() - getLayoutY());
