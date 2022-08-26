@@ -43,8 +43,9 @@ public class TileManager extends Pane {
 
 	private String path;
 	private final SpielPanel gp;
-	private final List<Tile> tile;
+	private final List<Tile> tiles;
 	List<List<Integer>> mapTileNum;
+
 	private List<List<TextureHolder>> map;
 	private final Group group;
 	private List<Building> buildings;
@@ -59,7 +60,6 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-
 	private final ObjectProperty<Building> requestorB = new ObjectPropertyBase<>() {
 
 		@Override
@@ -68,6 +68,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
+
 	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
@@ -77,7 +78,6 @@ public class TileManager extends Pane {
 		public String getName() { return "requestor"; }
 	};
 	private Double[] startingPosition, exitStartingPosition, exitPosition;
-
 	private int playerLayer;
 
 	private final Menu mtiles, mnpcs, mbuildings, mextra;
@@ -113,7 +113,7 @@ public class TileManager extends Pane {
 
 		this.gp = gp;
 
-		tile = new ArrayList<>();
+		tiles = new ArrayList<>();
 
 		group = new Group();
 		getChildren().add(group);
@@ -265,7 +265,7 @@ public class TileManager extends Pane {
 					Tile t = new Tile(f.getName(),
 							new FileInputStream("./res/" + dir + "/" + f.getName()),
 							gp);
-					tile.add(t);
+					tiles.add(t);
 					mtiles.getItems().remove(mi);
 					mtiles.getItems()
 					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images.get(0),
@@ -283,8 +283,8 @@ public class TileManager extends Pane {
 		}
 	}
 
-
 	public String getBackgroundPath() { return backgroundPath; }
+
 
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
@@ -300,7 +300,7 @@ public class TileManager extends Pane {
 		return map;
 	}
 
-	public MenuItem[] getMenus() {
+	public Menu[] getMenus() {
 		((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().clear();
 		for (File f: new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[] sp = f.getName().split("[.]");
@@ -308,7 +308,7 @@ public class TileManager extends Pane {
 			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
 			((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().add(map);
 		}
-		return new MenuItem[] {mtiles, mnpcs, mbuildings, mextra};
+		return new Menu[] {mtiles, mnpcs, mbuildings, mextra};
 	}
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
@@ -328,6 +328,20 @@ public class TileManager extends Pane {
 	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
 	public Double[] getStartingPosition() { return startingPosition; }
+
+	public TextureHolder getTileAt(double x, double y) {
+		int tx = (int) Math.floor(x / gp.Bg);
+		int ty = (int) Math.floor(y / gp.Bg);
+		if (x < 0) tx--;
+		if (y < 0) ty--;
+		try {
+			return map.get(ty).get(tx);
+		} catch (IndexOutOfBoundsException e) {
+			return new FakeTextureHolder(x, y);
+		}
+	}
+
+	public List<Tile> getTiles() { return tiles; }
 
 	public void loadMap(JsonArray data) {
 
@@ -431,7 +445,7 @@ public class TileManager extends Pane {
 			exitMap = null;
 
 			group.getChildren().clear();
-			tile.clear();
+			tiles.clear();
 			mtiles.getItems().clear();
 			mnpcs.getItems().clear();
 			mbuildings.getItems().clear();
@@ -493,7 +507,7 @@ public class TileManager extends Pane {
 				Tile t = new Tile(((StringValue) texture).getValue(),
 						new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
-				tile.add(t);
+				tiles.add(t);
 				mtiles.getItems()
 				.add(new MenuItemWTile(((StringValue) texture).getValue(),
 						new ImageView(ImgUtil.resizeImage(t.images.get(0),
@@ -602,7 +616,7 @@ public class TileManager extends Pane {
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);
 				if (th == null) {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), gp, screenX, screenY,
+					th = new TextureHolder(tiles.get(tileNum < tiles.size() ? tileNum : 0), gp, screenX, screenY,
 							cm, requestor, worldX, worldY);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);
@@ -620,7 +634,7 @@ public class TileManager extends Pane {
 					th.setVisible(false);
 					th.update();
 				} else {
-					th = new TextureHolder(tile.get(tileNum < tile.size() ? tileNum : 0), gp, screenX, screenY, cm,
+					th = new TextureHolder(tiles.get(tileNum < tiles.size() ? tileNum : 0), gp, screenX, screenY, cm,
 							requestor, worldX, worldY);
 					th.setVisible(false);
 					group.getChildren().add(th);
