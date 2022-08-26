@@ -423,6 +423,7 @@ public class GameObject extends Pane implements JsonValue {
 
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
+				fc.setTitle("Select a texture file");
 				fc.getExtensionFilters().add(new ExtensionFilter(
 						"A file containing an Image", "*.png"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
@@ -471,6 +472,7 @@ public class GameObject extends Pane implements JsonValue {
 			} else {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
+				fc.setTitle("Select a texture file");
 				fc.getExtensionFilters().add(new ExtensionFilter(
 						"A file containing an Image", "*.png"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
