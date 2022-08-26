@@ -70,7 +70,6 @@ public class PartialFillDialog extends Dialog<Boolean> {
 
 	private Image makeView(Image img) {
 		Pane pane = new Pane();
-		// pane.setOpacity(0);
 		pane.setPrefSize(selectTool.getWidth(), selectTool.getHeight());
 		List<ImageView> ivs = new ArrayList<>();
 		double wIdxs = selectTool.getWidth() / img.getWidth();

@@ -102,7 +102,6 @@ public class GameObject extends Pane implements JsonValue {
 		background = gameObject.background;
 		currentKey = gameObject.currentKey;
 		images = gameObject.images;
-		iv.setImage(gameObject.getFirstImage());
 		textureFiles = gameObject.textureFiles;
 		gameObject.collisionBoxes.forEach((key, poly) -> {
 			Polygon collisionBox = collisionBoxes.get(key);
@@ -168,6 +167,7 @@ public class GameObject extends Pane implements JsonValue {
 		addToView();
 	}
 
+
 	@SuppressWarnings("unchecked")
 	public GameObject(JsonObject gameObject, SpielPanel gp, String directory, List<? extends GameObject> gameObjects,
 			ContextMenu cm,
@@ -201,24 +201,145 @@ public class GameObject extends Pane implements JsonValue {
 		if (gameObject != null) {
 			origWidth = ((NumberValue) ((JsonArray) gameObject.get("originalSize")).get(0)).getValue().intValue();
 			origHeight = ((NumberValue) ((JsonArray) gameObject.get("originalSize")).get(1)).getValue().intValue();
-			reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue().intValue();
-			reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue().intValue();
-		}
-		if (gameObject != null && gameObject.containsKey("fps"))
-			fps = ((NumberValue) gameObject.get("fps")).getValue().doubleValue();
-		else fps = 7;
-		if (gameObject != null && gameObject.containsKey("layer"))
-			layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
-		else layer = 0;
 
-		if (gameObject != null && gameObject.containsKey("background"))
-			background = ((BoolValue) gameObject.get("background")).getValue();
+			if (((JsonArray) gameObject.get("position")).get(0) instanceof JsonArray ja) {
+				boolean secondMultiPlexer = ((JsonArray) gameObject.get("requestedSize")).get(0) instanceof JsonArray;
+				try {
+					slaves = new ArrayList<>();
+					for (int i = 1; i < ((JsonArray) gameObject.get("position")).size(); i++) {
+						GameObject b = this
+								.getClass().getDeclaredConstructor(this.getClass(), List.class,
+										ContextMenu.class, ObjectProperty.class)
+								.newInstance(this, gameObjects, cm, requestor);
+						b.x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
+								.getValue()
+								.doubleValue();
+						b.y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
+								.getValue()
+								.doubleValue();
+						if (!secondMultiPlexer) {
+							b.reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
+									.intValue();
+							b.reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1))
+									.getValue().intValue();
+						} else {
+							JsonArray reqSize = (JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(i);
+							b.reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
+							b.reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+						}
+						if (gameObject.containsKey("fps"))
+							if (secondMultiPlexer)
+								b.fps = ((NumberValue) ((JsonArray) gameObject.get("fps")).get(i)).getValue()
+								.intValue();
+							else b.fps = ((NumberValue) gameObject.get("fps")).getValue().doubleValue();
+						else b.fps = 7;
+						if (gameObject.containsKey("layer"))
+							if (secondMultiPlexer)
+								b.layer = ((NumberValue) ja.get(i)).getValue().intValue();
+							else
+								b.layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
+						else b.layer = 0;
+						if (gameObject.containsKey("background"))
+							if (secondMultiPlexer)
+								b.background = ((BoolValue) ((JsonArray) gameObject.get("background")).get(i))
+								.getValue();
+							else
+								b.background = ((BoolValue) gameObject.get("background")).getValue();
 
-		if (gameObject != null && gameObject.containsKey("extraData"))
-			extraData = (JsonObject) gameObject.get("extraData");
-		else extraData = new JsonObject();
+						if (gameObject.containsKey("extraData"))
+							if (secondMultiPlexer)
+								b.extraData = (JsonObject) ((JsonArray) gameObject.get("extraData")).get(i);
+							else
+								b.extraData = (JsonObject) gameObject.get("extraData");
+						else b.extraData = new JsonObject();
+						b.images = new HashMap<>();
+						((JsonObject) gameObject.get("textures")).entrySet().parallelStream()
+						.forEach(s -> {
+							try {
+								b.getAnimatedImages(s.getKey(), ((StringValue) s.getValue()).getValue());
+							} catch (FileNotFoundException e1) {
+								e1.printStackTrace();
+							}
+						});
+					}
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				}
+				x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(0)).getValue()
+						.doubleValue();
+				y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(1)).getValue()
+						.doubleValue();
+				if (!secondMultiPlexer) {
+					reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
+							.intValue();
+					reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
+							.intValue();
+				} else {
+					JsonArray reqSize = (JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(0);
+					reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
+					reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+				}
+				if (gameObject.containsKey("fps"))
+					if (secondMultiPlexer)
+						fps = ((NumberValue) ((JsonArray) gameObject.get("fps")).get(0)).getValue().intValue();
+					else fps = ((NumberValue) gameObject.get("fps")).getValue().doubleValue();
+				else fps = 7;
+				if (gameObject.containsKey("layer"))
+					if (secondMultiPlexer)
+						layer = ((NumberValue) ja.get(0)).getValue().intValue();
+					else
+						layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
+				else layer = 0;
+				if (gameObject.containsKey("background"))
+					if (secondMultiPlexer)
+						background = ((BoolValue) ((JsonArray) gameObject.get("background")).get(0)).getValue();
+					else
+						background = ((BoolValue) gameObject.get("background")).getValue();
 
-		if (gameObject != null) {
+				if (gameObject.containsKey("extraData"))
+					if (secondMultiPlexer)
+						extraData = (JsonObject) ((JsonArray) gameObject.get("extraData")).get(0);
+					else
+						extraData = (JsonObject) gameObject.get("extraData");
+				else extraData = new JsonObject();
+			} else {
+				x = ((NumberValue) ((JsonArray) gameObject.get("position")).get(0)).getValue().doubleValue();
+				y = ((NumberValue) ((JsonArray) gameObject.get("position")).get(1)).getValue().doubleValue();
+				if (((JsonArray) gameObject.get("requestedSize")).get(0) instanceof NumberValue nv) {
+					reqWidth = nv.getValue().intValue();
+					reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
+							.intValue();
+				} else {
+					JsonArray reqSize =(JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(0);
+					reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
+					reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+				}
+				if (gameObject.containsKey("fps"))
+					if (gameObject.get("fps") instanceof JsonArray ja)
+						fps = ((NumberValue) ja.get(0)).getValue().intValue();
+					else fps = ((NumberValue) gameObject.get("fps")).getValue().doubleValue();
+				else fps = 7;
+				if (gameObject.containsKey("layer"))
+					if (gameObject.get("layer") instanceof JsonArray ja)
+						layer = ((NumberValue) ja.get(0)).getValue().intValue();
+					else
+						layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
+				else layer = 0;
+				if (gameObject.containsKey("background"))
+					if (gameObject.get("background") instanceof JsonArray ja)
+						background = ((BoolValue) ja.get(0)).getValue();
+					else
+						background = ((BoolValue) gameObject.get("background")).getValue();
+
+				if (gameObject.containsKey("extraData"))
+					if (gameObject.get("extraData") instanceof JsonArray ja)
+						extraData = (JsonObject) ja.get(0);
+					else
+						extraData = (JsonObject) gameObject.get("extraData");
+				else extraData = new JsonObject();
+			}
+
 			((JsonObject) gameObject.get("textures")).entrySet().parallelStream()
 			.forEach(s -> {
 				try {
@@ -254,35 +375,6 @@ public class GameObject extends Pane implements JsonValue {
 		remove.setOnAction(this::handleContextMenu);
 		menu.getItems().addAll(position, fpsI, imagesM, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
 				reloadTextures, remove);
-
-		if (gameObject != null)
-			if (((JsonArray) gameObject.get("position")).get(0) instanceof JsonArray ja) {
-				try {
-					slaves = new ArrayList<>();
-					for (int i = 1; i < ((JsonArray) gameObject.get("position")).size(); i++) {
-						GameObject b = this
-								.getClass().getDeclaredConstructor(this.getClass(), List.class,
-										ContextMenu.class, ObjectProperty.class)
-								.newInstance(this, gameObjects, cm, requestor);
-						b.x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
-								.getValue()
-								.doubleValue();
-						b.y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
-								.getValue()
-								.doubleValue();
-					}
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					e.printStackTrace();
-				}
-				x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(0)).getValue()
-						.doubleValue();
-				y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(1)).getValue()
-						.doubleValue();
-			} else {
-				x = ((NumberValue) ((JsonArray) gameObject.get("position")).get(0)).getValue().doubleValue();
-				y = ((NumberValue) ((JsonArray) gameObject.get("position")).get(1)).getValue().doubleValue();
-			}
 
 		if (gameObjects != null) {
 			((List<GameObject>) gameObjects).add(this);
@@ -664,35 +756,59 @@ public class GameObject extends Pane implements JsonValue {
 			JsonObject jo = new JsonObject();
 			jo.put("type", getClass().getSimpleName());
 			jo.put("textures", textureFiles);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(origWidth);
+			originalSize.add(origHeight);
+			jo.put("originalSize", originalSize);
 			JsonArray position = new JsonArray();
+			JsonArray extraDatas = new JsonArray();
+			JsonArray fpss = new JsonArray();
+			JsonArray requestedSize = new JsonArray();
+			JsonArray backgrounds = new JsonArray();
+			JsonArray layers = new JsonArray();
 			if (slaves == null || slaves.size() == 0) {
 				position.add(x);
 				position.add(y);
+				extraDatas.add(extraData);
+				fpss.add(fps);
+				requestedSize.add(reqWidth);
+				requestedSize.add(reqHeight);
+				backgrounds.add(background);
+				layers.add(layer);
 			} else {
 				JsonArray pos = new JsonArray();
 				pos.add(x);
 				pos.add(y);
 				position.add(pos);
+				extraDatas.add(extraData);
+				fpss.add(fps);
+				JsonArray reqSize = new JsonArray();
+				reqSize.add(reqWidth);
+				reqSize.add(reqHeight);
+				requestedSize.add(reqSize);
+				backgrounds.add(background);
+				layers.add(layer);
 				for (GameObject b: slaves) {
 					pos = new JsonArray();
 					pos.add(b.x);
 					pos.add(b.y);
 					position.add(pos);
+					extraDatas.add(b.extraData);
+					fpss.add(b.fps);
+					reqSize = new JsonArray();
+					reqSize.add(b.reqWidth);
+					reqSize.add(b.reqHeight);
+					requestedSize.add(reqSize);
+					backgrounds.add(b.background);
+					layers.add(b.layer);
 				}
 			}
-			jo.put("extraData", extraData);
 			jo.put("position", position);
-			JsonArray originalSize = new JsonArray();
-			originalSize.add(origWidth);
-			originalSize.add(origHeight);
-			jo.put("fps", fps);
-			jo.put("originalSize", originalSize);
-			JsonArray requestedSize = new JsonArray();
-			requestedSize.add(reqWidth);
-			requestedSize.add(reqHeight);
+			jo.put("extraData", extraDatas);
+			jo.put("fps", fpss);
 			jo.put("requestedSize", requestedSize);
-			if (background) jo.put("background", background);
-			jo.put("layer", layer);
+			jo.put("background", backgrounds);
+			jo.put("layer", layers);
 			return jo;
 		} else return new StringValue("");
 	}
