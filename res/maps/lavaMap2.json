@@ -8,10 +8,17 @@
 			"textures" : {
 				"default" : "FritzA.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				870.000,
 				870.000
@@ -21,7 +28,9 @@
 				64,
 				32
 			],
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
@@ -31,10 +40,17 @@
 			"textures" : {
 				"default" : "GandalfA.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				840.000,
 				430.000
@@ -44,7 +60,9 @@
 				32,
 				32
 			],
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
@@ -54,10 +72,17 @@
 			"textures" : {
 				"default" : "BOOMiIdle.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 5.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				5.00000
+			],
 			"position" : [
 				600.000,
 				1600.00
@@ -68,7 +93,9 @@
 				64
 			],
 			"dir" : "void",
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
@@ -78,10 +105,17 @@
 			"textures" : {
 				"default" : "MayAshadow.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				750.000,
 				1600.00
@@ -92,7 +126,9 @@
 				64
 			],
 			"dir" : "shadow",
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		}
 	],
 	"buildings" : [
@@ -104,10 +140,17 @@
 			"textures" : {
 				"default" : "Portal.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				1452.00,
 				370.000
@@ -117,7 +160,9 @@
 				128,
 				128
 			],
-			"layer" : 6
+			"layer" : [
+				6
+			]
 		},
 		{
 			"requestedSize" : [
@@ -128,10 +173,17 @@
 				"closed" : "A11Haus.png",
 				"open" : "A1Haus.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				800.000,
 				250.000
@@ -142,7 +194,9 @@
 				64
 			],
 			"map" : "InnenContracts.json",
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
@@ -152,10 +206,17 @@
 			"textures" : {
 				"default" : "FischHaus.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				1650.00,
 				1350.00
@@ -165,7 +226,9 @@
 				128,
 				128
 			],
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
@@ -175,11 +238,17 @@
 			"textures" : {
 				"default" : "PLeckeUntenLinks2.png"
 			},
-			"extraData" : {
-				
-			},
-			"background" : true,
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				1344.00,
 				480.000
@@ -189,21 +258,67 @@
 				32,
 				32
 			],
-			"layer" : 5
+			"layer" : [
+				5
+			]
 		},
 		{
 			"requestedSize" : [
-				48,
-				48
+				[
+					48,
+					48
+				],
+				[
+					48,
+					48
+				],
+				[
+					48,
+					48
+				],
+				[
+					48,
+					48
+				],
+				[
+					48,
+					48
+				]
 			],
 			"textures" : {
 				"default" : "PLUnten.png"
 			},
-			"extraData" : {
-				
-			},
-			"background" : true,
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				}
+			],
+			"background" : [
+				false,
+				false,
+				false,
+				false,
+				false
+			],
+			"fps" : [
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000
+			],
 			"position" : [
 				[
 					1392.00,
@@ -231,7 +346,13 @@
 				32,
 				32
 			],
-			"layer" : 5
+			"layer" : [
+				5,
+				5,
+				5,
+				5,
+				5
+			]
 		},
 		{
 			"requestedSize" : [
@@ -241,11 +362,17 @@
 			"textures" : {
 				"default" : "PLeckeUntenRechts2.png"
 			},
-			"extraData" : {
-				
-			},
-			"background" : true,
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				1632.00,
 				480.000
@@ -255,7 +382,9 @@
 				32,
 				32
 			],
-			"layer" : 5
+			"layer" : [
+				5
+			]
 		},
 		{
 			"requestedSize" : [
@@ -266,10 +395,17 @@
 				"closed" : "Shop.png",
 				"open" : "ShopOpen.png"
 			},
-			"extraData" : {
-				
-			},
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				1530.00,
 				775.000
@@ -280,21 +416,103 @@
 				64
 			],
 			"map" : "Shop.json",
-			"layer" : 0
+			"layer" : [
+				0
+			]
 		},
 		{
 			"requestedSize" : [
-				110,
-				100
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				],
+				[
+					110,
+					100
+				]
 			],
 			"textures" : {
 				"default" : "PLTreppe.png"
 			},
-			"extraData" : {
-				
-			},
-			"background" : true,
-			"fps" : 7.00000,
+			"extraData" : [
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				},
+				{
+					
+				}
+			],
+			"background" : [
+				true,
+				true,
+				true,
+				true,
+				true,
+				true,
+				true,
+				true,
+				true
+			],
+			"fps" : [
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000,
+				7.00000
+			],
 			"position" : [
 				[
 					1381.00,
@@ -338,12 +556,22 @@
 				64,
 				64
 			],
-			"layer" : 4
+			"layer" : [
+				4,
+				4,
+				3,
+				3,
+				3,
+				2,
+				2,
+				2,
+				1
+			]
 		}
 	],
 	"dir" : "tiles",
 	"map" : {
-		"playerLayer" : 0,
+		"playerLayer" : 6,
 		"textures" : [
 			"Wasser.png",
 			"SteinWandWasserEckeF.png",

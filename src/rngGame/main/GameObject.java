@@ -211,12 +211,13 @@ public class GameObject extends Pane implements JsonValue {
 								.getClass().getDeclaredConstructor(this.getClass(), List.class,
 										ContextMenu.class, ObjectProperty.class)
 								.newInstance(this, gameObjects, cm, requestor);
-						b.x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
+						b.setPosition(
+								((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
 								.getValue()
-								.doubleValue();
-						b.y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
+										.doubleValue(),
+								((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
 								.getValue()
-								.doubleValue();
+										.doubleValue());
 						if (!secondMultiPlexer) {
 							b.reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
 									.intValue();
@@ -235,11 +236,11 @@ public class GameObject extends Pane implements JsonValue {
 						else b.fps = 7;
 						if (gameObject.containsKey("layer"))
 							if (secondMultiPlexer)
-								b.layer = ((NumberValue) ((JsonArray) gameObject.get("layer")).get(i)).getValue()
-										.intValue();
+								b.setLayer(((NumberValue) ((JsonArray) gameObject.get("layer")).get(i)).getValue()
+										.intValue());
 							else
-								b.layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
-						else b.layer = 0;
+								b.setLayer(((NumberValue) gameObject.get("layer")).getValue().intValue());
+						else b.setLayer(0);
 						if (gameObject.containsKey("background"))
 							if (secondMultiPlexer)
 								b.background = ((BoolValue) ((JsonArray) gameObject.get("background")).get(i))
