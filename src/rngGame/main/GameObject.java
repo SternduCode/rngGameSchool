@@ -235,7 +235,8 @@ public class GameObject extends Pane implements JsonValue {
 						else b.fps = 7;
 						if (gameObject.containsKey("layer"))
 							if (secondMultiPlexer)
-								b.layer = ((NumberValue) ja.get(i)).getValue().intValue();
+								b.layer = ((NumberValue) ((JsonArray) gameObject.get("layer")).get(i)).getValue()
+										.intValue();
 							else
 								b.layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
 						else b.layer = 0;
@@ -287,7 +288,7 @@ public class GameObject extends Pane implements JsonValue {
 				else fps = 7;
 				if (gameObject.containsKey("layer"))
 					if (secondMultiPlexer)
-						layer = ((NumberValue) ja.get(0)).getValue().intValue();
+						layer = ((NumberValue) ((JsonArray) gameObject.get("layer")).get(0)).getValue().intValue();
 					else
 						layer = ((NumberValue) gameObject.get("layer")).getValue().intValue();
 				else layer = 0;
