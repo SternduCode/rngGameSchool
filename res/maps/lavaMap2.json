@@ -218,8 +218,8 @@
 		},
 		{
 			"requestedSize" : [
-				175,
-				175
+				200,
+				200
 			],
 			"textures" : {
 				"default" : "FischHaus.png"
@@ -236,16 +236,16 @@
 				7.00000
 			],
 			"position" : [
-				1650.00,
-				1350.00
+				1564.00,
+				1307.00
 			],
 			"type" : "Building",
 			"originalSize" : [
-				128,
-				128
+				64,
+				64
 			],
 			"layer" : [
-				0
+				10
 			]
 		},
 		{
@@ -453,7 +453,7 @@
 			],
 			"map" : "Shop.json",
 			"layer" : [
-				0
+				10
 			]
 		},
 		{
@@ -606,7 +606,7 @@
 		}
 	],
 	"map" : {
-		"playerLayer" : 6,
+		"playerLayer" : 10,
 		"textures" : [
 			"Wasser.png",
 			"SteinWandWasserEckeF.png",
