@@ -2,12 +2,15 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 import javafx.animation.*;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import rngGame.buildings.Building;
 import rngGame.entity.*;
@@ -72,15 +75,24 @@ public class SpielPanel extends Pane {
 	private final TileManager tileM;
 	private final SelectTool selectTool;
 	private final GroupGroup layerGroup;
+	private final Group pointGroup;
 
 	private List<Building> buildings;
 
 	private List<NPC> npcs;
 
+	private final Map<Point2D, Circle> points;
+
 	public SpielPanel(Input keyH) throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
 		this.keyH = keyH;
+
+		pointGroup = new Group();
+
+		pointGroup.setDisable(true);
+
+		points = new HashMap<>();
 
 		layerGroup = new GroupGroup();
 
@@ -99,7 +111,7 @@ public class SpielPanel extends Pane {
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, selectTool, inv);
+		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv);
 	}
 
 	public List<Building> getBuildings() { return buildings; }
@@ -121,6 +133,8 @@ public class SpielPanel extends Pane {
 
 	public void reload() {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
+		points.clear();
+		pointGroup.getChildren().clear();
 		tileM.reload();
 		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
@@ -134,6 +148,10 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		player.setLayer(tileM.getPlayerLayer());
 		buildings = tileM.getBuildingsFromMap();
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+				Color.color(0, 1, 0, .75));
+		points.put(tileM.getSpawnPoint(), spawn);
+		pointGroup.getChildren().add(spawn);
 		npcs = tileM.getNPCSFromMap();
 	}
 
@@ -147,8 +165,10 @@ public class SpielPanel extends Pane {
 		setMap(path, null);
 	}
 
-	public void setMap(String path, Double[] position) {
+	public void setMap(String path, double[] position) {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
+		points.clear();
+		pointGroup.getChildren().clear();
 		tileM.setMap(path);
 		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
@@ -162,10 +182,16 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+				Color.color(0, 1, 0, .75));
+		points.put(tileM.getSpawnPoint(), spawn);
+		pointGroup.getChildren().add(spawn);
+
 		if (position != null)
 			player.setPosition(position);
 		else player.setPosition(tileM.getStartingPosition());
 		player.setLayer(tileM.getPlayerLayer());
+
 	}
 
 
@@ -220,6 +246,14 @@ public class SpielPanel extends Pane {
 			view.getChildren().clear();
 			view.getChildren().addAll(nodes);
 		}
+
+		for (Entry<Point2D, Circle> point: points.entrySet()) {
+			point.getValue().setCenterX(point.getKey().getX() - player.x + player.screenX);
+			point.getValue().setCenterY(point.getKey().getY() - player.y + player.screenY);
+		}
+
+		if (System.getProperty("edit").equals("true")) pointGroup.setVisible(true);
+		else pointGroup.setVisible(false);
 
 		tileM.update();
 

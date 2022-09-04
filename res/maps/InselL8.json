@@ -615,12 +615,8 @@
 			]
 		}
 	],
-	"dir" : "Insel",
 	"map" : {
-		"size" : [
-			50,
-			50
-		],
+		"dir" : "Insel",
 		"textures" : [
 			"Void.png",
 			"EckeLinksOben.png",
@@ -644,10 +640,9 @@
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
-			25.0000,
-			25.0000
+			1200,
+			1200
 		],
-		"dir" : "Insel",
 		"matrix" : [
 			"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",

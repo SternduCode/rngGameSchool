@@ -8,6 +8,7 @@ import com.sterndu.json.*;
 import javafx.beans.property.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -77,7 +78,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-	private Double[] startingPosition, exitStartingPosition, exitPosition;
+	private double[] startingPosition, exitStartingPosition, exitPosition;
 	private int playerLayer;
 
 	private final Menu mtiles, mnpcs, mbuildings, mextra;
@@ -292,9 +293,9 @@ public class TileManager extends Pane {
 
 	public String getExitMap() { return exitMap; }
 
-	public Double[] getExitPosition() { return exitPosition; }
+	public double[] getExitPosition() { return exitPosition; }
 
-	public Double[] getExitStartingPosition() { return exitStartingPosition; }
+	public double[] getExitStartingPosition() { return exitStartingPosition; }
 
 	public List<List<TextureHolder>> getMap() {
 		return map;
@@ -327,7 +328,9 @@ public class TileManager extends Pane {
 
 	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
-	public Double[] getStartingPosition() { return startingPosition; }
+	public Point2D getSpawnPoint() { return new Point2D(startingPosition[0], startingPosition[1]); }
+
+	public double[] getStartingPosition() { return startingPosition; }
 
 	public TextureHolder getTileAt(double x, double y) {
 		int tx = (int) Math.floor(x / gp.Bg);
@@ -409,7 +412,7 @@ public class TileManager extends Pane {
 				startingPosition.clear();
 				startingPosition.add(this.startingPosition[0]);
 				startingPosition.add(this.startingPosition[1]);
-				jo.put("dir", dir);
+				map.put("dir", dir);
 				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
 				for (List<TextureHolder> mapi: this.map) {
@@ -452,7 +455,7 @@ public class TileManager extends Pane {
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(new FileInputStream(path));
 
-			if (jo.containsKey("generated")) {
+			if (jo.containsKey("generated") && jo.get("generated") instanceof BoolValue bv && bv.getValue()) {
 
 				if (jo.containsKey("background")) backgroundPath = ((StringValue) jo.get("background")).getValue();
 				else backgroundPath = null;
@@ -469,9 +472,9 @@ public class TileManager extends Pane {
 						"./res/maps/" + ((StringValue) ja_maps.remove(r.nextInt(ja_maps.size()))).getValue()));
 
 				DungeonGen d = new DungeonGen(gp, mainmap, maps,
-						((JsonArray) jo.get("connectors")).stream().map(sv -> ((StringValue) sv).getValue()).toList(),
-						((JsonArray) jo.get("connections")).stream().map(sv -> ((StringValue) sv).getValue()).toList(),
-						((JsonArray) jo.get("replacments")).stream().map(sv -> ((StringValue) sv).getValue()).toList());
+						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
+						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
+						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList());
 
 				d.findConnectors();// TODO fiax that it expects List<String> insted of JsonObject's
 
@@ -494,11 +497,11 @@ public class TileManager extends Pane {
 				exitMap = ((StringValue) exit.get("map")).getValue();
 				JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
 				JsonArray position = (JsonArray) exit.get("position");
-				exitStartingPosition = new Double[] {
+				exitStartingPosition = new double[] {
 						((NumberValue) spawnPosition.get(0)).getValue().doubleValue(),
 						((NumberValue) spawnPosition.get(1)).getValue().doubleValue()
 				};
-				exitPosition = new Double[] {
+				exitPosition = new double[] {
 						((NumberValue) position.get(0)).getValue().doubleValue(),
 						((NumberValue) position.get(1)).getValue().doubleValue()
 				};
@@ -532,7 +535,7 @@ public class TileManager extends Pane {
 				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
 				.printStackTrace();
 			}
-			this.startingPosition = new Double[] {
+			this.startingPosition = new double[] {
 					((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
 					((NumberValue) startingPosition.get(1)).getValue().doubleValue()
 			};
@@ -586,8 +589,8 @@ public class TileManager extends Pane {
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int worldX = (int) (gp.Bg * exitPosition[0]);
-			int worldY = (int) (gp.Bg * exitPosition[1]);
+			int worldX = (int) exitPosition[0];
+			int worldY = (int) exitPosition[1];
 
 			if (worldX + gp.Bg / 2 - p.getX() < 105 && worldX + gp.Bg / 2 - p.getX() > -45 &&
 					worldY + gp.Bg / 2 - p.getY() < 25 && worldY + gp.Bg / 2 - p.getY() > 0)

@@ -1,12 +1,12 @@
 {
 	"exit" : {
 		"spawnPosition" : [
-			18,
-			9.30000
+			1548,
+			972
 		],
 		"position" : [
-			3.00000,
-			16.6000
+			144,
+			797
 		],
 		"map" : "lavaMap2.json"
 	},
@@ -19,10 +19,6 @@
 	"dir" : "buildingInside",
 	"map" : {
 		"playerLayer" : 0,
-		"size" : [
-			13,
-			13
-		],
 		"textures" : [
 			"Void.png",
 			"RechtsEckeMU.png",
@@ -40,8 +36,8 @@
 			"LinksEckeMO.png"
 		],
 		"startingPosition" : [
-			2.50000,
-			16.3000
+			120,
+			782
 		],
 		"dir" : "buildingInside",
 		"matrix" : [

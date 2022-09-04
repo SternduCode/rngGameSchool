@@ -7,37 +7,69 @@ import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import rngGame.entity.Player;
-import rngGame.main.SpielPanel;
+import rngGame.main.*;
 
 public class House extends Building {
 
 	protected String map;
 	private final Menu house;
-	private final MenuItem mapI;
 
+	private final MenuItem mapI;
+	private double openX, openY, openWidth, openHeight, entranceX, entranceY, entranceWidth, entranceHeight;
 	public House(House building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
-		map = building.map;
-		currentKey = "closed";
-		house = new Menu("Demon");
+		setCurrentKey("closed");
+		house = new Menu("House");
 		mapI = new MenuItem();
 		mapI.setOnAction(this::handleContextMenu);
+		map = building.map;
 		house.getItems().add(mapI);
+
 	}
 
 	public House(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
-		if (building.containsKey("map")) map = ((StringValue) building.get("map")).getValue();
-		currentKey = "closed";
+		if (building.containsKey("map")) setMap(((StringValue) building.get("map")).getValue());
+		setCurrentKey("closed");
 		house = new Menu("House");
 		mapI = new MenuItem();
 		mapI.setOnAction(this::handleContextMenu);
 		house.getItems().add(mapI);
+		if (!getMiscBoxes().containsKey("open")) {
+			System.out.println("op");
+			Polygon entrance = new Polygon();
+			openX = reqWidth / 2 - 65;
+			openY = reqHeight / 2 + 50;
+			openWidth = 130;
+			openHeight = 100;
+			entrance.getPoints().addAll(openX, openY, openX, openY + openHeight, openX + openWidth, openY + openHeight,
+					openX + openWidth, openY);
+			addMiscBox("open", entrance, (gpt, self) -> {
+				self.setCurrentKey("open");
+			});
+		} else getMiscBoxHandler().put("open", (gpt, self) -> {
+			self.setCurrentKey("open");
+		});
+		if (!getMiscBoxes().containsKey("entrance")) {
+			System.out.println("ent");
+			Polygon entrance = new Polygon();
+			entranceX = reqWidth / 2 - 25;
+			entranceY = reqHeight / 2 + 50;
+			entranceWidth = 50;
+			entranceHeight = 60;
+			entrance.getPoints().addAll(entranceX, entranceY, entranceX, entranceY + entranceHeight,
+					entranceX + entranceWidth, entranceY + entranceHeight, entranceX + entranceWidth, entranceY);
+			addMiscBox("entrance", entrance, (gpt, self) -> {
+				if (((House) self).getMap() != null) gpt.setMap("./res/maps/" + ((House) self).getMap());
+			});
+		} else getMiscBoxHandler().put("entrance", (gpt, self) -> {
+			if (((House) self).getMap() != null) gpt.setMap("./res/maps/" + ((House) self).getMap());
+		});
 	}
 
 	private void handleContextMenu(ActionEvent e) {
@@ -48,7 +80,7 @@ public class House extends Building {
 				"A file containing an JSON data", "*.json"));
 		fc.setInitialFileName(map);
 		File f = fc.showOpenDialog(getScene().getWindow());
-		if (!f.toPath().startsWith("./res/maps")) {
+		if (f != null && !f.toPath().startsWith("./res/maps")) {
 			Path to = new File("./res/maps/"+f.getName()).toPath();
 			if (Files.exists(to)) {
 				Alert alert = new Alert(Alert.AlertType.NONE);
@@ -80,6 +112,13 @@ public class House extends Building {
 		}
 	}
 
+	protected void setMap(String map) {
+		this.map = map;
+		if (slaves != null) for (GameObject slave:slaves) ((House) slave).setMap(map);
+	}
+
+	public String getMap() { return map; }
+
 	@Override
 	public List<Menu> getMenus() {
 		List<Menu> li = super.getMenus();
@@ -98,17 +137,11 @@ public class House extends Building {
 
 	@Override
 	public void update() {
+
+		setCurrentKey("closed");
+
 		super.update();
 
-		Player p = gp.getPlayer();
-
-		if (x + reqWidth / 2 - p.getX() < 105 && x + reqWidth / 2 - p.getX() > -45 &&
-				y + reqHeight / 2 - p.getY() < -10 && y + reqHeight / 2 - p.getY() > -135)
-			currentKey = "open";
-		else currentKey = "closed";
-		if (x + reqWidth / 2 - p.getX() < 105 && x + reqWidth / 2 - p.getX() > -45 &&
-				y + reqHeight / 2 - p.getY() < -10 && y + reqHeight / 2 - p.getY() > -65)
-			if (map != null) gp.setMap("./res/maps/" + map);
 	}
 
 }

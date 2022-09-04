@@ -47,9 +47,9 @@ public class SelectTool extends Rectangle {
 	}
 
 	private void init() {
-		setStroke(Color.WHITE);
+		setStroke(Color.color(1, 1, 1, .75));
 		setFill(Color.TRANSPARENT);
-		setStrokeWidth(4.5);
+		setStrokeWidth(2.5);
 		setDisable(true);
 		setVisible(false);
 		select = new Menu("Select");

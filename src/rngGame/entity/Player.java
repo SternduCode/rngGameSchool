@@ -18,7 +18,7 @@ public class Player extends Entity {
 
 	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
 		super(null, 3, gp, "player", null, cm, requestor);
-		currentKey = "down";
+		setCurrentKey("down");
 
 		fps = 10.5;
 
@@ -72,12 +72,12 @@ public class Player extends Entity {
 
 	@Override
 	public void setPosition(double x, double y) {
-		setPosition(new Double[] {x,y});
+		setPosition(new double[] {x, y});
 	}
 
-	public void setPosition(Double[] position) {
-		x = (long) (gp.Bg * position[0]);
-		y = (long) (gp.Bg * position[1]);
+	public void setPosition(double[] position) {
+		x = (long) position[0];
+		y = (long) position[1];
 		oldX = x;
 		oldY = y;
 	}
@@ -86,7 +86,7 @@ public class Player extends Entity {
 	public String toString() {
 		return "Player [size=" + size + ", screenX=" + screenX + ", screenY=" + screenY + ", speed="
 				+ speed + ", x=" + x + ", y=" + y + ", fps=" + fps + ", images=" + images
-				+ ", collisionBoxes=" + collisionBoxes + ", currentKey=" + currentKey + ", textureFiles="
+				+ ", collisionBoxes=" + collisionBoxes + ", currentKey=" + getCurrentKey() + ", textureFiles="
 				+ textureFiles + ", reqWidth=" + reqWidth + ", reqHeight=" + reqHeight + ", origWidth="
 				+ origWidth + ", origHeight=" + origHeight + ", spriteCounter=" + spriteCounter
 				+ ", spriteNum=" + spriteNum + ", background=" + background + "]";
@@ -95,27 +95,27 @@ public class Player extends Entity {
 	@Override
 	public void update() {
 		if (keyH.w) {
-			if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "upL";
-			else currentKey = "up";
+			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
+			else setCurrentKey("up");
 			y -= speed;
 		}
 		else if (keyH.s && !keyH.ctrlPressed) {
-			if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "downL";
-			else currentKey = "down";
+			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
+			else setCurrentKey("down");
 			y += speed;
 		}
 		else if (keyH.a) {
-			currentKey = "left";
+			setCurrentKey("left");
 			x -= speed;
 		}
 		else if (keyH.d) {
-			currentKey = "right";
+			setCurrentKey("right");
 			x += speed;
-		} else if (currentKey.endsWith("L") && currentKey.contains("up")) currentKey = "idleupL";
-		else if (currentKey.equals("up") || currentKey.contains("up")) currentKey = "idleup";
-		else if (currentKey.equals("left") || currentKey.endsWith("L")) currentKey = "idleL";
+		} else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
+		else if (getCurrentKey().equals("up") || getCurrentKey().contains("up")) setCurrentKey("idleup");
+		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idleL");
 
-		else currentKey = "idle";
+		else setCurrentKey("idle");
 
 		super.update();
 

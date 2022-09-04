@@ -259,12 +259,7 @@
 			]
 		}
 	],
-	"dir" : "Insel",
 	"map" : {
-		"size" : [
-			50,
-			50
-		],
 		"textures" : [
 			"Void.png",
 			"EckeLinksOben.png",
@@ -316,8 +311,8 @@
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
-			18.0000,
-			29.0000
+			864,
+			1392
 		],
 		"dir" : "Insel",
 		"matrix" : [

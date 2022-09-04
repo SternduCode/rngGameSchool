@@ -12,12 +12,12 @@ public class DungeonGen {
 	private final JsonObject mainmap, maps[];
 	private final List<Tile> mainMapTiles, mapsTiles[];
 	private final List<List<Integer>> mainmapTileNum, mapsTileNum[];
-	private final List<String> connectors, connections, replacements;
+	private final List<JsonObject> connectors, connections, replacements;
 	private final List<Point2D> mainmapConnectors, mapsConnectors[];
 
 	@SuppressWarnings("unchecked")
-	public DungeonGen(SpielPanel gp, JsonObject mainmap, JsonObject[] maps, List<String> connectors,
-			List<String> connections, List<String> replacements) {
+	public DungeonGen(SpielPanel gp, JsonObject mainmap, JsonObject[] maps, List<JsonObject> list,
+			List<JsonObject> connections, List<JsonObject> replacements) {
 		this.gp = gp;
 		this.mainmap = mainmap;
 		this.maps = maps;
@@ -50,7 +50,7 @@ public class DungeonGen {
 			}
 		}
 		gp.getTileM().mapTileNum = null;
-		this.connectors = connectors;
+		connectors = list;
 		this.connections = connections;
 		this.replacements = replacements;
 
