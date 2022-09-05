@@ -106,7 +106,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		layer = gameObject.layer;
 
 		gameObject.miscBoxes.forEach((k, v) -> {
-			Shape p = Shape.union(v, new Polygon());
+			Shape p;
+			if (v instanceof Circle circ) p = new Circle(circ.getCenterX(), circ.getCenterY(), circ.getRadius());
+			else if (v instanceof Rectangle rect)
+				p = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+			else if (v instanceof Polygon poly) {
+				p = new Polygon();
+				((Polygon) p).getPoints().addAll(poly.getPoints());
+			} else if (v instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadius(), ring.getInnerRadius());
+			else return;
 			p.setStroke(Color.color(1, 1, 0, .75));
 			p.setFill(Color.TRANSPARENT);
 			p.setStrokeWidth(2.5);
@@ -270,7 +278,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 							break;
 					}
 				}
-		}
+			}
 
 			if (((JsonArray) gameObject.get("position")).get(0) instanceof JsonArray ja) {
 				boolean secondMultiPlexer = ((JsonArray) gameObject.get("requestedSize")).get(0) instanceof JsonArray;
@@ -716,14 +724,22 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 	protected Map<String, BiConsumer<SpielPanel, GameObject>> getMiscBoxHandler() { return miscBoxHandler; }
 
-	public void addMiscBox(String key, Polygon box, BiConsumer<SpielPanel, GameObject> handler) {
+	public void addMiscBox(String key, Shape box, BiConsumer<SpielPanel, GameObject> handler) {
 		box.setStroke(Color.color(1, 1, 0, .75));
 		box.setFill(Color.TRANSPARENT);
 		box.setStrokeWidth(2.5);
 		miscBoxes.put(key, box);
 		miscBoxHandler.put(key, handler);
 		if (slaves != null) for (GameObject slave:slaves) {
-			Shape p = Shape.union(box, new Polygon());
+			Shape p;
+			if (box instanceof Circle circ) p = new Circle(circ.getCenterX(), circ.getCenterY(), circ.getRadius());
+			else if (box instanceof Rectangle rect)
+				p = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+			else if (box instanceof Polygon poly) {
+				p = new Polygon();
+				((Polygon) p).getPoints().addAll(poly.getPoints());
+			} else if (box instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadius(), ring.getInnerRadius());
+			else return;
 			p.setStroke(Color.color(1, 1, 0, .75));
 			p.setFill(Color.TRANSPARENT);
 			p.setStrokeWidth(2.5);
