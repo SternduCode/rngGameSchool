@@ -83,19 +83,17 @@ public class SpielPanel extends Pane {
 
 	private final Map<Point2D, Circle> points;
 
-	public SpielPanel(Input keyH) throws FileNotFoundException {
+	public SpielPanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
-		this.keyH = keyH;
+		keyH = Input.getInstance();
 
 		pointGroup = new Group();
-
 		pointGroup.setDisable(true);
 
 		points = new HashMap<>();
 
 		layerGroup = new GroupGroup();
-
 		layerGroup.getChildren().add(new Group());
 
 		selectTool = new SelectTool(this);
@@ -183,7 +181,7 @@ public class SpielPanel extends Pane {
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
 		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
-				Color.color(0, 1, 0, .75));
+				Color.color(0, 1, 0, .75));// TODO get other spawns from building maps
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
 

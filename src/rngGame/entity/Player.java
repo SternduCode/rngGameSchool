@@ -8,7 +8,6 @@ import rngGame.main.*;
 
 public class Player extends Entity {
 
-	private final Input keyH;
 	public final int size = 64;
 
 	public int screenX;
@@ -25,7 +24,6 @@ public class Player extends Entity {
 		reqWidth = (int) ((reqHeight = size) * 1.5);
 
 		this.gp = gp;
-		keyH = gp.getKeyH();
 
 		screenX = gp.SpielLaenge / 2 - size / 2;
 		screenY = gp.SpielHoehe / 2 - size / 2;
@@ -94,6 +92,9 @@ public class Player extends Entity {
 
 	@Override
 	public void update() {
+
+		Input keyH = gp.getKeyH();
+
 		if (keyH.w) {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");

@@ -13,7 +13,7 @@ import rngGame.tile.TextureHolder;
 
 public class Input {
 
-	public static Input instance;
+	private static final Input INSTANCE = new Input();
 
 	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
 
@@ -23,9 +23,9 @@ public class Input {
 
 	private SpielPanel gp;
 
-	public Input() {
-		instance = this;
-	}
+	private Input() {}
+
+	public static Input getInstance() { return INSTANCE; }
 
 	private void newC(Polygon p) {
 		p.getPoints().clear();
@@ -33,10 +33,11 @@ public class Input {
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
 	}
 
-	private void reload() {
-		gp.reload();
-	}
 
+	private void reload() {
+		if (gp != null)
+			gp.reload();
+	}
 
 	private void save(Polygon p) {
 		ctrlPressed = false;
@@ -140,7 +141,7 @@ public class Input {
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
-		if (move != null) {
+		if (gp != null) if (move != null) {
 			move.setX((long) (me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX() - move.getWidth() / 2));
 			move.setY((long) (me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY() - move.getHeight() / 2));
 		}
@@ -164,33 +165,34 @@ public class Input {
 	}
 
 	public void mouseMoved(MouseEvent me) {
-		if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
+		if (gp != null) if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
 		else gp.getSelectTool().undrawOutlines();
 	}
 
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
-		Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-				me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
-		if (target instanceof TextureHolder t) {
+		if (gp != null) {
+			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+			if (target instanceof TextureHolder t) {
 
-			if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();
-			else
-				if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
-					t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
-					if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
-					t.getTile().poly.add(me.getX() - t.getLayoutX());
-					t.getTile().poly.add(me.getY() - t.getLayoutY());
-				} else if (ctrlPressed && s) save(t.getPoly());
-				else if (ctrlPressed && n) newC(t.getPoly());
-		} else
-			if (target instanceof Building b
-					&& System.getProperty("coll").equals("true"))
-				if ((!ctrlPressed || !s) && (!ctrlPressed || !n))
-					b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-				else if (ctrlPressed && s) save(b.getCollisionBox());
-				else if (ctrlPressed && n) newC(b.getCollisionBox());
-
+				if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();
+				else
+					if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
+						t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
+						if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
+						t.getTile().poly.add(me.getX() - t.getLayoutX());
+						t.getTile().poly.add(me.getY() - t.getLayoutY());
+					} else if (ctrlPressed && s) save(t.getPoly());
+					else if (ctrlPressed && n) newC(t.getPoly());
+			} else
+				if (target instanceof Building b
+						&& System.getProperty("coll").equals("true"))
+					if ((!ctrlPressed || !s) && (!ctrlPressed || !n))
+						b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+					else if (ctrlPressed && s) save(b.getCollisionBox());
+					else if (ctrlPressed && n) newC(b.getCollisionBox());
+		}
 	}
 
 	public void moveGameObject(GameObject go) {
@@ -212,7 +214,8 @@ public class Input {
 	}
 
 	public void saveMap() {
-		gp.saveMap();
+		if (gp != null)
+			gp.saveMap();
 	}
 
 	public void stopMoveingGameObject(GameObject go) {

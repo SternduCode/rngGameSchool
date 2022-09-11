@@ -476,7 +476,7 @@ public class TileManager extends Pane {
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList());
 
-				d.findConnectors();// TODO fiax that it expects List<String> insted of JsonObject's
+				d.findConnectors();
 
 				return;
 			}

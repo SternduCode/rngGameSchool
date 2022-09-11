@@ -9,20 +9,20 @@ public class MainClass extends Application {
 
 	public static void main(String[] args) {
 
-		System.setProperty("edit", "false");
-		System.setProperty("coll", "false");
+		System.setProperty("edit", "false"); // set edit mode to disabled
+		System.setProperty("coll", "false"); // set collisions mode to disabled
 
 		launch(args);
-		
+
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("RNG fun");
 
-
-		Input input = new Input();
+		Input input = Input.getInstance();
 
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, input::keyPressed);
 		primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, input::keyReleased);
@@ -32,7 +32,7 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
-		SpielPanel spielebene = new SpielPanel(input);
+		SpielPanel spielebene = new SpielPanel();
 		input.setSpielPanel(spielebene);
 		Scene gameScene = new Scene(spielebene);
 		primaryStage.setScene(gameScene);

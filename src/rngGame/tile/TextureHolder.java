@@ -42,7 +42,7 @@ public class TextureHolder extends Pane {
 			if (System.getProperty("edit").equals("true")) {
 				System.out.println("fth");
 				requestor.set(TextureHolder.this);
-				Input.instance.comp.add(TextureHolder.this.tile.images.get(0));
+				Input.getInstance().comp.add(TextureHolder.this.tile.images.get(0));
 				position.setText("Position: "+x+" "+y);
 				fpsI.setText("FPS: "+fps);
 				cm.getItems().clear();
