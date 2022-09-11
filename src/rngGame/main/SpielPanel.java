@@ -3,7 +3,8 @@ package rngGame.main;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-import javafx.animation.*;
+import java.util.concurrent.atomic.AtomicReference;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.*;
@@ -12,7 +13,6 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 import rngGame.buildings.Building;
 import rngGame.entity.*;
 import rngGame.tile.*;
@@ -84,7 +84,7 @@ public class SpielPanel extends Pane {
 
 	private List<Long> frameTimes;
 	private Long lastFrame;
-	private final Double fps = 0d;
+	private Double fps = 0d;
 
 	private final Label fpsLabel;
 
@@ -213,25 +213,30 @@ public class SpielPanel extends Pane {
 		frameTimes = new ArrayList<>();
 		lastFrame = System.currentTimeMillis();
 
-		Timeline tl = new Timeline(
-				new KeyFrame(Duration.millis(1000 / FPS),
-						event -> {
-							update();
-						}));
-		tl.setCycleCount(Animation.INDEFINITE);
-		tl.play();
-		//		AtomicReference<Runnable> runnable = new AtomicReference<>();
-		//		Runnable r = () -> {
-		//			update();
-		//			long frameTime = System.currentTimeMillis() - lastFrame;
-		//			lastFrame = System.currentTimeMillis();
-		//			frameTimes.add(frameTime);
-		//			fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
-		//			while (frameTimes.size() > 200) frameTimes.remove(0);
-		//			Platform.runLater(runnable.get());
-		//		};
-		//		runnable.set(r);
-		//		Platform.runLater(r);
+		//		Timeline tl = new Timeline(
+		//				new KeyFrame(Duration.millis(1000 / FPS),
+		//						event -> {
+		//							update();
+		//						}));
+		//		tl.setCycleCount(Animation.INDEFINITE);
+		//		tl.play();
+		AtomicReference<Runnable> runnable = new AtomicReference<>();
+		Runnable r = () -> {
+			update();
+			long frameTime = System.currentTimeMillis() - lastFrame;
+			lastFrame = System.currentTimeMillis();
+			frameTimes.add(frameTime);
+			fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
+			while (frameTimes.size() > 200) frameTimes.remove(0);
+			if (!MainClass.isStopping())
+				Platform.runLater(runnable.get());
+		};
+		runnable.set(r);
+		Platform.runLater(r);
+	}
+
+	public void toggleFpssLabelVisible() {
+		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
 
 	@Override

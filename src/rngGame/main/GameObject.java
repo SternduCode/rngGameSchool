@@ -804,11 +804,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public int getReqWidth() { return reqWidth; }
 
 	public double getTextureHeight() {
-		return iv.getImage().getHeight();
+		return iv.getImage() != null ? iv.getImage().getHeight() : getHeight();
 	}
 
 	public double getTextureWidth() {
-		return iv.getImage().getWidth();
+		return iv.getImage() != null ? iv.getImage().getWidth() : getWidth();
 	}
 
 	public double getX() { return x; }
