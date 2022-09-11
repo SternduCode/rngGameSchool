@@ -76,6 +76,7 @@ public class TextureHolder extends Pane {
 	private void setFPS(ActionEvent e) {
 		TextInputDialog dialog = new TextInputDialog("" + fps);
 		dialog.setTitle("FPS");
+		dialog.setHeaderText("");
 		dialog.setContentText("Please enter the new FPS value:");
 
 		Optional<String> result = dialog.showAndWait();

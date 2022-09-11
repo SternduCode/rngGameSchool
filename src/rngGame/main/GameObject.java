@@ -466,7 +466,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		addToView();
 	}
 
-
 	private void handleContextMenu(ActionEvent e) {
 		MenuItem source = (MenuItem) e.getSource();
 		ContextMenu cm = source.getParentMenu().getParentPopup();
@@ -633,7 +632,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 								else if (res.get() == cancelButton) return;
 							} else return;
 
-						} else Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+						} else
+							Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 						System.out.println(f);
 						System.out.println(p2);
 						getAnimatedImages(name, f.getName());
@@ -687,9 +687,12 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			}
 		}
 	}
+
 	protected void addToView() {
 		gp.getViewGroups().get(layer).getChildren().add(this);
 	}
+
+
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		try {
@@ -721,9 +724,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		}
 		return li;
 	}
-
 	protected Map<String, BiConsumer<SpielPanel, GameObject>> getMiscBoxHandler() { return miscBoxHandler; }
-
 	public void addMiscBox(String key, Shape box, BiConsumer<SpielPanel, GameObject> handler) {
 		box.setStroke(Color.color(1, 1, 0, .75));
 		box.setFill(Color.TRANSPARENT);
@@ -761,7 +762,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public Polygon getCollisionBox() {
 		return collisionBoxes.get(currentKey);
 	}
+
 	public String getCurrentKey() { return currentKey; }
+
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
 	public Map<String, List<Image>> getImages() { return images; }
 	public int getLayer() { return layer; }
@@ -790,17 +793,23 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		li.add(menu);
 		return li;
 	}
-
 	public Map<String, Shape> getMiscBoxes() {
 		return miscBoxes;
 	}
 	public int getOrigHeight() { return origHeight; }
 
 	public int getOrigWidth() { return origWidth; }
-
 	public int getReqHeight() { return reqHeight; }
 
 	public int getReqWidth() { return reqWidth; }
+
+	public double getTextureHeight() {
+		return iv.getImage().getHeight();
+	}
+
+	public double getTextureWidth() {
+		return iv.getImage().getWidth();
+	}
 
 	public double getX() { return x; }
 

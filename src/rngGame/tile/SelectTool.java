@@ -39,8 +39,6 @@ public class SelectTool extends Rectangle {
 					if (matrix[matrixIdx]) gp.getTileM().getTileAt(x + j, y + i)
 					.setTile(((MenuItemWTile) e.getSource()).getTile());
 			}
-			// Dailog TODO show all changes but have option to apply and rerandomize; custom
-			// dialog with coverage (slider?) button to rerandomize and dialog stuff
 		} else for (int i = 0; i < getWidth(); i += gp.Bg) for (int j = 0; j < getHeight(); j += gp.Bg) gp.getTileM().getTileAt(x + i,
 				y + j)
 		.setTile(((MenuItemWTile) e.getSource()).getTile());

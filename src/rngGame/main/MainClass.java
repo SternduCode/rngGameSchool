@@ -24,6 +24,7 @@ public class MainClass extends Application {
 
 		Input input = Input.getInstance();
 
+		// set eventHandlers to detect Mouse and Key Events on the whole Window
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, input::keyPressed);
 		primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, input::keyReleased);
 		primaryStage.addEventHandler(KeyEvent.KEY_TYPED, input::keyTyped);
@@ -32,12 +33,12 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
-		SpielPanel spielebene = new SpielPanel();
-		input.setSpielPanel(spielebene);
-		Scene gameScene = new Scene(spielebene);
+		SpielPanel gamePanel = new SpielPanel();
+		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
+		Scene gameScene = new Scene(gamePanel);
 		primaryStage.setScene(gameScene);
 
-		spielebene.SST();
+		gamePanel.SST();
 
 		primaryStage.show();
 	}

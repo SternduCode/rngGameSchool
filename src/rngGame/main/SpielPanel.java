@@ -7,6 +7,7 @@ import javafx.animation.*;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -67,7 +68,7 @@ public class SpielPanel extends Pane {
 	public final int SpielHoehe = Bg * BildH;
 
 
-	private final int FPS = 60;
+	private final int FPS = 80;
 
 	private final ImageView inv;
 	private final Input keyH;
@@ -80,6 +81,12 @@ public class SpielPanel extends Pane {
 	private List<Building> buildings;
 
 	private List<NPC> npcs;
+
+	private List<Long> frameTimes;
+	private Long lastFrame;
+	private final Double fps = 0d;
+
+	private final Label fpsLabel;
 
 	private final Map<Point2D, Circle> points;
 
@@ -102,6 +109,12 @@ public class SpielPanel extends Pane {
 
 		player = new Player(this, tileM.getCM(), tileM.getRequestorN());
 
+		fpsLabel = new Label(fps + "");
+		fpsLabel.setBackground(new Background(new BackgroundFill(Color.color(.5, .5, .5, .5), null, null)));
+		fpsLabel.setTextFill(Color.color(.1, .1, .1));
+		fpsLabel.setDisable(true);
+		fpsLabel.setVisible(false);
+
 		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
 		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
@@ -109,10 +122,12 @@ public class SpielPanel extends Pane {
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv);
+		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv, fpsLabel);
 	}
 
 	public List<Building> getBuildings() { return buildings; }
+
+	public Double getFps() { return fps; }
 
 	public Input getKeyH() {
 		return keyH;
@@ -124,8 +139,8 @@ public class SpielPanel extends Pane {
 
 	public SelectTool getSelectTool() { return selectTool; }
 
-	public TileManager getTileM() { return tileM; }
 
+	public TileManager getTileM() { return tileM; }
 
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
 
@@ -163,6 +178,7 @@ public class SpielPanel extends Pane {
 		setMap(path, null);
 	}
 
+
 	public void setMap(String path, double[] position) {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
@@ -192,8 +208,11 @@ public class SpielPanel extends Pane {
 
 	}
 
-
 	public void SST() {
+
+		frameTimes = new ArrayList<>();
+		lastFrame = System.currentTimeMillis();
+
 		Timeline tl = new Timeline(
 				new KeyFrame(Duration.millis(1000 / FPS),
 						event -> {
@@ -201,6 +220,18 @@ public class SpielPanel extends Pane {
 						}));
 		tl.setCycleCount(Animation.INDEFINITE);
 		tl.play();
+		//		AtomicReference<Runnable> runnable = new AtomicReference<>();
+		//		Runnable r = () -> {
+		//			update();
+		//			long frameTime = System.currentTimeMillis() - lastFrame;
+		//			lastFrame = System.currentTimeMillis();
+		//			frameTimes.add(frameTime);
+		//			fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
+		//			while (frameTimes.size() > 200) frameTimes.remove(0);
+		//			Platform.runLater(runnable.get());
+		//		};
+		//		runnable.set(r);
+		//		Platform.runLater(r);
 	}
 
 	@Override
@@ -218,6 +249,9 @@ public class SpielPanel extends Pane {
 
 		selectTool.update();
 
+		fpsLabel.setText(String.format("%.2f", 1000 / fps));
+		fpsLabel.setLayoutX(SpielLaenge - fpsLabel.getWidth());
+
 		for (Building b: buildings) b.update();
 		for (Entity n: npcs) n.update();
 
@@ -229,16 +263,16 @@ public class SpielPanel extends Pane {
 				if (n1 instanceof GameObject b1) {
 					if (n2 instanceof GameObject b2)
 						return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
-								: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
-										n2.getLayoutY() + ((Pane) n2).getHeight());
+								: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+										n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
 					else return b1.isBackground() ? -1
-							: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
-									n2.getLayoutY() + ((Pane) n2).getHeight());
+							: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+									n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
 				} else if (n2 instanceof GameObject b2) return b2.isBackground() ? 1
-						: Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
-								n2.getLayoutY() + ((Pane) n2).getHeight());
-				else return Double.compare(n1.getLayoutY() + ((Pane) n1).getHeight(),
-						n2.getLayoutY() + ((Pane) n2).getHeight());
+						: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+								n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
+				else return Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+						n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
 			});
 
 			view.getChildren().clear();

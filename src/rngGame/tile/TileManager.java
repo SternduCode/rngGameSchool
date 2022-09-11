@@ -34,7 +34,7 @@ public class TileManager extends Pane {
 
 		@Override
 		public void setTile(Tile tile) {
-			//TODO add row/column       show cm on drag end
+			// TODO add row/column
 			for (List<TextureHolder> x: map) {
 
 			}
