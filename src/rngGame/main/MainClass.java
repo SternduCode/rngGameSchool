@@ -16,6 +16,7 @@ public class MainClass extends Application {
 
 		System.setProperty("edit", "false"); // set edit mode to disabled
 		System.setProperty("coll", "false"); // set collisions mode to disabled
+		System.setProperty("alternateUpdate", "false"); // reverse Vsync more or less
 
 		launch(args);
 

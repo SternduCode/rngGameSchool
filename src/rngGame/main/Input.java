@@ -15,7 +15,7 @@ public class Input {
 
 	private static final Input INSTANCE = new Input();
 
-	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r, f;
+	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
 
 	private GameObject move, resize;
 
@@ -135,6 +135,10 @@ public class Input {
 		if (code == KeyCode.R) r = false;
 
 		if (code == KeyCode.F) gp.toggleFpssLabelVisible();
+
+		if (code == KeyCode.M)
+			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
+			else System.setProperty("alternateUpdate", "true");
 
 	}
 

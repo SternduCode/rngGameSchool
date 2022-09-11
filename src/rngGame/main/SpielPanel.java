@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
@@ -13,6 +14,7 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import rngGame.buildings.Building;
 import rngGame.entity.*;
 import rngGame.tile.*;
@@ -213,14 +215,19 @@ public class SpielPanel extends Pane {
 		frameTimes = new ArrayList<>();
 		lastFrame = System.currentTimeMillis();
 
-		//		Timeline tl = new Timeline(
-		//				new KeyFrame(Duration.millis(1000 / FPS),
-		//						event -> {
-		//							update();
-		//						}));
-		//		tl.setCycleCount(Animation.INDEFINITE);
-		//		tl.play();
 		AtomicReference<Runnable> runnable = new AtomicReference<>();
+		AtomicReference<Timeline> arTl = new AtomicReference<>();
+		Timeline tl = new Timeline(
+				new KeyFrame(Duration.millis(1000 / FPS),
+						event -> {
+							update();
+							if (System.getProperty("alternateUpdate").equals("true")) {
+								arTl.get().stop();
+								Platform.runLater(runnable.get());
+							}
+						}));
+		arTl.set(tl);
+		tl.setCycleCount(Animation.INDEFINITE);
 		Runnable r = () -> {
 			update();
 			long frameTime = System.currentTimeMillis() - lastFrame;
@@ -228,11 +235,14 @@ public class SpielPanel extends Pane {
 			frameTimes.add(frameTime);
 			fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
 			while (frameTimes.size() > 200) frameTimes.remove(0);
-			if (!MainClass.isStopping())
+			if (!MainClass.isStopping() && System.getProperty("alternateUpdate").equals("true"))
 				Platform.runLater(runnable.get());
+			else arTl.get().play();
 		};
 		runnable.set(r);
-		Platform.runLater(r);
+
+		if (System.getProperty("alternateUpdate").equals("false")) tl.play();
+		else Platform.runLater(r);
 	}
 
 	public void toggleFpssLabelVisible() {
