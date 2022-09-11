@@ -2,6 +2,7 @@ package rngGame.tile;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 import com.sterndu.json.*;
 import javafx.geometry.Point2D;
 import rngGame.main.SpielPanel;
@@ -9,20 +10,20 @@ import rngGame.main.SpielPanel;
 public class DungeonGen {
 
 	private final SpielPanel gp;
-	private final JsonObject mainmap, maps[];
+	private final JsonObject mainMap, maps[];
 	private final List<Tile> mainMapTiles, mapsTiles[];
-	private final List<List<Integer>> mainmapTileNum, mapsTileNum[];
+	private final List<List<Integer>> mainMapTileNum, mapsTileNum[];
 	private final List<JsonObject> connectors, connections, replacements;
-	private final List<Point2D> mainmapConnectors, mapsConnectors[];
+	private final List<Point2D> mainMapConnectors, mapsConnectors[];
 
 	@SuppressWarnings("unchecked")
-	public DungeonGen(SpielPanel gp, JsonObject mainmap, JsonObject[] maps, List<JsonObject> list,
+	public DungeonGen(SpielPanel gp, JsonObject mainmap, JsonObject[] maps, List<JsonObject> connectors,
 			List<JsonObject> connections, List<JsonObject> replacements) {
 		this.gp = gp;
-		this.mainmap = mainmap;
+		mainMap = mainmap;
 		this.maps = maps;
 		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));
-		mainmapTileNum = gp.getTileM().mapTileNum;
+		mainMapTileNum = gp.getTileM().mapTileNum;
 		String dir = ((StringValue) ((JsonObject) mainmap.get("map")).get("dir")).getValue();
 		mainMapTiles = new ArrayList<>();
 		for (Object texture: (JsonArray) ((JsonObject) mainmap.get("map")).get("textures")) try {
@@ -49,21 +50,42 @@ public class DungeonGen {
 				e.printStackTrace();
 			}
 		}
-		gp.getTileM().mapTileNum = null;
-		connectors = list;
+		gp.getTileM().mapTileNum = new ArrayList<>();
+		this.connectors = connectors;
 		this.connections = connections;
 		this.replacements = replacements;
 
-		mainmapConnectors = new ArrayList<>();
+		mainMapConnectors = new ArrayList<>();
 		mapsConnectors = new List[maps.length];
 		for (int i = 0; i < maps.length; i++) mapsConnectors[i] = new ArrayList<>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void findConnectors() {
-		Map<Integer, Tile> connectorTile = new HashMap<>();
-		for (int i = 0; i < mainMapTiles.size(); i++) if (connectors.contains(mainMapTiles.get(i).name))
-			connectorTile.put(i, mainMapTiles.get(i));
-		System.out.println(connectorTile);
+		Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles = new HashMap<>();
+		for (int i = 0; i < mainMapTiles.size(); i++) {
+			int c_i = i;
+			connectors.forEach(jobj -> {
+				if (((StringValue) jobj.get("name")).getValue().equals(mainMapTiles.get(c_i).name))
+					mainMapConnectorTiles.put(c_i, Map.entry(mainMapTiles.get(c_i), jobj));
+			});
+		}
+		Map<Integer, Map.Entry<Tile, JsonObject>>[] mapsConnectorTiles = new HashMap[mapsTiles.length];
+		for (int i = 0; i < mapsConnectorTiles.length; i++) {
+			int c_i = i;
+			mapsConnectorTiles[i] = new HashMap<>();
+			List<Tile> mapTiles = mapsTiles[i];
+			for (int j = 0; j < mapTiles.size(); j++) {
+				int c_j = j;
+				connectors.forEach(jobj -> {
+					if (((StringValue) jobj.get("name")).getValue().equals(mapTiles.get(c_j).name))
+						mapsConnectorTiles[c_i].put(c_j, Map.entry(mapTiles.get(c_j), jobj));
+				});
+			}
+		}
+		System.out.println(mainMapConnectorTiles);
+		for (Map<Integer, Entry<Tile, JsonObject>> connectorTiles: mapsConnectorTiles) System.out.println(connectorTiles);
+
 	}
 
 }
