@@ -949,7 +949,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		return toJsonValue();
 	}
 
-	public void update() {
+	public void update(long milis) {
 
 		Player p = gp.getPlayer();
 

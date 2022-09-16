@@ -136,11 +136,11 @@ public class House extends Building {
 	}
 
 	@Override
-	public void update() {
+	public void update(long milis) {
 
 		setCurrentKey("closed");
 
-		super.update();
+		super.update(milis);
 
 	}
 

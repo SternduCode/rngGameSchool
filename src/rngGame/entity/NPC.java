@@ -39,8 +39,8 @@ public class NPC extends Entity implements JsonValue {
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(long milis) {
+		super.update(milis);
 
 		if (isVisible() && gp.getKeyH().h) setVisible(false);
 	}

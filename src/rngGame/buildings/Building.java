@@ -31,8 +31,8 @@ public class Building extends GameObject {
 	}
 
 	@Override
-	public void update() {
-		super.update();
+	public void update(long milis) {
+		super.update(milis);
 
 		if (isVisible() && gp.getKeyH().b) setVisible(false);
 	}

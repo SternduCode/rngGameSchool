@@ -16,7 +16,7 @@ public class Player extends Entity {
 	private double oldX, oldY;
 
 	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
-		super(null, 3, gp, "player", null, cm, requestor);
+		super(null, 3 * 60, gp, "player", null, cm, requestor);
 		setCurrentKey("down");
 
 		fps = 10.5;
@@ -91,34 +91,36 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void update() {
+	public void update(long milis) {
 
 		Input keyH = gp.getKeyH();
+
+		double updateSpeed = speed / 1000 * milis;
 
 		if (keyH.w) {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
-			y -= speed;
+			y -= updateSpeed;
 		}
 		else if (keyH.s && !keyH.ctrlPressed) {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
-			y += speed;
+			y += updateSpeed;
 		}
 		else if (keyH.a) {
 			setCurrentKey("left");
-			x -= speed;
+			x -= updateSpeed;
 		}
 		else if (keyH.d) {
 			setCurrentKey("right");
-			x += speed;
+			x += updateSpeed;
 		} else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
 		else if (getCurrentKey().equals("up") || getCurrentKey().contains("up")) setCurrentKey("idleup");
 		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idleL");
 
 		else setCurrentKey("idle");
 
-		super.update();
+		super.update(milis);
 
 		setLayoutX(screenX);
 		setLayoutY(screenY);

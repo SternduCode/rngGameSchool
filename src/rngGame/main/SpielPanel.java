@@ -230,11 +230,6 @@ public class SpielPanel extends Pane {
 		tl.setCycleCount(Animation.INDEFINITE);
 		Runnable r = () -> {
 			update();
-			long frameTime = System.currentTimeMillis() - lastFrame;
-			lastFrame = System.currentTimeMillis();
-			frameTimes.add(frameTime);
-			fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
-			while (frameTimes.size() > 200) frameTimes.remove(0);
 			if (!MainClass.isStopping() && System.getProperty("alternateUpdate").equals("true"))
 				Platform.runLater(runnable.get());
 			else arTl.get().play();
@@ -260,15 +255,17 @@ public class SpielPanel extends Pane {
 
 	public void update() {
 
-		player.update();
+		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
+
+		player.update(lastFrameTime);
 
 		selectTool.update();
 
 		fpsLabel.setText(String.format("%.2f", 1000 / fps));
 		fpsLabel.setLayoutX(SpielLaenge - fpsLabel.getWidth());
 
-		for (Building b: buildings) b.update();
-		for (Entity n: npcs) n.update();
+		for (Building b: buildings) b.update(lastFrameTime);
+		for (Entity n: npcs) n.update(lastFrameTime);
 
 		for (Node layer: layerGroup.getChildren()) {
 			Group view = (Group) layer;
@@ -306,6 +303,12 @@ public class SpielPanel extends Pane {
 
 		if (keyH.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);
+
+		long frameTime = System.currentTimeMillis() - lastFrame;
+		lastFrame = System.currentTimeMillis();
+		frameTimes.add(frameTime);
+		fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
+		while (frameTimes.size() > 200) frameTimes.remove(0);
 
 	}
 
