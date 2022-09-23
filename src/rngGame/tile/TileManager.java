@@ -46,6 +46,7 @@ public class TileManager extends Pane {
 	private final SpielPanel gp;
 	private final List<Tile> tiles;
 	List<List<Integer>> mapTileNum;
+	private boolean generated;
 
 	private List<List<TextureHolder>> map;
 	private final Group group;
@@ -115,6 +116,11 @@ public class TileManager extends Pane {
 		this.gp = gp;
 
 		tiles = new ArrayList<>();
+		map = new ArrayList<>();
+		mapTileNum = new ArrayList<>();
+
+		npcs = new ArrayList<>();
+		buildings = new ArrayList<>();
 
 		group = new Group();
 		getChildren().add(group);
@@ -387,7 +393,7 @@ public class TileManager extends Pane {
 	}
 
 	public void save() {
-		try {
+		if (!generated) try {
 			File out = new File(path).getAbsoluteFile();
 			System.out.println(out);
 			if (out.exists()) {
@@ -446,16 +452,25 @@ public class TileManager extends Pane {
 			exitPosition = null;
 			exitStartingPosition = null;
 			exitMap = null;
+			startingPosition = new double[] {0d, 0d};
+
+			mapTileNum.clear();
+			map.clear();
 
 			group.getChildren().clear();
 			tiles.clear();
+			npcs.clear();
+			buildings.clear();
 			mtiles.getItems().clear();
 			mnpcs.getItems().clear();
 			mbuildings.getItems().clear();
+			playerLayer = 0;
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(new FileInputStream(path));
 
 			if (jo.containsKey("generated") && jo.get("generated") instanceof BoolValue bv && bv.getValue()) {
+
+				generated = true;
 
 				if (jo.containsKey("background")) backgroundPath = ((StringValue) jo.get("background")).getValue();
 				else backgroundPath = null;
@@ -468,18 +483,28 @@ public class TileManager extends Pane {
 				JsonObject[] maps = new JsonObject[4];
 
 				Random r = new Random();
-				for (int i = 0; i < maps.length; i++) maps[i] = (JsonObject) JsonParser.parse(new FileInputStream(
-						"./res/maps/" + ((StringValue) ja_maps.remove(r.nextInt(ja_maps.size()))).getValue()));
+				for (int i = 0; i < maps.length; i++) {
+					String fileName = ((StringValue) ja_maps.remove(r.nextInt(ja_maps.size()))).getValue();
+					maps[i] = (JsonObject) JsonParser.parse(new FileInputStream(
+							"./res/maps/" + fileName));
+					System.out.println(fileName);
+				}
 
-				DungeonGen d = new DungeonGen(gp, mainmap, maps,
+				String voidImg = ((StringValue) jo.get("void")).getValue();
+
+				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, maps,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList());
 
-				d.findConnectors();
+				d.findFreeConnectors();
+
+				d.stitchMaps();
 
 				return;
 			}
+
+			generated = false;
 
 			JsonObject map = (JsonObject) jo.get("map");
 			JsonArray textures = (JsonArray) map.get("textures");

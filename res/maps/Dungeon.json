@@ -12,6 +12,7 @@
 		"InselL7.json",
 		"InselL8.json"
 	],
+	"void" : "Void.png",
 	"connectors" : [ 
 		{ "name" : "SeiteLinksB.png", "direction" : "left" },
 		{ "name" : "SeiteLinksBS.png", "direction" : "left" },

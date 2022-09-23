@@ -171,9 +171,8 @@ public class SpielPanel extends Pane {
 	}
 
 	public void saveMap() {
-		System.out.println("don");
 		tileM.save();
-		System.out.println("don2");
+		System.out.println("don");
 	}
 
 	public void setMap(String path) {

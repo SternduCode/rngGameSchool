@@ -40,7 +40,6 @@ public class TextureHolder extends Pane {
 		menu.getItems().addAll(position,fpsI);
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
-				System.out.println("fth");
 				requestor.set(TextureHolder.this);
 				Input.getInstance().comp.add(TextureHolder.this.tile.images.get(0));
 				position.setText("Position: "+x+" "+y);
