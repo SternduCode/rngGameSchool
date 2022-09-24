@@ -113,8 +113,9 @@ public class SpielPanel extends Pane {
 		player = new Player(this, tileM.getCM(), tileM.getRequestorN());
 
 		fpsLabel = new Label(fps + "");
-		fpsLabel.setBackground(new Background(new BackgroundFill(Color.color(.5, .5, .5, .5), null, null)));
+		fpsLabel.setBackground(new Background(new BackgroundFill(Color.color(.5, .5, .5, 1), null, null)));
 		fpsLabel.setTextFill(Color.color(.1, .1, .1));
+		fpsLabel.setOpacity(.6);
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
@@ -358,7 +359,7 @@ public class SpielPanel extends Pane {
 		lastFrame = System.currentTimeMillis();
 		frameTimes.add(frameTime);
 		fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
-		while (frameTimes.size() > fps + 20) frameTimes.remove(0);
+		while (frameTimes.size() > Math.pow(fps * 12, 1.2)) frameTimes.remove(0);
 
 	}
 
