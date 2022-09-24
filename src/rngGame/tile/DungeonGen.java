@@ -4,7 +4,9 @@ import java.io.*;
 import java.util.*;
 import com.sterndu.json.*;
 import javafx.geometry.Point2D;
+import javafx.scene.*;
 import javafx.scene.shape.*;
+import javafx.stage.Stage;
 import rngGame.main.SpielPanel;
 
 public class DungeonGen {
@@ -171,15 +173,42 @@ public class DungeonGen {
 	}
 
 	public void stitchMaps() {
-		final Rectangle block = new Rectangle(50, 50);
+		final Rectangle block = new Rectangle(5, 5);
 
-		Shape map = new Rectangle();
-		
-		for (int i=0;i<mainMapTileNum.size();i++) for (int j =0;j<mainMapTileNum.get(i).size();j++) {
-			//TODO create shape map with block at non void tiles
-			
+		Shape mainMapMap = new Rectangle();
+		Shape[] mapsMap = new Shape[mapsTileNum.length];
+
+		for (int i = 0; i < mainMapTileNum.size(); i++) for (int j = 0; j < mainMapTileNum.get(i).size(); j++)
+			if (mainMapTileNum.get(i).get(j)!=mainMapVoidNum) {
+				block.setX(block.getWidth()*j);
+				block.setY(block.getHeight()*i);
+				mainMapMap = Shape.union(mainMapMap, block);
+			}
+
+
+		Stage s = new Stage();
+		s.setScene(new Scene(new Group(mainMapMap)));
+		s.show();
+
+		for (int k = 0; k < mapsTileNum.length; k++) {
+			Shape mapMap = new Rectangle();
+
+			for (int i = 0; i < mapsTileNum[k].size(); i++) for (int j = 0; j < mapsTileNum[k].get(i).size(); j++)
+				if (mapsTileNum[k].get(i).get(j) != mapsVoidNum[k]) {
+					block.setX(block.getWidth() * j);
+					block.setY(block.getHeight() * i);
+					mapMap = Shape.union(mapMap, block);
+				}
+
+			mapsMap[k] = mapMap;
+
+			Stage sx = new Stage();
+			sx.setScene(new Scene(new Group(mapMap)));
+			sx.show();
 		}
-				
+
+		// TODO stitch
+
 	}
 
 }
