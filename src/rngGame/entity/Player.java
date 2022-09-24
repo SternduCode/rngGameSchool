@@ -8,11 +8,10 @@ import rngGame.main.*;
 
 public class Player extends Entity {
 
-	public final int size = 64;
+	private final int size = 64;
 
-	public int screenX;
-
-	public int screenY;
+	private int screenX;
+	private int screenY;
 	private double oldX, oldY;
 
 	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
@@ -21,12 +20,12 @@ public class Player extends Entity {
 
 		fps = 10.5;
 
-		reqWidth = (int) ((reqHeight = size) * 1.5);
+		reqWidth = (int) ((reqHeight = getSize()) * 1.5);
 
 		this.gp = gp;
 
-		screenX = gp.SpielLaenge / 2 - size / 2;
-		screenY = gp.SpielHoehe / 2 - size / 2;
+		screenX = gp.SpielLaenge / 2 - getSize() / 2;
+		screenY = gp.SpielHoehe / 2 - getSize() / 2;
 
 		setPosition(13, 37);
 
@@ -43,7 +42,6 @@ public class Player extends Entity {
 			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
 		});
 	}
-
 
 	public void getPlayerImage() {
 
@@ -68,10 +66,30 @@ public class Player extends Entity {
 
 	}
 
+
+	public int getScreenX() {
+		return screenX;
+	}
+
+	public int getScreenY() {
+		return screenY;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	@Override
+	public double getX() { return (long) x; }
+
+	@Override
+	public double getY() { return (long) y; }
+
 	@Override
 	public void setPosition(double x, double y) {
 		setPosition(new double[] {x, y});
 	}
+
 
 	public void setPosition(double[] position) {
 		x = (long) position[0];
@@ -80,15 +98,17 @@ public class Player extends Entity {
 		oldY = y;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Player [size=" + size + ", screenX=" + screenX + ", screenY=" + screenY + ", speed="
+		return "Player [size=" + getSize() + ", screenX=" + getScreenX() + ", screenY=" + getScreenY() + ", speed="
 				+ speed + ", x=" + x + ", y=" + y + ", fps=" + fps + ", images=" + images
 				+ ", collisionBoxes=" + collisionBoxes + ", currentKey=" + getCurrentKey() + ", textureFiles="
 				+ textureFiles + ", reqWidth=" + reqWidth + ", reqHeight=" + reqHeight + ", origWidth="
 				+ origWidth + ", origHeight=" + origHeight + ", spriteCounter=" + spriteCounter
 				+ ", spriteNum=" + spriteNum + ", background=" + background + "]";
 	}
+
 
 	@Override
 	public void update(long milis) {
@@ -122,8 +142,8 @@ public class Player extends Entity {
 
 		super.update(milis);
 
-		setLayoutX(screenX);
-		setLayoutY(screenY);
+		setLayoutX(getScreenX());
+		setLayoutY(getScreenY());
 
 		getCollisionBox().setTranslateX(x - oldX);
 		getCollisionBox().setTranslateY(y - oldY);

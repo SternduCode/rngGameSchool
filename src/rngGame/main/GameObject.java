@@ -975,8 +975,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			collisionBoxViewGroup.getChildren().add(getCollisionBox());
 		}
 
-		double screenX = x - p.x + p.screenX;
-		double screenY = y - p.y + p.screenY;
+		double screenX = x - p.getX() + p.getScreenX();
+		double screenY = y - p.getY() + p.getScreenY();
 
 		if (System.getProperty("edit").equals("true")) {
 			if (getBorder() == null)
@@ -993,10 +993,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 
-		if (x + getWidth() > p.x - p.screenX
-				&& x < p.x + p.screenX + p.getWidth()
-				&& y + reqHeight > p.y - p.screenY
-				&& y < p.y + p.screenY + p.getHeight())
+		if (x + getWidth() > p.x - p.getScreenX()
+				&& x < p.x + p.getScreenX() + p.getWidth()
+				&& y + reqHeight > p.y - p.getScreenY()
+				&& y < p.y + p.getScreenY() + p.getHeight())
 			setVisible(true);
 		else setVisible(false);
 

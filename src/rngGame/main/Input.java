@@ -147,17 +147,17 @@ public class Input {
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
 		if (gp != null) if (move != null) {
-			move.setX((long) (me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX() - move.getWidth() / 2));
-			move.setY((long) (me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY() - move.getHeight() / 2));
+			move.setX((long) (me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX() - move.getWidth() / 2));
+			move.setY((long) (me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY() - move.getHeight() / 2));
 		}
 		else if (resize != null) {
-			resize.setReqWidth((int) (me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX() - resize.getX()));
+			resize.setReqWidth((int) (me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX() - resize.getX()));
 			resize.setReqHeight(
-					(int) (me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY() - resize.getY()));
+					(int) (me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY() - resize.getY()));
 			resize.reloadTextures();
 		} else {
-			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			if (!gp.getSelectTool().isDragging() && target instanceof TextureHolder)
 				gp.getSelectTool().startDrag(me);
 			else if (gp.getSelectTool().isDragging()) gp.getSelectTool().doDrag(me);
@@ -177,8 +177,8 @@ public class Input {
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
 		if (gp != null) {
-			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+			Node target = gp.getTileM().getObjectAt(me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			if (target instanceof TextureHolder t) {
 
 				if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();

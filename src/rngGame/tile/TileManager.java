@@ -105,8 +105,8 @@ public class TileManager extends Pane {
 			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
 				System.out.println("dg");
 				System.out.println();
-				requestor.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-						e.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+				requestor.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						e.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 				cm.getItems().clear();
 				cm.getItems().addAll(gp.getTileM().getMenus());
 				cm.show(this, e.getScreenX(), e.getScreenY());
@@ -140,8 +140,8 @@ public class TileManager extends Pane {
 	public void contextMenu(ActionEvent e) {
 		try {
 			if (requestor.get() instanceof FakeTextureHolder fth) {
-				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().screenX - gp.getPlayer().getX());
-				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().screenY - gp.getPlayer().getY());
+				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().getScreenX() - gp.getPlayer().getX());
+				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().getScreenY() - gp.getPlayer().getY());
 			}
 			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
 			else if (e.getSource() instanceof MenuItemWBuilding miwb)
@@ -149,15 +149,15 @@ public class TileManager extends Pane {
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
 				.newInstance(miwb.getBuilding(), buildings, cm, requestorB)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
 				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
 				.newInstance(miwn.getNPC(), npcs, cm, requestorN)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-						requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
@@ -185,9 +185,9 @@ public class TileManager extends Pane {
 					joN.put("fps", new DoubleValue(7d));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX()));
+							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
 					position.add(new DoubleValue(
-							requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 					joN.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					originalSize.add(new DoubleValue(img.getWidth()));
@@ -234,9 +234,9 @@ public class TileManager extends Pane {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							requestor.get().getLayoutX() - gp.getPlayer().screenX + gp.getPlayer().getX()));
+							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
 					position.add(new DoubleValue(
-							requestor.get().getLayoutY() - gp.getPlayer().screenY + gp.getPlayer().getY()));
+							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					originalSize.add(new DoubleValue(img.getWidth()));
@@ -632,16 +632,16 @@ public class TileManager extends Pane {
 
 			int worldX = worldCol * gp.Bg;
 			int worldY = worldRow * gp.Bg;
-			double screenX = worldX - p.getX() + p.screenX;
-			double screenY = worldY - p.getY() + p.screenY;
+			double screenX = worldX - p.getX() + p.getScreenX();
+			double screenY = worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.size * 1.5 > p.getX() - p.screenX
-					&& worldX - p.size * 1.5 < p.getX() + p.screenX
-					&& worldY + p.size > p.getY() - p.screenY
-					&& worldY - p.size < p.getY() + p.screenY) {
+			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX()
+					&& worldX - p.getSize() * 1.5 < p.getX() + p.getScreenX()
+					&& worldY + p.getSize() > p.getY() - p.getScreenY()
+					&& worldY - p.getSize() < p.getY() + p.getScreenY()) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

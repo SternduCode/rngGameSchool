@@ -58,8 +58,8 @@ public class SelectTool extends Rectangle {
 
 	public void doDrag(MouseEvent me) {
 		if (dragging) {
-			Node node = gp.getTileM().getTileAt(me.getSceneX() - gp.getPlayer().screenX + gp.getPlayer().getX(),
-					me.getSceneY() - gp.getPlayer().screenY + gp.getPlayer().getY());
+			Node node = gp.getTileM().getTileAt(me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+					me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			if (node instanceof TextureHolder t) {
 				setWidth(t.getLayoutX() + t.getWidth() - getLayoutX());
 				setHeight(t.getLayoutY() + t.getHeight() - getLayoutY());
@@ -71,8 +71,8 @@ public class SelectTool extends Rectangle {
 	public void drawOutlines(MouseEvent me) {
 		setWidth(gp.Bg);
 		setHeight(gp.Bg);
-		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().screenX) / gp.Bg,
-				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().screenY) / gp.Bg;
+		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().getScreenX()) / gp.Bg,
+				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().getScreenY()) / gp.Bg;
 		if (xPos < 0) xPos -= 1;
 		if (yPos < 0) yPos -= 1;
 		x = (int) xPos * gp.Bg;
@@ -126,8 +126,8 @@ public class SelectTool extends Rectangle {
 				&& gp.getTileM().getCM().getAnchorX() == getLayoutX() + getScene().getWindow().getX()
 				&& gp.getTileM().getCM().getAnchorY() == getLayoutY() + getScene().getWindow().getY())
 			moveCm = true;
-		double screenX = x - gp.getPlayer().getX() + gp.getPlayer().screenX;
-		double screenY = y - gp.getPlayer().getY() + gp.getPlayer().screenY;
+		double screenX = x - gp.getPlayer().getX() + gp.getPlayer().getScreenX();
+		double screenY = y - gp.getPlayer().getY() + gp.getPlayer().getScreenY();
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 		if (moveCm) {

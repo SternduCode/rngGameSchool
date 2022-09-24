@@ -119,8 +119,8 @@ public class SpielPanel extends Pane {
 		fpsLabel.setVisible(false);
 
 		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
-		inv.setX(player.screenX - inv.getImage().getWidth() / 2 + 20);
-		inv.setY(player.screenY - inv.getImage().getHeight() / 2);
+		inv.setX(player.getScreenX() - inv.getImage().getWidth() / 2 + 20);
+		inv.setY(player.getScreenY() - inv.getImage().getHeight() / 2);
 		inv.setVisible(false);
 
 		setMap("./res/maps/lavaMap2.json");
@@ -342,8 +342,8 @@ public class SpielPanel extends Pane {
 		}
 
 		for (Entry<Point2D, Circle> point: points.entrySet()) {
-			point.getValue().setCenterX(point.getKey().getX() - player.x + player.screenX);
-			point.getValue().setCenterY(point.getKey().getY() - player.y + player.screenY);
+			point.getValue().setCenterX(point.getKey().getX() - player.x + player.getScreenX());
+			point.getValue().setCenterY(point.getKey().getY() - player.y + player.getScreenY());
 		}
 
 		if (System.getProperty("edit").equals("true")) pointGroup.setVisible(true);
