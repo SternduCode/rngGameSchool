@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
+import com.sterndu.json.*;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -15,7 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-import rngGame.buildings.Building;
+import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
 
@@ -167,6 +168,28 @@ public class SpielPanel extends Pane {
 				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
+		buildings.forEach(b -> {
+			if (b instanceof House h) {
+				String map = h.getMap();
+				try {
+					JsonObject jo = (JsonObject) JsonParser.parse(new File("./res/maps/" + map));
+					if (jo.containsKey("exit")) {
+						JsonObject exit = (JsonObject) jo.get("exit");
+						if (tileM.getPath().endsWith(((StringValue) exit.get("map")).getValue())) {
+							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
+							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
+									((NumberValue) spawnPosition.get(1)).getValue().longValue());
+							Circle respawn = new Circle(p.getX(), p.getY(), 15,
+									Color.color(0, 1, 0, .75));
+							points.put(p, respawn);
+							pointGroup.getChildren().add(respawn);
+						}
+					}
+				} catch (JsonParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		npcs = tileM.getNPCSFromMap();
 	}
 
@@ -198,9 +221,31 @@ public class SpielPanel extends Pane {
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
 		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
-				Color.color(0, 1, 0, .75));// TODO get other spawns from building maps
+				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
+		buildings.forEach(b->{
+			if (b instanceof House h) {
+				String map = h.getMap();
+				try {
+					JsonObject jo = (JsonObject) JsonParser.parse(new File("./res/maps/"+map));
+					if (jo.containsKey("exit")) {
+						JsonObject exit = (JsonObject) jo.get("exit");
+						if (tileM.getPath().endsWith(((StringValue) exit.get("map")).getValue())) {
+							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
+							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
+									((NumberValue) spawnPosition.get(1)).getValue().longValue());
+							Circle respawn = new Circle(p.getX(), p.getY(), 15,
+									Color.color(0, 1, 0, .75));
+							points.put(p, respawn);
+							pointGroup.getChildren().add(respawn);
+						}
+					}
+				} catch (JsonParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		if (position != null)
 			player.setPosition(position);
@@ -256,15 +301,21 @@ public class SpielPanel extends Pane {
 
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
 
-		player.update(lastFrameTime);
+		try {
+			player.update(lastFrameTime);
+		} catch (ConcurrentModificationException e) {
+		}
 
 		selectTool.update();
 
 		fpsLabel.setText(String.format("%.2f", 1000 / fps));
 		fpsLabel.setLayoutX(SpielLaenge - fpsLabel.getWidth());
 
-		for (Building b: buildings) b.update(lastFrameTime);
-		for (Entity n: npcs) n.update(lastFrameTime);
+		try {
+			for (Building b: buildings) b.update(lastFrameTime);
+			for (Entity n: npcs) n.update(lastFrameTime);
+		} catch (ConcurrentModificationException e) {
+		}
 
 		for (Node layer: layerGroup.getChildren()) {
 			Group view = (Group) layer;
@@ -307,7 +358,7 @@ public class SpielPanel extends Pane {
 		lastFrame = System.currentTimeMillis();
 		frameTimes.add(frameTime);
 		fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
-		while (frameTimes.size() > 200) frameTimes.remove(0);
+		while (frameTimes.size() > fps + 20) frameTimes.remove(0);
 
 	}
 

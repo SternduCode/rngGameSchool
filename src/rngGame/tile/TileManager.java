@@ -44,11 +44,12 @@ public class TileManager extends Pane {
 
 	private String path;
 	private final SpielPanel gp;
+
 	private final List<Tile> tiles;
 	List<List<Integer>> mapTileNum;
 	private boolean generated;
-
 	private List<List<TextureHolder>> map;
+
 	private final Group group;
 	private List<Building> buildings;
 	private List<NPC> npcs;
@@ -70,7 +71,6 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-
 	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
@@ -79,9 +79,9 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
+
 	private double[] startingPosition, exitStartingPosition, exitPosition;
 	private int playerLayer;
-
 	private final Menu mtiles, mnpcs, mbuildings, mextra;
 
 	public TileManager(SpielPanel gp) {
@@ -292,8 +292,8 @@ public class TileManager extends Pane {
 
 	public String getBackgroundPath() { return backgroundPath; }
 
-
 	public List<Building> getBuildingsFromMap() { return buildings; }
+
 
 	public ContextMenu getCM() { return cm; }
 
@@ -329,6 +329,8 @@ public class TileManager extends Pane {
 		else
 			return getTileAt(x, y);
 	}
+
+	public String getPath() { return path; }
 
 	public int getPlayerLayer() { return playerLayer; }
 
