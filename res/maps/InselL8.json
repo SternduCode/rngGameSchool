@@ -640,8 +640,8 @@
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
-			1200,
-			1200
+			1170,
+			1170
 		],
 		"matrix" : [
 			"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
