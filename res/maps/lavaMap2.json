@@ -129,38 +129,6 @@
 			"layer" : [
 				0
 			]
-		},
-		{
-			"requestedSize" : [
-				64,
-				64
-			],
-			"textures" : {
-				"default" : "ShopGuentherIdle.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1584.00,
-				1104.00
-			],
-			"type" : "NPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"layer" : [
-				0
-			]
 		}
 	],
 	"buildings" : [
