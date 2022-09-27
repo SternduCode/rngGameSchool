@@ -129,38 +129,6 @@
 			"layer" : [
 				0
 			]
-		},
-		{
-			"requestedSize" : [
-				64,
-				64
-			],
-			"textures" : {
-				"default" : "ShopGuentherIdle.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1584.00,
-				1104.00
-			],
-			"type" : "NPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"layer" : [
-				0
-			]
 		}
 	],
 	"buildings" : [
@@ -219,24 +187,6 @@
 			"position" : [
 				800.000,
 				250.000
-			],
-			"miscBoxes" : [ 
-				{ 
-					"name" : "open",
-					"type" : "rectangle",
-					"x" : 47,
-					"y" : 162,
-					"width" : 130,
-					"height" : 100
-				},
-				{ 
-					"name" : "entrance",
-					"type" : "rectangle",
-					"x" : 87,
-					"y" : 162,
-					"width" : 50,
-					"height" : 60
-				}
 			],
 			"type" : "House",
 			"originalSize" : [
@@ -445,24 +395,6 @@
 				"closed" : "Shop.png",
 				"open" : "ShopOpen.png"
 			},
-			"miscBoxes" : [ 
-				{ 
-					"name" : "open",
-					"type" : "rectangle",
-					"x" : -3,
-					"y" : 154,
-					"width" : 130,
-					"height" : 100
-				},
-				{ 
-					"name" : "entrance",
-					"type" : "rectangle",
-					"x" : 37,
-					"y" : 154,
-					"width" : 50,
-					"height" : 60
-				}
-			],
 			"extraData" : [
 				{
 					
