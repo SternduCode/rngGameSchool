@@ -239,24 +239,6 @@
 				1564.00,
 				1307.00
 			],
-			"miscBoxes" : [ 
-				{ 
-					"name" : "open",
-					"type" : "rectangle",
-					"x" : -3,
-					"y" : 154,
-					"width" : 130,
-					"height" : 100
-				},
-				{ 
-					"name" : "entrance",
-					"type" : "rectangle",
-					"x" : 37,
-					"y" : 154,
-					"width" : 50,
-					"height" : 60
-				}
-			],
 			"type" : "Building",
 			"originalSize" : [
 				64,
@@ -445,6 +427,24 @@
 			"position" : [
 				1530.00,
 				775.000
+			],
+			"miscBoxes" : [ 
+				{ 
+					"name" : "open",
+					"type" : "rectangle",
+					"x" : -3,
+					"y" : 154,
+					"width" : 130,
+					"height" : 100
+				},
+				{ 
+					"name" : "entrance",
+					"type" : "rectangle",
+					"x" : 37,
+					"y" : 154,
+					"width" : 50,
+					"height" : 60
+				}
 			],
 			"type" : "House",
 			"originalSize" : [
