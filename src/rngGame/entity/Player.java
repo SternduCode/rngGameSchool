@@ -49,8 +49,8 @@ public class Player extends Entity {
 			origHeight = 64;
 			origWidth = reqWidth;
 
-			getAnimatedImages("idle", "Stehen.png");
-			getAnimatedImages("idleL", "Stehen2.png");
+			getAnimatedImages("idledown", "Stehen.png");
+			getAnimatedImages("idledownL", "Stehen2.png");
 			getAnimatedImages("right", "LaufenRechts.png");
 			getAnimatedImages("left", "LaufenLinks.png");
 			getAnimatedImages("down", "LaufenRunter.png");
@@ -59,6 +59,8 @@ public class Player extends Entity {
 			getAnimatedImages("upL", "LaufenHochL.png");
 			getAnimatedImages("idleup", "IdleUp.png");
 			getAnimatedImages("idleupL", "IdleUp.png");
+			getAnimatedImages("idleRight", "IdleRight.png");
+			getAnimatedImages("idleLeft", "IdleLeft.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,25 +123,32 @@ public class Player extends Entity {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
 			y -= updateSpeed;
-		}
+		} // Hoch
 		else if (keyH.s && !keyH.ctrlPressed) {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
 			y += updateSpeed;
-		}
+		} // Runter
 		else if (keyH.a) {
 			setCurrentKey("left");
 			x -= updateSpeed;
-		}
+		} // Links
 		else if (keyH.d) {
 			setCurrentKey("right");
 			x += updateSpeed;
-		} else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
+		} // Rechts 
+		else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
 		else if (getCurrentKey().equals("up") || getCurrentKey().contains("up")) setCurrentKey("idleup");
-		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idleL");
-
-		else setCurrentKey("idle");
-
+		  // Idle Hoch
+		else if (getCurrentKey().equals("left") || getCurrentKey().contains("L")) setCurrentKey("idleLeft");
+		  // IdleLinks
+		else if (getCurrentKey().equals("right") || getCurrentKey().endsWith("Right")) setCurrentKey("idleRight");
+		  // IdleRight
+		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idledownL");
+		  // Idle RunterL
+		else setCurrentKey("idledown");
+		  // Idle Runter
+		
 		super.update(milis);
 
 		setLayoutX(getScreenX());
