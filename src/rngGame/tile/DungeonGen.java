@@ -19,6 +19,7 @@ public class DungeonGen {
 	private final List<Point2D> mainMapConnectors, mapsConnectors[];
 	private int mainMapVoidNum;
 	private final int mapsVoidNum[];
+	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, mapsConnectorTiles[];
 
 	@SuppressWarnings("unchecked")
 	public DungeonGen(SpielPanel gp, String voidImg, JsonObject mainmap, JsonObject[] maps, List<JsonObject> connectors,
@@ -66,6 +67,8 @@ public class DungeonGen {
 		this.connections = connections;
 		this.replacements = replacements;
 
+		mainMapConnectorTiles = new HashMap<>();
+		mapsConnectorTiles = new HashMap[mapsTiles.length];
 		mainMapConnectors = new ArrayList<>();
 		mapsConnectors = new List[maps.length];
 		for (int i = 0; i < maps.length; i++) mapsConnectors[i] = new ArrayList<>();
@@ -74,7 +77,6 @@ public class DungeonGen {
 
 	@SuppressWarnings("unchecked")
 	public void findFreeConnectors() {
-		Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles = new HashMap<>();
 		for (int i = 0; i < mainMapTiles.size(); i++) {
 			int c_i = i;
 			connectors.forEach(jobj -> {
@@ -82,7 +84,6 @@ public class DungeonGen {
 					mainMapConnectorTiles.put(c_i, Map.entry(mainMapTiles.get(c_i), jobj));
 			});
 		}
-		Map<Integer, Map.Entry<Tile, JsonObject>>[] mapsConnectorTiles = new HashMap[mapsTiles.length];
 		for (int i = 0; i < mapsConnectorTiles.length; i++) {
 			int c_i = i;
 			mapsConnectorTiles[i] = new HashMap<>();
@@ -186,9 +187,9 @@ public class DungeonGen {
 			}
 
 
-		Stage s = new Stage();
-		s.setScene(new Scene(new Group(mainMapMap)));
-		s.show();
+//		Stage s = new Stage();
+		//		s.setScene(new Scene(new Group(mainMapMap)));
+		//		s.show();
 
 		for (int k = 0; k < mapsTileNum.length; k++) {
 			Shape mapMap = new Rectangle();
@@ -202,9 +203,161 @@ public class DungeonGen {
 
 			mapsMap[k] = mapMap;
 
-			Stage sx = new Stage();
-			sx.setScene(new Scene(new Group(mapMap)));
-			sx.show();
+			//			Stage sx = new Stage();
+			//			sx.setScene(new Scene(new Group(mapMap)));
+			//			sx.show();
+		}
+
+		// TODO resort to ensure 1st has down, 2nd has left, 3rd has up, 4th has right
+
+		Shape merge = null;
+		int distance = 7;
+		double xShift = 0, yShift = 0;
+
+		for (int i = 0; i < mapsMap.length; i++) {
+			int c_i = i;
+			Shape m = mapsMap[i];
+			switch (i) {
+				case 0: {
+					List<Point2D> downConnectors = mapsConnectors[i].stream().filter(p -> {
+						String direction = ((StringValue) mapsConnectorTiles[c_i]
+								.get(mapsTileNum[c_i].get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("down");
+					}).toList();
+					Random r = new Random();
+					Point2D downConnector = downConnectors.get(r.nextInt(downConnectors.size()));
+
+					List<Point2D> upConnectors = mainMapConnectors.stream().filter(p -> {
+						String direction = ((StringValue) mainMapConnectorTiles
+								.get(mainMapTileNum.get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("up");
+					}).toList();
+					Point2D upConnector = upConnectors.get(r.nextInt(upConnectors.size()));
+
+					mainMapMap.setLayoutY(
+							yShift = (downConnector.getX() + distance - upConnector.getX()) * block.getHeight());
+					mainMapMap.setLayoutX(xShift = (downConnector.getY() - upConnector.getY()) * block.getWidth());
+
+					merge = Shape.union(mainMapMap, m);
+
+					//					Stage sx = new Stage();
+					//					sx.setScene(new Scene(new Group(merge)));
+					//					sx.show();
+
+					System.out.println(upConnector + " " + downConnector);
+
+					break;
+				}
+				case 1: {
+					List<Point2D> leftConnectors = mapsConnectors[i].stream().filter(p -> {
+						String direction = ((StringValue) mapsConnectorTiles[c_i]
+								.get(mapsTileNum[c_i].get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("left");
+					}).toList();
+					Random r = new Random();
+					Point2D leftConnector = leftConnectors.get(r.nextInt(leftConnectors.size()));
+
+					List<Point2D> rightConnectors = mainMapConnectors.stream().filter(p -> {
+						String direction = ((StringValue) mainMapConnectorTiles
+								.get(mainMapTileNum.get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("right");
+					}).toList();
+					Point2D rightConnector = rightConnectors.get(r.nextInt(rightConnectors.size()));
+
+					m.setLayoutY(
+							-((leftConnector.getX() - rightConnector.getX()) * block.getHeight() - yShift));
+					m.setLayoutX(-((leftConnector.getY() - distance - rightConnector.getY()) * block.getWidth()
+							- xShift));
+
+					merge = Shape.union(merge, m);
+
+					//					Stage sx = new Stage();
+					//					sx.setScene(new Scene(new Group(merge)));
+					//					sx.show();
+
+					System.out.println(rightConnector + " " + leftConnector);
+
+					break;
+				}
+				case 2: {
+					List<Point2D> upConnectors = mapsConnectors[i].stream().filter(p -> {
+						String direction = ((StringValue) mapsConnectorTiles[c_i]
+								.get(mapsTileNum[c_i].get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("up");
+					}).toList();
+					Random r = new Random();
+					Point2D upConnector = upConnectors.get(r.nextInt(upConnectors.size()));
+
+					List<Point2D> downConnectors = mainMapConnectors.stream().filter(p -> {
+						String direction = ((StringValue) mainMapConnectorTiles
+								.get(mainMapTileNum.get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("down");
+					}).toList();
+					Point2D downConnector = downConnectors.get(r.nextInt(downConnectors.size()));
+
+					m.setLayoutY(
+							-((upConnector.getX() - distance - downConnector.getX()) * block.getHeight() - yShift));
+					m.setLayoutX(
+							-((upConnector.getY() - downConnector.getY()) * block.getWidth() - xShift));
+
+					merge = Shape.union(merge, m);
+
+					//					Stage sx = new Stage();
+					//					sx.setScene(new Scene(new Group(merge)));
+					//					sx.show();
+
+					System.out.println(downConnector + " " + upConnector);
+
+					break;
+				}
+				case 3: {
+					List<Point2D> rightConnectors = mapsConnectors[i].stream().filter(p -> {
+						String direction = ((StringValue) mapsConnectorTiles[c_i]
+								.get(mapsTileNum[c_i].get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("right");
+					}).toList();
+					Random r = new Random();
+					Point2D rightConnector = rightConnectors.get(r.nextInt(rightConnectors.size()));
+
+					List<Point2D> leftConnectors = mainMapConnectors.stream().filter(p -> {
+						String direction = ((StringValue) mainMapConnectorTiles
+								.get(mainMapTileNum.get((int) p.getX()).get((int) p.getY())).getValue()
+								.get("direction"))
+								.getValue();
+						return direction.equals("left");
+					}).toList();
+					Point2D leftConnector = leftConnectors.get(r.nextInt(leftConnectors.size()));
+
+					m.setLayoutY(
+							-((rightConnector.getX() - leftConnector.getX()) * block.getHeight() - yShift));
+					merge.setLayoutX(
+							(rightConnector.getY() + distance - leftConnector.getY()) * block.getWidth() - xShift);
+
+					merge = Shape.union(merge, m);
+
+					Stage sx = new Stage();
+					sx.setScene(new Scene(new Group(merge)));
+					sx.show();
+
+					System.out.println(leftConnector + " " + rightConnector);
+
+					break;
+				}
+			}
 		}
 
 		// TODO stitch
