@@ -11,7 +11,38 @@
 		"map" : "lavaMap2.json"
 	},
 	"npcs" : [
-		
+		{
+			"requestedSize" : [
+				100,
+				100
+			],
+			"textures" : {
+				"default" : "ShopGuentherIdle.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				4.00000
+			],
+			"position" : [
+				434.000,
+				599.000
+			],
+			"type" : "NPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"layer" : [
+				0
+			]
+		}
 	],
 	"buildings" : [
 		
@@ -36,8 +67,8 @@
 			"LinksEckeMO.png"
 		],
 		"startingPosition" : [
-			120,
-			782
+			120.000,
+			782.000
 		],
 		"dir" : "buildingInside",
 		"matrix" : [
