@@ -13,8 +13,8 @@
 	"npcs" : [
 		{
 			"requestedSize" : [
-				100,
-				100
+				90,
+				90
 			],
 			"textures" : {
 				"default" : "ShopGuentherIdle.png"
@@ -31,8 +31,8 @@
 				4.00000
 			],
 			"position" : [
-				434.000,
-				599.000
+				572.000,
+				600.000
 			],
 			"type" : "NPC",
 			"originalSize" : [
@@ -45,7 +45,38 @@
 		}
 	],
 	"buildings" : [
-		
+		{
+			"requestedSize" : [
+				175,
+				75
+			],
+			"textures" : {
+				"default" : "Tresen.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				497.000,
+				637.000
+			],
+			"type" : "Building",
+			"originalSize" : [
+				128,
+				64
+			],
+			"layer" : [
+				0
+			]
+		}
 	],
 	"dir" : "buildingInside",
 	"map" : {
