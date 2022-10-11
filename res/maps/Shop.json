@@ -76,6 +76,38 @@
 			"layer" : [
 				0
 			]
+		},
+		{
+			"requestedSize" : [
+				64,
+				128
+			],
+			"textures" : {
+				"default" : "Vitrine.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				400.000,
+				632.000
+			],
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				64
+			],
+			"layer" : [
+				0
+			]
 		}
 	],
 	"dir" : "buildingInside",
