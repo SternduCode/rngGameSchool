@@ -481,7 +481,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 			dialog.initModality(Modality.NONE);
 			dialog.setTitle("Position");
-			gp.getKeyH().moveGameObject(this);
+			Input.getInstance().moveGameObject(this);
 			Optional<List<String>> result = dialog.showAndWait();
 			if (result.isPresent()) {
 				try {
@@ -493,7 +493,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				} catch (NumberFormatException e2) {
 				}
 			}
-			gp.getKeyH().stopMoveingGameObject(this);
+			Input.getInstance().stopMoveingGameObject(this);
 		} else if (source == fpsI) {
 			TextInputDialog dialog = new TextInputDialog("" + fps);
 			dialog.setHeaderText("");
@@ -553,7 +553,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 			dialog.setTitle("Requested Dimension");
 			dialog.initModality(Modality.NONE);
-			gp.getKeyH().resizeGameObject(this);
+			Input.getInstance().resizeGameObject(this);
 			Optional<List<String>> result = dialog.showAndWait();
 			if (result.isPresent()) {
 				try {
@@ -567,7 +567,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				} catch (NumberFormatException e2) {
 				}
 			}
-			gp.getKeyH().stopResizeingGameObject(this);
+			Input.getInstance().stopResizeingGameObject(this);
 		} else if (source == backgroundI) {
 			Alert alert = new Alert(Alert.AlertType.NONE);
 			alert.setTitle("Background");

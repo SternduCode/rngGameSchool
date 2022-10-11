@@ -187,7 +187,7 @@ public class DungeonGen {
 			}
 
 
-//		Stage s = new Stage();
+		//		Stage s = new Stage();
 		//		s.setScene(new Scene(new Group(mainMapMap)));
 		//		s.show();
 
@@ -209,6 +209,8 @@ public class DungeonGen {
 		}
 
 		// TODO resort to ensure 1st has down, 2nd has left, 3rd has up, 4th has right
+
+		Boolean[][] hasConnector = new Boolean[4][mapsMap.length];
 
 		Shape merge = null;
 		int distance = 7;

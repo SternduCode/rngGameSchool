@@ -34,7 +34,7 @@ public class Building extends GameObject {
 	public void update(long milis) {
 		super.update(milis);
 
-		if (isVisible() && gp.getKeyH().b) setVisible(false);
+		if (isVisible() && Input.getInstance().b) setVisible(false);
 	}
 
 }

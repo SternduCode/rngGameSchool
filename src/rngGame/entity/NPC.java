@@ -5,7 +5,7 @@ import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.paint.Color;
-import rngGame.main.SpielPanel;
+import rngGame.main.*;
 
 public class NPC extends Entity implements JsonValue {
 
@@ -42,7 +42,7 @@ public class NPC extends Entity implements JsonValue {
 	public void update(long milis) {
 		super.update(milis);
 
-		if (isVisible() && gp.getKeyH().h) setVisible(false);
+		if (isVisible() && Input.getInstance().h) setVisible(false);
 	}
 
 }

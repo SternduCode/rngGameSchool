@@ -13,7 +13,13 @@ import rngGame.tile.TextureHolder;
 
 public class Input {
 
+	private record KeyHandlerKeyCodePair(Runnable handler, KeyCode keyCode, boolean up) {}
+
 	private static final Input INSTANCE = new Input();
+
+	private final Map<KeyCode, List<Runnable>> keyDownHandlers = new HashMap<>(), keyUpHandlers = new HashMap<>();
+
+	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
 	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
 
@@ -23,7 +29,14 @@ public class Input {
 
 	private SpielPanel gp;
 
-	private Input() {}
+	private Input() {
+		setKeyHandler("ControlDown", () -> {
+			ctrlPressed = true;
+		}, KeyCode.CONTROL, false);
+		setKeyHandler("ControlUp", () -> {
+			ctrlPressed = false;
+		}, KeyCode.CONTROL, true);
+	}
 
 	public static Input getInstance() { return INSTANCE; }
 
@@ -33,11 +46,11 @@ public class Input {
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
 	}
 
-
 	private void reload() {
 		if (gp != null)
 			gp.reload();
 	}
+
 
 	private void save(Polygon p) {
 		ctrlPressed = false;
@@ -79,6 +92,8 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
+		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(Runnable::run);
+
 		if (code == KeyCode.W) w = true;
 
 		if (code == KeyCode.S) s = true;
@@ -86,8 +101,6 @@ public class Input {
 		if (code == KeyCode.A) a = true;
 
 		if (code == KeyCode.D) d = true;
-
-		if (code == KeyCode.CONTROL) ctrlPressed = true;
 
 		if (code == KeyCode.N) n = true;
 
@@ -101,6 +114,8 @@ public class Input {
 	public void keyReleased(KeyEvent e) {
 
 		KeyCode code = e.getCode();
+
+		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(Runnable::run);
 
 		if (code == KeyCode.W) w = false;
 
@@ -127,8 +142,6 @@ public class Input {
 
 		if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
 		else System.setProperty("coll", "true");
-
-		if (code == KeyCode.CONTROL) ctrlPressed = false;
 
 		if (code == KeyCode.N) n = false;
 
@@ -214,6 +227,17 @@ public class Input {
 		}
 	}
 
+	public void removeKeyHandler(String name) {
+		try {
+			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
+			KeyHandlerKeyCodePair khkcp = keyHandlers.remove(className + "|" + name);
+			if (khkcp.up()) keyUpHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
+			else keyDownHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void resizeGameObject(GameObject go) {
 		resize = go;
 	}
@@ -221,6 +245,33 @@ public class Input {
 	public void saveMap() {
 		if (gp != null)
 			gp.saveMap();
+	}
+
+	public void setKeyHandler(String name, Runnable handler, KeyCode keyCode, boolean keyUp) {
+		try {
+			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
+			if (keyHandlers.containsKey(className + "|" + name)) {
+				KeyHandlerKeyCodePair khkcp = keyHandlers.remove(className + "|" + name);
+				if (khkcp.up()) keyUpHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
+				else keyDownHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
+			}
+			keyHandlers.put(className + "|" + name, new KeyHandlerKeyCodePair(handler, keyCode, keyUp));
+			if (keyUp) {
+				if (keyUpHandlers.containsKey(keyCode)) keyUpHandlers.get(keyCode).add(handler);
+				else {
+					List<Runnable> li = new ArrayList<>();
+					li.add(handler);
+					keyUpHandlers.put(keyCode, li);
+				}
+			} else if (keyDownHandlers.containsKey(keyCode)) keyDownHandlers.get(keyCode).add(handler);
+			else {
+				List<Runnable> li = new ArrayList<>();
+				li.add(handler);
+				keyDownHandlers.put(keyCode, li);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void stopMoveingGameObject(GameObject go) {
@@ -236,6 +287,10 @@ public class Input {
 		return "Input [w=" + w + ", s=" + s + ", a=" + a + ", d=" + d + ", tabPressed="
 				+ tabPressed + ", ctrlPressed=" + ctrlPressed + ", p=" + p + ", b=" + b + ", h="
 				+ h + ", n=" + n + "]";
+	}
+
+	public void update(long ms) {
+
 	}
 
 }

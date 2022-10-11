@@ -74,7 +74,7 @@ public class SpielPanel extends Pane {
 	private final int FPS = 80;
 
 	private final ImageView inv;
-	private final Input keyH;
+	private final Input input;
 	private final Player player;
 	private final TileManager tileM;
 	private final SelectTool selectTool;
@@ -96,7 +96,7 @@ public class SpielPanel extends Pane {
 	public SpielPanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
-		keyH = Input.getInstance();
+		input = Input.getInstance();
 
 		pointGroup = new Group();
 		pointGroup.setDisable(true);
@@ -132,10 +132,6 @@ public class SpielPanel extends Pane {
 	public List<Building> getBuildings() { return buildings; }
 
 	public Double getFps() { return fps; }
-
-	public Input getKeyH() {
-		return keyH;
-	}
 
 	public List<NPC> getNpcs() { return npcs; }
 
@@ -292,7 +288,7 @@ public class SpielPanel extends Pane {
 	@Override
 	public String toString() {
 		return "SpielPanel [inv=" + inv
-				+ ", keyH=" + keyH + ", player=" + player + ", tileM=" + tileM + ", selectTool="
+				+ ", input=" + input + ", player=" + player + ", tileM=" + tileM + ", selectTool="
 				+ selectTool + ", layerGroup=" + layerGroup.getChildren().size() + ", buildings=" + buildings
 				+ ", npcs=" + npcs
 				+ "]";
@@ -301,6 +297,8 @@ public class SpielPanel extends Pane {
 	public void update() {
 
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
+
+		input.update(lastFrameTime);
 
 		try {
 			player.update(lastFrameTime);
@@ -352,7 +350,7 @@ public class SpielPanel extends Pane {
 
 		tileM.update();
 
-		if (keyH.tabPressed) inv.setVisible(true);
+		if (input.tabPressed) inv.setVisible(true);
 		else inv.setVisible(false);
 
 		long frameTime = System.currentTimeMillis() - lastFrame;

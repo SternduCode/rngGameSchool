@@ -18,7 +18,7 @@ public class PartialFillDialog extends Dialog<Boolean> {
 	private Button rerandomize;
 	private Slider slider;
 	private Label name;
-	private final Label space = new Label(""), space2 = new Label("");
+	private final Label space = new Label("");
 	private SelectTool selectTool;
 	private Tile tile;
 	private Boolean[] matrix;

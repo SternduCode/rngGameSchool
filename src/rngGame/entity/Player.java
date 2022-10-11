@@ -115,7 +115,7 @@ public class Player extends Entity {
 	@Override
 	public void update(long milis) {
 
-		Input keyH = gp.getKeyH();
+		Input keyH = Input.getInstance();
 
 		double updateSpeed = speed / 1000 * milis;
 
@@ -136,19 +136,19 @@ public class Player extends Entity {
 		else if (keyH.d) {
 			setCurrentKey("right");
 			x += updateSpeed;
-		} // Rechts 
+		} // Rechts
 		else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
 		else if (getCurrentKey().equals("up") || getCurrentKey().contains("up")) setCurrentKey("idleup");
-		  // Idle Hoch
+		// Idle Hoch
 		else if (getCurrentKey().equals("left") || getCurrentKey().contains("L")) setCurrentKey("idleLeft");
-		  // IdleLinks
+		// IdleLinks
 		else if (getCurrentKey().equals("right") || getCurrentKey().endsWith("Right")) setCurrentKey("idleRight");
-		  // IdleRight
+		// IdleRight
 		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idledownL");
-		  // Idle RunterL
+		// Idle RunterL
 		else setCurrentKey("idledown");
-		  // Idle Runter
-		
+		// Idle Runter
+
 		super.update(milis);
 
 		setLayoutX(getScreenX());
@@ -187,6 +187,7 @@ public class Player extends Entity {
 
 		//		shape.setTranslateX(0);
 		//		shape.setTranslateY(0);
+
 
 	}
 }

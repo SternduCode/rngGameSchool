@@ -14,6 +14,7 @@ public class TextureHolder extends Pane {
 
 	private Tile tile;
 
+	@SuppressWarnings("unused")
 	private SpielPanel gp;
 
 	private final ImageView iv;
