@@ -89,12 +89,17 @@ public class SpielPanel extends Pane {
 	private Long lastFrame;
 	private Double fps = 0d;
 
+	private final ImageView loadingScreen;
+
 	private final Label fpsLabel;
 
 	private final Map<Point2D, Circle> points;
 
 	public SpielPanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
+
+		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
+		loadingScreen.setDisable(true);
 
 		input = Input.getInstance();
 
@@ -126,7 +131,7 @@ public class SpielPanel extends Pane {
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv, fpsLabel);
+		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv, fpsLabel, loadingScreen);
 	}
 
 	public List<Building> getBuildings() { return buildings; }
@@ -201,6 +206,9 @@ public class SpielPanel extends Pane {
 
 
 	public void setMap(String path, double[] position) {
+
+		loadingScreen.setOpacity(1);
+
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
 		pointGroup.getChildren().clear();
@@ -248,6 +256,20 @@ public class SpielPanel extends Pane {
 			player.setPosition(position);
 		else player.setPosition(tileM.getStartingPosition());
 		player.setLayer(tileM.getPlayerLayer());
+
+		new Thread(() -> {
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			FadeTransition ft = new FadeTransition(Duration.millis(500), loadingScreen);
+			ft.setFromValue(1);
+			ft.setToValue(0);
+			ft.play();
+
+		}).start();
 
 	}
 
