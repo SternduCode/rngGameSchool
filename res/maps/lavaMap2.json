@@ -188,28 +188,28 @@
 				800.000,
 				250.000
 			],
-			"miscBoxes" : [ 
-				{ 
-					"name" : "open",
-					"type" : "rectangle",
-					"x" : 47,
-					"y" : 162,
-					"width" : 130,
-					"height" : 100
-				},
-				{ 
-					"name" : "entrance",
-					"type" : "rectangle",
-					"x" : 87,
-					"y" : 162,
-					"width" : 50,
-					"height" : 60
-				}
-			],
 			"type" : "House",
 			"originalSize" : [
 				64,
 				64
+			],
+			"miscBoxes" : [
+				{
+					"name" : "entrance",
+					"x" : 87,
+					"width" : 50,
+					"y" : 162,
+					"type" : "rectangle",
+					"height" : 60
+				},
+				{
+					"name" : "open",
+					"x" : 47,
+					"width" : 130,
+					"y" : 162,
+					"type" : "rectangle",
+					"height" : 100
+				}
 			],
 			"map" : "InnenContracts.json",
 			"layer" : [
@@ -428,28 +428,28 @@
 				1498.00,
 				792.000
 			],
-			"miscBoxes" : [ 
-				{ 
-					"name" : "open",
-					"type" : "rectangle",
-					"x" : -3,
-					"y" : 154,
-					"width" : 130,
-					"height" : 100
-				},
-				{ 
-					"name" : "entrance",
-					"type" : "rectangle",
-					"x" : 37,
-					"y" : 154,
-					"width" : 50,
-					"height" : 60
-				}
-			],
 			"type" : "House",
 			"originalSize" : [
 				64,
 				64
+			],
+			"miscBoxes" : [
+				{
+					"name" : "entrance",
+					"x" : 37,
+					"width" : 50,
+					"y" : 154,
+					"type" : "rectangle",
+					"height" : 60
+				},
+				{
+					"name" : "open",
+					"x" : -3,
+					"width" : 130,
+					"y" : 154,
+					"type" : "rectangle",
+					"height" : 100
+				}
 			],
 			"map" : "Shop.json",
 			"layer" : [

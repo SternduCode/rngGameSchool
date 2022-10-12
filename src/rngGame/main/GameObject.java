@@ -896,6 +896,24 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			JsonArray requestedSize = new JsonArray();
 			JsonArray backgrounds = new JsonArray();
 			JsonArray layers = new JsonArray();
+			JsonArray miscBoxes = new JsonArray();
+			for (Entry<String, Shape> box: this.miscBoxes.entrySet()) {
+				JsonObject jBox = new JsonObject();
+				jBox.put("name", box.getKey());
+				if (box.getValue() instanceof Circle circ) { // TODO
+				} else if (box.getValue() instanceof Rectangle rect) {
+					jBox.put("type", "rectangle");
+					jBox.put("x", (long) rect.getX());
+					jBox.put("y", (long) rect.getY());
+					jBox.put("width", (long) rect.getWidth());
+					jBox.put("height", (long) rect.getHeight());
+				} else if (box.getValue() instanceof Polygon poly) {
+					// TODO
+				} else if (box.getValue() instanceof Ring ring) {
+					// TODO
+				} else continue;
+				miscBoxes.add(jBox);
+			}
 			if (slaves == null || slaves.size() == 0) {
 				position.add(x);
 				position.add(y);
@@ -939,6 +957,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			jo.put("requestedSize", requestedSize);
 			jo.put("background", backgrounds);
 			jo.put("layer", layers);
+			if (!this.miscBoxes.isEmpty())
+				jo.put("miscBoxes", miscBoxes);
 			return jo;
 		} else return new StringValue("");
 	}
