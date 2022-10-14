@@ -193,6 +193,24 @@
 				64,
 				64
 			],
+			"miscBoxes" : [
+				{
+					"name" : "entrance",
+					"x" : 87,
+					"width" : 50,
+					"y" : 162,
+					"type" : "rectangle",
+					"height" : 60
+				},
+				{
+					"name" : "open",
+					"x" : 47,
+					"width" : 130,
+					"y" : 162,
+					"type" : "rectangle",
+					"height" : 100
+				}
+			],
 			"map" : "InnenContracts.json",
 			"layer" : [
 				0
@@ -414,6 +432,24 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"miscBoxes" : [
+				{
+					"name" : "entrance",
+					"x" : 37,
+					"width" : 50,
+					"y" : 154,
+					"type" : "rectangle",
+					"height" : 60
+				},
+				{
+					"name" : "open",
+					"x" : -3,
+					"width" : 130,
+					"y" : 154,
+					"type" : "rectangle",
+					"height" : 100
+				}
 			],
 			"map" : "Shop.json",
 			"layer" : [
