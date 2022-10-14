@@ -6,7 +6,7 @@
 		],
 		"position" : [
 			326,
-			552.0
+			552
 		],
 		"map" : "lavaMap2.json"
 	},
@@ -22,10 +22,17 @@
 			"textures" : {
 				"default" : "CCarpet.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				247.000,
 				300.000
@@ -34,6 +41,9 @@
 			"originalSize" : [
 				128,
 				128
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -44,10 +54,17 @@
 			"textures" : {
 				"default" : "CTisch.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				257.000,
 				150.000
@@ -56,6 +73,9 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -66,10 +86,17 @@
 			"textures" : {
 				"default" : "CBett.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				96.0000,
 				200.000
@@ -78,6 +105,9 @@
 			"originalSize" : [
 				64,
 				128
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -88,10 +118,17 @@
 			"textures" : {
 				"default" : "CTisch2.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				96.0000,
 				295.000
@@ -100,19 +137,41 @@
 			"originalSize" : [
 				64,
 				128
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
 			"requestedSize" : [
-				50,
-				50
+				[
+					50,
+					50
+				],
+				[
+					50,
+					50
+				]
 			],
 			"textures" : {
 				"default" : "CPlant.png"
 			},
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				},
+				{
+					
+				}
+			],
+			"background" : [
+				false,
+				false
+			],
+			"fps" : [
+				7.00000,
+				7.00000
+			],
 			"position" : [
 				[
 					140.000,
@@ -127,6 +186,10 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"layer" : [
+				0,
+				0
 			]
 		},
 		{
@@ -137,9 +200,17 @@
 			"textures" : {
 				"default" : "CSofa.png"
 			},
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				488.000,
 				360.000
@@ -148,6 +219,9 @@
 			"originalSize" : [
 				64,
 				192
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -158,10 +232,17 @@
 			"textures" : {
 				"default" : "CTreppe.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				405.000,
 				150.000
@@ -170,6 +251,9 @@
 			"originalSize" : [
 				128,
 				160
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -180,9 +264,17 @@
 			"textures" : {
 				"default" : "CHooka.png"
 			},
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				150.000,
 				335.000
@@ -191,6 +283,9 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -201,9 +296,17 @@
 			"textures" : {
 				"default" : "CLicht.png"
 			},
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
 			"position" : [
 				161.000,
 				221.000
@@ -212,6 +315,9 @@
 			"originalSize" : [
 				128,
 				128
+			],
+			"layer" : [
+				0
 			]
 		},
 		{
@@ -222,10 +328,17 @@
 			"textures" : {
 				"default" : "CKatze.png"
 			},
-			"background" : true,
-			"buildingData" : {
-				
-			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				3.00000
+			],
 			"position" : [
 				480.000,
 				276.000
@@ -234,10 +347,14 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"layer" : [
+				0
 			]
 		}
 	],
 	"map" : {
+		"playerLayer" : 0,
 		"textures" : [
 			"Void.png",
 			"RechtsEckeMU.png",
@@ -260,8 +377,8 @@
 			"BodenAusgang.png"
 		],
 		"startingPosition" : [
-			264,
-			528
+			264.000,
+			528.000
 		],
 		"dir" : "buildingInside",
 		"matrix" : [
