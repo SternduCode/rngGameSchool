@@ -25,8 +25,8 @@
 			],
 			"type" : "NPC",
 			"originalSize" : [
-				64,
-				32
+				128,
+				64
 			],
 			"layer" : [
 				0
@@ -34,8 +34,8 @@
 		},
 		{
 			"requestedSize" : [
-				55,
-				65
+				53,
+				63
 			],
 			"textures" : {
 				"default" : "GandalfA.png"
@@ -57,8 +57,8 @@
 			],
 			"type" : "NPC",
 			"originalSize" : [
-				32,
-				32
+				64,
+				64
 			],
 			"layer" : [
 				1
@@ -126,6 +126,38 @@
 				64
 			],
 			"dir" : "shadow",
+			"layer" : [
+				0
+			]
+		},
+		{
+			"requestedSize" : [
+				16,
+				16
+			],
+			"textures" : {
+				"default" : "FritzAhook.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				3.00000
+			],
+			"position" : [
+				868.000,
+				943.000
+			],
+			"type" : "NPC",
+			"originalSize" : [
+				16,
+				16
+			],
 			"layer" : [
 				0
 			]
