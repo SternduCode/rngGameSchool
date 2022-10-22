@@ -129,7 +129,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		directory = gameObject.directory;
 		background = gameObject.background;
 		currentKey = gameObject.currentKey;
-		images = gameObject.images;
+		images = new HashMap<>(gameObject.images);
 		textureFiles = gameObject.textureFiles;
 		gameObject.collisionBoxes.forEach((key, poly) -> {
 			Polygon collisionBox = collisionBoxes.get(key);
