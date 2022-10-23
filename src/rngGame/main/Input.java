@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
-import javafx.stage.FileChooser;
+import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.buildings.Building;
 import rngGame.tile.TextureHolder;
@@ -21,7 +21,7 @@ public class Input {
 
 	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
-	public boolean w, s, a, d, tabPressed, ctrlPressed, p, b, h, n, r;
+	public boolean ctrlPressed, n, s, r;
 
 	private GameObject move, resize;
 
@@ -36,6 +36,13 @@ public class Input {
 		setKeyHandler("ControlUp", () -> {
 			ctrlPressed = false;
 		}, KeyCode.CONTROL, true);
+		setKeyHandler("Fullscreen", () -> {
+			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
+			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+			if (((Stage) gp.getScene().getWindow()).isFullScreen())
+				((Stage) gp.getScene().getWindow()).setFullScreen(false);
+			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+		}, KeyCode.F11, false);
 	}
 
 	public static Input getInstance() { return INSTANCE; }
@@ -94,15 +101,9 @@ public class Input {
 
 		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(Runnable::run);
 
-		if (code == KeyCode.W) w = true;
+		if (code == KeyCode.N) n = true;
 
 		if (code == KeyCode.S) s = true;
-
-		if (code == KeyCode.A) a = true;
-
-		if (code == KeyCode.D) d = true;
-
-		if (code == KeyCode.N) n = true;
 
 		if (code == KeyCode.R) r = true;
 
@@ -117,22 +118,6 @@ public class Input {
 
 		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(Runnable::run);
 
-		if (code == KeyCode.W) w = false;
-
-		if (code == KeyCode.S) s = false;
-
-		if (code == KeyCode.A) a = false;
-
-		if (code == KeyCode.D) d = false;
-
-		if(code == KeyCode.TAB) tabPressed = !tabPressed;
-
-		if (code == KeyCode.B) b = !b;
-
-		if (code == KeyCode.P) p = !p;
-
-		if (code == KeyCode.H) h = !h;
-
 		if (code == KeyCode.L) print();
 
 		if (e.getText().equalsIgnoreCase("ö")) saveMap();
@@ -144,6 +129,8 @@ public class Input {
 		else System.setProperty("coll", "true");
 
 		if (code == KeyCode.N) n = false;
+
+		if (code == KeyCode.S) s = false;
 
 		if (code == KeyCode.R) r = false;
 
@@ -284,9 +271,7 @@ public class Input {
 
 	@Override
 	public String toString() {
-		return "Input [w=" + w + ", s=" + s + ", a=" + a + ", d=" + d + ", tabPressed="
-				+ tabPressed + ", ctrlPressed=" + ctrlPressed + ", p=" + p + ", b=" + b + ", h="
-				+ h + ", n=" + n + "]";
+		return "Input [s=" + s + ", ctrlPressed=" + ctrlPressed + ", n=" + n + "]";
 	}
 
 	public void update(long ms) {

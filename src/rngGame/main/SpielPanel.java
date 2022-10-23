@@ -3,7 +3,7 @@ package rngGame.main;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.*;
 import com.sterndu.json.*;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -12,6 +12,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -128,6 +129,13 @@ public class SpielPanel extends Pane {
 		inv.setX(player.getScreenX() - inv.getImage().getWidth() / 2 + 20);
 		inv.setY(player.getScreenY() - inv.getImage().getHeight() / 2);
 		inv.setVisible(false);
+
+		AtomicBoolean ab = new AtomicBoolean(false);
+
+		Input.getInstance().setKeyHandler("inv", () -> {
+			if (!ab.getAndSet(!ab.get())) inv.setVisible(true);
+			else inv.setVisible(false);
+		}, KeyCode.TAB, false);
 
 		setMap("./res/maps/lavaMap2.json");
 
@@ -371,9 +379,6 @@ public class SpielPanel extends Pane {
 		else pointGroup.setVisible(false);
 
 		tileM.update();
-
-		if (input.tabPressed) inv.setVisible(true);
-		else inv.setVisible(false);
 
 		long frameTime = System.currentTimeMillis() - lastFrame;
 		lastFrame = System.currentTimeMillis();

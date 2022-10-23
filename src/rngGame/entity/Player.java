@@ -1,7 +1,9 @@
 package rngGame.entity;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.*;
@@ -9,6 +11,12 @@ import rngGame.main.*;
 public class Player extends Entity {
 
 	private final int size = 64;
+
+	private final AtomicBoolean p = new AtomicBoolean(false);
+	private final AtomicBoolean w = new AtomicBoolean(false);
+	private final AtomicBoolean a = new AtomicBoolean(false);
+	private final AtomicBoolean s = new AtomicBoolean(false);
+	private final AtomicBoolean d = new AtomicBoolean(false);
 
 	private int screenX;
 	private int screenY;
@@ -41,6 +49,33 @@ public class Player extends Entity {
 			poly.setFill(Color.color(1, 0, 1, 0.75));
 			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
 		});
+		Input.getInstance().setKeyHandler("p", () -> {
+			p.set(!p.get());
+		}, KeyCode.P, false);
+		Input.getInstance().setKeyHandler("wDOWN", () -> {
+			w.set(true);
+		}, KeyCode.W, false);
+		Input.getInstance().setKeyHandler("aDOWN", () -> {
+			a.set(true);
+		}, KeyCode.A, false);
+		Input.getInstance().setKeyHandler("sDOWN", () -> {
+			s.set(true);
+		}, KeyCode.S, false);
+		Input.getInstance().setKeyHandler("dDOWN", () -> {
+			d.set(true);
+		}, KeyCode.D, false);
+		Input.getInstance().setKeyHandler("wUP", () -> {
+			w.set(false);
+		}, KeyCode.W, true);
+		Input.getInstance().setKeyHandler("aUP", () -> {
+			a.set(false);
+		}, KeyCode.A, true);
+		Input.getInstance().setKeyHandler("sUP", () -> {
+			s.set(false);
+		}, KeyCode.S, true);
+		Input.getInstance().setKeyHandler("dUP", () -> {
+			d.set(false);
+		}, KeyCode.D, true);
 	}
 
 	public void getPlayerImage() {
@@ -59,8 +94,8 @@ public class Player extends Entity {
 			getAnimatedImages("upL", "LaufenHochL.png");
 			getAnimatedImages("idleup", "IdleUp.png");
 			getAnimatedImages("idleupL", "IdleUp.png");
-			getAnimatedImages("idleRight", "IdleRight.png");
-			getAnimatedImages("idleLeft", "IdleLeft.png");
+			getAnimatedImages("idle", "IdleRight.png");
+			getAnimatedImages("idleL", "IdleLeft.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,35 +154,30 @@ public class Player extends Entity {
 
 		double updateSpeed = speed / 1000 * milis;
 
-		if (keyH.w) {
+		String lastKey = getCurrentKey();
+
+		if (w.get()) { // Hoch
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
 			y -= updateSpeed;
-		} // Hoch
-		else if (keyH.s && !keyH.ctrlPressed) {
+		} else if (s.get() && !keyH.ctrlPressed) { // Runter
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
 			y += updateSpeed;
-		} // Runter
-		else if (keyH.a) {
+		} else if (a.get()) { // Links
 			setCurrentKey("left");
 			x -= updateSpeed;
-		} // Links
-		else if (keyH.d) {
+		} else if (d.get()) { // Rechts
 			setCurrentKey("right");
 			x += updateSpeed;
-		} // Rechts
-		else if (getCurrentKey().endsWith("L") && getCurrentKey().contains("up")) setCurrentKey("idleupL");
-		else if (getCurrentKey().equals("up") || getCurrentKey().contains("up")) setCurrentKey("idleup");
-		// Idle Hoch
-		else if (getCurrentKey().equals("left") || getCurrentKey().contains("L")) setCurrentKey("idleLeft");
-		// IdleLinks
-		else if (getCurrentKey().equals("right") || getCurrentKey().endsWith("Right")) setCurrentKey("idleRight");
-		// IdleRight
-		else if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("idledownL");
-		// Idle RunterL
-		else setCurrentKey("idledown");
-		// Idle Runter
+		} else if (lastKey.contains("down")) { // Idle Runter
+			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
+			else setCurrentKey("idledown");
+		} else if (lastKey.contains("up")) { // Idle Hoch
+			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idleupL");
+			else setCurrentKey("idleup");
+		} else if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idleL");
+		else setCurrentKey("idle");
 
 		super.update(milis);
 
@@ -157,7 +187,7 @@ public class Player extends Entity {
 		getCollisionBox().setTranslateX(x - oldX);
 		getCollisionBox().setTranslateY(y - oldY);
 
-		if (isVisible() && keyH.p) setVisible(false);
+		if (isVisible() && p.get()) setVisible(false);
 
 
 		gp.getBuildings().forEach(b -> {
