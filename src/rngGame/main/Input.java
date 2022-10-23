@@ -2,6 +2,7 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
@@ -13,15 +14,21 @@ import rngGame.tile.TextureHolder;
 
 public class Input {
 
-	private record KeyHandlerKeyCodePair(Runnable handler, KeyCode keyCode, boolean up) {}
+	private record KeyHandlerKeyCodePair(Consumer<ModKeysState> handler, KeyCode keyCode, boolean up) {}
+
+	public record ModKeysState(boolean isControlPressed, boolean isShiftPressed, boolean isCapsPressed,
+			boolean isSuperPressed, boolean isAltPressed, boolean isAltgrPressed) {}
 
 	private static final Input INSTANCE = new Input();
 
-	private final Map<KeyCode, List<Runnable>> keyDownHandlers = new HashMap<>(), keyUpHandlers = new HashMap<>();
+	private final Map<KeyCode, List<Consumer<ModKeysState>>> keyDownHandlers = new HashMap<>(),
+			keyUpHandlers = new HashMap<>();
 
 	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
-	public boolean ctrlPressed, n, s, r;
+	private boolean n, s, r;
+
+	private boolean ctrlState, shiftState, altState, superState, capsState, altgrState;
 
 	private GameObject move, resize;
 
@@ -30,19 +37,53 @@ public class Input {
 	private SpielPanel gp;
 
 	private Input() {
-		setKeyHandler("ControlDown", () -> {
-			ctrlPressed = true;
+		setKeyHandler("ControlDown", mod -> {
+			ctrlState = true;
 		}, KeyCode.CONTROL, false);
-		setKeyHandler("ControlUp", () -> {
-			ctrlPressed = false;
+		setKeyHandler("ControlUp", mod -> {
+			ctrlState = false;
 		}, KeyCode.CONTROL, true);
-		setKeyHandler("Fullscreen", () -> {
+		setKeyHandler("ShiftDown", mod -> {
+			shiftState = true;
+		}, KeyCode.SHIFT, false);
+		setKeyHandler("ShiftUp", mod -> {
+			shiftState = false;
+		}, KeyCode.SHIFT, true);
+		setKeyHandler("AltDown", mod -> {
+			altState = true;
+		}, KeyCode.ALT, false);
+		setKeyHandler("AltUp", mod -> {
+			altState = false;
+		}, KeyCode.ALT, true);
+		setKeyHandler("SuperDown", mod -> {
+			superState = true;
+		}, KeyCode.WINDOWS, false);
+		setKeyHandler("SuperUp", mod -> {
+			superState = false;
+		}, KeyCode.WINDOWS, true);
+		setKeyHandler("CapsDown", mod -> {
+			//			Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK); gget caps state swing/awt
+			capsState = true;
+		}, KeyCode.CAPS, false);
+		setKeyHandler("CapsUp", mod -> {
+			capsState = false;
+		}, KeyCode.CAPS, true);
+		setKeyHandler("AltgrDown", mod -> {
+			altgrState = true;
+		}, KeyCode.ALT_GRAPH, false);
+		setKeyHandler("AltgrUp", mod -> {
+			altgrState = false;
+		}, KeyCode.ALT_GRAPH, true);
+		setKeyHandler("Fullscreen", mod -> {
 			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
 			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			if (((Stage) gp.getScene().getWindow()).isFullScreen())
 				((Stage) gp.getScene().getWindow()).setFullScreen(false);
 			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
 		}, KeyCode.F11, false);
+		setKeyHandler("ContextMenu", mod -> {
+			// TODO tbd
+		}, KeyCode.CONTEXT_MENU, false);
 	}
 
 	public static Input getInstance() { return INSTANCE; }
@@ -60,7 +101,7 @@ public class Input {
 
 
 	private void save(Polygon p) {
-		ctrlPressed = false;
+		ctrlState = false;
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(new File("./res"));
 		fc.getExtensionFilters().add(new ExtensionFilter(
@@ -95,11 +136,26 @@ public class Input {
 		System.out.println("Drag " + me);
 	}
 
+	public boolean isAltgrPressed() { return altgrState; }
+
+	public boolean isAltPressed() { return altState; }
+
+	public boolean isCapsPressed() { return capsState; }
+
+	public boolean isCtrlPressed() { return ctrlState; }
+
+	public boolean isShiftPressed() { return shiftState; }
+
+	public boolean isSuperPressed() { return superState; }
+
 	public void keyPressed(KeyEvent e) {
 
 		KeyCode code = e.getCode();
 
-		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(Runnable::run);
+		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+				altgrState);
+
+		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
 		if (code == KeyCode.N) n = true;
 
@@ -107,7 +163,7 @@ public class Input {
 
 		if (code == KeyCode.R) r = true;
 
-		if (ctrlPressed && r) reload();
+		if (ctrlState && r) reload();
 
 
 	}
@@ -116,7 +172,10 @@ public class Input {
 
 		KeyCode code = e.getCode();
 
-		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(Runnable::run);
+		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+				altgrState);
+
+		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
 		if (code == KeyCode.L) print();
 
@@ -183,20 +242,20 @@ public class Input {
 
 				if (gp.getSelectTool().isDragging()) gp.getSelectTool().endDrag();
 				else
-					if (System.getProperty("coll").equals("true")) if ((!ctrlPressed || !s) && (!ctrlPressed || !n)) {
+					if (System.getProperty("coll").equals("true")) if ((!ctrlState || !s) && (!ctrlState || !n)) {
 						t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
 						if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 						t.getTile().poly.add(me.getX() - t.getLayoutX());
 						t.getTile().poly.add(me.getY() - t.getLayoutY());
-					} else if (ctrlPressed && s) save(t.getPoly());
-					else if (ctrlPressed && n) newC(t.getPoly());
+					} else if (ctrlState && s) save(t.getPoly());
+					else if (ctrlState && n) newC(t.getPoly());
 			} else
 				if (target instanceof Building b
 						&& System.getProperty("coll").equals("true"))
-					if ((!ctrlPressed || !s) && (!ctrlPressed || !n))
+					if ((!ctrlState || !s) && (!ctrlState || !n))
 						b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-					else if (ctrlPressed && s) save(b.getCollisionBox());
-					else if (ctrlPressed && n) newC(b.getCollisionBox());
+					else if (ctrlState && s) save(b.getCollisionBox());
+					else if (ctrlState && n) newC(b.getCollisionBox());
 		}
 	}
 
@@ -234,7 +293,7 @@ public class Input {
 			gp.saveMap();
 	}
 
-	public void setKeyHandler(String name, Runnable handler, KeyCode keyCode, boolean keyUp) {
+	public void setKeyHandler(String name, Consumer<ModKeysState> handler, KeyCode keyCode, boolean keyUp) {
 		try {
 			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
 			if (keyHandlers.containsKey(className + "|" + name)) {
@@ -246,13 +305,13 @@ public class Input {
 			if (keyUp) {
 				if (keyUpHandlers.containsKey(keyCode)) keyUpHandlers.get(keyCode).add(handler);
 				else {
-					List<Runnable> li = new ArrayList<>();
+					List<Consumer<ModKeysState>> li = new ArrayList<>();
 					li.add(handler);
 					keyUpHandlers.put(keyCode, li);
 				}
 			} else if (keyDownHandlers.containsKey(keyCode)) keyDownHandlers.get(keyCode).add(handler);
 			else {
-				List<Runnable> li = new ArrayList<>();
+				List<Consumer<ModKeysState>> li = new ArrayList<>();
 				li.add(handler);
 				keyDownHandlers.put(keyCode, li);
 			}
@@ -271,7 +330,7 @@ public class Input {
 
 	@Override
 	public String toString() {
-		return "Input [s=" + s + ", ctrlPressed=" + ctrlPressed + ", n=" + n + "]";
+		return "Input [s=" + s + ", ctrlState=" + ctrlState + ", n=" + n + "]";
 	}
 
 	public void update(long ms) {

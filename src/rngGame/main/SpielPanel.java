@@ -132,7 +132,7 @@ public class SpielPanel extends Pane {
 
 		AtomicBoolean ab = new AtomicBoolean(false);
 
-		Input.getInstance().setKeyHandler("inv", () -> {
+		Input.getInstance().setKeyHandler("inv", mod -> {
 			if (!ab.getAndSet(!ab.get())) inv.setVisible(true);
 			else inv.setVisible(false);
 		}, KeyCode.TAB, false);

@@ -49,31 +49,31 @@ public class Player extends Entity {
 			poly.setFill(Color.color(1, 0, 1, 0.75));
 			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
 		});
-		Input.getInstance().setKeyHandler("p", () -> {
+		Input.getInstance().setKeyHandler("p", mod -> {
 			p.set(!p.get());
 		}, KeyCode.P, false);
-		Input.getInstance().setKeyHandler("wDOWN", () -> {
+		Input.getInstance().setKeyHandler("wDOWN", mod -> {
 			w.set(true);
 		}, KeyCode.W, false);
-		Input.getInstance().setKeyHandler("aDOWN", () -> {
+		Input.getInstance().setKeyHandler("aDOWN", mod -> {
 			a.set(true);
 		}, KeyCode.A, false);
-		Input.getInstance().setKeyHandler("sDOWN", () -> {
-			s.set(true);
+		Input.getInstance().setKeyHandler("sDOWN", mod -> {
+			if (!mod.isControlPressed()) s.set(true);
 		}, KeyCode.S, false);
-		Input.getInstance().setKeyHandler("dDOWN", () -> {
+		Input.getInstance().setKeyHandler("dDOWN", mod -> {
 			d.set(true);
 		}, KeyCode.D, false);
-		Input.getInstance().setKeyHandler("wUP", () -> {
+		Input.getInstance().setKeyHandler("wUP", mod -> {
 			w.set(false);
 		}, KeyCode.W, true);
-		Input.getInstance().setKeyHandler("aUP", () -> {
+		Input.getInstance().setKeyHandler("aUP", mod -> {
 			a.set(false);
 		}, KeyCode.A, true);
-		Input.getInstance().setKeyHandler("sUP", () -> {
+		Input.getInstance().setKeyHandler("sUP", mod -> {
 			s.set(false);
 		}, KeyCode.S, true);
-		Input.getInstance().setKeyHandler("dUP", () -> {
+		Input.getInstance().setKeyHandler("dUP", mod -> {
 			d.set(false);
 		}, KeyCode.D, true);
 	}
@@ -160,7 +160,7 @@ public class Player extends Entity {
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
 			y -= updateSpeed;
-		} else if (s.get() && !keyH.ctrlPressed) { // Runter
+		} else if (s.get()) { // Runter
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
 			y += updateSpeed;

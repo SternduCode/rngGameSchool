@@ -40,7 +40,7 @@ public class NPC extends Entity implements JsonValue {
 					0d);
 		});
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 1, 1, 0.75)));
-		Input.getInstance().setKeyHandler("h" + hashCode(), () -> {
+		Input.getInstance().setKeyHandler("h" + hashCode(), mod -> {
 			h.set(!h.get());
 		}, KeyCode.H, false);
 	}

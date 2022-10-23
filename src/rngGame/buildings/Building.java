@@ -18,7 +18,7 @@ public class Building extends GameObject {
 		super(building, buildings, cm, requestorB);
 
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 0, 1, 0.75)));
-		Input.getInstance().setKeyHandler("b" + hashCode(), () -> {
+		Input.getInstance().setKeyHandler("b" + hashCode(), mod -> {
 			b.set(!b.get());
 		}, KeyCode.B, false);
 	}
@@ -28,7 +28,7 @@ public class Building extends GameObject {
 		super(building, gp, "building", buildings, cm, requestorB);
 
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 0, 1, 0.75)));
-		Input.getInstance().setKeyHandler("b" + hashCode(), () -> {
+		Input.getInstance().setKeyHandler("b" + hashCode(), mod -> {
 			b.set(!b.get());
 		}, KeyCode.B, false);
 	}
@@ -38,7 +38,7 @@ public class Building extends GameObject {
 		super(building, gp, directory, buildings, cm, requestorB);
 
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 0, 1, 0.75)));
-		Input.getInstance().setKeyHandler("b" + hashCode(), () -> {
+		Input.getInstance().setKeyHandler("b" + hashCode(), mod -> {
 			b.set(!b.get());
 		}, KeyCode.B, false);
 	}
