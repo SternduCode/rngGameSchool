@@ -16,9 +16,7 @@ import rngGame.tile.ImgUtil;
 public class CollisionBoxEditor extends Application {
 
 	private File collboxFile;
-	private double posX, posY, movX, movY;
-	private final double xf=1;
-	private final double yf=1;
+	private double posX, posY, movX, movY, sf = 1;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -55,10 +53,8 @@ public class CollisionBoxEditor extends Application {
 		undo.setPrefWidth(60);
 
 		Polygon ply = new Polygon();
-		ply.getPoints().addAll(10d, 10d, 15d, 15d, 20d, 30d, 50d, 40d);
 
 		Polygon plyV = new Polygon();
-		plyV.getPoints().addAll(ply.getPoints());
 		plyV.setFill(Color.color(1, 0, 0, .35));
 
 		Button open = new Button("Open");
@@ -85,9 +81,24 @@ public class CollisionBoxEditor extends Application {
 					plyV.setLayoutX(iv.getLayoutX());
 					plyV.setLayoutY(iv.getLayoutY());
 					collboxFile = f;
+					ply.getPoints().clear();
+					plyV.getPoints().clear();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+
+		save.setOnAction(ae -> {
+			try {
+				RandomAccessFile raf = new RandomAccessFile(collboxFile, "rws");
+				raf.seek(0l);
+				raf.writeInt(ply.getPoints().size());
+				for (Double element: ply.getPoints()) raf.writeDouble(element * 3);
+				raf.setLength(4l + ply.getPoints().size() * 8l);
+				raf.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		});
 
@@ -100,10 +111,8 @@ public class CollisionBoxEditor extends Application {
 				File img = new File("./res/" + subPath + ".png");
 				try {
 					Image imgi = new Image(new FileInputStream(img));
-					double xf = (int) (iv.getImage().getWidth() + iv.getImage().getWidth() * .005 * e.getDeltaY())
-							/ imgi.getWidth(),
-							yf = (int) (iv.getImage().getHeight() + iv.getImage().getHeight() * .005 * e.getDeltaY())
-							/ imgi.getHeight();
+					sf = (int) (iv.getImage().getWidth() + iv.getImage().getWidth() * .005 * e.getDeltaY())
+							/ imgi.getWidth();
 					iv.setImage(ImgUtil.resizeImage(imgi, (int) imgi.getWidth(),
 							(int) imgi.getHeight(),
 							(int) (iv.getImage().getWidth() + iv.getImage().getWidth() * .005 * e.getDeltaY()),
@@ -112,13 +121,24 @@ public class CollisionBoxEditor extends Application {
 					iv.setLayoutY(mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY);
 					plyV.setLayoutX(iv.getLayoutX());
 					plyV.setLayoutY(iv.getLayoutY());
-					for (int i = 0; i < ply.getPoints().size(); i += 2) {
-						plyV.getPoints().set(i, ply.getPoints().get(i) * xf);
-						plyV.getPoints().set(i + 1, ply.getPoints().get(i + 1) * yf);
-					}
+					for (int i = 0; i < ply.getPoints().size(); i++) plyV.getPoints().set(i, ply.getPoints().get(i) * sf);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
+			}
+		});
+
+		primaryStage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+			if (e.getButton() == MouseButton.PRIMARY) {
+				ply.getPoints().add(
+						(e.getSceneX() - (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60) / sf);
+				ply.getPoints()
+				.add((e.getSceneY() - (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf);
+				plyV.getPoints()
+				.add((e.getSceneX() - (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60) / sf
+						* sf);
+				plyV.getPoints().add(
+						(e.getSceneY() - (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf * sf);
 			}
 		});
 
@@ -127,10 +147,8 @@ public class CollisionBoxEditor extends Application {
 				if (Math.abs(e.getSceneX() - posX) > 20) posX = e.getSceneX();
 				if (Math.abs(e.getSceneY() - posY) > 20) posY = e.getSceneY();
 				movX += e.getSceneX() - posX;
-				System.out.println(e.getSceneX() - posX);
 				posX = e.getSceneX();
 				movY += e.getSceneY() - posY;
-				System.out.println(e.getSceneY() - posY);
 				posY = e.getSceneY();
 				iv.setLayoutX(mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX);
 				iv.setLayoutY(mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY);
