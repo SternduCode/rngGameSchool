@@ -76,6 +76,8 @@ public class CollisionBoxEditor extends Application {
 					iv.setImage(new Image(new FileInputStream(img)));
 					posX = 0;
 					posY = 0;
+					movX = 0;
+					movY = 0;
 					iv.setLayoutX(mainView.getWidth() / 2 - iv.getImage().getWidth() / 2);
 					iv.setLayoutY(mainView.getHeight() / 2 - iv.getImage().getHeight() / 2);
 					plyV.setLayoutX(iv.getLayoutX());
