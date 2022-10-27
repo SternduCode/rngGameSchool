@@ -229,7 +229,8 @@ public class Input {
 	}
 
 	public void mouseMoved(MouseEvent me) {
-		if (gp != null) if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
+		if (gp != null) if (!gp.getSelectTool().isDragging() && !gp.getTileM().getCM().isShowing())
+			if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
 		else gp.getSelectTool().undrawOutlines();
 	}
 
