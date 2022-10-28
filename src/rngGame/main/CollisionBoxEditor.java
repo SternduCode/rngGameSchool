@@ -17,6 +17,7 @@ public class CollisionBoxEditor extends Application {
 
 	private File collboxFile;
 	private double posX, posY, movX, movY, sf = 1;
+	private Image imgi;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -74,6 +75,7 @@ public class CollisionBoxEditor extends Application {
 				File img = new File("./res/" + subPath + ".png");
 				try {
 					iv.setImage(new Image(new FileInputStream(img)));
+					imgi = iv.getImage();
 					posX = 0;
 					posY = 0;
 					movX = 0;
@@ -93,10 +95,11 @@ public class CollisionBoxEditor extends Application {
 
 		save.setOnAction(ae -> {
 			try {
+				double factor = 48 / imgi.getHeight();
 				RandomAccessFile raf = new RandomAccessFile(collboxFile, "rws");
 				raf.seek(0l);
 				raf.writeInt(ply.getPoints().size());
-				for (Double element: ply.getPoints()) raf.writeDouble(element * 3);
+				for (Double element: ply.getPoints()) raf.writeDouble(element * factor);
 				raf.setLength(4l + ply.getPoints().size() * 8l);
 				raf.close();
 			} catch (IOException e) {
