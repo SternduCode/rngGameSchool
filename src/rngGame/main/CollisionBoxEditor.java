@@ -9,6 +9,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.tile.ImgUtil;
@@ -43,15 +44,22 @@ public class CollisionBoxEditor extends Application {
 
 		ImageView iv = new ImageView();
 
+		Button newB = new Button("New");
+		newB.setLayoutY(25);
+		newB.setPrefWidth(60);
 		Button save = new Button("Save");
-		save.setLayoutY(25);
+		save.setLayoutY(50);
 		save.setPrefWidth(60);
 		Button redo = new Button("Redo");
-		redo.setLayoutY(50);
+		redo.setLayoutY(75);
 		redo.setPrefWidth(60);
 		Button undo = new Button("Undo");
-		undo.setLayoutY(75);
+		undo.setLayoutY(100);
 		undo.setPrefWidth(60);
+		Button all = new Button("Select All");
+		all.setFont(Font.font(11));
+		all.setLayoutY(125);
+		all.setPrefWidth(60);
 
 		Polygon ply = new Polygon();
 
@@ -107,6 +115,13 @@ public class CollisionBoxEditor extends Application {
 			}
 		});
 
+		all.setOnAction(ae -> {
+			ply.getPoints().addAll(0d, 0d, imgi.getWidth(), 0d, imgi.getWidth(), imgi.getHeight(), 0d,
+					imgi.getHeight());
+			plyV.getPoints().addAll(0d, 0d, imgi.getWidth() * sf, 0d, imgi.getWidth() * sf, imgi.getHeight() * sf, 0d,
+					imgi.getHeight() * sf);
+		});
+
 		primaryStage.addEventFilter(ScrollEvent.SCROLL, e -> {
 			if (e.isControlDown()) {
 				int idx = collboxFile.getPath().lastIndexOf("res" + File.separator + "collisions");
@@ -136,14 +151,22 @@ public class CollisionBoxEditor extends Application {
 		primaryStage.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
 			if (e.getButton() == MouseButton.PRIMARY) {
 				ply.getPoints().add(
-						(e.getSceneX() - (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60) / sf);
+						(double) (int) ((e.getSceneX()
+								- (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60)
+								/ sf));
 				ply.getPoints()
-				.add((e.getSceneY() - (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf);
+						.add((double) (int) ((e.getSceneY()
+						- (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY))
+						/ sf));
 				plyV.getPoints()
-				.add((e.getSceneX() - (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60) / sf
-						* sf);
+						.add((int) ((e.getSceneX()
+						- (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX)
+								- 60) / sf)
+								* sf);
 				plyV.getPoints().add(
-						(e.getSceneY() - (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf * sf);
+						(int) ((e.getSceneY()
+								- (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf)
+						* sf);
 			}
 		});
 
@@ -162,11 +185,11 @@ public class CollisionBoxEditor extends Application {
 			}
 		});
 
-		sidebar.getChildren().addAll(open, save, redo, undo);
+		sidebar.getChildren().addAll(open, newB, save, redo, undo, all);
 
 		mainView.getChildren().addAll(iv, plyV);
 
-		p.getChildren().addAll(sidebar, mainView);
+		p.getChildren().addAll(mainView, sidebar);
 
 		primaryStage.setScene(new Scene(p));
 
