@@ -24,8 +24,8 @@ public class MainClass extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		primaryStage.setResizable(false);
+		primaryStage.setFullScreen(false);
+		primaryStage.setResizable(true);
 		primaryStage.setTitle("RNG fun");
 
 		Input input = Input.getInstance();
@@ -38,6 +38,7 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.DRAG_DETECTED, input::dragDetected);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
+		
 
 		SpielPanel gamePanel = new SpielPanel();
 		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
