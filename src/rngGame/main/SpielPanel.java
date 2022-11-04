@@ -180,7 +180,8 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		player.setLayer(tileM.getPlayerLayer());
 		buildings = tileM.getBuildingsFromMap();
-		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * scalingFactorX,
+				tileM.getSpawnPoint().getY() * scalingFactorY, 15,
 				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
@@ -195,7 +196,7 @@ public class SpielPanel extends Pane {
 							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
 							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
 									((NumberValue) spawnPosition.get(1)).getValue().longValue());
-							Circle respawn = new Circle(p.getX(), p.getY(), 15,
+							Circle respawn = new Circle(p.getX() * scalingFactorX, p.getY() * scalingFactorY, 15,
 									Color.color(0, 1, 0, .75));
 							points.put(p, respawn);
 							pointGroup.getChildren().add(respawn);
@@ -234,6 +235,10 @@ public class SpielPanel extends Pane {
 			});
 			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
 			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
+			boolean s = false;
+			for (int i = 0; i < b.getCollisionBox().getPoints().size(); i++) b.getCollisionBox().getPoints()
+			.set(i, b.getCollisionBox().getPoints().get(i)
+					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
 		});
 		npcs.forEach(b -> {
 			b.setX(b.getX() * scaleFactorX);
@@ -245,6 +250,16 @@ public class SpielPanel extends Pane {
 			});
 			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
 			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
+			boolean s = false;
+			for (int i = 0; i < b.getCollisionBox().getPoints().size(); i++) b.getCollisionBox().getPoints()
+					.set(i, b.getCollisionBox().getPoints().get(i)
+					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
+		});
+		tileM.getTiles().forEach(t -> {
+			boolean s = false;
+			for (int i = 0; i < t.poly.size(); i++) t.poly
+					.set(i, t.poly.get(i)
+					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
 		});
 		System.out.println(player.getX() + " " + player.getY());
 		player.setPosition((long) player.getX(), (long) player.getY());
@@ -276,7 +291,8 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
-		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * scalingFactorX,
+				tileM.getSpawnPoint().getY() * scalingFactorY, 15,
 				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
@@ -289,8 +305,9 @@ public class SpielPanel extends Pane {
 						JsonObject exit = (JsonObject) jo.get("exit");
 						if (tileM.getPath().endsWith(((StringValue) exit.get("map")).getValue())) {
 							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
-							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
-									((NumberValue) spawnPosition.get(1)).getValue().longValue());
+							Point2D p = new Point2D(
+									((NumberValue) spawnPosition.get(0)).getValue().longValue() * scalingFactorX,
+									((NumberValue) spawnPosition.get(1)).getValue().longValue() * scalingFactorY);
 							Circle respawn = new Circle(p.getX(), p.getY(), 15,
 									Color.color(0, 1, 0, .75));
 							points.put(p, respawn);

@@ -555,7 +555,9 @@ public class TileManager extends Pane {
 						raf.seek(0l);
 						int length = raf.readInt();
 						t.poly = new ArrayList<>();
-						for (int i = 0; i < length; i++) t.poly.add(raf.readDouble());
+						boolean s = false;
+						for (int i = 0; i < length; i++)
+							t.poly.add(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
