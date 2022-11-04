@@ -231,7 +231,7 @@ public class Input {
 	public void mouseMoved(MouseEvent me) {
 		if (gp != null) if (!gp.getSelectTool().isDragging() && !gp.getTileM().getCM().isShowing())
 			if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
-		else gp.getSelectTool().undrawOutlines();
+			else gp.getSelectTool().undrawOutlines();
 	}
 
 	public void mouseReleased(MouseEvent me) {
@@ -254,7 +254,8 @@ public class Input {
 				if (target instanceof Building b
 						&& System.getProperty("coll").equals("true"))
 					if ((!ctrlState || !s) && (!ctrlState || !n))
-						b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+						b.getCollisionBox().getPoints().addAll((double) Math.round(me.getX() - b.getLayoutX()),
+								(double) Math.round(me.getY() - b.getLayoutY()));
 					else if (ctrlState && s) save(b.getCollisionBox());
 					else if (ctrlState && n) newC(b.getCollisionBox());
 		}
