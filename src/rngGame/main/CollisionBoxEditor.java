@@ -3,7 +3,7 @@ package rngGame.main;
 import java.io.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -60,6 +60,32 @@ public class CollisionBoxEditor extends Application {
 		all.setFont(Font.font(11));
 		all.setLayoutY(125);
 		all.setPrefWidth(60);
+		Label lblXS = new Label("Width");
+		lblXS.setLayoutY(150);
+		lblXS.setPrefWidth(60);
+		TextField xS = new TextField("48");
+		xS.textProperty().addListener((obV, oldV, newV) -> {
+			try {
+				if (!newV.equals("")) Integer.parseInt(newV);
+			} catch (NumberFormatException e) {
+				xS.setText(oldV);
+			}
+		});
+		xS.setLayoutY(175);
+		xS.setPrefWidth(60);
+		Label lblYS = new Label("Height");
+		lblYS.setLayoutY(200);
+		lblYS.setPrefWidth(60);
+		TextField yS = new TextField("48");
+		yS.textProperty().addListener((obV, oldV, newV) -> {
+			try {
+				if (!newV.equals("")) Integer.parseInt(newV);
+			} catch (NumberFormatException e) {
+				yS.setText(oldV);
+			}
+		});
+		yS.setLayoutY(225);
+		yS.setPrefWidth(60);
 
 		Polygon ply = new Polygon();
 
@@ -155,14 +181,14 @@ public class CollisionBoxEditor extends Application {
 								- (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX) - 60)
 								/ sf));
 				ply.getPoints()
-						.add((double) (int) ((e.getSceneY()
+				.add((double) (int) ((e.getSceneY()
 						- (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY))
 						/ sf));
 				plyV.getPoints()
-						.add((int) ((e.getSceneX()
+				.add((int) ((e.getSceneX()
 						- (mainView.getWidth() / 2 - iv.getImage().getWidth() / 2 + movX)
-								- 60) / sf)
-								* sf);
+						- 60) / sf)
+						* sf);
 				plyV.getPoints().add(
 						(int) ((e.getSceneY()
 								- (mainView.getHeight() / 2 - iv.getImage().getHeight() / 2 + movY)) / sf)
@@ -185,7 +211,7 @@ public class CollisionBoxEditor extends Application {
 			}
 		});
 
-		sidebar.getChildren().addAll(open, newB, save, redo, undo, all);
+		sidebar.getChildren().addAll(open, newB, save, redo, undo, all, lblXS, xS, lblYS, yS);
 
 		mainView.getChildren().addAll(iv, plyV);
 

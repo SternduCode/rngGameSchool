@@ -75,11 +75,18 @@ public class Input {
 			altgrState = false;
 		}, KeyCode.ALT_GRAPH, true);
 		setKeyHandler("Fullscreen", mod -> {
+			double scaleFactorX, scaleFactorY;
+			scaleFactorX = gp.getScene().getWidth();
+			scaleFactorY = gp.getScene().getHeight();
 			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
 			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			if (((Stage) gp.getScene().getWindow()).isFullScreen())
 				((Stage) gp.getScene().getWindow()).setFullScreen(false);
 			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+			scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
+			scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
+			System.out.println(scaleFactorX + " " + scaleFactorY);
+			gp.scaleTextures(scaleFactorX, scaleFactorY);
 		}, KeyCode.F11, false);
 		setKeyHandler("ContextMenu", mod -> {
 			// TODO tbd
@@ -193,7 +200,7 @@ public class Input {
 
 		if (code == KeyCode.R) r = false;
 
-		if (code == KeyCode.F) gp.toggleFpssLabelVisible();
+		if (code == KeyCode.F) gp.toggleFpsLabelVisible();
 
 		if (code == KeyCode.M)
 			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");

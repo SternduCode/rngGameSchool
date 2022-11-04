@@ -290,21 +290,28 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 										ContextMenu.class, ObjectProperty.class)
 								.newInstance(this, gameObjects, cm, requestor);
 						b.setPosition(
-								((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(0))
-								.getValue()
-								.doubleValue(),
-								((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i)).get(1))
-								.getValue()
-								.doubleValue());
+								(long) (((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i))
+										.get(0))
+										.getValue()
+										.doubleValue()
+										* gp.getScalingFactorX()),
+								(long) (((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(i))
+										.get(1))
+										.getValue()
+										.doubleValue()
+										* gp.getScalingFactorY()));
 						if (!secondMultiPlexer) {
-							b.reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
-									.intValue();
-							b.reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1))
-									.getValue().intValue();
+							b.reqWidth = (int) (((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0))
+									.getValue()
+									.intValue() * gp.getScalingFactorX());
+							b.reqHeight = (int) (((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1))
+									.getValue().intValue() * gp.getScalingFactorY());
 						} else {
 							JsonArray reqSize = (JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(i);
-							b.reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
-							b.reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+							b.reqWidth = (int) (((NumberValue) reqSize.get(0)).getValue().intValue()
+									* gp.getScalingFactorX());
+							b.reqHeight = (int) (((NumberValue) reqSize.get(1)).getValue().intValue()
+									* gp.getScalingFactorY());
 						}
 						if (gameObject.containsKey("fps"))
 							if (secondMultiPlexer)
@@ -346,19 +353,21 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();
 				}
-				x = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(0)).getValue()
-						.doubleValue();
-				y = ((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(1)).getValue()
-						.doubleValue();
+				x = (long) (((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(0))
+						.getValue()
+						.doubleValue() * gp.getScalingFactorX());
+				y = (long) (((NumberValue) ((JsonArray) ((JsonArray) gameObject.get("position")).get(0)).get(1))
+						.getValue()
+						.doubleValue() * gp.getScalingFactorY());
 				if (!secondMultiPlexer) {
-					reqWidth = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
-							.intValue();
-					reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
-							.intValue();
+					reqWidth = (int) (((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(0)).getValue()
+							.intValue() * gp.getScalingFactorX());
+					reqHeight = (int) (((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
+							.intValue() * gp.getScalingFactorY());
 				} else {
 					JsonArray reqSize = (JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(0);
-					reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
-					reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+					reqWidth = (int) (((NumberValue) reqSize.get(0)).getValue().intValue() * gp.getScalingFactorX());
+					reqHeight = (int) (((NumberValue) reqSize.get(1)).getValue().intValue() * gp.getScalingFactorY());
 				}
 				if (gameObject.containsKey("fps"))
 					if (secondMultiPlexer)
@@ -384,16 +393,18 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 						extraData = (JsonObject) gameObject.get("extraData");
 				else extraData = new JsonObject();
 			} else {
-				x = ((NumberValue) ((JsonArray) gameObject.get("position")).get(0)).getValue().doubleValue();
-				y = ((NumberValue) ((JsonArray) gameObject.get("position")).get(1)).getValue().doubleValue();
+				x = (long) (((NumberValue) ((JsonArray) gameObject.get("position")).get(0)).getValue().doubleValue()
+						* gp.getScalingFactorX());
+				y = (long) (((NumberValue) ((JsonArray) gameObject.get("position")).get(1)).getValue().doubleValue()
+						* gp.getScalingFactorY());
 				if (((JsonArray) gameObject.get("requestedSize")).get(0) instanceof NumberValue nv) {
-					reqWidth = nv.getValue().intValue();
-					reqHeight = ((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
-							.intValue();
+					reqWidth = (int) (nv.getValue().intValue() * gp.getScalingFactorX());
+					reqHeight = (int) (((NumberValue) ((JsonArray) gameObject.get("requestedSize")).get(1)).getValue()
+							.intValue() * gp.getScalingFactorY());
 				} else {
 					JsonArray reqSize =(JsonArray) ((JsonArray) gameObject.get("requestedSize")).get(0);
-					reqWidth = ((NumberValue) reqSize.get(0)).getValue().intValue();
-					reqHeight = ((NumberValue) reqSize.get(1)).getValue().intValue();
+					reqWidth = (int) (((NumberValue) reqSize.get(0)).getValue().intValue() * gp.getScalingFactorX());
+					reqHeight = (int) (((NumberValue) reqSize.get(1)).getValue().intValue() * gp.getScalingFactorY());
 				}
 				if (gameObject.containsKey("fps"))
 					if (gameObject.get("fps") instanceof JsonArray ja)

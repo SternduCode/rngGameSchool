@@ -67,31 +67,33 @@ public class SpielPanel extends Pane {
 	public final int Bg = 48;
 	public final int BildS = 20;
 	public final int BildH = 11;
-	public final int SpielLaenge = Bg * BildS;
+	public int BgX = Bg, BgY = Bg;
+	public int SpielLaenge = BgX * BildS;
+	public double scalingFactorX = 1, scalingFactorY = 1;
 
-	public final int SpielHoehe = Bg * BildH;
-
+	public int SpielHoehe = BgY * BildH;
 
 	private final int FPS = 80;
 
 	private final ImageView inv;
+
+
 	private final Input input;
+
 	private final Player player;
 	private final TileManager tileM;
 	private final SelectTool selectTool;
 	private final GroupGroup layerGroup;
 	private final Group pointGroup;
-
 	private List<Building> buildings;
-
 	private List<NPC> npcs;
 
 	private List<Long> frameTimes;
+
 	private Long lastFrame;
+
 	private Double fps = 0d;
-
 	private final ImageView loadingScreen;
-
 	private final Label fpsLabel;
 
 	private final Map<Point2D, Circle> points;
@@ -149,6 +151,10 @@ public class SpielPanel extends Pane {
 	public List<NPC> getNpcs() { return npcs; }
 
 	public Player getPlayer() { return player; }
+
+	public double getScalingFactorX() { return scalingFactorX; }
+
+	public double getScalingFactorY() { return scalingFactorY; }
 
 	public SelectTool getSelectTool() { return selectTool; }
 
@@ -208,10 +214,47 @@ public class SpielPanel extends Pane {
 		System.out.println("don");
 	}
 
+	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
+		tileM.getTiles().forEach(t->{
+			for (int i=0;i<t.images.size();i++) t.images.set(i, ImgUtil.resizeImage(t.images.get(i),BgX, BgY, (int)(BgX*scaleFactorX),(int)( BgY*scaleFactorY)));
+		});
+		scalingFactorX = scaleFactorX;
+		scalingFactorY = scaleFactorY;
+		BgX=(int) (BgX*scaleFactorX);
+		BgY=(int) (BgY*scaleFactorY);
+		SpielLaenge = BgX * BildS;
+		SpielHoehe = BgY * BildH;
+		buildings.forEach(b -> {
+			b.setX(b.getX() * scaleFactorX);
+			b.setY(b.getY() * scaleFactorY);
+			b.getImages().values().forEach(li -> {
+				for (int i = 0; i < li.size(); i++)
+					li.set(i, ImgUtil.resizeImage(li.get(i), b.getReqWidth(), b.getReqHeight(),
+							(int) (b.getReqWidth() * scaleFactorX), (int) (b.getReqHeight() * scaleFactorY)));
+			});
+			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
+			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
+		});
+		npcs.forEach(b -> {
+			b.setX(b.getX() * scaleFactorX);
+			b.setY(b.getY() * scaleFactorY);
+			b.getImages().values().forEach(li -> {
+				for (int i = 0; i < li.size(); i++)
+					li.set(i, ImgUtil.resizeImage(li.get(i), b.getReqWidth(), b.getReqHeight(),
+							(int) (b.getReqWidth() * scaleFactorX), (int) (b.getReqHeight() * scaleFactorY)));
+			});
+			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
+			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
+		});
+		System.out.println(player.getX() + " " + player.getY());
+		player.setPosition((long) player.getX(), (long) player.getY());
+		System.out.println(player.getX() + " " + player.getY());
+	}
+
+
 	public void setMap(String path) {
 		setMap(path, null);
 	}
-
 
 	public void setMap(String path, double[] position) {
 
@@ -311,7 +354,7 @@ public class SpielPanel extends Pane {
 		else Platform.runLater(r);
 	}
 
-	public void toggleFpssLabelVisible() {
+	public void toggleFpsLabelVisible() {
 		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
 

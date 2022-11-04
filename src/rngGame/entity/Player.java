@@ -129,8 +129,8 @@ public class Player extends Entity {
 
 
 	public void setPosition(double[] position) {
-		x = (long) position[0];
-		y = (long) position[1];
+		x = (long) (position[0] * gp.getScalingFactorX());
+		y = (long) (position[1] * gp.getScalingFactorY());
 		oldX = x;
 		oldY = y;
 	}

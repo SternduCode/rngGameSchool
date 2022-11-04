@@ -35,11 +35,12 @@ public class SelectTool extends Rectangle {
 				Boolean[] matrix = pfd.getMatrix();
 				System.out.println(Arrays.toString(matrix));
 				int matrixIdx = 0;
-				for (int i = 0; i < getHeight(); i += gp.Bg) for (int j = 0; j < getWidth(); j += gp.Bg, matrixIdx++)
+				for (int i = 0; i < getHeight(); i += gp.BgY) for (int j = 0; j < getWidth(); j += gp.BgX, matrixIdx++)
 					if (matrix[matrixIdx]) gp.getTileM().getTileAt(x + j, y + i)
 					.setTile(((MenuItemWTile) e.getSource()).getTile());
 			}
-		} else for (int i = 0; i < getWidth(); i += gp.Bg) for (int j = 0; j < getHeight(); j += gp.Bg) gp.getTileM().getTileAt(x + i,
+		} else for (int i = 0; i < getWidth(); i += gp.BgX)
+			for (int j = 0; j < getHeight(); j += gp.BgY) gp.getTileM().getTileAt(x + i,
 				y + j)
 		.setTile(((MenuItemWTile) e.getSource()).getTile());
 	}
@@ -69,14 +70,14 @@ public class SelectTool extends Rectangle {
 	}
 
 	public void drawOutlines(MouseEvent me) {
-		setWidth(gp.Bg);
-		setHeight(gp.Bg);
-		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().getScreenX()) / gp.Bg,
-				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().getScreenY()) / gp.Bg;
+		setWidth(gp.BgX);
+		setHeight(gp.BgY);
+		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().getScreenX()) / gp.BgX,
+				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().getScreenY()) / gp.BgY;
 		if (xPos < 0) xPos -= 1;
 		if (yPos < 0) yPos -= 1;
-		x = (int) xPos * gp.Bg;
-		y = (int) yPos * gp.Bg;
+		x = (int) xPos * gp.BgX;
+		y = (int) yPos * gp.BgY;
 		setVisible(true);
 	}
 
