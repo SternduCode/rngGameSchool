@@ -217,6 +217,8 @@ public class SpielPanel extends Pane {
 	}
 
 	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
+		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
+				player.getY() * (scaleFactorY / scalingFactorY));
 		scalingFactorX = scaleFactorX;
 		scalingFactorY = scaleFactorY;
 		BgX = (int) (Bg * scaleFactorX);
