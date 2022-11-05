@@ -343,8 +343,8 @@ public class TileManager extends Pane {
 	public double[] getStartingPosition() { return startingPosition; }
 
 	public TextureHolder getTileAt(double x, double y) {
-		int tx = (int) Math.floor(x / gp.Bg);
-		int ty = (int) Math.floor(y / gp.Bg);
+		int tx = (int) Math.floor(x / gp.BgX);
+		int ty = (int) Math.floor(y / gp.BgY);
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
@@ -642,10 +642,11 @@ public class TileManager extends Pane {
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX()
-					&& worldX - p.getSize() * 1.5 < p.getX() + p.getScreenX()
-					&& worldY + p.getSize() > p.getY() - p.getScreenY()
-					&& worldY - p.getSize() < p.getY() + p.getScreenY()) {
+			if (/*
+			 * worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX -
+			 * p.getSize() * 1.5 < p.getX() + p.getScreenX() && worldY + p.getSize() >
+			 * p.getY() - p.getScreenY() && worldY - p.getSize() < p.getY() + p.getScreenY()
+			 */true) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

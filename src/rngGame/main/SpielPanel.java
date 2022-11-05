@@ -64,7 +64,8 @@ public class SpielPanel extends Pane {
 			return new OutList(super.getChildren());
 		}
 	}
-	public final int Bg = 48;
+
+	private final int Bg = 48;
 	public final int BildS = 20;
 	public final int BildH = 11;
 	public int BgX = Bg, BgY = Bg;
@@ -252,13 +253,13 @@ public class SpielPanel extends Pane {
 			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
 			boolean s = false;
 			for (int i = 0; i < b.getCollisionBox().getPoints().size(); i++) b.getCollisionBox().getPoints()
-					.set(i, b.getCollisionBox().getPoints().get(i)
+			.set(i, b.getCollisionBox().getPoints().get(i)
 					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
 		});
 		tileM.getTiles().forEach(t -> {
 			boolean s = false;
 			for (int i = 0; i < t.poly.size(); i++) t.poly
-					.set(i, t.poly.get(i)
+			.set(i, t.poly.get(i)
 					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
 		});
 		System.out.println(player.getX() + " " + player.getY());
