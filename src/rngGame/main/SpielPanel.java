@@ -217,51 +217,13 @@ public class SpielPanel extends Pane {
 	}
 
 	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
-		tileM.getTiles().forEach(t->{
-			for (int i=0;i<t.images.size();i++) t.images.set(i, ImgUtil.resizeImage(t.images.get(i),BgX, BgY, (int)(BgX*scaleFactorX),(int)( BgY*scaleFactorY)));
-		});
 		scalingFactorX = scaleFactorX;
 		scalingFactorY = scaleFactorY;
 		BgX=(int) (BgX*scaleFactorX);
 		BgY=(int) (BgY*scaleFactorY);
 		SpielLaenge = BgX * BildS;
 		SpielHoehe = BgY * BildH;
-		buildings.forEach(b -> {
-			b.setX(b.getX() * scaleFactorX);
-			b.setY(b.getY() * scaleFactorY);
-			b.getImages().values().forEach(li -> {
-				for (int i = 0; i < li.size(); i++)
-					li.set(i, ImgUtil.resizeImage(li.get(i), b.getReqWidth(), b.getReqHeight(),
-							(int) (b.getReqWidth() * scaleFactorX), (int) (b.getReqHeight() * scaleFactorY)));
-			});
-			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
-			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
-			boolean s = false;
-			for (int i = 0; i < b.getCollisionBox().getPoints().size(); i++) b.getCollisionBox().getPoints()
-			.set(i, b.getCollisionBox().getPoints().get(i)
-					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
-		});
-		npcs.forEach(b -> {
-			b.setX(b.getX() * scaleFactorX);
-			b.setY(b.getY() * scaleFactorY);
-			b.getImages().values().forEach(li -> {
-				for (int i = 0; i < li.size(); i++)
-					li.set(i, ImgUtil.resizeImage(li.get(i), b.getReqWidth(), b.getReqHeight(),
-							(int) (b.getReqWidth() * scaleFactorX), (int) (b.getReqHeight() * scaleFactorY)));
-			});
-			b.setReqWidth((int) (b.getReqWidth() * scaleFactorX));
-			b.setReqHeight((int) (b.getReqHeight() * scaleFactorY));
-			boolean s = false;
-			for (int i = 0; i < b.getCollisionBox().getPoints().size(); i++) b.getCollisionBox().getPoints()
-			.set(i, b.getCollisionBox().getPoints().get(i)
-					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
-		});
-		tileM.getTiles().forEach(t -> {
-			boolean s = false;
-			for (int i = 0; i < t.poly.size(); i++) t.poly
-			.set(i, t.poly.get(i)
-					* ((s = !s) ? getScalingFactorX() : getScalingFactorY()));
-		});
+		reload();
 		System.out.println(player.getX() + " " + player.getY());
 		player.setPosition((long) player.getX(), (long) player.getY());
 		System.out.println(player.getX() + " " + player.getY());
