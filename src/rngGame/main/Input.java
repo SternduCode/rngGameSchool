@@ -83,8 +83,10 @@ public class Input {
 			if (((Stage) gp.getScene().getWindow()).isFullScreen())
 				((Stage) gp.getScene().getWindow()).setFullScreen(false);
 			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
-			scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
-			scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
+			if (scaleFactorX > 1) scaleFactorX = 1;
+			else scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
+			if (scaleFactorY > 1) scaleFactorY = 1;
+			else scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
 			System.out.println(scaleFactorX + " " + scaleFactorY);
 			gp.scaleTextures(scaleFactorX, scaleFactorY);
 		}, KeyCode.F11, false);
