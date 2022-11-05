@@ -75,11 +75,18 @@ public class Input {
 			altgrState = false;
 		}, KeyCode.ALT_GRAPH, true);
 		setKeyHandler("Fullscreen", mod -> {
+			double scaleFactorX, scaleFactorY;
+			scaleFactorX = gp.getScene().getWidth();
+			scaleFactorY = gp.getScene().getHeight();
 			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
 			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			if (((Stage) gp.getScene().getWindow()).isFullScreen())
 				((Stage) gp.getScene().getWindow()).setFullScreen(false);
 			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+			scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
+			scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
+			System.out.println(scaleFactorX + " " + scaleFactorY);
+			gp.scaleTextures(scaleFactorX, scaleFactorY);
 		}, KeyCode.F11, false);
 		setKeyHandler("ContextMenu", mod -> {
 			// TODO tbd
@@ -193,7 +200,7 @@ public class Input {
 
 		if (code == KeyCode.R) r = false;
 
-		if (code == KeyCode.F) gp.toggleFpssLabelVisible();
+		if (code == KeyCode.F) gp.toggleFpsLabelVisible();
 
 		if (code == KeyCode.M)
 			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
@@ -231,7 +238,7 @@ public class Input {
 	public void mouseMoved(MouseEvent me) {
 		if (gp != null) if (!gp.getSelectTool().isDragging() && !gp.getTileM().getCM().isShowing())
 			if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
-		else gp.getSelectTool().undrawOutlines();
+			else gp.getSelectTool().undrawOutlines();
 	}
 
 	public void mouseReleased(MouseEvent me) {
@@ -254,7 +261,8 @@ public class Input {
 				if (target instanceof Building b
 						&& System.getProperty("coll").equals("true"))
 					if ((!ctrlState || !s) && (!ctrlState || !n))
-						b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
+						b.getCollisionBox().getPoints().addAll((double) Math.round(me.getX() - b.getLayoutX()),
+								(double) Math.round(me.getY() - b.getLayoutY()));
 					else if (ctrlState && s) save(b.getCollisionBox());
 					else if (ctrlState && n) newC(b.getCollisionBox());
 		}

@@ -262,6 +262,8 @@ public class TileManager extends Pane {
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
 						"A file containing an Image", "*.png"));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
@@ -341,8 +343,8 @@ public class TileManager extends Pane {
 	public double[] getStartingPosition() { return startingPosition; }
 
 	public TextureHolder getTileAt(double x, double y) {
-		int tx = (int) Math.floor(x / gp.Bg);
-		int ty = (int) Math.floor(y / gp.Bg);
+		int tx = (int) Math.floor(x / gp.BgX);
+		int ty = (int) Math.floor(y / gp.BgY);
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
@@ -553,7 +555,9 @@ public class TileManager extends Pane {
 						raf.seek(0l);
 						int length = raf.readInt();
 						t.poly = new ArrayList<>();
-						for (int i = 0; i < length; i++) t.poly.add(raf.readDouble());
+						boolean s = false;
+						for (int i = 0; i < length; i++)
+							t.poly.add(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -616,11 +620,11 @@ public class TileManager extends Pane {
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int worldX = (int) exitPosition[0];
-			int worldY = (int) exitPosition[1];
+			int worldX = (int) (exitPosition[0] * gp.getScalingFactorX());
+			int worldY = (int) (exitPosition[1] * gp.getScalingFactorY());
 
-			if (worldX + gp.Bg / 2 - p.getX() < 105 && worldX + gp.Bg / 2 - p.getX() > -45 &&
-					worldY + gp.Bg / 2 - p.getY() < 25 && worldY + gp.Bg / 2 - p.getY() > 0)
+			if (worldX + gp.BgX / 2 - p.getX() < 105 && worldX + gp.BgX / 2 - p.getX() > -45 &&
+					worldY + gp.BgY / 2 - p.getY() < 25 && worldY + gp.BgY / 2 - p.getY() > 0)
 				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
@@ -630,18 +634,19 @@ public class TileManager extends Pane {
 		while (worldRow < mapTileNum.size() && worldCol < mapTileNum.get(worldRow).size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
-			int worldX = worldCol * gp.Bg;
-			int worldY = worldRow * gp.Bg;
+			int worldX = worldCol * gp.BgX;
+			int worldY = worldRow * gp.BgY;
 			double screenX = worldX - p.getX() + p.getScreenX();
 			double screenY = worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX()
-					&& worldX - p.getSize() * 1.5 < p.getX() + p.getScreenX()
-					&& worldY + p.getSize() > p.getY() - p.getScreenY()
-					&& worldY - p.getSize() < p.getY() + p.getScreenY()) {
+			if (/*
+			 * worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX -
+			 * p.getSize() * 1.5 < p.getX() + p.getScreenX() && worldY + p.getSize() >
+			 * p.getY() - p.getScreenY() && worldY - p.getSize() < p.getY() + p.getScreenY()
+			 */true) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);
