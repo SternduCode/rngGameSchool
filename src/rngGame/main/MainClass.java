@@ -25,8 +25,11 @@ public class MainClass extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setFullScreen(false);
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(false);
 		primaryStage.setTitle("RNG fun");
+
+		primaryStage.setFullScreenExitHint("");
+		primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
 		Input input = Input.getInstance();
 
@@ -38,7 +41,7 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.DRAG_DETECTED, input::dragDetected);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
-		
+
 
 		SpielPanel gamePanel = new SpielPanel();
 		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
@@ -48,6 +51,8 @@ public class MainClass extends Application {
 		gamePanel.SST();
 
 		primaryStage.show();
+
+		// input.toggleFullScreen();
 
 		Window.getWindows().addListener((ListChangeListener<Window>) c -> {
 			if (c.getList().size() == 0) stopping = true;

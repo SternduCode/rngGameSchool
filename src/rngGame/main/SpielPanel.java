@@ -239,6 +239,8 @@ public class SpielPanel extends Pane {
 
 	public void setMap(String path, double[] position) {
 
+		loadingScreen.setFitWidth(loadingScreen.getImage().getWidth() * getScalingFactorX());
+		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
 
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
