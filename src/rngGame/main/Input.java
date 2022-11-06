@@ -75,20 +75,7 @@ public class Input {
 			altgrState = false;
 		}, KeyCode.ALT_GRAPH, true);
 		setKeyHandler("Fullscreen", mod -> {
-			double scaleFactorX, scaleFactorY;
-			scaleFactorX = gp.getScene().getWidth();
-			scaleFactorY = gp.getScene().getHeight();
-			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
-			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-			if (((Stage) gp.getScene().getWindow()).isFullScreen())
-				((Stage) gp.getScene().getWindow()).setFullScreen(false);
-			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
-			if (gp.getScalingFactorX() > 1) scaleFactorX = 1;
-			else scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
-			if (gp.getScalingFactorY() > 1) scaleFactorY = 1;
-			else scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
-			System.out.println(scaleFactorX + " " + scaleFactorY);
-			gp.scaleTextures(scaleFactorX, scaleFactorY);
+			toggleFullScreen();
 		}, KeyCode.F11, false);
 		setKeyHandler("ContextMenu", mod -> {
 			// TODO tbd
@@ -107,7 +94,6 @@ public class Input {
 		if (gp != null)
 			gp.reload();
 	}
-
 
 	private void save(Polygon p) {
 		ctrlState = false;
@@ -136,6 +122,7 @@ public class Input {
 
 		System.out.println(f);
 	}
+
 
 	protected void setSpielPanel(SpielPanel gp) {
 		this.gp=gp;
@@ -337,6 +324,21 @@ public class Input {
 
 	public void stopResizeingGameObject(GameObject go) {
 		resize = null;
+	}
+
+	public void toggleFullScreen() {
+		double scaleFactorX, scaleFactorY;
+		scaleFactorX = gp.getScene().getWidth();
+		scaleFactorY = gp.getScene().getHeight();
+		if (((Stage) gp.getScene().getWindow()).isFullScreen())
+			((Stage) gp.getScene().getWindow()).setFullScreen(false);
+		else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+		if (gp.getScalingFactorX() > 1) scaleFactorX = 1;
+		else scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
+		if (gp.getScalingFactorY() > 1) scaleFactorY = 1;
+		else scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
+		System.out.println(scaleFactorX + " " + scaleFactorY);
+		gp.scaleTextures(scaleFactorX, scaleFactorY);
 	}
 
 	@Override
