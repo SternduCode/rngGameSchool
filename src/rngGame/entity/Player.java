@@ -165,6 +165,13 @@ public class Player extends Entity {
 
 		String lastKey = getCurrentKey();
 
+		if (gp.isInLoadingScreen()) {
+			w.set(false);
+			a.set(false);
+			s.set(false);
+			d.set(false);
+		}
+
 		if (w.get()) { // Hoch
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");

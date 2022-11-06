@@ -145,63 +145,64 @@ public class Input {
 	public boolean isSuperPressed() { return superState; }
 
 	public void keyPressed(KeyEvent e) {
+		if (!gp.isInLoadingScreen()) {
+			KeyCode code = e.getCode();
 
-		KeyCode code = e.getCode();
+			ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+					altgrState);
 
-		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
-				altgrState);
+			if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(con -> con.accept(modKeysState));
+			if (code == KeyCode.N) n = true;
 
-		if (code == KeyCode.N) n = true;
+			if (code == KeyCode.S) s = true;
 
-		if (code == KeyCode.S) s = true;
+			if (code == KeyCode.R) r = true;
 
-		if (code == KeyCode.R) r = true;
-
-		if (ctrlState && r) reload();
-
+			if (ctrlState && r) reload();
+		}
 
 	}
 
 	public void keyReleased(KeyEvent e) {
+		if (!gp.isInLoadingScreen()) {
 
-		KeyCode code = e.getCode();
+			KeyCode code = e.getCode();
 
-		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
-				altgrState);
+			ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+					altgrState);
 
-		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
+			if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-		if (code == KeyCode.L) print();
+			if (code == KeyCode.L) print();
 
-		if (e.getText().equalsIgnoreCase("ö")) saveMap();
+			if (e.getText().equalsIgnoreCase("ö")) saveMap();
 
-		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
-		else System.setProperty("edit", "true");
+			if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
+			else System.setProperty("edit", "true");
 
-		if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
-		else System.setProperty("coll", "true");
+			if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
+			else System.setProperty("coll", "true");
 
-		if (code == KeyCode.N) n = false;
+			if (code == KeyCode.N) n = false;
 
-		if (code == KeyCode.S) s = false;
+			if (code == KeyCode.S) s = false;
 
-		if (code == KeyCode.R) r = false;
+			if (code == KeyCode.R) r = false;
 
-		if (code == KeyCode.F) gp.toggleFpsLabelVisible();
+			if (code == KeyCode.F) gp.toggleFpsLabelVisible();
 
-		if (code == KeyCode.M)
-			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
-			else System.setProperty("alternateUpdate", "true");
-
+			if (code == KeyCode.M)
+				if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
+				else System.setProperty("alternateUpdate", "true");
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {}
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
-		if (gp != null) if (move != null) {
+		if (gp != null && !gp.isInLoadingScreen()) if (move != null) {
 			move.setX((long) (me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX() - move.getWidth() / 2));
 			move.setY((long) (me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY() - move.getHeight() / 2));
 		}

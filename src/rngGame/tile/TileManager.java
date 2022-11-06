@@ -627,8 +627,9 @@ public class TileManager extends Pane {
 			int worldX = (int) (exitPosition[0] * gp.getScalingFactorX());
 			int worldY = (int) (exitPosition[1] * gp.getScalingFactorY());
 
-			if (worldX + gp.BgX / 2 - p.getX() < 105 && worldX + gp.BgX / 2 - p.getX() > -45 &&
-					worldY + gp.BgY / 2 - p.getY() < 25 && worldY + gp.BgY / 2 - p.getY() > 0)
+			if (worldX + gp.BgX / 2 - p.getX() < 105 * gp.getScalingFactorX()
+					&& worldX + gp.BgX / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
+					worldY + gp.BgY / 2 - p.getY() < 25 * gp.getScalingFactorY() && worldY + gp.BgY / 2 - p.getY() > 0)
 				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 

@@ -164,6 +164,10 @@ public class SpielPanel extends Pane {
 
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
 
+	public boolean isInLoadingScreen() {
+		return loadingScreen.getOpacity()>.5;
+	}
+
 	public void reload() {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
@@ -217,6 +221,7 @@ public class SpielPanel extends Pane {
 		System.out.println("don");
 	}
 
+
 	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
 		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
 				player.getY() * (scaleFactorY / scalingFactorY));
@@ -231,7 +236,6 @@ public class SpielPanel extends Pane {
 		player.generateCollisionBox();
 		System.out.println(player.getX() + " " + player.getY());
 	}
-
 
 	public void setMap(String path) {
 		setMap(path, null);
