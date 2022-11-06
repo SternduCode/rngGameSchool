@@ -736,7 +736,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					int length = raf.readInt();
 					boolean s = false;
 					for (int i = 0; i < length; i++) collisionBox.getPoints()
-					.add(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					.add((double)(long)(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY())));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

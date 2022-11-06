@@ -80,10 +80,10 @@ public class Player extends Entity {
 		collisionBoxes.forEach((key, poly) -> {
 			poly.getPoints().clear();
 			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(x * gp.getScalingFactorX(), y * gp.getScalingFactorY(), x * gp.getScalingFactorX(),
-					(y + height) * gp.getScalingFactorY(), (x + width) * gp.getScalingFactorX(),
-					(y + height) * gp.getScalingFactorY(), (x + width) * gp.getScalingFactorX(),
-					y * gp.getScalingFactorY());
+			poly.getPoints().addAll(x * gp.getScalingFactorX()-0.5, y * gp.getScalingFactorY()-0.5, x * gp.getScalingFactorX()-0.5,
+					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
+					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
+					y * gp.getScalingFactorY()-0.5);
 		});
 	}
 
