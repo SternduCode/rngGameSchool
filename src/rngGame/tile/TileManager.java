@@ -95,7 +95,11 @@ public class TileManager extends Pane {
 		mextra.getItems().add(save);
 
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
-		backToSpawn.setOnAction(ae -> gp.getPlayer().setPosition(getStartingPosition()));
+		backToSpawn.setOnAction(ae -> {
+			double[] posi = getStartingPosition();
+			gp.getPlayer()
+			.setPosition(new double[] {posi[0] * gp.getScalingFactorX(), posi[1] * gp.getScalingFactorY()});
+		});
 		mextra.getItems().add(backToSpawn);
 
 		Menu maps = new Menu("Maps");
@@ -642,11 +646,10 @@ public class TileManager extends Pane {
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (/*
-			 * worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX -
-			 * p.getSize() * 1.5 < p.getX() + p.getScreenX() && worldY + p.getSize() >
-			 * p.getY() - p.getScreenY() && worldY - p.getSize() < p.getY() + p.getScreenY()
-			 */true) {
+			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.BgX -
+					p.getSize() * 1.5 < p.getX() + p.getScreenX()
+					&& worldY + gp.BgY + p.getSize() > p.getY() - p.getScreenY()
+					&& worldY - gp.BgY - p.getSize() < p.getY() + p.getScreenY()) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

@@ -43,12 +43,8 @@ public class Player extends Entity {
 			collisionBoxes.put(key, new Polygon());
 		});
 
-		double x = 33, y = 45, width = 31, height = 20;
+		generateCollisionBox();
 
-		collisionBoxes.forEach((key, poly) -> {
-			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
-		});
 		Input.getInstance().setKeyHandler("p", mod -> {
 			p.set(!p.get());
 		}, KeyCode.P, false);
@@ -76,6 +72,19 @@ public class Player extends Entity {
 		Input.getInstance().setKeyHandler("dUP", mod -> {
 			d.set(false);
 		}, KeyCode.D, true);
+	}
+
+	public void generateCollisionBox() {
+		double x = 33, y = 45, width = 31, height = 20;
+
+		collisionBoxes.forEach((key, poly) -> {
+			poly.getPoints().clear();
+			poly.setFill(Color.color(1, 0, 1, 0.75));
+			poly.getPoints().addAll(x * gp.getScalingFactorX(), y * gp.getScalingFactorY(), x * gp.getScalingFactorX(),
+					(y + height) * gp.getScalingFactorY(), (x + width) * gp.getScalingFactorX(),
+					(y + height) * gp.getScalingFactorY(), (x + width) * gp.getScalingFactorX(),
+					y * gp.getScalingFactorY());
+		});
 	}
 
 	public void getPlayerImage() {
@@ -159,17 +168,17 @@ public class Player extends Entity {
 		if (w.get()) { // Hoch
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
-			y -= updateSpeed;
+			y -= updateSpeed * gp.getScalingFactorY();
 		} else if (s.get()) { // Runter
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
-			y += updateSpeed;
+			y += updateSpeed * gp.getScalingFactorY();
 		} else if (a.get()) { // Links
 			setCurrentKey("left");
-			x -= updateSpeed;
+			x -= updateSpeed * gp.getScalingFactorX();
 		} else if (d.get()) { // Rechts
 			setCurrentKey("right");
-			x += updateSpeed;
+			x += updateSpeed * gp.getScalingFactorX();
 		} else if (lastKey.contains("down")) { // Idle Runter
 			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
 			else setCurrentKey("idledown");
