@@ -112,7 +112,6 @@ public class Player extends Entity {
 
 	}
 
-
 	public int getScreenX() {
 		return screenX;
 	}
@@ -136,14 +135,12 @@ public class Player extends Entity {
 		setPosition(new double[] {x, y});
 	}
 
-
 	public void setPosition(double[] position) {
 		x = (long) position[0];
 		y = (long) position[1];
 		oldX = x;
 		oldY = y;
 	}
-
 
 	@Override
 	public String toString() {
@@ -158,8 +155,6 @@ public class Player extends Entity {
 
 	@Override
 	public void update(long milis) {
-
-		Input keyH = Input.getInstance();
 
 		double updateSpeed = speed / 1000 * milis;
 
@@ -205,7 +200,6 @@ public class Player extends Entity {
 
 		if (isVisible() && p.get()) setVisible(false);
 
-
 		gp.getBuildings().forEach(b -> {
 			if (b.collides(this)) {
 				x = oldX;
@@ -230,10 +224,6 @@ public class Player extends Entity {
 
 		screenX = (int) (gp.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
 		screenY = (int) (gp.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
-
-		//		shape.setTranslateX(0);
-		//		shape.setTranslateY(0);
-
 
 	}
 }

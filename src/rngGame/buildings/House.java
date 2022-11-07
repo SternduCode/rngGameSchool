@@ -19,6 +19,7 @@ public class House extends Building {
 
 	private final MenuItem mapI;
 	private double openX, openY, openWidth, openHeight, entranceX, entranceY, entranceWidth, entranceHeight;
+
 	public House(House building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
