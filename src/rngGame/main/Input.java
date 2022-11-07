@@ -7,8 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
-import javafx.stage.*;
-import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import rngGame.buildings.Building;
 import rngGame.tile.TextureHolder;
 
@@ -95,14 +94,8 @@ public class Input {
 			gp.reload();
 	}
 
-	private void save(Polygon p) {
-		ctrlState = false;
-		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(new File("./res"));
-		fc.getExtensionFilters().add(new ExtensionFilter(
-				"A file containing the collision box of something", "*.collisionbox"));
-		File f = fc.showSaveDialog(p.getScene().getWindow());
-		if (f == null) return;
+	private void save(Polygon t, String path) {
+		File f = new File("./res/collisions/" + path);
 		if (!f.exists()) try {
 			f.createNewFile();
 		} catch (IOException e) {
@@ -111,9 +104,11 @@ public class Input {
 		try {
 			RandomAccessFile raf = new RandomAccessFile(f, "rws");
 			raf.seek(0l);
-			raf.writeInt(p.getPoints().size());
-			for (Double element: p.getPoints()) raf.writeDouble(element);
-			raf.setLength(4l + p.getPoints().size() * 8l);
+			raf.writeInt(t.getPoints().size());
+			boolean s = false;
+			for (Double element: t.getPoints())
+				raf.writeDouble((long) (element / ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY())));
+			raf.setLength(4l + t.getPoints().size() * 8l);
 			raf.close();
 
 		} catch (IOException e) {
@@ -245,16 +240,24 @@ public class Input {
 						if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 						t.getTile().poly.add(me.getX() - t.getLayoutX());
 						t.getTile().poly.add(me.getY() - t.getLayoutY());
-					} else if (ctrlState && s) save(t.getPoly());
-					else if (ctrlState && n) newC(t.getPoly());
+					} else if (ctrlState && s) {
+						String[] sp = t.getTile().name.split("[.]");
+						save(t.getPoly(),
+								gp.getTileM().getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+										+ ".collisionbox");
+					} else if (ctrlState && n) newC(t.getPoly());
 			} else
 				if (target instanceof Building b
 						&& System.getProperty("coll").equals("true"))
 					if ((!ctrlState || !s) && (!ctrlState || !n))
 						b.getCollisionBox().getPoints().addAll((double) Math.round(me.getX() - b.getLayoutX()),
 								(double) Math.round(me.getY() - b.getLayoutY()));
-					else if (ctrlState && s) save(b.getCollisionBox());
-					else if (ctrlState && n) newC(b.getCollisionBox());
+					else if (ctrlState && s) {
+						String[] sp = b.textureFiles.get(b.getCurrentKey()).split("[.]");
+						save(b.getCollisionBox(), b.directory + "/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox");
+					} else if (ctrlState && n) newC(b.getCollisionBox());
 		}
 	}
 
@@ -265,7 +268,6 @@ public class Input {
 	public void print() {
 		for (Image img:comp) {
 			long result = 1;
-
 			for (int i =0;i<img.getWidth();i++)for (int j=0;j<img.getHeight();j++)
 				result = 31 * result + img.getPixelReader().getArgb(i, j);
 			System.out.println(result);

@@ -272,11 +272,11 @@ public class TileManager extends Pane {
 				if (f == null || !f.exists()) return;
 				try {
 					Path p1 = f.toPath();
-					Path p2 = new File("./res/" + dir + "/" + f.getName()).toPath();
+					Path p2 = new File("./res/" + getDir() + "/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
 					Tile t = new Tile(f.getName(),
-							new FileInputStream("./res/" + dir + "/" + f.getName()),
+							new FileInputStream("./res/" + getDir() + "/" + f.getName()),
 							gp);
 					tiles.add(t);
 					mtiles.getItems().remove(mi);
@@ -426,7 +426,7 @@ public class TileManager extends Pane {
 				startingPosition.clear();
 				startingPosition.add(this.startingPosition[0]);
 				startingPosition.add(this.startingPosition[1]);
-				map.put("dir", dir);
+				map.put("dir", getDir());
 				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
 				for (List<TextureHolder> mapi: this.map) {
@@ -541,7 +541,7 @@ public class TileManager extends Pane {
 			}
 			for (Object texture: textures) try {
 				Tile t = new Tile(((StringValue) texture).getValue(),
-						new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
+						new FileInputStream("./res/" + getDir() + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tiles.add(t);
 				mtiles.getItems()
@@ -550,10 +550,10 @@ public class TileManager extends Pane {
 								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
-				if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				if (new File("./res/collisions/" + getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
 					try {
-						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + getDir() + "/"
 								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 								+ ".collisionbox"), "rws");
 						raf.seek(0l);
@@ -567,7 +567,7 @@ public class TileManager extends Pane {
 					}
 			} catch (NullPointerException e) {
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
-				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
+				new IOException(getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
 				.printStackTrace();
 			}
 			this.startingPosition = new double[] {
@@ -689,6 +689,10 @@ public class TileManager extends Pane {
 			}
 		}
 
+	}
+
+	public String getDir() {
+		return dir;
 	}
 
 }
