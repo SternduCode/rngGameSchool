@@ -69,6 +69,15 @@
 				257.000,
 				150.000
 			],
+			"miscBoxes" : [
+				{
+					"name" : "table",
+					"x" : 87,
+					"y" : 162,
+					"type" : "circle",
+					"radius" : 20
+				}
+			],
 			"type" : "Building",
 			"originalSize" : [
 				64,
