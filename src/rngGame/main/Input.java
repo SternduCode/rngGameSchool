@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
@@ -25,13 +24,11 @@ public class Input {
 
 	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
-	private boolean n, s, r;
+	private boolean n, s;
 
 	private boolean ctrlState, shiftState, altState, superState, capsState, altgrState;
 
 	private GameObject move, resize;
-
-	public List<Image> comp = new ArrayList<>();
 
 	private SpielPanel gp;
 
@@ -79,6 +76,17 @@ public class Input {
 		setKeyHandler("ContextMenu", mod -> {
 			// TODO tbd
 		}, KeyCode.CONTEXT_MENU, false);
+		setKeyHandler("AlternateTickUpdate", mod -> {
+			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
+			else System.setProperty("alternateUpdate", "true");
+		}, KeyCode.M, false);
+		setKeyHandler("Reload", mod -> {
+			if (mod.isControlPressed()) if (gp != null)
+				gp.reload();
+		}, KeyCode.R, false);
+		setKeyHandler("ToggleFPSLabel", mod -> {
+			gp.toggleFpsLabelVisible();
+		}, KeyCode.F, false);
 	}
 
 	public static Input getInstance() { return INSTANCE; }
@@ -87,11 +95,6 @@ public class Input {
 		p.getPoints().clear();
 		p.setVisible(false);
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
-	}
-
-	private void reload() {
-		if (gp != null)
-			gp.reload();
 	}
 
 	private void save(Polygon t, String path) {
@@ -123,9 +126,7 @@ public class Input {
 		this.gp=gp;
 	}
 
-	public void dragDetected(MouseEvent me) {
-		System.out.println("Drag " + me);
-	}
+	public void dragDetected(MouseEvent me) {}
 
 	public boolean isAltgrPressed() { return altgrState; }
 
@@ -151,10 +152,6 @@ public class Input {
 			if (code == KeyCode.N) n = true;
 
 			if (code == KeyCode.S) s = true;
-
-			if (code == KeyCode.R) r = true;
-
-			if (ctrlState && r) reload();
 		}
 
 	}
@@ -169,8 +166,6 @@ public class Input {
 
 			if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-			if (code == KeyCode.L) print();
-
 			if (e.getText().equalsIgnoreCase("ö")) saveMap();
 
 			if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
@@ -182,14 +177,6 @@ public class Input {
 			if (code == KeyCode.N) n = false;
 
 			if (code == KeyCode.S) s = false;
-
-			if (code == KeyCode.R) r = false;
-
-			if (code == KeyCode.F) gp.toggleFpsLabelVisible();
-
-			if (code == KeyCode.M)
-				if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
-				else System.setProperty("alternateUpdate", "true");
 		}
 	}
 
@@ -244,7 +231,7 @@ public class Input {
 						String[] sp = t.getTile().name.split("[.]");
 						save(t.getPoly(),
 								gp.getTileM().getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
-										+ ".collisionbox");
+								+ ".collisionbox");
 					} else if (ctrlState && n) newC(t.getPoly());
 			} else
 				if (target instanceof Building b
@@ -263,15 +250,6 @@ public class Input {
 
 	public void moveGameObject(GameObject go) {
 		move = go;
-	}
-
-	public void print() {
-		for (Image img:comp) {
-			long result = 1;
-			for (int i =0;i<img.getWidth();i++)for (int j=0;j<img.getHeight();j++)
-				result = 31 * result + img.getPixelReader().getArgb(i, j);
-			System.out.println(result);
-		}
 	}
 
 	public void removeKeyHandler(String name) {
