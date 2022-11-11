@@ -78,7 +78,7 @@
 					"radius" : 20
 				}
 			],
-			"type" : "Building",
+			"type" : "ContractsTable",
 			"originalSize" : [
 				64,
 				64

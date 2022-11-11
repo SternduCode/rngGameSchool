@@ -303,6 +303,10 @@ public class TileManager extends Pane {
 
 	public ContextMenu getCM() { return cm; }
 
+	public String getDir() {
+		return dir;
+	}
+
 	public String getExitMap() { return exitMap; }
 
 	public double[] getExitPosition() { return exitPosition; }
@@ -585,6 +589,8 @@ public class TileManager extends Pane {
 			for (Object building: buildings) {
 				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
 					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
+					case "ContractsTable" -> new ContractsTable((JsonObject) building, gp, this.buildings, cm,
+							requestorB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
 				};
 				mbuildings.getItems().add(new MenuItemWBuilding(
@@ -689,10 +695,6 @@ public class TileManager extends Pane {
 			}
 		}
 
-	}
-
-	public String getDir() {
-		return dir;
 	}
 
 }

@@ -42,7 +42,6 @@ public class House extends Building {
 		mapI.setOnAction(this::handleContextMenu);
 		house.getItems().add(mapI);
 		if (!getMiscBoxes().containsKey("open")) {
-			System.out.println("op");
 			Polygon entrance = new Polygon();
 			openX = reqWidth / 2 - 65;
 			openY = reqHeight / 2 + 50;
@@ -57,7 +56,6 @@ public class House extends Building {
 			self.setCurrentKey("open");
 		});
 		if (!getMiscBoxes().containsKey("entrance")) {
-			System.out.println("ent");
 			Polygon entrance = new Polygon();
 			entranceX = reqWidth / 2 - 25;
 			entranceY = reqHeight / 2 + 50;
