@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import rngGame.main.*;
+import rngGame.main.SpielPanel;
 
 public class TextureHolder extends Pane {
 
@@ -42,7 +42,6 @@ public class TextureHolder extends Pane {
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true")) {
 				requestor.set(TextureHolder.this);
-				Input.getInstance().comp.add(TextureHolder.this.tile.images.get(0));
 				position.setText("Position: "+x+" "+y);
 				fpsI.setText("FPS: "+fps);
 				cm.getItems().clear();
