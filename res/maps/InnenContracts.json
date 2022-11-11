@@ -72,10 +72,10 @@
 			"miscBoxes" : [
 				{
 					"name" : "table",
-					"x" : 87,
-					"y" : 162,
+					"x" : 55,
+					"y" : 90,
 					"type" : "circle",
-					"radius" : 20
+					"radius" : 10
 				}
 			],
 			"type" : "ContractsTable",
