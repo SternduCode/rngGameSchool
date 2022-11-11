@@ -10,10 +10,10 @@ public abstract class Entity extends GameObject {
 
 	protected double speed;
 
-	public Entity(Entity en, double speed, List<? extends Entity> entities, ContextMenu cm,
+	public Entity(Entity en, List<? extends Entity> entities, ContextMenu cm,
 			ObjectProperty<? extends Entity> requestor) {
 		super(en, entities, cm, requestor);
-		this.speed = speed;
+		speed = en.speed;
 
 	}
 
