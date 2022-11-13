@@ -41,16 +41,16 @@ public class ContractsTable extends Building {
 		try {
 			Image wi = new Image(new FileInputStream("./res/Contractstuff/Test.png"));
 			wi=ImgUtil.resizeImage(
-					wi,(int) wi.getWidth(), (int) wi.getHeight(), (int) (wi.getWidth() * gp.getScalingFactorX()),
-					(int) (wi.getHeight() * gp.getScalingFactorY()));
+					wi,(int) wi.getWidth(), (int) wi.getHeight(), (int) (wi.getWidth() * gamepanel.getScalingFactorX()),
+					(int) (wi.getHeight() * gamepanel.getScalingFactorY()));
 			contractBackround = new ImageView(wi);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		contractBackround.setX(gp.getPlayer().getScreenX() - contractBackround.getImage().getWidth() / 2 + 48);
-		contractBackround.setY(gp.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + 32);
+		contractBackround.setX(gamepanel.getPlayer().getScreenX() - contractBackround.getImage().getWidth() / 2 + 48);
+		contractBackround.setY(gamepanel.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + 32);
 		contractBackround.setVisible(false);
-		gp.getChildren().add(contractBackround);
+		gamepanel.getChildren().add(contractBackround);
 
 		Input.getInstance().setKeyHandler("contractbackround", mod -> {
 			if(inkreis) {
@@ -70,12 +70,12 @@ public class ContractsTable extends Building {
 		if(!inkreis) {
 			iftest = false;
 			contractBackround.setVisible(false);
-			gp.getChildren().remove(contractBackround);
+			gamepanel.getChildren().remove(contractBackround);
 		} else {
-			contractBackround.setX(gp.getPlayer().getScreenX() - contractBackround.getImage().getWidth() / 2 + gp.getPlayer().getWidth() / 2);
-			contractBackround.setY(gp.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + gp.getPlayer().getHeight() / 2);
-			if(!gp.getChildren().contains(contractBackround)) 
-				gp.getChildren().add(contractBackround);
+			contractBackround.setX(gamepanel.getPlayer().getScreenX() - contractBackround.getImage().getWidth() / 2 + gamepanel.getPlayer().getWidth() / 2);
+			contractBackround.setY(gamepanel.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
+			if(!gamepanel.getChildren().contains(contractBackround)) 
+				gamepanel.getChildren().add(contractBackround);
 		}
 	}
 }

@@ -50,7 +50,7 @@ public class Player extends Entity {
 		reqWidth = (int) ((reqHeight = getSize()) * 1.5); // Set reqHeight to 64 and reqWidth to 96; Player size is
 		// rectangular in this case
 
-		this.gp = gp;
+		gamepanel = gp;
 
 		screenX = gp.SpielLaenge / 2 - getSize() / 2; // Place the player in the middle of the screen
 		screenY = gp.SpielHoehe / 2 - getSize() / 2;
@@ -108,10 +108,10 @@ public class Player extends Entity {
 		collisionBoxes.forEach((key, poly) -> {
 			poly.getPoints().clear();
 			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(x * gp.getScalingFactorX()-0.5, y * gp.getScalingFactorY()-0.5, x * gp.getScalingFactorX()-0.5,
-					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
-					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
-					y * gp.getScalingFactorY()-0.5);
+			poly.getPoints().addAll(x * gamepanel.getScalingFactorX()-0.5, y * gamepanel.getScalingFactorY()-0.5, x * gamepanel.getScalingFactorX()-0.5,
+					(y + height) * gamepanel.getScalingFactorY()+0.5, (x + width) * gamepanel.getScalingFactorX()+0.5,
+					(y + height) * gamepanel.getScalingFactorY()+0.5, (x + width) * gamepanel.getScalingFactorX()+0.5,
+					y * gamepanel.getScalingFactorY()-0.5);
 		});
 	}
 
@@ -222,7 +222,7 @@ public class Player extends Entity {
 
 		String lastKey = getCurrentKey();
 
-		if (gp.isBlockUserInputs()) {
+		if (gamepanel.isBlockUserInputs()) {
 			w.set(false);
 			a.set(false);
 			s.set(false);
@@ -232,17 +232,17 @@ public class Player extends Entity {
 		if (w.get()) { // Hoch
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
-			y -= updateSpeed * gp.getScalingFactorY();
+			y -= updateSpeed * gamepanel.getScalingFactorY();
 		} else if (s.get()) { // Runter
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
-			y += updateSpeed * gp.getScalingFactorY();
+			y += updateSpeed * gamepanel.getScalingFactorY();
 		} else if (a.get()) { // Links
 			setCurrentKey("left");
-			x -= updateSpeed * gp.getScalingFactorX();
+			x -= updateSpeed * gamepanel.getScalingFactorX();
 		} else if (d.get()) { // Rechts
 			setCurrentKey("right");
-			x += updateSpeed * gp.getScalingFactorX();
+			x += updateSpeed * gamepanel.getScalingFactorX();
 		} else if (lastKey.contains("down")) { // Idle Runter
 			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
 			else setCurrentKey("idledown");
@@ -262,21 +262,21 @@ public class Player extends Entity {
 
 		if (isVisible() && p.get()) setVisible(false);
 
-		gp.getBuildings().forEach(b -> {
+		gamepanel.getBuildings().forEach(b -> {
 			if (b.collides(this)) {
 				x = oldX;
 				y = oldY;
 			}
 		});
 
-		gp.getNpcs().forEach(b -> {
+		gamepanel.getNpcs().forEach(b -> {
 			if (b.collides(this)) {
 				x = oldX;
 				y = oldY;
 			}
 		});
 
-		if (gp.getTileM().collides(this)) {
+		if (gamepanel.getTileM().collides(this)) {
 			x = oldX;
 			y = oldY;
 		}
@@ -284,8 +284,8 @@ public class Player extends Entity {
 		oldX = x;
 		oldY = y;
 
-		screenX = (int) (gp.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
-		screenY = (int) (gp.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
+		screenX = (int) (gamepanel.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
+		screenY = (int) (gamepanel.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
 
 	}
 }
