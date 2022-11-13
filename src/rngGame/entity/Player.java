@@ -222,7 +222,7 @@ public class Player extends Entity {
 
 		String lastKey = getCurrentKey();
 
-		if (gp.isInLoadingScreen()) {
+		if (gp.isBlockUserInputs()) {
 			w.set(false);
 			a.set(false);
 			s.set(false);
