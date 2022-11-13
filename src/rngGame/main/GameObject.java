@@ -932,8 +932,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					jBox.put("type", "circle");
 					jBox.put("x", (long) circ.getCenterX());
 					jBox.put("y", (long) circ.getCenterY());
-					jBox.put("radius", (long) (circ.getRadiusX() / gp.getScalingFactorX()
-							+ circ.getRadiusY() / gp.getScalingFactorY()) / 2.0);
+					jBox.put("radius", (long) ((circ.getRadiusX() / gp.getScalingFactorX()
+							+ circ.getRadiusY() / gp.getScalingFactorY()) / 2.0));
 				} else if (box.getValue() instanceof Rectangle rect) {
 					jBox.put("type", "rectangle");
 					jBox.put("x", (long) rect.getX());
