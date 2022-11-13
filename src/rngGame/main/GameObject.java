@@ -32,7 +32,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected ImageView iv;
 
 	private final Map<String, Shape> miscBoxes;
-	private final Map<String, BiConsumer<SpielPanel, GameObject>> miscBoxHandler;
+	private final Map<String, BiConsumer<GamePanel, GameObject>> miscBoxHandler;
 
 	protected List<Runnable> removeCallbacks;
 
@@ -54,7 +54,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected Map<String, String> textureFiles;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 
-	protected SpielPanel gp;
+	protected GamePanel gp;
 
 	protected Group collisionBoxViewGroup;
 
@@ -197,7 +197,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		addToView();
 	}
 	@SuppressWarnings("unchecked")
-	public GameObject(JsonObject gameObject, SpielPanel gp, String directory, List<? extends GameObject> gameObjects,
+	public GameObject(JsonObject gameObject, GamePanel gp, String directory, List<? extends GameObject> gameObjects,
 			ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
 		this.gp = gp;
@@ -750,8 +750,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		}
 		return li;
 	}
-	protected Map<String, BiConsumer<SpielPanel, GameObject>> getMiscBoxHandler() { return miscBoxHandler; }
-	public void addMiscBox(String key, Shape box, BiConsumer<SpielPanel, GameObject> handler) {
+	protected Map<String, BiConsumer<GamePanel, GameObject>> getMiscBoxHandler() { return miscBoxHandler; }
+	public void addMiscBox(String key, Shape box, BiConsumer<GamePanel, GameObject> handler) {
 		box.setStroke(Color.color(1, 1, 0, .75));
 		box.setFill(Color.TRANSPARENT);
 		box.setStrokeWidth(2.5);

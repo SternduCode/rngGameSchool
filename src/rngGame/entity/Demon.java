@@ -6,7 +6,7 @@ import com.sterndu.json.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 
 public class Demon extends NPC {
 
@@ -24,7 +24,7 @@ public class Demon extends NPC {
 		demon.getItems().add(dirI);
 	}
 
-	public Demon(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm,
+	public Demon(JsonObject npc, GamePanel gp, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, gp, "demons/" + ((StringValue) npc.get("dir")).getValue(),npcs, cm, requestorN);
 		dir = ((StringValue) npc.get("dir")).getValue();

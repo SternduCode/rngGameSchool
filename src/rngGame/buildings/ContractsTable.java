@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import rngGame.main.Input;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 import rngGame.tile.ImgUtil;
 
 public class ContractsTable extends Building {
@@ -21,13 +21,13 @@ public class ContractsTable extends Building {
 		init();
 	}
 
-	public ContractsTable(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+	public ContractsTable(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
 		init();
 	}
 
-	public ContractsTable(JsonObject building, SpielPanel gp, String directory, List<Building> buildings, ContextMenu cm,
+	public ContractsTable(JsonObject building, GamePanel gp, String directory, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, directory, buildings, cm, requestorB);
 		init();

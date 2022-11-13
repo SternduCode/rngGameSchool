@@ -13,24 +13,24 @@ public class NPC extends Entity implements JsonValue {
 
 	private final AtomicBoolean h = new AtomicBoolean(false);
 
-	public NPC(JsonObject npc, SpielPanel gp, double speed, List<NPC> npcs, ContextMenu cm,
+	public NPC(JsonObject npc, GamePanel gp, double speed, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, speed, gp, "npc", npcs, cm, requestorN);
 		init();
 	}
 
-	public NPC(JsonObject npc, SpielPanel gp, double speed, String directory, List<NPC> npcs, ContextMenu cm,
+	public NPC(JsonObject npc, GamePanel gp, double speed, String directory, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, speed, gp, directory, npcs, cm, requestorN);
 		init();
 	}
 
-	public NPC(JsonObject npc, SpielPanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
+	public NPC(JsonObject npc, GamePanel gp, List<NPC> npcs, ContextMenu cm, ObjectProperty<NPC> requestorN) {
 		super(npc, 0, gp, "npc", npcs, cm, requestorN);
 		init();
 	}
 
-	public NPC(JsonObject npc, SpielPanel gp, String directory, List<NPC> npcs, ContextMenu cm,
+	public NPC(JsonObject npc, GamePanel gp, String directory, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, 0, gp, directory, npcs, cm, requestorN);
 		init();

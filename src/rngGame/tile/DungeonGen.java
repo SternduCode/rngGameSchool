@@ -7,11 +7,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 
 public class DungeonGen {
 
-	private final SpielPanel gp;
+	private final GamePanel gp;
 	private final JsonObject mainMap, maps[];
 	private final List<Tile> mainMapTiles, mapsTiles[];
 	private final List<List<Integer>> mainMapTileNum, mapsTileNum[];
@@ -22,7 +22,7 @@ public class DungeonGen {
 	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, mapsConnectorTiles[];
 
 	@SuppressWarnings("unchecked")
-	public DungeonGen(SpielPanel gp, String voidImg, JsonObject mainmap, JsonObject[] maps, List<JsonObject> connectors,
+	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonObject[] maps, List<JsonObject> connectors,
 			List<JsonObject> connections, List<JsonObject> replacements) {
 		this.gp = gp;
 		mainMap = mainmap;

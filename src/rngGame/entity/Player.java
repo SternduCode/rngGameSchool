@@ -35,13 +35,13 @@ public class Player extends Entity {
 	/**
 	 * Player is not defined in map file but some attributes of it are
 	 *
-	 * @param gp        A reference to the {@link SpielPanel}
+	 * @param gp        A reference to the {@link GamePanel}
 	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu}
-	 *                  via {@link SpielPanel#getTileM()}.
+	 *                  via {@link GamePanel#getTileM()}.
 	 * @param requestor Is used to know on what the {@link TileManager#getCM()
 	 *                  ContextMenu} was triggered
 	 */
-	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
+	public Player(GamePanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
 		super(null, 3 * 60, gp, "player", null, cm, requestor);
 		setCurrentKey("down");
 
