@@ -107,13 +107,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 		gameObject.miscBoxes.forEach((k, v) -> {
 			Shape p;
-			if (v instanceof Circle circ) p = new Circle(circ.getCenterX(), circ.getCenterY(), circ.getRadius());
+			if (v instanceof Ellipse circ)
+				p = new Ellipse(circ.getCenterX(), circ.getCenterY(), circ.getRadiusX(), circ.getRadiusY());
 			else if (v instanceof Rectangle rect)
 				p = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 			else if (v instanceof Polygon poly) {
 				p = new Polygon();
 				((Polygon) p).getPoints().addAll(poly.getPoints());
-			} else if (v instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadius(), ring.getInnerRadius());
+			} else if (v instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadiusX(),
+					ring.getRadiusY(), ring.getInnerRadiusX(), ring.getInnerRadiusY());
 			else return;
 			p.setStroke(Color.color(1, 1, 0, .75));
 			p.setFill(Color.TRANSPARENT);
@@ -270,8 +272,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 								innerRadiusY = (long) (((NumberValue) joBox.get("innerRadius")).getValue().longValue()
 										* gp.getScalingFactorY());
 							}
-							Shape shape = Shape.subtract(new Ellipse(x, y, radiusX, radiusY),
+							Shape shape;
+							if (innerRadiusX != 0) shape = Shape.subtract(new Ellipse(x, y, radiusX, radiusY),
 									new Ellipse(x, y, innerRadiusX, innerRadiusY));
+							else shape = new Ellipse(x, y, radiusX, radiusY);
 							shape.setStroke(Color.color(1, 1, 0, .75));
 							shape.setFill(Color.TRANSPARENT);
 							shape.setStrokeWidth(2.5);
@@ -755,13 +759,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		miscBoxHandler.put(key, handler);
 		if (slaves != null) for (GameObject slave:slaves) {
 			Shape p;
-			if (box instanceof Circle circ) p = new Circle(circ.getCenterX(), circ.getCenterY(), circ.getRadius());
+			if (box instanceof Ellipse circ)
+				p = new Ellipse(circ.getCenterX(), circ.getCenterY(), circ.getRadiusX(), circ.getRadiusY());
 			else if (box instanceof Rectangle rect)
 				p = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 			else if (box instanceof Polygon poly) {
 				p = new Polygon();
 				((Polygon) p).getPoints().addAll(poly.getPoints());
-			} else if (box instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadius(), ring.getInnerRadius());
+			} else if (box instanceof Ring ring) p = new Ring(ring.getX(), ring.getY(), ring.getRadiusX(),
+					ring.getRadiusY(), ring.getInnerRadiusX(), ring.getInnerRadiusY());
 			else return;
 			p.setStroke(Color.color(1, 1, 0, .75));
 			p.setFill(Color.TRANSPARENT);
@@ -922,11 +928,12 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			for (Entry<String, Shape> box: this.miscBoxes.entrySet()) {
 				JsonObject jBox = new JsonObject();
 				jBox.put("name", box.getKey());
-				if (box.getValue() instanceof Circle circ) {
+				if (box.getValue() instanceof Ellipse circ) {
 					jBox.put("type", "circle");
 					jBox.put("x", (long) circ.getCenterX());
 					jBox.put("y", (long) circ.getCenterY());
-					jBox.put("radius", (long) circ.getRadius());
+					jBox.put("radius", (long) (circ.getRadiusX() / gp.getScalingFactorX()
+							+ circ.getRadiusY() / gp.getScalingFactorY()) / 2.0);
 				} else if (box.getValue() instanceof Rectangle rect) {
 					jBox.put("type", "rectangle");
 					jBox.put("x", (long) rect.getX());
