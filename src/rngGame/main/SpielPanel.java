@@ -85,6 +85,8 @@ public class SpielPanel extends Pane {
 	private List<Building> buildings;
 
 	private List<NPC> npcs;
+	
+	private List<MobRan> test;
 
 	private List<Long> frameTimes;
 	private Long lastFrame;
@@ -201,6 +203,7 @@ public class SpielPanel extends Pane {
 			}
 		});
 		npcs = tileM.getNPCSFromMap();
+		test = tileM.getMobFromMap();
 	}
 
 	public void saveMap() {

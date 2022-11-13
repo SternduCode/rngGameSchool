@@ -32,6 +32,7 @@ public class TileManager extends Pane {
 			}, null, x, y, null, null, 0, 0);
 		}
 
+		@SuppressWarnings("unused")
 		@Override
 		public void setTile(Tile tile) {
 			// TODO add row/column
@@ -79,10 +80,20 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
+	
+	private final ObjectProperty<MobRan> requestorM = new ObjectPropertyBase<>() {
+
+		@Override
+		public Object getBean() { return this; }
+
+		@Override
+		public String getName() { return "requestor"; }
+	};
 
 	private double[] startingPosition, exitStartingPosition, exitPosition;
 	private int playerLayer;
-	private final Menu mtiles, mnpcs, mbuildings, mextra;
+	private final Menu mtiles, mnpcs, mbuildings, mextra, mmobs;
+	private List<MobRan> mobs;
 
 	public TileManager(SpielPanel gp) {
 		cm = new ContextMenu();
@@ -90,6 +101,7 @@ public class TileManager extends Pane {
 		mnpcs = new Menu("NPCs");
 		mbuildings = new Menu("Buildings");
 		mextra = new Menu("Extras");
+		mmobs = new Menu("Mob Test");
 		MenuItem save = new MenuItem("save");
 		save.setOnAction(ae -> gp.saveMap());
 		mextra.getItems().add(save);
@@ -121,6 +133,7 @@ public class TileManager extends Pane {
 
 		npcs = new ArrayList<>();
 		buildings = new ArrayList<>();
+		mobs = new ArrayList<>();
 
 		group = new Group();
 		getChildren().add(group);
@@ -257,6 +270,56 @@ public class TileManager extends Pane {
 					e2.printStackTrace();
 				}
 				System.out.println(f);
+			}else if(mi.getParentMenu() == mmobs) {
+				FileChooser fc = new FileChooser();
+			fc.setInitialDirectory(new File("."));
+			fc.getExtensionFilters().add(new ExtensionFilter(
+					"A file containing an Image", "*.png"));
+			File f = fc.showOpenDialog(cm.getScene().getWindow());
+			if (f == null || !f.exists()) return;
+			try {
+				Path p1 = f.toPath();
+				Path p2 = new File("./res/npc/" + f.getName()).toPath();
+				Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println(p2);
+				Image img = new Image(new FileInputStream(p2.toFile()));
+				JsonObject joN = new JsonObject();
+				JsonArray requestedSize = new JsonArray();
+				requestedSize.add(new DoubleValue(img.getWidth()));
+				requestedSize.add(new DoubleValue(img.getHeight()));
+				joN.put("requestedSize", requestedSize);
+				JsonObject textures = new JsonObject();
+				textures.put("default", new StringValue(f.getName()));
+				joN.put("textures", textures);
+				JsonObject npcData = new JsonObject();
+				joN.put("npcData", npcData);
+				joN.put("type", new StringValue("NPC"));
+				joN.put("fps", new DoubleValue(7d));
+				JsonArray position = new JsonArray();
+				position.add(new DoubleValue(
+						requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+				position.add(new DoubleValue(
+						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+				joN.put("position", position);
+				JsonArray originalSize = new JsonArray();
+				originalSize.add(new DoubleValue(img.getWidth()));
+				originalSize.add(new DoubleValue(img.getHeight()));
+				joN.put("originalSize", originalSize);
+
+				NPC n = new NPC(joN, gp, npcs, cm, requestorN);
+				mnpcs.getItems().remove(mi);
+				mnpcs.getItems()
+				.add(new MenuItemWNPC(f.getName(),
+						new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+								(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+								(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
+						n));
+				mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
+				mnpcs.getItems().add(mi);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			System.out.println(f);
 			} else if (mi.getParentMenu() == mtiles) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
@@ -315,7 +378,7 @@ public class TileManager extends Pane {
 			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
 			((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().add(map);
 		}
-		return new Menu[] {mtiles, mnpcs, mbuildings, mextra};
+		return new Menu[] {mtiles, mnpcs, mbuildings, mmobs, mextra};
 	}
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
@@ -465,7 +528,9 @@ public class TileManager extends Pane {
 			buildings.clear();
 			mtiles.getItems().clear();
 			mnpcs.getItems().clear();
+			mmobs.getItems().clear();
 			mbuildings.getItems().clear();
+			mmobs.getItems().clear();
 			playerLayer = 0;
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(new FileInputStream(path));
@@ -599,12 +664,26 @@ public class TileManager extends Pane {
 								(int) n.getFirstImage().getHeight(), 16, 16)),
 						n));
 			}
+			for (Object mob: mobs) {
+				MobRan n = switch (((StringValue) ((JsonObject) mob).get("type")).getValue()) {
+					default -> new MobRan((JsonObject) mob, gp, this.mobs, cm, requestorM);
+				};
+				mmobs.getItems()
+				.add(new MenuItemWMOB(
+						((StringValue) ((JsonObject) ((JsonObject) mob).get("textures")).values().stream()
+								.findFirst().get()).getValue(),
+						new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
+								(int) n.getFirstImage().getHeight(), 16, 16)),
+						n));
+			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));
+			mmobs.getItems().add(new MenuItem("add Texture"));
 			mbuildings.getItems().add(new MenuItem("add Texture"));
 			for (MenuItem mi: mtiles.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi: mnpcs.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi: mbuildings.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi: mmobs.getItems()) mi.setOnAction(this::contextMenu);
 
 		} catch (JsonParseException | FileNotFoundException e) {
 			e.printStackTrace();
@@ -680,6 +759,11 @@ public class TileManager extends Pane {
 			}
 		}
 
+	}
+
+	public List<MobRan> getMobFromMap() {
+		
+		return mobs;
 	}
 
 }
