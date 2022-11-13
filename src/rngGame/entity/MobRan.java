@@ -14,7 +14,7 @@ public class MobRan extends Entity {
 
 	public MobRan(MobRan en, List< MobRan> entities, ContextMenu cm,
 			ObjectProperty<MobRan> requestor) {
-		super(en, 3*60, entities, cm, requestor);
+		super(en, entities, cm, requestor);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -32,12 +32,11 @@ public class MobRan extends Entity {
 			Player p = gpt.getPlayer();
 			pathfinding(p.getX(), p.getY(), gpt);
 		});
-	}
+	} 
 	
 	public Double[] pathfinding (double x, double y, SpielPanel sp) {
-		long tileX;
-		Double hi[] = null;
-		return hi;
+		long tileX =  (long) (x / sp.BgX);
+		long tileY = (long) (y / sp.BgY);
 	}
 	
 	
