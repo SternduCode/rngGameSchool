@@ -39,7 +39,7 @@ public class UndoRedo {
 
 	private UndoRedo() {
 		actions = new ArrayList<>();
-		position = 0;
+		position = -1;
 		Input.getInstance().setKeyHandler("Undo", mod -> {
 			if (mod.isControlPressed()) undo();
 		}, KeyCode.Z, false);
@@ -54,12 +54,12 @@ public class UndoRedo {
 		if (position<actions.size()-1)
 			actions.removeIf(ac -> (actions.indexOf(ac)>position));
 		actions.add(action);
-		position++;
+		redo();
 	}
 
 	public void clearActions() {
 		actions.clear();
-		position = 0;
+		position = -1;
 	}
 
 	public void redo() {// CTRL+Y
@@ -70,7 +70,7 @@ public class UndoRedo {
 	}
 
 	public void undo() {//CTRL+Z
-		if (position>0) {
+		if (position > -1) {
 			actions.get(position).undo();
 			position--;
 		}

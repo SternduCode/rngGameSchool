@@ -19,6 +19,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.main.*;
+import rngGame.main.UndoRedo.UndoRedoActionBase;
 
 public class TileManager extends Pane {
 
@@ -147,8 +148,15 @@ public class TileManager extends Pane {
 				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().getScreenX() - gp.getPlayer().getX());
 				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().getScreenY() - gp.getPlayer().getY());
 			}
-			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
-			else if (e.getSource() instanceof MenuItemWBuilding miwb)
+			if (e.getSource() instanceof MenuItemWTile miwt) {
+				Tile t = requestor.get().getTile();
+				TextureHolder th = requestor.get();
+				UndoRedo.getInstance().addAction(new UndoRedoActionBase(() -> {
+					th.setTile(t);
+				}, () -> {
+					th.setTile(miwt.getTile());
+				}));
+			} else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
