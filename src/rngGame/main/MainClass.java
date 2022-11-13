@@ -43,7 +43,7 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
 
-		SpielPanel gamePanel = new SpielPanel();
+		GamePanel gamePanel = new GamePanel();
 		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
 		Scene gameScene = new Scene(gamePanel);
 		primaryStage.setScene(gameScene);

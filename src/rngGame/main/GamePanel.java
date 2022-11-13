@@ -21,7 +21,7 @@ import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
 
-public class SpielPanel extends Pane {
+public class GamePanel extends Pane {
 
 	class GroupGroup extends Group {
 
@@ -101,7 +101,7 @@ public class SpielPanel extends Pane {
 
 	private final Map<Point2D, Circle> points;
 
-	public SpielPanel() throws FileNotFoundException {
+	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
 		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));

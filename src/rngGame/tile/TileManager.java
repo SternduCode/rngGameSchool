@@ -45,7 +45,7 @@ public class TileManager extends Pane {
 	}
 
 	private String path;
-	private final SpielPanel gp;
+	private final GamePanel gp;
 
 	private final List<Tile> tiles;
 	List<List<Integer>> mapTileNum;
@@ -96,7 +96,7 @@ public class TileManager extends Pane {
 	private final Menu mtiles, mnpcs, mbuildings, mextra, mmobs;
 	private List<MobRan> mobs;
 
-	public TileManager(SpielPanel gp) {
+	public TileManager(GamePanel gp) {
 		cm = new ContextMenu();
 		mtiles = new Menu("Tiles");
 		mnpcs = new Menu("NPCs");

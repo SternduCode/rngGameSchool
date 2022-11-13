@@ -30,7 +30,7 @@ public class Input {
 
 	private GameObject move, resize;
 
-	private SpielPanel gp;
+	private GamePanel gp;
 
 	private Input() {
 		setKeyHandler("ControlDown", mod -> {
@@ -122,7 +122,7 @@ public class Input {
 	}
 
 
-	protected void setSpielPanel(SpielPanel gp) {
+	protected void setSpielPanel(GamePanel gp) {
 		this.gp=gp;
 	}
 
