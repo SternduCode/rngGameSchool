@@ -244,6 +244,8 @@ public class SpielPanel extends Pane {
 
 	public void setMap(String path, double[] position) {
 
+		UndoRedo.getInstance().clearActions();
+
 		loadingScreen.setFitWidth(loadingScreen.getImage().getWidth() * getScalingFactorX());
 		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
