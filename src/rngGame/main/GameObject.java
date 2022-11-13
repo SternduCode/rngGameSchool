@@ -58,9 +58,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 	protected Group collisionBoxViewGroup;
 
-	protected long spriteCounter = 0;
+	protected long animationCounter = 0;
 
-	protected int spriteNum = 0;
+	protected int animationNum = 0;
 	private String lastKey;
 	protected boolean background;
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
@@ -922,7 +922,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			for (Entry<String, Shape> box: this.miscBoxes.entrySet()) {
 				JsonObject jBox = new JsonObject();
 				jBox.put("name", box.getKey());
-				if (box.getValue() instanceof Circle circ) { // TODO
+				if (box.getValue() instanceof Circle circ) {
+					jBox.put("type", "circle");
+					jBox.put("x", (long) circ.getCenterX());
+					jBox.put("y", (long) circ.getCenterY());
+					jBox.put("radius", (long) circ.getRadius());
 				} else if (box.getValue() instanceof Rectangle rect) {
 					jBox.put("type", "rectangle");
 					jBox.put("x", (long) rect.getX());
@@ -1003,15 +1007,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		else
 			collisionBoxViewGroup.setVisible(false);
 
-		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
-			spriteCounter = System.currentTimeMillis();
-			spriteNum++;
-			if (spriteNum >= images.get(currentKey).size()) spriteNum = 0;
-			iv.setImage(images.get(currentKey).get(spriteNum));
+		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
+			animationCounter = System.currentTimeMillis();
+			animationNum++;
+			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
+			iv.setImage(images.get(currentKey).get(animationNum));
 		}
 		if (!lastKey.equals(currentKey)) {
-			if (spriteNum >= images.get(currentKey).size()) spriteNum = 0;
-			iv.setImage(images.get(currentKey).get(spriteNum));
+			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
+			iv.setImage(images.get(currentKey).get(animationNum));
 			lastKey = currentKey;
 			collisionBoxViewGroup.getChildren().clear();
 			collisionBoxViewGroup.getChildren().add(getCollisionBox());
