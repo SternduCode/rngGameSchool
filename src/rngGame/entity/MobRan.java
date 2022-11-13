@@ -1,26 +1,22 @@
 package rngGame.entity;
 
 import java.util.List;
-
 import com.sterndu.json.JsonObject;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import rngGame.buildings.House;
 import rngGame.main.SpielPanel;
-import rngGame.tile.TileManager;
 
 public class MobRan extends Entity {
-
-	public MobRan(MobRan en, List< MobRan> entities, ContextMenu cm,
-			ObjectProperty<MobRan> requestor) {
-		super(en, 3*60, entities, cm, requestor);
-		// TODO Auto-generated constructor stub
-	}
 
 	public MobRan(JsonObject en, SpielPanel gp, List<MobRan> entities,
 			ContextMenu cm, ObjectProperty<MobRan> requestor) {
 		super(en, 3*60, gp, "tmob", entities, cm, requestor);
+		// TODO Auto-generated constructor stub
+	}
+
+	public MobRan(MobRan en, List< MobRan> entities, ContextMenu cm,
+			ObjectProperty<MobRan> requestor) {
+		super(en, entities, cm, requestor);
 		// TODO Auto-generated constructor stub
 	}
 
