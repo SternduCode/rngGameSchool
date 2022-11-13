@@ -12,15 +12,17 @@ import javafx.util.Callback;
 
 public class Ring extends Path {
 
-	private final double x,y,radius,innerRadius;
+	private final double x, y, radiusX, radiusY, innerRadiusX, innerRadiusY;
 	private final Shape ring;
 
-	public Ring(double x, double y, double radius, double innerRadius) {
+	public Ring(double x, double y, double radiusX, double radiusY, double innerRadiusX, double innerRadiusY) {
 		this.x = x;
 		this.y = y;
-		this.radius = radius;
-		this.innerRadius = innerRadius;
-		ring = Shape.subtract(new Circle(x, y, radius), new Circle(x, y, innerRadius));
+		this.radiusX = radiusX;
+		this.radiusY = radiusY;
+		this.innerRadiusX = innerRadiusX;
+		this.innerRadiusY = innerRadiusY;
+		ring = Shape.subtract(new Ellipse(x, y, radiusX, radiusY), new Ellipse(x, y, innerRadiusX, innerRadiusY));
 	}
 
 	@Override
@@ -62,9 +64,13 @@ public class Ring extends Path {
 	@Override
 	public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() { return ring.getCssMetaData(); }
 
-	public double getInnerRadius() { return innerRadius; }
+	public double getInnerRadiusX() { return innerRadiusX; }
 
-	public double getRadius() { return radius; }
+	public double getInnerRadiusY() { return innerRadiusY; }
+
+	public double getRadiusX() { return radiusX; }
+
+	public double getRadiusY() { return radiusY; }
 
 	@Override
 	public Node getStyleableNode() { return ring.getStyleableNode(); }
