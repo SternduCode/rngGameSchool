@@ -64,36 +64,39 @@ public class SpielPanel extends Pane {
 			return new OutList(super.getChildren());
 		}
 	}
-	public final int Bg = 48;
+
+	private final int Bg = 48;
 	public final int BildS = 20;
 	public final int BildH = 11;
-	public final int SpielLaenge = Bg * BildS;
+	public int BgX = Bg, BgY = Bg;
+	public int SpielLaenge = BgX * BildS;
+	public double scalingFactorX = 1, scalingFactorY = 1;
 
-	public final int SpielHoehe = Bg * BildH;
-
+	public int SpielHoehe = BgY * BildH;
 
 	private final int FPS = 80;
 
 	private final ImageView inv;
+
+
 	private final Input input;
+
 	private final Player player;
 	private final TileManager tileM;
 	private final SelectTool selectTool;
 	private final GroupGroup layerGroup;
 	private final Group pointGroup;
-
 	private List<Building> buildings;
-
 	private List<NPC> npcs;
 	
 	private List<MobRan> test;
 
 	private List<Long> frameTimes;
+
 	private Long lastFrame;
+
 	private Double fps = 0d;
-
 	private final ImageView loadingScreen;
-
 	private final Label fpsLabel;
 
 	private final Map<Point2D, Circle> points;
@@ -152,12 +155,20 @@ public class SpielPanel extends Pane {
 
 	public Player getPlayer() { return player; }
 
+	public double getScalingFactorX() { return scalingFactorX; }
+
+	public double getScalingFactorY() { return scalingFactorY; }
+
 	public SelectTool getSelectTool() { return selectTool; }
 
 
 	public TileManager getTileM() { return tileM; }
 
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
+
+	public boolean isInLoadingScreen() {
+		return loadingScreen.getOpacity()>.5;
+	}
 
 	public void reload() {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
@@ -176,7 +187,9 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		player.setLayer(tileM.getPlayerLayer());
 		buildings = tileM.getBuildingsFromMap();
-		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * getScalingFactorX(),
+				tileM.getSpawnPoint().getY() * getScalingFactorY(), 15,
 				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
@@ -191,7 +204,8 @@ public class SpielPanel extends Pane {
 							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
 							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
 									((NumberValue) spawnPosition.get(1)).getValue().longValue());
-							Circle respawn = new Circle(p.getX(), p.getY(), 15,
+							Circle respawn = new Circle(p.getX() * getScalingFactorX(), p.getY() * getScalingFactorY(),
+									15,
 									Color.color(0, 1, 0, .75));
 							points.put(p, respawn);
 							pointGroup.getChildren().add(respawn);
@@ -211,13 +225,32 @@ public class SpielPanel extends Pane {
 		System.out.println("don");
 	}
 
+
+	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
+		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
+				player.getY() * (scaleFactorY / scalingFactorY));
+		scalingFactorX = scaleFactorX;
+		scalingFactorY = scaleFactorY;
+		BgX = (int) (Bg * scaleFactorX);
+		BgY = (int) (Bg * scaleFactorY);
+		SpielLaenge = BgX * BildS;
+		SpielHoehe = BgY * BildH;
+		reload();
+		player.getPlayerImage();
+		player.generateCollisionBox();
+		System.out.println(player.getX() + " " + player.getY());
+	}
+
 	public void setMap(String path) {
 		setMap(path, null);
 	}
 
-
 	public void setMap(String path, double[] position) {
 
+		UndoRedo.getInstance().clearActions();
+
+		loadingScreen.setFitWidth(loadingScreen.getImage().getWidth() * getScalingFactorX());
+		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
 
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
@@ -236,7 +269,8 @@ public class SpielPanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
-		Circle spawn = new Circle(tileM.getSpawnPoint().getX(), tileM.getSpawnPoint().getY(), 15,
+		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * scalingFactorX,
+				tileM.getSpawnPoint().getY() * scalingFactorY, 15,
 				Color.color(0, 1, 0, .75));
 		points.put(tileM.getSpawnPoint(), spawn);
 		pointGroup.getChildren().add(spawn);
@@ -249,7 +283,8 @@ public class SpielPanel extends Pane {
 						JsonObject exit = (JsonObject) jo.get("exit");
 						if (tileM.getPath().endsWith(((StringValue) exit.get("map")).getValue())) {
 							JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
-							Point2D p = new Point2D(((NumberValue) spawnPosition.get(0)).getValue().longValue(),
+							Point2D p = new Point2D(
+									((NumberValue) spawnPosition.get(0)).getValue().longValue(),
 									((NumberValue) spawnPosition.get(1)).getValue().longValue());
 							Circle respawn = new Circle(p.getX(), p.getY(), 15,
 									Color.color(0, 1, 0, .75));
@@ -264,8 +299,11 @@ public class SpielPanel extends Pane {
 		});
 
 		if (position != null)
-			player.setPosition(position);
-		else player.setPosition(tileM.getStartingPosition());
+			player.setPosition(new double[] {position[0] * getScalingFactorX(), position[1] * getScalingFactorY()});
+		else {
+			double[] posi = tileM.getStartingPosition();
+			player.setPosition(new double[] {posi[0] * getScalingFactorX(), posi[1] * getScalingFactorY()});
+		}
 		player.setLayer(tileM.getPlayerLayer());
 
 		new Thread(() -> {
@@ -314,7 +352,7 @@ public class SpielPanel extends Pane {
 		else Platform.runLater(r);
 	}
 
-	public void toggleFpssLabelVisible() {
+	public void toggleFpsLabelVisible() {
 		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
 
@@ -374,8 +412,8 @@ public class SpielPanel extends Pane {
 		}
 
 		for (Entry<Point2D, Circle> point: points.entrySet()) {
-			point.getValue().setCenterX(point.getKey().getX() - player.x + player.getScreenX());
-			point.getValue().setCenterY(point.getKey().getY() - player.y + player.getScreenY());
+			point.getValue().setCenterX(point.getKey().getX() * getScalingFactorX() - player.x + player.getScreenX());
+			point.getValue().setCenterY(point.getKey().getY() * getScalingFactorY() - player.y + player.getScreenY());
 		}
 
 		if (System.getProperty("edit").equals("true")) pointGroup.setVisible(true);

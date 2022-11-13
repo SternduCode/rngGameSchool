@@ -19,6 +19,7 @@ public class House extends Building {
 
 	private final MenuItem mapI;
 	private double openX, openY, openWidth, openHeight, entranceX, entranceY, entranceWidth, entranceHeight;
+
 	public House(House building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
@@ -41,7 +42,6 @@ public class House extends Building {
 		mapI.setOnAction(this::handleContextMenu);
 		house.getItems().add(mapI);
 		if (!getMiscBoxes().containsKey("open")) {
-			System.out.println("op");
 			Polygon entrance = new Polygon();
 			openX = reqWidth / 2 - 65;
 			openY = reqHeight / 2 + 50;
@@ -56,7 +56,6 @@ public class House extends Building {
 			self.setCurrentKey("open");
 		});
 		if (!getMiscBoxes().containsKey("entrance")) {
-			System.out.println("ent");
 			Polygon entrance = new Polygon();
 			entranceX = reqWidth / 2 - 25;
 			entranceY = reqHeight / 2 + 50;

@@ -24,7 +24,7 @@ public class Tile {
 			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, (int) img.getHeight(),
 					(int) img.getHeight());
 			images.add(ImgUtil.resizeImage(wi,
-					(int) wi.getWidth(), (int) wi.getHeight(), gp.Bg, gp.Bg));
+					(int) wi.getWidth(), (int) wi.getHeight(), gp.BgX, gp.BgY));
 		}
 	}
 

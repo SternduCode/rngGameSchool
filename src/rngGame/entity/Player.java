@@ -43,12 +43,8 @@ public class Player extends Entity {
 			collisionBoxes.put(key, new Polygon());
 		});
 
-		double x = 33, y = 45, width = 31, height = 20;
+		generateCollisionBox();
 
-		collisionBoxes.forEach((key, poly) -> {
-			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(x, y, x, y + height, x + width, y + height, x + width, y);
-		});
 		Input.getInstance().setKeyHandler("p", mod -> {
 			p.set(!p.get());
 		}, KeyCode.P, false);
@@ -78,6 +74,19 @@ public class Player extends Entity {
 		}, KeyCode.D, true);
 	}
 
+	public void generateCollisionBox() {
+		double x = 33, y = 45, width = 31, height = 20;
+
+		collisionBoxes.forEach((key, poly) -> {
+			poly.getPoints().clear();
+			poly.setFill(Color.color(1, 0, 1, 0.75));
+			poly.getPoints().addAll(x * gp.getScalingFactorX()-0.5, y * gp.getScalingFactorY()-0.5, x * gp.getScalingFactorX()-0.5,
+					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
+					(y + height) * gp.getScalingFactorY()+0.5, (x + width) * gp.getScalingFactorX()+0.5,
+					y * gp.getScalingFactorY()-0.5);
+		});
+	}
+
 	public void getPlayerImage() {
 
 		try {
@@ -103,7 +112,6 @@ public class Player extends Entity {
 
 	}
 
-
 	public int getScreenX() {
 		return screenX;
 	}
@@ -127,14 +135,12 @@ public class Player extends Entity {
 		setPosition(new double[] {x, y});
 	}
 
-
 	public void setPosition(double[] position) {
 		x = (long) position[0];
 		y = (long) position[1];
 		oldX = x;
 		oldY = y;
 	}
-
 
 	@Override
 	public String toString() {
@@ -150,26 +156,31 @@ public class Player extends Entity {
 	@Override
 	public void update(long milis) {
 
-		Input keyH = Input.getInstance();
-
 		double updateSpeed = speed / 1000 * milis;
 
 		String lastKey = getCurrentKey();
 
+		if (gp.isInLoadingScreen()) {
+			w.set(false);
+			a.set(false);
+			s.set(false);
+			d.set(false);
+		}
+
 		if (w.get()) { // Hoch
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
-			y -= updateSpeed;
+			y -= updateSpeed * gp.getScalingFactorY();
 		} else if (s.get()) { // Runter
 			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
-			y += updateSpeed;
+			y += updateSpeed * gp.getScalingFactorY();
 		} else if (a.get()) { // Links
 			setCurrentKey("left");
-			x -= updateSpeed;
+			x -= updateSpeed * gp.getScalingFactorX();
 		} else if (d.get()) { // Rechts
 			setCurrentKey("right");
-			x += updateSpeed;
+			x += updateSpeed * gp.getScalingFactorX();
 		} else if (lastKey.contains("down")) { // Idle Runter
 			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
 			else setCurrentKey("idledown");
@@ -188,7 +199,6 @@ public class Player extends Entity {
 		getCollisionBox().setTranslateY(y - oldY);
 
 		if (isVisible() && p.get()) setVisible(false);
-
 
 		gp.getBuildings().forEach(b -> {
 			if (b.collides(this)) {
@@ -214,10 +224,6 @@ public class Player extends Entity {
 
 		screenX = (int) (gp.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
 		screenY = (int) (gp.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
-
-		//		shape.setTranslateX(0);
-		//		shape.setTranslateY(0);
-
 
 	}
 }

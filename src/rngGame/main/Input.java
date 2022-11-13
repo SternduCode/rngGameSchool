@@ -4,11 +4,9 @@ import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
-import javafx.stage.*;
-import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import rngGame.buildings.Building;
 import rngGame.tile.TextureHolder;
 
@@ -26,13 +24,11 @@ public class Input {
 
 	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
-	private boolean n, s, r;
+	private boolean n, s;
 
 	private boolean ctrlState, shiftState, altState, superState, capsState, altgrState;
 
 	private GameObject move, resize;
-
-	public List<Image> comp = new ArrayList<>();
 
 	private SpielPanel gp;
 
@@ -75,15 +71,22 @@ public class Input {
 			altgrState = false;
 		}, KeyCode.ALT_GRAPH, true);
 		setKeyHandler("Fullscreen", mod -> {
-			((Stage) gp.getScene().getWindow()).setFullScreenExitHint("");
-			((Stage) gp.getScene().getWindow()).setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-			if (((Stage) gp.getScene().getWindow()).isFullScreen())
-				((Stage) gp.getScene().getWindow()).setFullScreen(false);
-			else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+			toggleFullScreen();
 		}, KeyCode.F11, false);
 		setKeyHandler("ContextMenu", mod -> {
 			// TODO tbd
 		}, KeyCode.CONTEXT_MENU, false);
+		setKeyHandler("AlternateTickUpdate", mod -> {
+			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
+			else System.setProperty("alternateUpdate", "true");
+		}, KeyCode.M, false);
+		setKeyHandler("Reload", mod -> {
+			if (mod.isControlPressed()) if (gp != null)
+				gp.reload();
+		}, KeyCode.R, false);
+		setKeyHandler("ToggleFPSLabel", mod -> {
+			gp.toggleFpsLabelVisible();
+		}, KeyCode.F, false);
 	}
 
 	public static Input getInstance() { return INSTANCE; }
@@ -94,20 +97,8 @@ public class Input {
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
 	}
 
-	private void reload() {
-		if (gp != null)
-			gp.reload();
-	}
-
-
-	private void save(Polygon p) {
-		ctrlState = false;
-		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(new File("./res"));
-		fc.getExtensionFilters().add(new ExtensionFilter(
-				"A file containing the collision box of something", "*.collisionbox"));
-		File f = fc.showSaveDialog(p.getScene().getWindow());
-		if (f == null) return;
+	private void save(Polygon t, String path) {
+		File f = new File("./res/collisions/" + path);
 		if (!f.exists()) try {
 			f.createNewFile();
 		} catch (IOException e) {
@@ -116,9 +107,11 @@ public class Input {
 		try {
 			RandomAccessFile raf = new RandomAccessFile(f, "rws");
 			raf.seek(0l);
-			raf.writeInt(p.getPoints().size());
-			for (Double element: p.getPoints()) raf.writeDouble(element);
-			raf.setLength(4l + p.getPoints().size() * 8l);
+			raf.writeInt(t.getPoints().size());
+			boolean s = false;
+			for (Double element: t.getPoints())
+				raf.writeDouble((long) (element / ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY())));
+			raf.setLength(4l + t.getPoints().size() * 8l);
 			raf.close();
 
 		} catch (IOException e) {
@@ -128,13 +121,12 @@ public class Input {
 		System.out.println(f);
 	}
 
+
 	protected void setSpielPanel(SpielPanel gp) {
 		this.gp=gp;
 	}
 
-	public void dragDetected(MouseEvent me) {
-		System.out.println("Drag " + me);
-	}
+	public void dragDetected(MouseEvent me) {}
 
 	public boolean isAltgrPressed() { return altgrState; }
 
@@ -149,63 +141,50 @@ public class Input {
 	public boolean isSuperPressed() { return superState; }
 
 	public void keyPressed(KeyEvent e) {
+		if (!gp.isInLoadingScreen()) {
+			KeyCode code = e.getCode();
 
-		KeyCode code = e.getCode();
+			ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+					altgrState);
 
-		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
-				altgrState);
+			if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-		if (keyDownHandlers.containsKey(code)) keyDownHandlers.get(code).forEach(con -> con.accept(modKeysState));
+			if (code == KeyCode.N) n = true;
 
-		if (code == KeyCode.N) n = true;
-
-		if (code == KeyCode.S) s = true;
-
-		if (code == KeyCode.R) r = true;
-
-		if (ctrlState && r) reload();
-
+			if (code == KeyCode.S) s = true;
+		}
 
 	}
 
 	public void keyReleased(KeyEvent e) {
+		if (!gp.isInLoadingScreen()) {
 
-		KeyCode code = e.getCode();
+			KeyCode code = e.getCode();
 
-		ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
-				altgrState);
+			ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
+					altgrState);
 
-		if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
+			if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-		if (code == KeyCode.L) print();
+			if (e.getText().equalsIgnoreCase("ö")) saveMap();
 
-		if (e.getText().equalsIgnoreCase("ö")) saveMap();
+			if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
+			else System.setProperty("edit", "true");
 
-		if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
-		else System.setProperty("edit", "true");
+			if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
+			else System.setProperty("coll", "true");
 
-		if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
-		else System.setProperty("coll", "true");
+			if (code == KeyCode.N) n = false;
 
-		if (code == KeyCode.N) n = false;
-
-		if (code == KeyCode.S) s = false;
-
-		if (code == KeyCode.R) r = false;
-
-		if (code == KeyCode.F) gp.toggleFpssLabelVisible();
-
-		if (code == KeyCode.M)
-			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
-			else System.setProperty("alternateUpdate", "true");
-
+			if (code == KeyCode.S) s = false;
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {}
 
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
-		if (gp != null) if (move != null) {
+		if (gp != null && !gp.isInLoadingScreen()) if (move != null) {
 			move.setX((long) (me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX() - move.getWidth() / 2));
 			move.setY((long) (me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY() - move.getHeight() / 2));
 		}
@@ -231,7 +210,7 @@ public class Input {
 	public void mouseMoved(MouseEvent me) {
 		if (gp != null) if (!gp.getSelectTool().isDragging() && !gp.getTileM().getCM().isShowing())
 			if (System.getProperty("edit").equals("true")) gp.getSelectTool().drawOutlines(me);
-		else gp.getSelectTool().undrawOutlines();
+			else gp.getSelectTool().undrawOutlines();
 	}
 
 	public void mouseReleased(MouseEvent me) {
@@ -248,30 +227,29 @@ public class Input {
 						if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 						t.getTile().poly.add(me.getX() - t.getLayoutX());
 						t.getTile().poly.add(me.getY() - t.getLayoutY());
-					} else if (ctrlState && s) save(t.getPoly());
-					else if (ctrlState && n) newC(t.getPoly());
+					} else if (ctrlState && s) {
+						String[] sp = t.getTile().name.split("[.]");
+						save(t.getPoly(),
+								gp.getTileM().getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox");
+					} else if (ctrlState && n) newC(t.getPoly());
 			} else
 				if (target instanceof Building b
 						&& System.getProperty("coll").equals("true"))
 					if ((!ctrlState || !s) && (!ctrlState || !n))
-						b.getCollisionBox().getPoints().addAll(me.getX() - b.getLayoutX(), me.getY() - b.getLayoutY());
-					else if (ctrlState && s) save(b.getCollisionBox());
-					else if (ctrlState && n) newC(b.getCollisionBox());
+						b.getCollisionBox().getPoints().addAll((double) Math.round(me.getX() - b.getLayoutX()),
+								(double) Math.round(me.getY() - b.getLayoutY()));
+					else if (ctrlState && s) {
+						String[] sp = b.textureFiles.get(b.getCurrentKey()).split("[.]");
+						save(b.getCollisionBox(), b.directory + "/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox");
+					} else if (ctrlState && n) newC(b.getCollisionBox());
 		}
 	}
 
 	public void moveGameObject(GameObject go) {
 		move = go;
-	}
-
-	public void print() {
-		for (Image img:comp) {
-			long result = 1;
-
-			for (int i =0;i<img.getWidth();i++)for (int j=0;j<img.getHeight();j++)
-				result = 31 * result + img.getPixelReader().getArgb(i, j);
-			System.out.println(result);
-		}
 	}
 
 	public void removeKeyHandler(String name) {
@@ -327,6 +305,21 @@ public class Input {
 
 	public void stopResizeingGameObject(GameObject go) {
 		resize = null;
+	}
+
+	public void toggleFullScreen() {
+		double scaleFactorX, scaleFactorY;
+		scaleFactorX = gp.getScene().getWidth();
+		scaleFactorY = gp.getScene().getHeight();
+		if (((Stage) gp.getScene().getWindow()).isFullScreen())
+			((Stage) gp.getScene().getWindow()).setFullScreen(false);
+		else((Stage) gp.getScene().getWindow()).setFullScreen(true);
+		if (gp.getScalingFactorX() > 1) scaleFactorX = 1;
+		else scaleFactorX = gp.getScene().getWidth() / scaleFactorX;
+		if (gp.getScalingFactorY() > 1) scaleFactorY = 1;
+		else scaleFactorY = gp.getScene().getHeight() / scaleFactorY;
+		System.out.println(scaleFactorX + " " + scaleFactorY);
+		gp.scaleTextures(scaleFactorX, scaleFactorY);
 	}
 
 	@Override

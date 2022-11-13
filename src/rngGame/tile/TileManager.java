@@ -19,6 +19,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.main.*;
+import rngGame.main.UndoRedo.UndoRedoActionBase;
 
 public class TileManager extends Pane {
 
@@ -107,7 +108,11 @@ public class TileManager extends Pane {
 		mextra.getItems().add(save);
 
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
-		backToSpawn.setOnAction(ae -> gp.getPlayer().setPosition(getStartingPosition()));
+		backToSpawn.setOnAction(ae -> {
+			double[] posi = getStartingPosition();
+			gp.getPlayer()
+			.setPosition(new double[] {posi[0] * gp.getScalingFactorX(), posi[1] * gp.getScalingFactorY()});
+		});
 		mextra.getItems().add(backToSpawn);
 
 		Menu maps = new Menu("Maps");
@@ -156,8 +161,15 @@ public class TileManager extends Pane {
 				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().getScreenX() - gp.getPlayer().getX());
 				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().getScreenY() - gp.getPlayer().getY());
 			}
-			if (e.getSource() instanceof MenuItemWTile miwt) requestor.get().setTile(miwt.getTile());
-			else if (e.getSource() instanceof MenuItemWBuilding miwb)
+			if (e.getSource() instanceof MenuItemWTile miwt) {
+				Tile t = requestor.get().getTile();
+				TextureHolder th = requestor.get();
+				UndoRedo.getInstance().addAction(new UndoRedoActionBase(() -> {
+					th.setTile(t);
+				}, () -> {
+					th.setTile(miwt.getTile());
+				}));
+			} else if (e.getSource() instanceof MenuItemWBuilding miwb)
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
@@ -325,15 +337,17 @@ public class TileManager extends Pane {
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
 						"A file containing an Image", "*.png"));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
 					Path p1 = f.toPath();
-					Path p2 = new File("./res/" + dir + "/" + f.getName()).toPath();
+					Path p2 = new File("./res/" + getDir() + "/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
 					Tile t = new Tile(f.getName(),
-							new FileInputStream("./res/" + dir + "/" + f.getName()),
+							new FileInputStream("./res/" + getDir() + "/" + f.getName()),
 							gp);
 					tiles.add(t);
 					mtiles.getItems().remove(mi);
@@ -359,6 +373,10 @@ public class TileManager extends Pane {
 
 
 	public ContextMenu getCM() { return cm; }
+
+	public String getDir() {
+		return dir;
+	}
 
 	public String getExitMap() { return exitMap; }
 
@@ -404,8 +422,8 @@ public class TileManager extends Pane {
 	public double[] getStartingPosition() { return startingPosition; }
 
 	public TextureHolder getTileAt(double x, double y) {
-		int tx = (int) Math.floor(x / gp.Bg);
-		int ty = (int) Math.floor(y / gp.Bg);
+		int tx = (int) Math.floor(x / gp.BgX);
+		int ty = (int) Math.floor(y / gp.BgY);
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
@@ -483,7 +501,7 @@ public class TileManager extends Pane {
 				startingPosition.clear();
 				startingPosition.add(this.startingPosition[0]);
 				startingPosition.add(this.startingPosition[1]);
-				map.put("dir", dir);
+				map.put("dir", getDir());
 				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
 				for (List<TextureHolder> mapi: this.map) {
@@ -600,7 +618,7 @@ public class TileManager extends Pane {
 			}
 			for (Object texture: textures) try {
 				Tile t = new Tile(((StringValue) texture).getValue(),
-						new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
+						new FileInputStream("./res/" + getDir() + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tiles.add(t);
 				mtiles.getItems()
@@ -609,22 +627,24 @@ public class TileManager extends Pane {
 								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
-				if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				if (new File("./res/collisions/" + getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
 					try {
-						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + getDir() + "/"
 								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 								+ ".collisionbox"), "rws");
 						raf.seek(0l);
 						int length = raf.readInt();
 						t.poly = new ArrayList<>();
-						for (int i = 0; i < length; i++) t.poly.add(raf.readDouble());
+						boolean s = false;
+						for (int i = 0; i < length; i++)
+							t.poly.add(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 			} catch (NullPointerException e) {
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
-				new IOException(dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
+				new IOException(getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1)), e)
 				.printStackTrace();
 			}
 			this.startingPosition = new double[] {
@@ -642,6 +662,8 @@ public class TileManager extends Pane {
 			for (Object building: buildings) {
 				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
 					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
+					case "ContractsTable" -> new ContractsTable((JsonObject) building, gp, this.buildings, cm,
+							requestorB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
 				};
 				mbuildings.getItems().add(new MenuItemWBuilding(
@@ -695,11 +717,12 @@ public class TileManager extends Pane {
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int worldX = (int) exitPosition[0];
-			int worldY = (int) exitPosition[1];
+			int worldX = (int) (exitPosition[0] * gp.getScalingFactorX());
+			int worldY = (int) (exitPosition[1] * gp.getScalingFactorY());
 
-			if (worldX + gp.Bg / 2 - p.getX() < 105 && worldX + gp.Bg / 2 - p.getX() > -45 &&
-					worldY + gp.Bg / 2 - p.getY() < 25 && worldY + gp.Bg / 2 - p.getY() > 0)
+			if (worldX + gp.BgX / 2 - p.getX() < 105 * gp.getScalingFactorX()
+					&& worldX + gp.BgX / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
+					worldY + gp.BgY / 2 - p.getY() < 25 * gp.getScalingFactorY() && worldY + gp.BgY / 2 - p.getY() > 0)
 				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
@@ -709,18 +732,18 @@ public class TileManager extends Pane {
 		while (worldRow < mapTileNum.size() && worldCol < mapTileNum.get(worldRow).size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
-			int worldX = worldCol * gp.Bg;
-			int worldY = worldRow * gp.Bg;
+			int worldX = worldCol * gp.BgX;
+			int worldY = worldRow * gp.BgY;
 			double screenX = worldX - p.getX() + p.getScreenX();
 			double screenY = worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldCol)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX()
-					&& worldX - p.getSize() * 1.5 < p.getX() + p.getScreenX()
-					&& worldY + p.getSize() > p.getY() - p.getScreenY()
-					&& worldY - p.getSize() < p.getY() + p.getScreenY()) {
+			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.BgX -
+					p.getSize() * 1.5 < p.getX() + p.getScreenX()
+					&& worldY + gp.BgY + p.getSize() > p.getY() - p.getScreenY()
+					&& worldY - gp.BgY - p.getSize() < p.getY() + p.getScreenY()) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

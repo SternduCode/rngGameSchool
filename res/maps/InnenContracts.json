@@ -69,7 +69,16 @@
 				257.000,
 				150.000
 			],
-			"type" : "Building",
+			"miscBoxes" : [
+				{
+					"name" : "table",
+					"x" : 55,
+					"y" : 90,
+					"type" : "circle",
+					"radius" : 10
+				}
+			],
+			"type" : "ContractsTable",
 			"originalSize" : [
 				64,
 				64
