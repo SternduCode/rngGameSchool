@@ -7,10 +7,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.*;
+import rngGame.tile.TileManager;
+
+/**
+ *
+ * A class that defines the Player
+ *
+ * @author Sterndu
+ * @author ICEBLUE
+ * @author neo30
+ */
 
 public class Player extends Entity {
 
-	private final int size = 64;
+	private final int size = 64; // The value that reqHeight will be set to
 
 	private final AtomicBoolean p = new AtomicBoolean(false);
 	private final AtomicBoolean w = new AtomicBoolean(false);
@@ -18,32 +28,47 @@ public class Player extends Entity {
 	private final AtomicBoolean s = new AtomicBoolean(false);
 	private final AtomicBoolean d = new AtomicBoolean(false);
 
-	private int screenX;
-	private int screenY;
-	private double oldX, oldY;
+	private int screenX; // the players X position in the window
+	private int screenY; // the players Y position in the window
+	private double oldX, oldY; // used for collision detection
 
+	/**
+	 * Player is not defined in map file but some attributes of it are
+	 *
+	 * @param gp        A reference to the {@link SpielPanel}
+	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu}
+	 *                  via {@link SpielPanel#getTileM()}.
+	 * @param requestor Is used to know on what the {@link TileManager#getCM()
+	 *                  ContextMenu} was triggered
+	 */
 	public Player(SpielPanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
 		super(null, 3 * 60, gp, "player", null, cm, requestor);
 		setCurrentKey("down");
 
 		fps = 10.5;
 
-		reqWidth = (int) ((reqHeight = getSize()) * 1.5);
+		reqWidth = (int) ((reqHeight = getSize()) * 1.5); // Set reqHeight to 64 and reqWidth to 96; Player size is
+		// rectangular in this case
 
 		this.gp = gp;
 
-		screenX = gp.SpielLaenge / 2 - getSize() / 2;
+		screenX = gp.SpielLaenge / 2 - getSize() / 2; // Place the player in the middle of the screen
 		screenY = gp.SpielHoehe / 2 - getSize() / 2;
 
-		setPosition(13, 37);
+		setPosition(0, 0); // Put player on upper left corner of the map; can be overridden in map file
 
 		getPlayerImage();
 
 		textureFiles.forEach((key, file) -> {
-			collisionBoxes.put(key, new Polygon());
+			collisionBoxes.put(key, new Polygon()); // Add collisionBoxes for all textures
 		});
 
 		generateCollisionBox();
+
+		/*
+		 * KeyHandlers for: P > sets the Player invisible W > move forward A > move left
+		 * S > move down D > move right
+		 */
 
 		Input.getInstance().setKeyHandler("p", mod -> {
 			p.set(!p.get());
@@ -74,6 +99,9 @@ public class Player extends Entity {
 		}, KeyCode.D, true);
 	}
 
+	/**
+	 * Sets all collisionBoxes to the correct size and position
+	 */
 	public void generateCollisionBox() {
 		double x = 33, y = 45, width = 31, height = 20;
 
@@ -90,8 +118,12 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			origHeight = 64;
+			origHeight = reqHeight;
 			origWidth = reqWidth;
+
+			/*
+			 * Load the textures for all states of the player
+			 */
 
 			getAnimatedImages("idledown", "Stehen.png");
 			getAnimatedImages("idledownL", "Stehen2.png");
@@ -112,29 +144,56 @@ public class Player extends Entity {
 
 	}
 
+	/**
+	 * @return the players X position in the window
+	 */
 	public int getScreenX() {
 		return screenX;
 	}
 
+	/**
+	 * @return the players Y position in the window
+	 */
 	public int getScreenY() {
 		return screenY;
 	}
 
+	/**
+	 * @return the height of the Player texture
+	 */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * @return the players X position in the map
+	 */
 	@Override
 	public double getX() { return (long) x; }
 
+	/**
+	 * @return the players Y position in the map
+	 */
 	@Override
 	public double getY() { return (long) y; }
 
+	/**
+	 * Sets the players map position to {@code x} and {@code y}
+	 *
+	 * @param x the players X position in the map
+	 * @param y the players Y position in the map
+	 */
 	@Override
 	public void setPosition(double x, double y) {
 		setPosition(new double[] {x, y});
 	}
 
+	/**
+	 * Sets the players map position to {@code x} and {@code y}
+	 *
+	 * @param position an array containing the players x ({@code position[0]}) and y
+	 *                 ({@code position[1]}) positions
+	 */
 	public void setPosition(double[] position) {
 		x = (long) position[0];
 		y = (long) position[1];
@@ -144,12 +203,15 @@ public class Player extends Entity {
 
 	@Override
 	public String toString() {
-		return "Player [size=" + getSize() + ", screenX=" + getScreenX() + ", screenY=" + getScreenY() + ", speed="
-				+ speed + ", x=" + x + ", y=" + y + ", fps=" + fps + ", images=" + images
-				+ ", collisionBoxes=" + collisionBoxes + ", currentKey=" + getCurrentKey() + ", textureFiles="
-				+ textureFiles + ", reqWidth=" + reqWidth + ", reqHeight=" + reqHeight + ", origWidth="
-				+ origWidth + ", origHeight=" + origHeight + ", spriteCounter=" + spriteCounter
-				+ ", spriteNum=" + spriteNum + ", background=" + background + "]";
+		return "Player [size=" + getSize() + ", p=" + p + ", w=" + w + ", a=" + a + ", s=" + s
+				+ ", d=" + d + ", screenX=" + getScreenX() + ", screenY=" + getScreenY() + ", oldX=" + oldX
+				+ ", oldY=" + oldY + ", speed=" + getSpeed() + ", x=" + getX() + ", y=" + getY() + ", fps="
+				+ fps + ", images=" + getImages() + ", collisionBoxes=" + collisionBoxes + ", directory="
+				+ directory + ", layer=" + getLayer() + ", extraData=" + extraData + ", slave=" + isSlave()
+				+ ", textureFiles=" + textureFiles + ", reqWidth=" + getReqWidth() + ", reqHeight="
+				+ getReqHeight() + ", origWidth=" + getOrigWidth() + ", origHeight=" + getOrigHeight()
+				+ ", animationCounter=" + animationCounter + ", animationNum=" + animationNum
+				+ ", background=" + isBackground() + "]";
 	}
 
 
