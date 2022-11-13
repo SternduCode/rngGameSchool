@@ -54,7 +54,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected Map<String, String> textureFiles;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 
-	protected GamePanel gp;
+	protected GamePanel gamepanel;
 
 	protected Group collisionBoxViewGroup;
 
@@ -92,7 +92,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				((ObjectProperty<GameObject>) requestor).set(this);
 				cm.getItems().clear();
 				cm.getItems().addAll(getMenus());
-				cm.show(gp.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
+				cm.show(gamepanel.getViewGroups().get(layer), e.getScreenX(), e.getScreenY());
 			}
 		});
 
@@ -127,7 +127,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			miscBoxHandler.put(k, v);
 		});
 
-		gp = gameObject.gp;
+		gamepanel = gameObject.gamepanel;
 		directory = gameObject.directory;
 		background = gameObject.background;
 		currentKey = gameObject.currentKey;
@@ -200,7 +200,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public GameObject(JsonObject gameObject, GamePanel gp, String directory, List<? extends GameObject> gameObjects,
 			ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
-		this.gp = gp;
+		this.gamepanel = gp;
 		this.directory = directory;
 
 		images = new HashMap<>();
@@ -712,7 +712,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	}
 
 	protected void addToView() {
-		gp.getViewGroups().get(layer).getChildren().add(this);
+		gamepanel.getViewGroups().get(layer).getChildren().add(this);
 	}
 
 
@@ -724,8 +724,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			for (int i = 0; i < img.getWidth(); i += origWidth) {
 				WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
 				li.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gp.getScalingFactorX()),
-						(int) (reqHeight * gp.getScalingFactorY())));
+						(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
+						(int) (reqHeight * gamepanel.getScalingFactorY())));
 			}
 			String[] sp = path.split("[.]");
 			Polygon collisionBox = collisionBoxes.get(key);
@@ -740,7 +740,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					int length = raf.readInt();
 					boolean s = false;
 					for (int i = 0; i < length; i++) collisionBox.getPoints()
-					.add((double)(long)(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY())));
+					.add((double)(long)(raf.readDouble() * ((s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -858,8 +858,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	}
 
 	public void remove() {
-		if (gp.getViewGroups().get(layer).getChildren().contains(this))
-			gp.getViewGroups().get(layer).getChildren().remove(this);
+		if (gamepanel.getViewGroups().get(layer).getChildren().contains(this))
+			gamepanel.getViewGroups().get(layer).getChildren().remove(this);
 		removeCallbacks.forEach(Runnable::run);
 	}
 
@@ -869,8 +869,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	}
 
 	public void setLayer(int layer) {
-		if (gp.getViewGroups().get(this.layer).getChildren().contains(this))
-			gp.getViewGroups().get(this.layer).getChildren().remove(this);
+		if (gamepanel.getViewGroups().get(this.layer).getChildren().contains(this))
+			gamepanel.getViewGroups().get(this.layer).getChildren().remove(this);
 		this.layer = layer;
 		addToView();
 	}
@@ -932,8 +932,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					jBox.put("type", "circle");
 					jBox.put("x", (long) circ.getCenterX());
 					jBox.put("y", (long) circ.getCenterY());
-					jBox.put("radius", (long) ((circ.getRadiusX() / gp.getScalingFactorX()
-							+ circ.getRadiusY() / gp.getScalingFactorY()) / 2.0));
+					jBox.put("radius", (long) ((circ.getRadiusX() / gamepanel.getScalingFactorX()
+							+ circ.getRadiusY() / gamepanel.getScalingFactorY()) / 2.0));
 				} else if (box.getValue() instanceof Rectangle rect) {
 					jBox.put("type", "rectangle");
 					jBox.put("x", (long) rect.getX());
@@ -1004,10 +1004,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 	public void update(long milis) {
 
-		Player p = gp.getPlayer();
+		Player p = gamepanel.getPlayer();
 
 		for (Entry<String, Shape> box: miscBoxes.entrySet())
-			if (p.collides(() -> box.getValue())) miscBoxHandler.get(box.getKey()).accept(gp, this);
+			if (p.collides(() -> box.getValue())) miscBoxHandler.get(box.getKey()).accept(gamepanel, this);
 
 		if (System.getProperty("coll").equals("true"))
 			collisionBoxViewGroup.setVisible(true);
