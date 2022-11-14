@@ -52,6 +52,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected List<GameObject> slaves;
 	protected GameObject master;
 	protected Map<String, String> textureFiles;
+	public Map<String, String> getTextureFiles() {
+		return textureFiles;
+	}
+
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 
 	protected GamePanel gamepanel;

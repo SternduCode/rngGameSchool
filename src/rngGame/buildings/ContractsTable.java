@@ -54,13 +54,22 @@ public class ContractsTable extends Building {
 
 		Input.getInstance().setKeyHandler("contractbackround", mod -> {
 			if(inkreis) {
-				if ((iftest = !iftest)) contractBackround.setVisible(true);
-				else contractBackround.setVisible(false);
+				if ((iftest = !iftest)) {
+					gamepanel.setBlockUserInputs(true);
+					contractBackround.setVisible(true);
+				}
+				else {
+					contractBackround.setVisible(false);
+					gamepanel.setBlockUserInputs(false);
+				}
 			}
 		}, KeyCode.ENTER, false);
 
 		getMiscBoxHandler().put("table", (gpt, self) -> {
 			inkreis = true;
+			gamepanel.getBuildings().parallelStream().filter(b -> b.getTextureFiles().values().contains("CTischCircle.png")).forEach(b -> {
+				b.setCurrentKey("open");
+			});
 		});
 	}
 	@Override
@@ -69,6 +78,9 @@ public class ContractsTable extends Building {
 		super.update(milis);
 		if(!inkreis) {
 			iftest = false;
+			gamepanel.getBuildings().parallelStream().filter(b -> b.getTextureFiles().values().contains("CTischCircle.png")).forEach(b -> {
+				b.setCurrentKey("default");
+			});
 			contractBackround.setVisible(false);
 			gamepanel.getChildren().remove(contractBackround);
 		} else {
@@ -77,5 +89,6 @@ public class ContractsTable extends Building {
 			if(!gamepanel.getChildren().contains(contractBackround)) 
 				gamepanel.getChildren().add(contractBackround);
 		}
+		
 	}
-}
+}              

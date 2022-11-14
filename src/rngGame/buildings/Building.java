@@ -46,7 +46,6 @@ public class Building extends GameObject {
 	@Override
 	public void update(long milis) {
 		super.update(milis);
-
 		if (isVisible() && b.get()) setVisible(false);
 	}
 
