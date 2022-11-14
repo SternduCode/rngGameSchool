@@ -80,7 +80,7 @@
 					"x" : 55,
 					"y" : 85,
 					"type" : "circle",
-					"radius" : 5.00000
+					"radius" : 5
 				}
 			],
 			"layer" : [
@@ -317,8 +317,8 @@
 				7.00000
 			],
 			"position" : [
-				160.000,
-				214.000
+				165.000,
+				215.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -367,7 +367,8 @@
 				32
 			],
 			"textures" : {
-				"default" : "CTischCircle.png"
+				"default" : "CTischCircle.png",
+				"open" : "CTischCircleOpen.png"
 			},
 			"extraData" : [
 				{
