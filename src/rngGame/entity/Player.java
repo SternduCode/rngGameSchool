@@ -257,8 +257,8 @@ public class Player extends Entity {
 		setLayoutX(getScreenX());
 		setLayoutY(getScreenY());
 
-		getCollisionBox().setTranslateX(x - oldX);
-		getCollisionBox().setTranslateY(y - oldY);
+		getCollisionBox().setTranslateX((x - oldX) * 2);
+		getCollisionBox().setTranslateY((y - oldY) * 2);
 
 		if (isVisible() && p.get()) setVisible(false);
 
