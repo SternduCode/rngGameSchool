@@ -52,10 +52,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected List<GameObject> slaves;
 	protected GameObject master;
 	protected Map<String, String> textureFiles;
-	public Map<String, String> getTextureFiles() {
-		return textureFiles;
-	}
-
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 
 	protected GamePanel gamepanel;
@@ -65,6 +61,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected long animationCounter = 0;
 
 	protected int animationNum = 0;
+
 	private String lastKey;
 	protected boolean background;
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
@@ -204,7 +201,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public GameObject(JsonObject gameObject, GamePanel gp, String directory, List<? extends GameObject> gameObjects,
 			ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
-		this.gamepanel = gp;
+		gamepanel = gp;
 		this.directory = directory;
 
 		images = new HashMap<>();
@@ -492,7 +489,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 		addToView();
 	}
-
 	private void handleContextMenu(ActionEvent e) {
 		MenuItem source = (MenuItem) e.getSource();
 		ContextMenu cm = source.getParentMenu().getParentPopup();
@@ -719,7 +715,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		gamepanel.getViewGroups().get(layer).getChildren().add(this);
 	}
 
-
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		try {
@@ -754,7 +749,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		}
 		return li;
 	}
+
 	protected Map<String, BiConsumer<GamePanel, GameObject>> getMiscBoxHandler() { return miscBoxHandler; }
+
 	public void addMiscBox(String key, Shape box, BiConsumer<GamePanel, GameObject> handler) {
 		box.setStroke(Color.color(1, 1, 0, .75));
 		box.setFill(Color.TRANSPARENT);
@@ -782,7 +779,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		}
 		getChildren().add(box);
 	}
-
 	public boolean collides(Collidable collidable) {
 		if (getCollisionBox().getPoints().size() > 0 && !collidable.getCollisionBox().getLayoutBounds().isEmpty()) {
 			Shape intersect = Shape.intersect(collidable.getCollisionBox(), getCollisionBox());
@@ -798,6 +794,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public String getCurrentKey() { return currentKey; }
 
 	public Image getFirstImage() { return images.values().stream().findFirst().get().get(0); }
+
 	public Map<String, List<Image>> getImages() { return images; }
 	public int getLayer() { return layer; }
 	public List<Menu> getMenus() {
@@ -829,11 +826,14 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		return miscBoxes;
 	}
 	public int getOrigHeight() { return origHeight; }
-
 	public int getOrigWidth() { return origWidth; }
-	public int getReqHeight() { return reqHeight; }
 
+	public int getReqHeight() { return reqHeight; }
 	public int getReqWidth() { return reqWidth; }
+
+	public Map<String, String> getTextureFiles() {
+		return textureFiles;
+	}
 
 	public double getTextureHeight() {
 		return iv.getImage() != null ? iv.getImage().getHeight() : getHeight();
