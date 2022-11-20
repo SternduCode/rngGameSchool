@@ -87,10 +87,10 @@ public class ContractsTable extends Building {
 				TranslateTransition tt = new TranslateTransition(Duration.millis(1000), p1);
 				tt.setFromX(gamepanel.SpielLaenge*-index);
 				tt.setToX(-gamepanel.SpielLaenge-gamepanel.SpielLaenge*index);
-				index++;
 				TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackround);
 				tth.setFromX((gamepanel.SpielLaenge*-index)/2);
 				tth.setToX((-gamepanel.SpielLaenge-(gamepanel.SpielLaenge*index))/2);
+				index++;
 				tt.play();
 				tth.play();
 			});
@@ -98,10 +98,10 @@ public class ContractsTable extends Building {
 				TranslateTransition tt = new TranslateTransition(Duration.millis(1000), p1);
 				tt.setFromX(gamepanel.SpielLaenge*-index);
 				tt.setToX(gamepanel.SpielLaenge+gamepanel.SpielLaenge*-index);
-				index--;
 				TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackround);
 				tth.setFromX((gamepanel.SpielLaenge*-index)/2);
 				tth.setToX((gamepanel.SpielLaenge+(gamepanel.SpielLaenge*-index))/2);
+				index--;
 				tt.play();
 				tth.play();
 			});
@@ -165,6 +165,7 @@ public class ContractsTable extends Building {
 					buttonR.setVisible(false);
 					buttonL.setVisible(false);
 					gamepanel.setBlockUserInputs(false);
+					
 				}
 			}
 		}, KeyCode.ENTER, false);
@@ -192,7 +193,11 @@ public class ContractsTable extends Building {
 			gamepanel.getChildren().remove(buttonL);
 			
 			
+			
+			
+			
 		} else {
+			
 			contractBackround.setY(gamepanel.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if(!gamepanel.getChildren().contains(contractBackround)) 
 				gamepanel.getChildren().add(contractBackround);
