@@ -1,6 +1,9 @@
 package rngGame.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import com.sterndu.json.JsonObject;
 
@@ -8,6 +11,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import rngGame.buildings.House;
 import rngGame.main.SpielPanel;
+import rngGame.tile.TextureHolder;
 import rngGame.tile.TileManager;
 
 public class MobRan extends Entity {
@@ -23,21 +27,39 @@ public class MobRan extends Entity {
 		super(en, 3*60, gp, "tmob", entities, cm, requestor);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public void init() {
-		getMiscBoxHandler().put("fight", (gpt,self)->{
-			
-		});
-		getMiscBoxHandler().put("visible", (gpt,self)->{
-			Player p = gpt.getPlayer();
-			pathfinding(p.getX(), p.getY(), gpt);
-		});
-	} 
-	
+        getMiscBoxHandler().put("fight", (gpt,self)->{
+
+        });
+        getMiscBoxHandler().put("visible", (gpt,self)->{
+            Player p = gpt.getPlayer();
+            pathfinding(p.getX(), p.getY(), gpt);
+        });
+    }
+	private record PathElement(int x, int y, int distance) {};
 	public Double[] pathfinding (double x, double y, SpielPanel sp) {
-		long tileX =  (long) (x / sp.BgX);
-		long tileY = (long) (y / sp.BgY);
-	}
+        int tileX = (int) (x / sp.BgX);
+        int tileY = (int) (y / sp.BgY);
+
+        List<List<TextureHolder>> map = sp.getTileM().getMap();
+        
+        Stream<PathElement> stream = Stream.of(new PathElement(tileX, tileY, 0));
+        for (int i = 0; i < 11; i++) stream=stream.mapMulti((PathElement pe, Consumer<PathElement> out) -> {
+            out.accept(pe);
+            if (map.get(pe.y()).get(pe.x()+1).getPoly().getPoints().size()>0) out.accept(new PathElement(pe.x() + 1, pe.y(), pe.distance() + 1));
+            if (map.get(pe.y()).get(pe.x()-1).getPoly().getPoints().size()>0) out.accept(new PathElement(pe.x() - 1, pe.y(), pe.distance() + 1));
+            if (map.get(pe.y()-1).get(pe.x()).getPoly().getPoints().size()>0) out.accept(new PathElement(pe.x(), pe.y() - 1, pe.distance() + 1));
+            if (map.get(pe.y()+1).get(pe.x()).getPoly().getPoints().size()>0) out.accept(new PathElement(pe.x(), pe.y() + 1, pe.distance() + 1));
+        }).sorted((a, b) -> {
+            if (a.x() == b.x()) {
+                if (a.y() == b.y()) return a.distance() < b.distance() ? -1 : 1;
+                else return a.y() < b.y() ? -1 : 1;
+            } else return a.x() < b.x() ? -1 : 1;
+        }).distinct(); 
+
+        return null;
+    }
 	
 	
 	
@@ -51,7 +73,8 @@ public class MobRan extends Entity {
 	
 	
 	
-	//jennifer.graf-schabram@arbeitsagentur.de
+	
+	
 	
 	
 	
