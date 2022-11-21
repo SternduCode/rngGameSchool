@@ -16,7 +16,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/3 JSONLib">
+	<classpathentry combineaccessrules="false" kind="src" path="/3 JSONLib">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
