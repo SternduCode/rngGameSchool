@@ -17,6 +17,7 @@ public class MainClass extends Application {
 		System.setProperty("edit", "false"); // set edit mode to disabled
 		System.setProperty("coll", "false"); // set collisions mode to disabled
 		System.setProperty("alternateUpdate", "false"); // reverse Vsync more or less
+		System.setProperty("teleport", "false");
 
 		launch(args);
 
@@ -44,7 +45,7 @@ public class MainClass extends Application {
 
 
 		GamePanel gamePanel = new GamePanel();
-		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
+		input.setGamePanel(gamePanel); // pass instance of GamePanel to the Instance of Input
 		Scene gameScene = new Scene(gamePanel);
 		primaryStage.setScene(gameScene);
 

@@ -28,8 +28,12 @@ public class Player extends Entity {
 	private final AtomicBoolean s = new AtomicBoolean(false);
 	private final AtomicBoolean d = new AtomicBoolean(false);
 
+	private final double colliBoxX = 33, colliBoxY = 45, colliBoxWidth = 31, colliBoxHeight = 20;
+
 	private int screenX; // the players X position in the window
+
 	private int screenY; // the players Y position in the window
+
 	private double oldX, oldY; // used for collision detection
 
 	/**
@@ -103,17 +107,23 @@ public class Player extends Entity {
 	 * Sets all collisionBoxes to the correct size and position
 	 */
 	public void generateCollisionBox() {
-		double x = 33, y = 45, width = 31, height = 20;
+
 
 		collisionBoxes.forEach((key, poly) -> {
 			poly.getPoints().clear();
 			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(x * gamepanel.getScalingFactorX()-0.5, y * gamepanel.getScalingFactorY()-0.5, x * gamepanel.getScalingFactorX()-0.5,
-					(y + height) * gamepanel.getScalingFactorY()+0.5, (x + width) * gamepanel.getScalingFactorX()+0.5,
-					(y + height) * gamepanel.getScalingFactorY()+0.5, (x + width) * gamepanel.getScalingFactorX()+0.5,
-					y * gamepanel.getScalingFactorY()-0.5);
+			poly.getPoints().addAll(colliBoxX * gamepanel.getScalingFactorX()-0.5, colliBoxY * gamepanel.getScalingFactorY()-0.5, colliBoxX * gamepanel.getScalingFactorX()-0.5,
+					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY()+0.5, (colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX()+0.5,
+					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY()+0.5, (colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX()+0.5,
+					colliBoxY * gamepanel.getScalingFactorY()-0.5);
 		});
 	}
+	public double getColliBoxHeight() { return colliBoxHeight * gamepanel.getScalingFactorY(); }
+	public double getColliBoxWidth() { return colliBoxWidth * gamepanel.getScalingFactorX(); }
+
+	public double getColliBoxX() { return colliBoxX * gamepanel.getScalingFactorX(); }
+
+	public double getColliBoxY() { return colliBoxY * gamepanel.getScalingFactorY(); }
 
 	public void getPlayerImage() {
 
