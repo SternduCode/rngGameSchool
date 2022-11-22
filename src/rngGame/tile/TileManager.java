@@ -45,7 +45,7 @@ public class TileManager extends Pane {
 	}
 
 	private String path;
-	private final SpielPanel gp;
+	private final GamePanel gp;
 
 	private final List<Tile> tiles;
 	List<List<Integer>> mapTileNum;
@@ -81,7 +81,7 @@ public class TileManager extends Pane {
 		@Override
 		public String getName() { return "requestor"; }
 	};
-	
+
 	private final ObjectProperty<MobRan> requestorM = new ObjectPropertyBase<>() {
 
 		@Override
@@ -94,9 +94,9 @@ public class TileManager extends Pane {
 	private double[] startingPosition, exitStartingPosition, exitPosition;
 	private int playerLayer;
 	private final Menu mtiles, mnpcs, mbuildings, mextra, mmobs;
-	private List<MobRan> mobs;
+	private final List<MobRan> mobs;
 
-	public TileManager(SpielPanel gp) {
+	public TileManager(GamePanel gp) {
 		cm = new ContextMenu();
 		mtiles = new Menu("Tiles");
 		mnpcs = new Menu("NPCs");
@@ -284,54 +284,54 @@ public class TileManager extends Pane {
 				System.out.println(f);
 			}else if(mi.getParentMenu() == mmobs) {
 				FileChooser fc = new FileChooser();
-			fc.setInitialDirectory(new File("."));
-			fc.getExtensionFilters().add(new ExtensionFilter(
-					"A file containing an Image", "*.png"));
-			File f = fc.showOpenDialog(cm.getScene().getWindow());
-			if (f == null || !f.exists()) return;
-			try {
-				Path p1 = f.toPath();
-				Path p2 = new File("./res/npc/" + f.getName()).toPath();
-				Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-				System.out.println(p2);
-				Image img = new Image(new FileInputStream(p2.toFile()));
-				JsonObject joN = new JsonObject();
-				JsonArray requestedSize = new JsonArray();
-				requestedSize.add(new DoubleValue(img.getWidth()));
-				requestedSize.add(new DoubleValue(img.getHeight()));
-				joN.put("requestedSize", requestedSize);
-				JsonObject textures = new JsonObject();
-				textures.put("default", new StringValue(f.getName()));
-				joN.put("textures", textures);
-				JsonObject npcData = new JsonObject();
-				joN.put("npcData", npcData);
-				joN.put("type", new StringValue("NPC"));
-				joN.put("fps", new DoubleValue(7d));
-				JsonArray position = new JsonArray();
-				position.add(new DoubleValue(
-						requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
-				position.add(new DoubleValue(
-						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
-				joN.put("position", position);
-				JsonArray originalSize = new JsonArray();
-				originalSize.add(new DoubleValue(img.getWidth()));
-				originalSize.add(new DoubleValue(img.getHeight()));
-				joN.put("originalSize", originalSize);
+				fc.setInitialDirectory(new File("."));
+				fc.getExtensionFilters().add(new ExtensionFilter(
+						"A file containing an Image", "*.png"));
+				File f = fc.showOpenDialog(cm.getScene().getWindow());
+				if (f == null || !f.exists()) return;
+				try {
+					Path p1 = f.toPath();
+					Path p2 = new File("./res/npc/" + f.getName()).toPath();
+					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
+					System.out.println(p2);
+					Image img = new Image(new FileInputStream(p2.toFile()));
+					JsonObject joN = new JsonObject();
+					JsonArray requestedSize = new JsonArray();
+					requestedSize.add(new DoubleValue(img.getWidth()));
+					requestedSize.add(new DoubleValue(img.getHeight()));
+					joN.put("requestedSize", requestedSize);
+					JsonObject textures = new JsonObject();
+					textures.put("default", new StringValue(f.getName()));
+					joN.put("textures", textures);
+					JsonObject npcData = new JsonObject();
+					joN.put("npcData", npcData);
+					joN.put("type", new StringValue("NPC"));
+					joN.put("fps", new DoubleValue(7d));
+					JsonArray position = new JsonArray();
+					position.add(new DoubleValue(
+							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+					position.add(new DoubleValue(
+							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+					joN.put("position", position);
+					JsonArray originalSize = new JsonArray();
+					originalSize.add(new DoubleValue(img.getWidth()));
+					originalSize.add(new DoubleValue(img.getHeight()));
+					joN.put("originalSize", originalSize);
 
-				NPC n = new NPC(joN, gp, npcs, cm, requestorN);
-				mnpcs.getItems().remove(mi);
-				mnpcs.getItems()
-				.add(new MenuItemWNPC(f.getName(),
-						new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
-								(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-								(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
-						n));
-				mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
-				mnpcs.getItems().add(mi);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-			System.out.println(f);
+					MobRan n = new MobRan(joN, gp, mobs, cm, requestorM);
+					mnpcs.getItems().remove(mi);
+					mnpcs.getItems()
+					.add(new MenuItemWMOB(f.getName(),
+							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
+							n));
+					mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
+					mnpcs.getItems().add(mi);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				System.out.println(f);
 			} else if (mi.getParentMenu() == mtiles) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
@@ -397,6 +397,11 @@ public class TileManager extends Pane {
 			((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().add(map);
 		}
 		return new Menu[] {mtiles, mnpcs, mbuildings, mmobs, mextra};
+	}
+
+	public List<MobRan> getMobFromMap() {
+
+		return mobs;
 	}
 
 	public List<NPC> getNPCSFromMap() { return npcs; }
@@ -688,7 +693,7 @@ public class TileManager extends Pane {
 			}
 			for (Object mob: mobs) {
 				MobRan n = switch (((StringValue) ((JsonObject) mob).get("type")).getValue()) {
-					default -> new MobRan((JsonObject) mob, gp, this.mobs, cm, requestorM);
+					default -> new MobRan((JsonObject) mob, gp, mobs, cm, requestorM);
 				};
 				mmobs.getItems()
 				.add(new MenuItemWMOB(
@@ -782,11 +787,6 @@ public class TileManager extends Pane {
 			}
 		}
 
-	}
-
-	public List<MobRan> getMobFromMap() {
-		
-		return mobs;
 	}
 
 }

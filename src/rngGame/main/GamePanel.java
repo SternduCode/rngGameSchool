@@ -21,7 +21,7 @@ import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
 
-public class SpielPanel extends Pane {
+public class GamePanel extends Pane {
 
 	class GroupGroup extends Group {
 
@@ -88,7 +88,7 @@ public class SpielPanel extends Pane {
 	private final Group pointGroup;
 	private List<Building> buildings;
 	private List<NPC> npcs;
-	
+
 	private List<MobRan> test;
 
 	private List<Long> frameTimes;
@@ -100,8 +100,9 @@ public class SpielPanel extends Pane {
 	private final Label fpsLabel;
 
 	private final Map<Point2D, Circle> points;
+	private boolean blockUserInputs;
 
-	public SpielPanel() throws FileNotFoundException {
+	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
 		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
@@ -161,10 +162,14 @@ public class SpielPanel extends Pane {
 
 	public SelectTool getSelectTool() { return selectTool; }
 
-
 	public TileManager getTileM() { return tileM; }
 
+
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
+
+	public boolean isBlockUserInputs() {
+		return isInLoadingScreen() || blockUserInputs;
+	}
 
 	public boolean isInLoadingScreen() {
 		return loadingScreen.getOpacity()>.5;
@@ -225,7 +230,6 @@ public class SpielPanel extends Pane {
 		System.out.println("don");
 	}
 
-
 	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
 		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
 				player.getY() * (scaleFactorY / scalingFactorY));
@@ -240,6 +244,9 @@ public class SpielPanel extends Pane {
 		player.generateCollisionBox();
 		System.out.println(player.getX() + " " + player.getY());
 	}
+
+
+	public void setBlockUserInputs(boolean blockUserInputs) { this.blockUserInputs = blockUserInputs; }
 
 	public void setMap(String path) {
 		setMap(path, null);

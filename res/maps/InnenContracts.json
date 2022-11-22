@@ -69,19 +69,19 @@
 				257.000,
 				150.000
 			],
+			"type" : "ContractsTable",
+			"originalSize" : [
+				128,
+				128
+			],
 			"miscBoxes" : [
 				{
 					"name" : "table",
 					"x" : 55,
-					"y" : 90,
+					"y" : 85,
 					"type" : "circle",
-					"radius" : 10
+					"radius" : 5
 				}
-			],
-			"type" : "ContractsTable",
-			"originalSize" : [
-				64,
-				64
 			],
 			"layer" : [
 				0
@@ -317,8 +317,8 @@
 				7.00000
 			],
 			"position" : [
-				161.000,
-				221.000
+				165.000,
+				215.000
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -356,6 +356,39 @@
 			"originalSize" : [
 				64,
 				64
+			],
+			"layer" : [
+				0
+			]
+		},
+		{
+			"requestedSize" : [
+				32,
+				32
+			],
+			"textures" : {
+				"default" : "CTischCircle.png",
+				"open" : "CTischCircleOpen.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				true
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				296.000,
+				222.000
+			],
+			"type" : "Building",
+			"originalSize" : [
+				32,
+				32
 			],
 			"layer" : [
 				0

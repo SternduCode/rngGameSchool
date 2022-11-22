@@ -1,34 +1,31 @@
 package rngGame.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
 import com.sterndu.json.JsonObject;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import rngGame.buildings.House;
-import rngGame.main.SpielPanel;
 import rngGame.tile.TextureHolder;
-import rngGame.tile.TileManager;
+import rngGame.main.GamePanel;
+
 
 public class MobRan extends Entity {
+
+	public MobRan(JsonObject en, GamePanel gp, List<MobRan> entities,
+			ContextMenu cm, ObjectProperty<MobRan> requestor) {
+		super(en, 3*60, gp, "tmob", entities, cm, requestor);
+
+	}
 
 	public MobRan(MobRan en, List< MobRan> entities, ContextMenu cm,
 			ObjectProperty<MobRan> requestor) {
 		super(en, entities, cm, requestor);
-		// TODO Auto-generated constructor stub
-	}
 
-	public MobRan(JsonObject en, SpielPanel gp, List<MobRan> entities,
-			ContextMenu cm, ObjectProperty<MobRan> requestor) {
-		super(en, 3*60, gp, "tmob", entities, cm, requestor);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void init() {
+
         getMiscBoxHandler().put("fight", (gpt,self)->{
 
         });
@@ -38,7 +35,7 @@ public class MobRan extends Entity {
         });
     }
 	private record PathElement(int x, int y, int distance) {};
-	public Double[] pathfinding (double x, double y, SpielPanel sp) {
+	public Double[] pathfinding (double x, double y,GamePanel sp) {
         int tileX = (int) (x / sp.BgX);
         int tileY = (int) (y / sp.BgY);
 
@@ -60,6 +57,7 @@ public class MobRan extends Entity {
 
         return null;
     }
+
 	
 	
 	

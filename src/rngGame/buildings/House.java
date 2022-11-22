@@ -32,7 +32,7 @@ public class House extends Building {
 
 	}
 
-	public House(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+	public House(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
 		if (building.containsKey("map")) setMap(((StringValue) building.get("map")).getValue());

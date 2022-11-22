@@ -17,7 +17,7 @@ public abstract class Entity extends GameObject {
 
 	}
 
-	public Entity(JsonObject en, double speed, SpielPanel gp, String directory, List<? extends Entity> entities,
+	public Entity(JsonObject en, double speed, GamePanel gp, String directory, List<? extends Entity> entities,
 			ContextMenu cm,
 			ObjectProperty<? extends Entity> requestor) {
 		super(en, gp, directory, entities, cm, requestor);

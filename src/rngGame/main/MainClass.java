@@ -17,6 +17,7 @@ public class MainClass extends Application {
 		System.setProperty("edit", "false"); // set edit mode to disabled
 		System.setProperty("coll", "false"); // set collisions mode to disabled
 		System.setProperty("alternateUpdate", "false"); // reverse Vsync more or less
+		System.setProperty("teleport", "false");
 
 		launch(args);
 
@@ -43,8 +44,8 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
 
-		SpielPanel gamePanel = new SpielPanel();
-		input.setSpielPanel(gamePanel); // pass instance of GamePanel to the Instance of Input
+		GamePanel gamePanel = new GamePanel();
+		input.setGamePanel(gamePanel); // pass instance of GamePanel to the Instance of Input
 		Scene gameScene = new Scene(gamePanel);
 		primaryStage.setScene(gameScene);
 

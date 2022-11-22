@@ -8,18 +8,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 import rngGame.ui.PartialFillDialog;
 
 public class SelectTool extends Rectangle {
 
 	private boolean dragging = false;
-	private final SpielPanel gp;
+	private final GamePanel gp;
 
 	private int x, y;
 	private Menu select, fill, partialFill;
 
-	public SelectTool(SpielPanel gp) {
+	public SelectTool(GamePanel gp) {
 		this.gp = gp;
 		init();
 	}

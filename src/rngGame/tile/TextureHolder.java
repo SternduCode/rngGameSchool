@@ -8,14 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 
 public class TextureHolder extends Pane {
 
 	private Tile tile;
 
 	@SuppressWarnings("unused")
-	private SpielPanel gp;
+	private GamePanel gp;
 
 	private final ImageView iv;
 	private final Polygon poly;
@@ -32,7 +32,7 @@ public class TextureHolder extends Pane {
 
 	private int hc;
 
-	public TextureHolder(Tile tile, SpielPanel gp, double layoutX, double layoutY, ContextMenu cm,
+	public TextureHolder(Tile tile, GamePanel gp, double layoutX, double layoutY, ContextMenu cm,
 			ObjectProperty<TextureHolder> requestor, double x, double y) {
 		menu = new Menu("Texture Holder");
 		position = new MenuItem();

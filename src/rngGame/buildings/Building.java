@@ -23,7 +23,7 @@ public class Building extends GameObject {
 		}, KeyCode.B, false);
 	}
 
-	public Building(JsonObject building, SpielPanel gp, List<Building> buildings, ContextMenu cm,
+	public Building(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, "building", buildings, cm, requestorB);
 
@@ -33,7 +33,7 @@ public class Building extends GameObject {
 		}, KeyCode.B, false);
 	}
 
-	public Building(JsonObject building, SpielPanel gp, String directory, List<Building> buildings, ContextMenu cm,
+	public Building(JsonObject building, GamePanel gp, String directory, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, directory, buildings, cm, requestorB);
 
@@ -46,7 +46,6 @@ public class Building extends GameObject {
 	@Override
 	public void update(long milis) {
 		super.update(milis);
-
 		if (isVisible() && b.get()) setVisible(false);
 	}
 

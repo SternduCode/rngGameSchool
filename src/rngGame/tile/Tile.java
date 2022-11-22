@@ -3,7 +3,7 @@ package rngGame.tile;
 import java.io.InputStream;
 import java.util.*;
 import javafx.scene.image.*;
-import rngGame.main.SpielPanel;
+import rngGame.main.GamePanel;
 
 public class Tile {
 
@@ -12,7 +12,7 @@ public class Tile {
 	public final String name;
 	public double fps = 7.5;
 
-	public Tile(String name, InputStream image, SpielPanel gp) {
+	public Tile(String name, InputStream image, GamePanel gp) {
 
 		this.name = name;
 
