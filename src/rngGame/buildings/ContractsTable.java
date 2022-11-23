@@ -51,8 +51,9 @@ public class ContractsTable extends Building {
 			Image buttonR = new Image(new FileInputStream("./res/Contractstuff/pfeilR.png"));
 			Image buttonL = new Image(new FileInputStream("./res/Contractstuff/pfeilL.png"));
 
-			wi=ImgUtil.resizeImage(
-					wi,(int) wi.getWidth(), (int) wi.getHeight(), (int) (wi.getWidth() * gamepanel.getScalingFactorX()),
+			wi = ImgUtil.resizeImage(
+					wi, (int) wi.getWidth(), (int) wi.getHeight(),
+					(int) (wi.getWidth() * gamepanel.getScalingFactorX()),
 					(int) (wi.getHeight() * gamepanel.getScalingFactorY()));
 
 			saturn=ImgUtil.resizeImage(
