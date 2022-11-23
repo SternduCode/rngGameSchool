@@ -11,6 +11,8 @@ public class Tile {
 	public List<Double> poly;
 	public final String name;
 	public double fps = 7.5;
+	public long spriteCounter = 0;
+	public int spriteNum = 0;
 
 	public Tile(String name, InputStream image, GamePanel gp) {
 
@@ -26,6 +28,14 @@ public class Tile {
 			images.add(ImgUtil.resizeImage(wi,
 					(int) wi.getWidth(), (int) wi.getHeight(), gp.BgX, gp.BgY));
 		}
+	}
+
+	public void update() {
+		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
+			spriteCounter = System.currentTimeMillis();
+			spriteNum++;
+		}
+		if (spriteNum >= images.size()) spriteNum = 0;
 	}
 
 }

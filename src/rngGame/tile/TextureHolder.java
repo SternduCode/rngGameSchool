@@ -22,8 +22,6 @@ public class TextureHolder extends Pane {
 
 	private double fps = 7.5;
 
-	public long spriteCounter = 0;
-	public int spriteNum = 0;
 	private double x, y;
 
 	private final Menu menu;
@@ -110,6 +108,8 @@ public class TextureHolder extends Pane {
 
 	public void update() {
 
+		tile.update();
+
 		if (tile.poly != null && tile.poly.hashCode() != hc) {
 			poly.getPoints().clear();
 			poly.getPoints().addAll(tile.poly);
@@ -117,13 +117,7 @@ public class TextureHolder extends Pane {
 		}
 		if (tile.fps != fps) fps = tile.fps;
 
-		if (System.currentTimeMillis() > spriteCounter + 1000 / fps) {
-			spriteCounter = System.currentTimeMillis();
-			spriteNum++;
-		}
-
-		if (spriteNum >= tile.images.size()) spriteNum = 0;
-		iv.setImage(tile.images.get(spriteNum));
+		iv.setImage(tile.images.get(tile.spriteNum));
 
 		if (System.getProperty("coll").equals("true") && poly.getPoints().size() > 0)
 			poly.setVisible(true);
