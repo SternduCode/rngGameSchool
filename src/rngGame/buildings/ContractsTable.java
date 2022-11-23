@@ -52,8 +52,8 @@ public class ContractsTable extends Building {
 			Image saturn = new Image(new FileInputStream("./res/Contractstuff/Saturn.png"));
 			Image nebel = new Image(new FileInputStream("./res/Contractstuff/Nebel.png"));
 			Image galactus = new Image(new FileInputStream("./res/Contractstuff/Galactus.png"));
-			Image Nova = new Image(new FileInputStream("./res/Contractstuff/nova.png"));
-			Image TearStone = new Image(new FileInputStream("./res/Contractstuff/TearStoneCaveLogo.png"));
+			Image nova = new Image(new FileInputStream("./res/Contractstuff/nova.png"));
+			Image tearStone = new Image(new FileInputStream("./res/Contractstuff/TearStoneCaveLogo.png"));
 			Image buttonR = new Image(new FileInputStream("./res/Contractstuff/pfeilR.png"));
 			Image buttonL = new Image(new FileInputStream("./res/Contractstuff/pfeilL.png"));
 			Image buttonRL = new Image(new FileInputStream("./res/Contractstuff/pfeilRLeu.png"));
@@ -75,13 +75,13 @@ public class ContractsTable extends Building {
 					galactus,(int) galactus.getWidth(), (int) galactus.getHeight(), (int) (galactus.getWidth() * gamepanel.getScalingFactorX()),
 					(int) (galactus.getHeight() * gamepanel.getScalingFactorY()));
 			
-			Nova=ImgUtil.resizeImage(
-					Nova,(int) Nova.getWidth(), (int) Nova.getHeight(), (int) (Nova.getWidth() * gamepanel.getScalingFactorX()),
-					(int) (Nova.getHeight() * gamepanel.getScalingFactorY()));
+			nova=ImgUtil.resizeImage(
+					nova,(int) nova.getWidth(), (int) nova.getHeight(), (int) (nova.getWidth() * gamepanel.getScalingFactorX()),
+					(int) (nova.getHeight() * gamepanel.getScalingFactorY()));
 			
-			TearStone=ImgUtil.resizeImage(
-					TearStone,(int) TearStone.getWidth(), (int) TearStone.getHeight(), (int) (TearStone.getWidth() * gamepanel.getScalingFactorX()),
-					(int) (TearStone.getHeight() * gamepanel.getScalingFactorY()));
+			tearStone=ImgUtil.resizeImage(
+					tearStone,(int) tearStone.getWidth(), (int) tearStone.getHeight(), (int) (tearStone.getWidth() * gamepanel.getScalingFactorX()),
+					(int) (tearStone.getHeight() * gamepanel.getScalingFactorY()));
 
 			buttonR=ImgUtil.resizeImage(
 					buttonR,(int) buttonR.getWidth(), (int) buttonR.getHeight(), (int) (buttonR.getWidth() * gamepanel.getScalingFactorX()),
@@ -102,11 +102,11 @@ public class ContractsTable extends Building {
 			contractBackround = new ImageView(wi);
 			contractBackround.setTranslateY(-1);
 			contractBackround.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
-			contractRifts = new ImageView(TearStone);
+			contractRifts = new ImageView(tearStone);
 			contractSaturn = new ImageView(saturn);
 			contractNebel = new ImageView(nebel);
 			contractGalactus = new ImageView(galactus);
-			contractNova = new ImageView(Nova);
+			contractNova = new ImageView(nova);
 			button_R = new ImageView(buttonR);
 			button_L = new ImageView(buttonL);
 			Image brl = buttonRL;
@@ -175,6 +175,9 @@ public class ContractsTable extends Building {
 				if(index == 0) {
 					button_L.setVisible(false);
 				}
+			});
+			this.contractRifts.setOnMouseReleased(me->{
+				//TODO mach was alta huen xD	
 			});
 
 
