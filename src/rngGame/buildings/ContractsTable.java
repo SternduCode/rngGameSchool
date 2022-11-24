@@ -274,7 +274,7 @@ TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 
 tt.setToX((-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index));
-tth.setToX((gamepanel.SpielLaenge / 2 * -(index) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
+tth.setToX((gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
 
 FadeTransition ft5 = new FadeTransition(Duration.millis(350), ausBackround);
 FadeTransition ixb = new FadeTransition(Duration.millis(350), ausXb);
