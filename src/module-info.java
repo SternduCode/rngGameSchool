@@ -11,8 +11,9 @@ module rngGame {
 
 	requires transitive com.sterndu.JSONLib;
 	requires javafx.swing;
-	requires java.desktop;
+	requires transitive java.desktop;
 	requires jdk.zipfs;
+	requires java.xml;
 
 	opens rngGame.main to javafx.graphics;
 }

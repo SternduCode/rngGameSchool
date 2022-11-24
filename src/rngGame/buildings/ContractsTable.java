@@ -60,6 +60,7 @@ public class ContractsTable extends Building {
 			Image ausX2 = new Image(new FileInputStream("./res/Contractstuff/XbuttonC.png"));
 			Image buttonR = new Image(new FileInputStream("./res/Contractstuff/pfeilR.png"));
 			Image buttonL = new Image(new FileInputStream("./res/Contractstuff/pfeilL.png"));
+
 			Image buttonRL = new Image(new FileInputStream("./res/Contractstuff/pfeilRLeu.png"));
 			Image buttonLL = new Image(new FileInputStream("./res/Contractstuff/pfeilLLeu.png"));
 			
@@ -157,11 +158,9 @@ public class ContractsTable extends Building {
 				
 				index++;
 				button_L.setVisible(true);
-				if(index >= 4) {
-					button_R.setVisible(false);
-				}
+				if(index >= 4) button_R.setVisible(false);
 			});
-			this.button_L.setOnMouseReleased(me->{
+			button_L.setOnMouseReleased(me->{
 				button_L.setImage(bll);
 				TranslateTransition tt = new TranslateTransition(Duration.millis(1000), p1);
 				TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackround);
@@ -185,18 +184,16 @@ public class ContractsTable extends Building {
 				tth.play();
 				index--;
 				button_R.setVisible(true);
-				if(index <= 0) {
-					button_L.setVisible(false);
-				}
+				if(index <= 0) button_L.setVisible(false);
 			});
 
 ///////////////////////
-			this.contractSaturn.setOnMouseReleased(me->{
+			contractSaturn.setOnMouseReleased(me->{
 				TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 				TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 				
-				tt.setToX((-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index));
-				tth.setToX((gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
+				tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
+				tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 				
 				FadeTransition ft5 = new FadeTransition(Duration.millis(350), ausBackround);
 				FadeTransition ixb = new FadeTransition(Duration.millis(350), ausXb);
@@ -217,12 +214,12 @@ public class ContractsTable extends Building {
 				
 			});
 ///////////////////////
-	this.contractNebel.setOnMouseReleased(me->{
+	contractNebel.setOnMouseReleased(me->{
 		TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 		TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 		
-		tt.setToX((-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index));
-		tth.setToX((gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
+		tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
+		tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 		
 		FadeTransition ft5 = new FadeTransition(Duration.millis(350), ausBackround);
 		FadeTransition ixb = new FadeTransition(Duration.millis(350), ausXb);
@@ -243,12 +240,12 @@ public class ContractsTable extends Building {
 		
 	});
 ///////////////////////
-	this.contractGalactus.setOnMouseReleased(me->{
+	contractGalactus.setOnMouseReleased(me->{
 		TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 		TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 		
-		tt.setToX((-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index));
-		tth.setToX((gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
+		tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
+		tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 		
 		FadeTransition ft5 = new FadeTransition(Duration.millis(350), ausBackround);
 		FadeTransition ixb = new FadeTransition(Duration.millis(350), ausXb);
@@ -269,12 +266,12 @@ public class ContractsTable extends Building {
 		
 	});
 ///////////////////////
-this.contractNova.setOnMouseReleased(me->{
+contractNova.setOnMouseReleased(me->{
 TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 
-tt.setToX((-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index));
-tth.setToX((gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24));
+tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
+tth.setToX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 
 FadeTransition ft5 = new FadeTransition(Duration.millis(350), ausBackround);
 FadeTransition ixb = new FadeTransition(Duration.millis(350), ausXb);
@@ -295,13 +292,13 @@ tth.play();
 
 });
 ///////////////////////
-			this.ausXb.setOnMouseReleased(me->{
+			ausXb.setOnMouseReleased(me->{
 				ausXb.setImage(x2);
 				TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 				TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
 				
 				tt.setToX(gamepanel.SpielLaenge+gamepanel.SpielLaenge*(-index-1));
-				tth.setToX(gamepanel.SpielLaenge / 2 * -(index) + gamepanel.SpielLaenge);
+				tth.setToX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge);
 				
 				FadeTransition ft5 = new FadeTransition(Duration.millis(200), ausBackround);
 				FadeTransition ixb = new FadeTransition(Duration.millis(200), ausXb);
