@@ -15,7 +15,7 @@ public class ImgUtil {
 	 *
 	 */
 	public static Image getScaledImage(GamePanel gamepanel, String path) {
-		String[] sp = path.split(".");
+		String[] sp = path.split("[.]");
 		if (sp[sp.length - 1].equals("gif")) try {
 			// ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 			// ImageWriter writer = ImageIO.getImageWritersByFormatName("gif").next();
