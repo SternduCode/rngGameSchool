@@ -1,6 +1,5 @@
 package rngGame.buildings;
 
-import java.io.*;
 import java.util.List;
 import com.sterndu.json.JsonObject;
 import javafx.animation.*;
@@ -144,67 +143,51 @@ public class ContractsTable extends Building {
 			tt.play();
 			tth.play();
 			FadeTransition pin1 = new FadeTransition(Duration.millis(1000), HUD);
+			FadeTransition pin2 = new FadeTransition(Duration.millis(1000), HUD2);
+			FadeTransition pin3 = new FadeTransition(Duration.millis(1000), HUD3);
 			FadeTransition tit1 = new FadeTransition(Duration.millis(1000), title);
 			FadeTransition tit2 = new FadeTransition(Duration.millis(1000), title2);
 			FadeTransition tit3 = new FadeTransition(Duration.millis(1000), title3);
 			FadeTransition tit4 = new FadeTransition(Duration.millis(1000), title4);
-			
-			tit1.setFromValue(0);
-			tit1.setToValue(1);
-			tit2.setFromValue(0);
-			tit2.setToValue(1);
-			tit3.setFromValue(0);
-			tit3.setToValue(1);
-			tit4.setFromValue(0);
-			tit4.setToValue(1);
 
 			if(index == 0) {
-				pin1.setFromValue(1);
 				pin1.setToValue(0);
-				tit1.setFromValue(1);
 				tit1.setToValue(0);
-				tit2.setFromValue(0);
 				tit2.setToValue(1);
-				
+
 				pin1.play();
 				tit1.play();
 				tit2.play();
-				
-				HUD.setVisible(true);
+
+				HUD2.setVisible(true);
 				title.setVisible(true);
 				title2.setVisible(true);
 			}
 			if(index == 1) {
-				pin1.setFromValue(1);
-				pin1.setToValue(0);
-				tit2.setFromValue(1);
+				pin2.setToValue(0);
 				tit2.setToValue(0);
-				tit3.setFromValue(0);
 				tit3.setToValue(1);
-				
-				pin1.play();
+
+				pin2.play();
 				tit2.play();
 				tit3.play();
-				
-				HUD.setVisible(true);
+
+				HUD3.setVisible(true);
 				title2.setVisible(true);
 				title3.setVisible(true);
 			}
 			if(index == 2) {
-				pin1.setFromValue(1);
-				pin1.setToValue(0);
-				tit3.setFromValue(1);
+				pin3.setToValue(0);
 				tit3.setToValue(0);
-				tit4.setFromValue(0);
 				tit4.setToValue(1);
-				
-				pin1.play();
+
+				pin3.play();
 				tit3.play();
 				tit4.play();
-				
-				HUD.setVisible(true);
-				title2.setVisible(true);
+
+				HUD4.setVisible(true);
 				title3.setVisible(true);
+				title4.setVisible(true);
 			}
 
 
@@ -235,68 +218,51 @@ public class ContractsTable extends Building {
 			tt.play();
 			tth.play();
 			FadeTransition pin1 = new FadeTransition(Duration.millis(1000), HUD);
+			FadeTransition pin2 = new FadeTransition(Duration.millis(1000), HUD2);
+			FadeTransition pin3 = new FadeTransition(Duration.millis(1000), HUD3);
 			FadeTransition tit1 = new FadeTransition(Duration.millis(1000), title);
 			FadeTransition tit2 = new FadeTransition(Duration.millis(1000), title2);
 			FadeTransition tit3 = new FadeTransition(Duration.millis(1000), title3);
 			FadeTransition tit4 = new FadeTransition(Duration.millis(1000), title4);
-			
-			tit1.setFromValue(0);
-			tit1.setToValue(1);
-			tit2.setFromValue(0);
-			tit2.setToValue(1);
-			tit3.setFromValue(0);
-			tit3.setToValue(1);
-			tit4.setFromValue(0);
-			tit4.setToValue(1);
 
 			if(index == 1) {
-				pin1.setFromValue(1);
-				pin1.setToValue(0);
-				tit2.setFromValue(1);
+				pin2.setToValue(0);
 				tit2.setToValue(0);
-				tit1.setFromValue(0);
 				tit1.setToValue(1);
-				
-				pin1.play();
+
+				pin2.play();
 				tit2.play();
 				tit1.play();
-				
+
 				HUD.setVisible(true);
 				title2.setVisible(true);
 				title.setVisible(true);
 			}
 			if(index == 2) {
-				pin1.setFromValue(1);
-				pin1.setToValue(0);
-				tit3.setFromValue(1);
-				tit3.setToValue(0);
-				tit2.setFromValue(0);
-				tit2.setToValue(1);
-				
-				pin1.play();
-				tit3.play();
+				pin2.setToValue(0);
+				tit2.setToValue(0);
+				tit3.setToValue(1);
+
+				pin2.play();
 				tit2.play();
-				
-				HUD.setVisible(true);
+				tit3.play();
+
+				HUD2.setVisible(true);
 				title3.setVisible(true);
 				title2.setVisible(true);
 			}
 			if(index == 3) {
-				pin1.setFromValue(1);
-				pin1.setToValue(0);
-				tit4.setFromValue(1);
-				tit4.setToValue(0);
-				tit3.setFromValue(0);
-				tit3.setToValue(1);
+				pin3.setToValue(0);
+				tit3.setToValue(0);
+				tit4.setToValue(1);
 
-				pin1.play();
-				tit4.play();
+				pin3.play();
 				tit3.play();
-				
-				HUD.setVisible(true);
+				tit4.play();
+
+				HUD3.setVisible(true);
 				title4.setVisible(true);
 				title3.setVisible(true);
-
 			}
 			index--;
 			button_R.setVisible(true);
@@ -433,14 +399,14 @@ public class ContractsTable extends Building {
 					e.printStackTrace();
 				}
 				ausBackround.setVisible(false);
-				ausXb.setVisible(false);	
+				ausXb.setVisible(false);
 				ausXb.setImage(x1);
 			}).start();
 
 			button_R.setVisible(true);
 			button_L.setVisible(true);
 
-			
+
 			FadeTransition pin1 = new FadeTransition(Duration.millis(0), HUD);
 			FadeTransition tit1 = new FadeTransition(Duration.millis(2000), title);
 			FadeTransition tit2 = new FadeTransition(Duration.millis(2000), title2);
@@ -457,8 +423,8 @@ public class ContractsTable extends Building {
 			tit3.setToValue(1);
 			tit4.setFromValue(0);
 			tit4.setToValue(1);
-			
-			if(index == 0) {			
+
+			if(index == 0) {
 				pin1.play();
 				tit2.play();
 				HUD.setVisible(true);
