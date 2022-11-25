@@ -32,10 +32,10 @@ public class Text {
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x++;
+		} else if (c == ' ') x += 20;
 		else {
-			pw.setPixels(x * 32, y * 32, 32, 32, charmap.get(c).getPixelReader(), 0, 0);
-			x++;
+			pw.setPixels(x, y * 32, (int) charmap.get(c).getWidth(), 32, charmap.get(c).getPixelReader(), 0, 0);
+			x += charmap.get(c).getWidth();
 		}
 		return im;
 	}
@@ -69,24 +69,24 @@ public class Text {
 				numbersPR = numbersI.getPixelReader();
 
 		for (int x = 0; x < bigI.getWidth() / 32; x++)
-			for (int y = 0; y < bigI.getHeight() / 32; y++) if ((y<bigC.length) && (x<bigC[y].length)) {
-				WritableImage cha = new WritableImage(32, 32);
+			for (int y = 0; y < bigI.getHeight() / 32; y++) if (y<bigC.length && x<bigC[y].length) {
+				WritableImage cha = new WritableImage(16, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 32, 32, bigPR, x * 32, y * 32);
+				pw.setPixels(0, 0, 16, 32, bigPR, x * 32 + 8, y * 32);
 				charmap.put(bigC[y][x], cha);
 			}
 		for (int x = 0; x < smallI.getWidth() / 32; x++)
-			for (int y = 0; y < smallI.getHeight() / 32; y++) if ((y<smallC.length) && (x<smallC[y].length)) {
-				WritableImage cha = new WritableImage(32, 32);
+			for (int y = 0; y < smallI.getHeight() / 32; y++) if (y<smallC.length && x<smallC[y].length) {
+				WritableImage cha = new WritableImage(16, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 32, 32, smallPR, x * 32, y * 32);
+				pw.setPixels(0, 0, 16, 32, smallPR, x * 32 + 8, y * 32);
 				charmap.put(smallC[y][x], cha);
 			}
 		for (int x = 0; x < numbersI.getWidth() / 32; x++)
-			for (int y = 0; y < numbersI.getHeight() / 32; y++) if ((y<numbersC.length) && (x<numbersC[y].length)) {
-				WritableImage cha = new WritableImage(32, 32);
+			for (int y = 0; y < numbersI.getHeight() / 32; y++) if (y<numbersC.length && x<numbersC[y].length) {
+				WritableImage cha = new WritableImage(20, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 32, 32, numbersPR, x * 32, y * 32);
+				pw.setPixels(0, 0, 20, 32, numbersPR, x * 32 + 6, y * 32);
 				charmap.put(numbersC[y][x], cha);
 			}
 	}
