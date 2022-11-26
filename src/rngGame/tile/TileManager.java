@@ -94,7 +94,7 @@ public class TileManager extends Pane {
 	private double[] startingPosition, exitStartingPosition, exitPosition;
 	private int playerLayer;
 	private final Menu mtiles, mnpcs, mbuildings, mextra, mmobs;
-	private final List<MobRan> mobs;
+	private List<MobRan> mobs;
 
 	public TileManager(GamePanel gp) {
 		cm = new ContextMenu();
@@ -181,6 +181,13 @@ public class TileManager extends Pane {
 				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
 				.newInstance(miwn.getNPC(), npcs, cm, requestorN)
+				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
+			else if (e.getSource() instanceof MenuItemWMOB miwn)
+				miwn.getMob().getClass()
+				.getDeclaredConstructor(miwn.getMob().getClass(), List.class, ContextMenu.class,
+						ObjectProperty.class)
+				.newInstance(miwn.getMob(), mobs, cm, requestorN)
 				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
 						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
@@ -319,15 +326,15 @@ public class TileManager extends Pane {
 					joN.put("originalSize", originalSize);
 
 					MobRan n = new MobRan(joN, gp, mobs, cm, requestorM);
-					mnpcs.getItems().remove(mi);
-					mnpcs.getItems()
+					mmobs.getItems().remove(mi);
+					mmobs.getItems()
 					.add(new MenuItemWMOB(f.getName(),
 							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
 									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
 							n));
-					mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
-					mnpcs.getItems().add(mi);
+					mmobs.getItems().get(mmobs.getItems().size() - 1).setOnAction(this::contextMenu);
+					mmobs.getItems().add(mi);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -400,7 +407,6 @@ public class TileManager extends Pane {
 	}
 
 	public List<MobRan> getMobFromMap() {
-
 		return mobs;
 	}
 
@@ -492,6 +498,7 @@ public class TileManager extends Pane {
 				JsonArray npcs = (JsonArray) jo.get("npcs");
 				npcs.clear();
 				npcs.addAll(this.npcs.stream().filter(Entity::isMaster).toList());
+				npcs.addAll(mobs.stream().filter(Entity::isMaster).toList());
 				JsonObject map = (JsonObject) jo.get("map");
 				for (int i = 0; i < gp.getViewGroups().size(); i++) {
 					Group v = gp.getViewGroups().get(i);
@@ -548,6 +555,7 @@ public class TileManager extends Pane {
 			group.getChildren().clear();
 			tiles.clear();
 			npcs.clear();
+			mobs.clear();
 			buildings.clear();
 			mtiles.getItems().clear();
 			mnpcs.getItems().clear();
@@ -664,6 +672,7 @@ public class TileManager extends Pane {
 			loadMap((JsonArray) map.get("matrix"));
 			this.buildings = new ArrayList<>();
 			this.npcs = new ArrayList<>();
+			mobs = new ArrayList<>();
 			for (Object building: buildings) {
 				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
 					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
@@ -679,29 +688,29 @@ public class TileManager extends Pane {
 						b));
 			}
 			for (Object npc: npcs) {
-				NPC n = switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
+				Entity n = switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
 					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, cm, requestorN);
+					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
-				mnpcs.getItems()
-				.add(new MenuItemWNPC(
-						((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
-								.findFirst().get()).getValue(),
-						new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
-								(int) n.getFirstImage().getHeight(), 16, 16)),
-						n));
-			}
-			for (Object mob: mobs) {
-				MobRan n = switch (((StringValue) ((JsonObject) mob).get("type")).getValue()) {
-					default -> new MobRan((JsonObject) mob, gp, mobs, cm, requestorM);
-				};
-				mmobs.getItems()
-				.add(new MenuItemWMOB(
-						((StringValue) ((JsonObject) ((JsonObject) mob).get("textures")).values().stream()
-								.findFirst().get()).getValue(),
-						new ImageView(ImgUtil.resizeImage(n.getFirstImage(), (int) n.getFirstImage().getWidth(),
-								(int) n.getFirstImage().getHeight(), 16, 16)),
-						n));
+				if (n instanceof NPC np)
+					mnpcs.getItems()
+					.add(new MenuItemWNPC(
+							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
+									.findFirst().get()).getValue(),
+									new ImageView(
+											ImgUtil.resizeImage(np.getFirstImage(), (int) n.getFirstImage().getWidth(),
+													(int) np.getFirstImage().getHeight(), 16, 16)),
+									np));
+				else if (n instanceof MobRan mr)
+					mmobs.getItems()
+							.add(new MenuItemWMOB(
+									((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
+											.findFirst().get()).getValue(),
+									new ImageView(
+											ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
+													(int) mr.getFirstImage().getHeight(), 16, 16)),
+									mr));
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));

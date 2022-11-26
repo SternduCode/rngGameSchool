@@ -6,22 +6,23 @@ import java.util.stream.Stream;
 import com.sterndu.json.JsonObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import rngGame.tile.TextureHolder;
 import rngGame.main.GamePanel;
+import rngGame.tile.TextureHolder;
 
 
 public class MobRan extends Entity {
 
+	private record PathElement(int x, int y, int distance) {}
+
 	public MobRan(JsonObject en, GamePanel gp, List<MobRan> entities,
 			ContextMenu cm, ObjectProperty<MobRan> requestor) {
-		super(en, 3*60, gp, "tmob", entities, cm, requestor);
+		super(en, 3*60, gp, "npc", entities, cm, requestor);
 	}
-
+	
 	public MobRan(MobRan en, List< MobRan> entities, ContextMenu cm,
 			ObjectProperty<MobRan> requestor) {
 		super(en, entities, cm, requestor);
 	}
-	
 	public void init() {
 
         getMiscBoxHandler().put("fight", (gpt,self)->{
@@ -32,7 +33,6 @@ public class MobRan extends Entity {
             pathfinding(p.getX(), p.getY(), gpt);
         });
     }
-	private record PathElement(int x, int y, int distance) {};
 	public Double[] pathfinding (double x, double y,GamePanel sp) {
         int tileX = (int) (x / sp.BgX);
         int tileY = (int) (y / sp.BgY);

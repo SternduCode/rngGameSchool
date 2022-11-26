@@ -152,6 +152,8 @@ public class GamePanel extends Pane {
 
 	public Double getFps() { return fps; }
 
+	public List<MobRan> getMobRans() { return test; }
+
 	public List<NPC> getNpcs() { return npcs; }
 
 	public Player getPlayer() { return player; }
@@ -223,6 +225,13 @@ public class GamePanel extends Pane {
 		});
 		npcs = tileM.getNPCSFromMap();
 		test = tileM.getMobFromMap();
+
+		//		ImageView iv = new ImageView(Text.getInstance()
+		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #"));
+		//		ImageView iv = new ImageView(Text.getInstance()
+		//				.convertText("Programmieren ist LW"));
+		//		getChildren().add(iv);
+		// TODO rem
 	}
 
 	public void saveMap() {
@@ -276,6 +285,7 @@ public class GamePanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
+		test = tileM.getMobFromMap();
 		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * scalingFactorX,
 				tileM.getSpawnPoint().getY() * scalingFactorY, 15,
 				Color.color(0, 1, 0, .75));
@@ -391,6 +401,7 @@ public class GamePanel extends Pane {
 		try {
 			for (Building b: buildings) b.update(lastFrameTime);
 			for (Entity n: npcs) n.update(lastFrameTime);
+			for (Entity n: test) n.update(lastFrameTime);
 		} catch (ConcurrentModificationException e) {
 		}
 
