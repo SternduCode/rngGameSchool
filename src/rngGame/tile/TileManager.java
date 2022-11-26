@@ -743,7 +743,7 @@ public class TileManager extends Pane {
 		int worldCol = 0;
 		int worldRow = 0;
 
-		while (worldRow < mapTileNum.size() && worldCol < mapTileNum.get(worldRow).size()) {
+		while (worldRow < mapTileNum.size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
 			int worldX = worldCol * gp.BgX;
@@ -751,7 +751,7 @@ public class TileManager extends Pane {
 			double screenX = worldX - p.getX() + p.getScreenX();
 			double screenY = worldY - p.getY() + p.getScreenY();
 
-			if (map.size() == worldCol)
+			if (map.size() == worldRow)
 				map.add(new ArrayList<>());
 
 			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.BgX -
@@ -790,7 +790,7 @@ public class TileManager extends Pane {
 
 			worldCol++;
 
-			if (worldCol == mapTileNum.size()) {
+			if (worldCol == mapTileNum.get(worldRow).size()) {
 				worldCol = 0;
 				worldRow++;
 			}

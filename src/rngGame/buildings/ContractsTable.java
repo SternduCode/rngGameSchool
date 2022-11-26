@@ -26,10 +26,10 @@ public class ContractsTable extends Building {
 	private  ImageView HUD3;
 	private  ImageView HUD4;
 
-	private  ImageView title;
-	private  ImageView title2;
-	private  ImageView title3;
-	private  ImageView title4;
+	private  ImageView titlebanner;
+	private  ImageView titlebanner2;
+	private  ImageView titlebanner3;
+	private  ImageView titlebanner4;
 
 	private  ImageView text;
 
@@ -66,7 +66,8 @@ public class ContractsTable extends Building {
 
 		Image hudp = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Ping.gif");
 		Image titlep = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/title.png");
-
+		
+		text = new ImageView(Text.getInstance().convertText("Underwater Caverns", 48));
 
 		Image ausbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MapAuswahlBackround.png");
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
@@ -106,15 +107,15 @@ public class ContractsTable extends Building {
 		HUD4.setScaleY(gamepanel.getScalingFactorY());
 		HUD4.setOpacity(0);
 
-		title = new ImageView(titlep);
-		title.setOpacity(0);
-		title2 = new ImageView(titlep);
-		title2.setOpacity(0);
-		title3 = new ImageView(titlep);
-		title3.setOpacity(0);
-		title4 = new ImageView(titlep);
-		title4.setOpacity(0);
-		text = new ImageView();
+		titlebanner = new ImageView(titlep);
+		titlebanner.setOpacity(0);
+		titlebanner2 = new ImageView(titlep);
+		titlebanner2.setOpacity(0);
+		titlebanner3 = new ImageView(titlep);
+		titlebanner3.setOpacity(0);
+		titlebanner4 = new ImageView(titlep);
+		titlebanner4.setOpacity(0);
+		
 
 		ausBackround = new ImageView(ausbc);
 		ausXb = new ImageView(ausX);
@@ -150,21 +151,24 @@ public class ContractsTable extends Building {
 			}).start();
 			tt.play();
 			tth.play();
-			FadeTransition pin1 = new FadeTransition(Duration.millis(1000), HUD);
-			FadeTransition pin2 = new FadeTransition(Duration.millis(1000), HUD2);
-			FadeTransition pin3 = new FadeTransition(Duration.millis(1000), HUD3);
-			FadeTransition pin4 = new FadeTransition(Duration.millis(1000), HUD4);
-			FadeTransition tit1 = new FadeTransition(Duration.millis(1000), title);
-			FadeTransition tit2 = new FadeTransition(Duration.millis(1000), title2);
-			FadeTransition tit3 = new FadeTransition(Duration.millis(1000), title3);
-			FadeTransition tit4 = new FadeTransition(Duration.millis(1000), title4);
+			FadeTransition pin1 = new FadeTransition(Duration.millis(500), HUD);
+			FadeTransition pin2 = new FadeTransition(Duration.millis(500), HUD2);
+			FadeTransition pin3 = new FadeTransition(Duration.millis(500), HUD3);
+			FadeTransition pin4 = new FadeTransition(Duration.millis(500), HUD4);
+			FadeTransition tit1 = new FadeTransition(Duration.millis(1250), titlebanner);
+			FadeTransition tit2 = new FadeTransition(Duration.millis(1250), titlebanner2);
+			FadeTransition tit3 = new FadeTransition(Duration.millis(1250), titlebanner3);
+			FadeTransition tit4 = new FadeTransition(Duration.millis(1250), titlebanner4);
+			FadeTransition _tiw = new FadeTransition(Duration.millis(750), text);
 
 			if(index == 0) {
+				_tiw.setToValue(0);
 				pin1.setToValue(0);
 				tit1.setToValue(0);
 				tit2.setToValue(1);
 				pin2.setToValue(1);
-
+				
+				_tiw.play();
 				pin1.play();
 				tit1.play();
 				tit2.play();
@@ -220,21 +224,24 @@ public class ContractsTable extends Building {
 			}).start();
 			tt.play();
 			tth.play();
-			FadeTransition pin1 = new FadeTransition(Duration.millis(1000), HUD);
-			FadeTransition pin2 = new FadeTransition(Duration.millis(1000), HUD2);
-			FadeTransition pin3 = new FadeTransition(Duration.millis(1000), HUD3);
-			FadeTransition pin4 = new FadeTransition(Duration.millis(1000), HUD4);
-			FadeTransition tit1 = new FadeTransition(Duration.millis(1000), title);
-			FadeTransition tit2 = new FadeTransition(Duration.millis(1000), title2);
-			FadeTransition tit3 = new FadeTransition(Duration.millis(1000), title3);
-			FadeTransition tit4 = new FadeTransition(Duration.millis(1000), title4);
+			FadeTransition pin1 = new FadeTransition(Duration.millis(500), HUD);
+			FadeTransition pin2 = new FadeTransition(Duration.millis(500), HUD2);
+			FadeTransition pin3 = new FadeTransition(Duration.millis(500), HUD3);
+			FadeTransition pin4 = new FadeTransition(Duration.millis(500), HUD4);
+			FadeTransition tit1 = new FadeTransition(Duration.millis(1250), titlebanner);
+			FadeTransition tit2 = new FadeTransition(Duration.millis(1250), titlebanner2);
+			FadeTransition tit3 = new FadeTransition(Duration.millis(1250), titlebanner3);
+			FadeTransition tit4 = new FadeTransition(Duration.millis(1250), titlebanner4);
+			FadeTransition _tiw = new FadeTransition(Duration.millis(750), text);
 
 			if(index == 1) {
 				pin2.setToValue(0);
 				tit2.setToValue(0);
 				tit1.setToValue(1);
 				pin1.setToValue(1);
+				_tiw.setToValue(1);
 
+				_tiw.play();
 				pin2.play();
 				tit2.play();
 				tit1.play();
@@ -271,7 +278,7 @@ public class ContractsTable extends Building {
 		contractSaturn.setOnMouseReleased(me->{
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
-
+			
 			tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
 			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 
@@ -281,15 +288,19 @@ public class ContractsTable extends Building {
 			ft5.setToValue(1);
 			ixb.setFromValue(0);
 			ixb.setToValue(1);
+			FadeTransition _tiw = new FadeTransition(Duration.millis(1250), text);
+			_tiw.setFromValue(0);
+			_tiw.setToValue(1);
 
 			ft5.play();
 			ixb.play();
 
 			ausXb.setVisible(true);
+			text.setVisible(true);
 			ausBackround.setVisible(true);
 			button_R.setVisible(false);
 			button_L.setVisible(false);
-
+			_tiw.play();
 			tt.play();
 			tth.play();
 
@@ -406,10 +417,10 @@ public class ContractsTable extends Building {
 
 
 			FadeTransition pin1 = new FadeTransition(Duration.millis(0), HUD);
-			FadeTransition tit1 = new FadeTransition(Duration.millis(2000), title);
-			FadeTransition tit2 = new FadeTransition(Duration.millis(2000), title2);
-			FadeTransition tit3 = new FadeTransition(Duration.millis(2000), title3);
-			FadeTransition tit4 = new FadeTransition(Duration.millis(2000), title4);
+			FadeTransition tit1 = new FadeTransition(Duration.millis(2000), titlebanner);
+			FadeTransition tit2 = new FadeTransition(Duration.millis(2000), titlebanner2);
+			FadeTransition tit3 = new FadeTransition(Duration.millis(2000), titlebanner3);
+			FadeTransition tit4 = new FadeTransition(Duration.millis(2000), titlebanner4);
 
 			pin1.setFromValue(0);
 			pin1.setToValue(1);
@@ -426,29 +437,29 @@ public class ContractsTable extends Building {
 				pin1.play();
 				tit2.play();
 				HUD.setVisible(true);
-				title.setVisible(true);
-				title2.setVisible(true);
+				titlebanner.setVisible(true);
+				titlebanner2.setVisible(true);
 
 			}
 			if(index == 1) {
 				pin1.play();
 				tit3.play();
 				HUD.setVisible(true);
-				title2.setVisible(true);
-				title3.setVisible(true);
+				titlebanner2.setVisible(true);
+				titlebanner3.setVisible(true);
 
 			}
 			if(index == 2) {
 				pin1.play();
 				tit4.play();
 				HUD.setVisible(true);
-				title3.setVisible(true);
-				title4.setVisible(true);
+				titlebanner3.setVisible(true);
+				titlebanner4.setVisible(true);
 			}
 			if(index == 4) {
 				pin1.play();
 				HUD.setVisible(true);
-				title4.setVisible(true);
+				titlebanner4.setVisible(true);
 			}
 			tt.play();
 			tth.play();
@@ -467,8 +478,9 @@ public class ContractsTable extends Building {
 		gamepanel.getChildren().add(ausBackround);
 		ausXb.setVisible(false);
 		gamepanel.getChildren().add(ausXb);
-		text.setVisible(false);
-		gamepanel.getChildren().add(text);
+		
+		
+		
 
 		//contractNebel.setY(gamepanel.getPlayer().getScreenY() - contractNebel.getImage().getHeight() / 2 + 32);
 
@@ -476,9 +488,9 @@ public class ContractsTable extends Building {
 		contractGalactus.setX(gamepanel.SpielLaenge*2);
 		contractNova.setX(gamepanel.SpielLaenge*3);
 
-		title2.setX(gamepanel.SpielLaenge);
-		title3.setX(gamepanel.SpielLaenge*2);
-		title4.setX(gamepanel.SpielLaenge*3);
+		titlebanner2.setX(gamepanel.SpielLaenge);
+		titlebanner3.setX(gamepanel.SpielLaenge*2);
+		titlebanner4.setX(gamepanel.SpielLaenge*3);
 
 		HUD2.setX(gamepanel.SpielLaenge);
 		HUD3.setX(gamepanel.SpielLaenge*2);
@@ -494,11 +506,16 @@ public class ContractsTable extends Building {
 		p1.getChildren().add(HUD2);
 		p1.getChildren().add(HUD3);
 		p1.getChildren().add(HUD4);
-
-		p1.getChildren().add(title);
-		p1.getChildren().add(title2);
-		p1.getChildren().add(title3);
-		p1.getChildren().add(title4);
+		
+		p1.getChildren().add(titlebanner);
+		p1.getChildren().add(titlebanner2);
+		p1.getChildren().add(titlebanner3);
+		p1.getChildren().add(titlebanner4);
+		
+		text.setX((gamepanel.SpielLaenge/2)-164);
+		text.setY((gamepanel.SpielHoehe/4)+(gamepanel.SpielHoehe/2)+20);
+		text.setVisible(false);
+		p1.getChildren().add(text);
 
 		//buttons
 		button_R.setVisible(false);
@@ -511,10 +528,11 @@ public class ContractsTable extends Building {
 				gamepanel.setBlockUserInputs(true);
 				contractBackround.setVisible(true);
 				p1.setVisible(true);
+				text.setVisible(true);
 				HUD.setVisible(true);
-				title.setVisible(true);
+				titlebanner.setVisible(true);
 				button_R.setVisible(true);
-				title.setOpacity(1);
+				titlebanner.setOpacity(1);
 				HUD.setOpacity(1);
 
 				FadeTransition ft = new FadeTransition(Duration.millis(500), contractBackround);
@@ -541,6 +559,7 @@ public class ContractsTable extends Building {
 			else {
 				contractBackround.setVisible(false);
 				p1.setVisible(false);
+				text.setVisible(false);
 				ausBackround.setVisible(false);
 				ausXb.setVisible(false);
 				button_R.setVisible(false);
@@ -573,12 +592,10 @@ public class ContractsTable extends Building {
 			gamepanel.getChildren().remove(p1);
 			gamepanel.getChildren().remove(ausBackround);
 			gamepanel.getChildren().remove(ausXb);
-			gamepanel.getChildren().remove(text);
 			gamepanel.getChildren().remove(button_R);
 			gamepanel.getChildren().remove(button_L);
 
 		} else {
-
 			contractBackround.setY(gamepanel.getPlayer().getScreenY() - contractBackround.getImage().getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if(!gamepanel.getChildren().contains(contractBackround))
 				gamepanel.getChildren().add(contractBackround);
@@ -597,11 +614,6 @@ public class ContractsTable extends Building {
 			ausXb.setLayoutY(gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if(!gamepanel.getChildren().contains(ausXb))
 				gamepanel.getChildren().add(ausXb);
-
-			text.setLayoutX(gamepanel.getPlayer().getScreenX() - gamepanel.SpielLaenge / 2 + gamepanel.getPlayer().getWidth() / 2);
-			text.setLayoutY(gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
-			if(!gamepanel.getChildren().contains(text))
-				gamepanel.getChildren().add(text);
 
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
