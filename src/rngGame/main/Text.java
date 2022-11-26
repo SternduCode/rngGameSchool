@@ -92,16 +92,16 @@ public class Text {
 
 		for (int x = 0; x < bigI.getWidth() / 32; x++)
 			for (int y = 0; y < bigI.getHeight() / 32; y++) if (y<bigC.length && x<bigC[y].length) {
-				WritableImage cha = new WritableImage(16, 32);
+				WritableImage cha = new WritableImage(12, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 16, 32, bigPR, x * 32 + 8, y * 32);
+				pw.setPixels(0, 0, 12, 32, bigPR, x * 32 + 8, y * 32);
 				charmap.put(bigC[y][x], cha);
 			}
 		for (int x = 0; x < smallI.getWidth() / 32; x++)
 			for (int y = 0; y < smallI.getHeight() / 32; y++) if (y<smallC.length && x<smallC[y].length) {
-				WritableImage cha = new WritableImage(16, 32);
+				WritableImage cha = new WritableImage(12, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 16, 32, smallPR, x * 32 + 8, y * 32);
+				pw.setPixels(0, 0, 12, 32, smallPR, x * 32 + 8, y * 32);
 				charmap.put(smallC[y][x], cha);
 			}
 		for (int x = 0; x < numbersI.getWidth() / 32; x++)
