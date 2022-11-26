@@ -57,7 +57,7 @@ public class Text {
 			Image wi = ImgUtil.resizeImage(charmap.get(c), (int) charmap.get(c).getWidth(), 32,
 					(int) (charmap.get(c).getWidth() / 32.0 * fontSize), fontSize);
 			pw.setPixels(x, y * fontSize, (int) wi.getWidth(), fontSize, wi.getPixelReader(), 0, 0);
-			x += charmap.get(c).getWidth();
+			x += wi.getWidth();
 		}
 		return im;
 	}
