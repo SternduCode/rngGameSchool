@@ -45,7 +45,7 @@ public class Text {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
 		int length = 0;
 		for (String line: text.split("\n")) length = Math.max(length, line.length());
-		WritableImage im = new WritableImage(length * 32, lines * 32);
+		WritableImage im = new WritableImage(length * (int) (20 / 32.0 * fontSize), lines * fontSize);
 		PixelWriter pw = im.getPixelWriter();
 		char[] chars = text.toCharArray();
 		int x = 0, y = 0;
