@@ -1,0 +1,64 @@
+{
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		
+	],
+	"map" : {
+		"textures" : [
+			"Void.png",
+			"EckeLinksOben.png",
+			"SeiteObenBS.png",
+			"EckeRechtsOben.png",
+			"SeiteOben3.png",
+			"LochMiniEckeRechtsO.png",
+			"Mitte.png",
+			"SeiteRechts3.png",
+			"Mitte2.png",
+			"LochMiniEckeLinkU.png",
+			"SeiteLinks2.png",
+			"WasserEckeLinksO.png",
+			"WasserEckeRechtsO.png",
+			"SeiteRechts2.png",
+			"SeiteLinks3.png",
+			"WasserMiniEckeLinksO.png",
+			"WasserMiniEckeRechtsO.png",
+			"SeiteRechtsBS.png",
+			"WasserEckeLinksU.png",
+			"WasserMiniEckeLinksU.png",
+			"WasserS.png",
+			"WasserSeiteRechts.png",
+			"SeiteLinksBS.png",
+			"WasserMiniEcke2.png",
+			"WasserEckeRechtsU.png",
+			"WasserStrom.png",
+			"LochMiniEckeLinks.png",
+			"EckeRechtsUnten.png",
+			"SeiteUnten3.png",
+			"SeiteUnten2.png",
+			"Gehaenge.png",
+			"EckeLinksUnten.png",
+			"WasserFall.png"
+		],
+		"background" : "backgrounds/dungeonhintergrund1.png",
+		"startingPosition" : [
+			48,
+			48
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 0 0 0 1 2 3 0 ",
+			"0 1 4 4 5 6 7 0 ",
+			"1 5 8 6 6 8 9 3 ",
+			"10 6 8 11 12 6 8 13 ",
+			"14 8 11 15 16 12 8 17 ",
+			"10 6 18 19 20 21 6 13 ",
+			"22 8 8 18 23 24 8 7 ",
+			"10 6 6 8 25 8 26 27 ",
+			"14 26 28 29 25 29 27 30 ",
+			"31 27 30 30 32 30 30 0 ",
+			"30 30 0 0 0 0 0 0 "
+		]
+	}
+}
