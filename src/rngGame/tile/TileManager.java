@@ -53,6 +53,7 @@ public class TileManager extends Pane {
 	List<List<Integer>> mapTileNum;
 	private boolean generated;
 	private List<List<TextureHolder>> map;
+	private Menu maps, insel_k, insel_m, insel_g;
 
 	private final Group group;
 	private List<Building> buildings;
@@ -117,8 +118,11 @@ public class TileManager extends Pane {
 		});
 		mextra.getItems().add(backToSpawn);
 
-		Menu maps = new Menu("Maps");
-		mextra.getItems().add(maps);
+		maps = new Menu("Maps");
+		insel_k = new Menu("Insel_K");
+		insel_m = new Menu("Insel_M");
+		insel_g = new Menu("Insel_G");
+		mextra.getItems().addAll(maps, insel_k, insel_m, insel_g);
 
 		setOnContextMenuRequested(e -> {
 			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
@@ -398,12 +402,33 @@ public class TileManager extends Pane {
 	}
 
 	public Menu[] getMenus() {
-		((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().clear();
+		maps.getItems().clear();
+		insel_k.getItems().clear();
+		insel_m.getItems().clear();
+		insel_g.getItems().clear();
 		for (File f: new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[] sp = f.getName().split("[.]");
 			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
 			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
-			((Menu) mextra.getItems().get(mextra.getItems().size() - 1)).getItems().add(map);
+			maps.getItems().add(map);
+		}
+		for (File f: new File("./res/maps/insel_k").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[] sp = f.getName().split("[.]");
+			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setOnAction(ae -> gp.setMap("./res/maps/insel_k/" + map.getText() + ".json"));
+			insel_k.getItems().add(map);
+		}
+		for (File f: new File("./res/maps/insel_m").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[] sp = f.getName().split("[.]");
+			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setOnAction(ae -> gp.setMap("./res/maps/insel_m/" + map.getText() + ".json"));
+			insel_m.getItems().add(map);
+		}
+		for (File f: new File("./res/maps/insel_g").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[] sp = f.getName().split("[.]");
+			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setOnAction(ae -> gp.setMap("./res/maps/insel_g/" + map.getText() + ".json"));
+			insel_g.getItems().add(map);
 		}
 		return new Menu[] {mtiles, mnpcs, mbuildings, mmobs, mextra};
 	}
@@ -770,7 +795,7 @@ public class TileManager extends Pane {
 			double screenX = worldX - p.getX() + p.getScreenX();
 			double screenY = worldY - p.getY() + p.getScreenY();
 
-			if (map.size() == worldCol)
+			if (map.size() == worldRow)
 				map.add(new ArrayList<>());
 
 			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.BgX -
