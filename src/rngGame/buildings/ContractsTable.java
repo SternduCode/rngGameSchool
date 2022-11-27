@@ -512,8 +512,8 @@ public class ContractsTable extends Building {
 		p1.getChildren().add(titlebanner3);
 		p1.getChildren().add(titlebanner4);
 		
-		text.setX((gamepanel.SpielLaenge/2)-164);
-		text.setY((gamepanel.SpielHoehe/4)+(gamepanel.SpielHoehe/2)+20);
+		text.setX(gamepanel.SpielLaenge/2-164);
+		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+20);
 		text.setVisible(false);
 		p1.getChildren().add(text);
 
