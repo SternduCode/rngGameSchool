@@ -1,6 +1,8 @@
 package rngGame.tile;
 
+import java.io.*;
 import java.util.*;
+import com.sterndu.json.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -8,6 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.main.GamePanel;
 import rngGame.ui.PartialFillDialog;
 
@@ -18,6 +22,7 @@ public class SelectTool extends Rectangle {
 
 	private int x, y;
 	private Menu select, fill, partialFill;
+	private MenuItem copy, saveAsMap;
 
 	public SelectTool(GamePanel gp) {
 		this.gp = gp;
@@ -39,10 +44,56 @@ public class SelectTool extends Rectangle {
 					if (matrix[matrixIdx]) gp.getTileM().getTileAt(x + j, y + i)
 					.setTile(((MenuItemWTile) e.getSource()).getTile());
 			}
-		} else for (int i = 0; i < getWidth(); i += gp.BgX)
+		} else if (((MenuItem) e.getSource()).getParentMenu() == fill) for (int i = 0; i < getWidth(); i += gp.BgX)
 			for (int j = 0; j < getHeight(); j += gp.BgY) gp.getTileM().getTileAt(x + i,
-				y + j)
-		.setTile(((MenuItemWTile) e.getSource()).getTile());
+					y + j)
+			.setTile(((MenuItemWTile) e.getSource()).getTile());
+		else if (e.getSource()==saveAsMap) {
+			List<List<TextureHolder>> map = gp.getTileM().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			FileChooser fc = new FileChooser();
+			fc.setInitialDirectory(new File("./res/maps"));
+			fc.getExtensionFilters().add(new ExtensionFilter("A file containing a Map", "*.json"));
+			File f = fc.showSaveDialog(getScene().getWindow());
+			if (f != null) {
+				JsonObject file = new JsonObject();
+				JsonArray npcs = new JsonArray();
+				file.put("npcs", npcs);
+				JsonArray buildings = new JsonArray();
+				file.put("buildings", buildings);
+				JsonObject mapO = new JsonObject();
+				file.put("map", mapO);
+				JsonArray startingPosition = new JsonArray(Arrays.asList(48, 48));
+				mapO.put("startingPosition", startingPosition);
+				mapO.put("dir", gp.getTileM().getDir());
+				if (gp.getTileM().getBackgroundPath() != null)
+					mapO.put("background", gp.getTileM().getBackgroundPath());
+				JsonArray textures = new JsonArray();
+				mapO.put("textures", textures);
+				JsonArray matrix = new JsonArray();
+				mapO.put("matrix", matrix);
+				for (List<TextureHolder> liTh: map) {
+					String line = "";
+					for (TextureHolder th: liTh) {
+						if (!textures.contains(th.getTile().name))
+							textures.add(th.getTile().name);
+						line += textures.indexOf(th.getTile().name) + " ";
+					}
+					matrix.add(line);
+				}
+				try {
+					String jsonOut = file.toJson();
+					BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+					bw.write(jsonOut);
+					bw.flush();
+					bw.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		} else if (e.getSource()==copy) {
+			List<List<TextureHolder>> map = gp.getTileM().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			//TODO add copy
+		}
 	}
 
 	private void init() {
@@ -51,6 +102,10 @@ public class SelectTool extends Rectangle {
 		setStrokeWidth(2.5);
 		setDisable(true);
 		setVisible(false);
+		copy = new MenuItem("Copy");
+		copy.setOnAction(this::handleContextMenu);
+		saveAsMap = new MenuItem("Save as Map");
+		saveAsMap.setOnAction(this::handleContextMenu);
 		select = new Menu("Select");
 		fill = new Menu("Fill");
 		partialFill = new Menu("Partial Fill");
@@ -86,6 +141,8 @@ public class SelectTool extends Rectangle {
 		ContextMenu cm = gp.getTileM().getCM();
 		cm.getItems().clear();
 		cm.getItems().add(select);
+		cm.getItems().add(copy);
+		cm.getItems().add(saveAsMap);
 		fill.getItems().clear();
 		partialFill.getItems().clear();
 		for (Tile t: gp.getTileM().getTiles()) {

@@ -227,7 +227,8 @@ public class GamePanel extends Pane {
 		test = tileM.getMobFromMap();
 
 		//		ImageView iv = new ImageView(Text.getInstance()
-		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #"));
+		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #",
+		//						48));
 		//		ImageView iv = new ImageView(Text.getInstance()
 		//				.convertText("Programmieren ist LW"));
 		//		getChildren().add(iv);

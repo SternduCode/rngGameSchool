@@ -106,6 +106,11 @@ public class TextureHolder extends Pane {
 		iv.setImage(tile.images.get(0));
 	}
 
+	@Override
+	public String toString() {
+		return "TextureHolder [tile=" + tile.name + "]";
+	}
+
 	public void update() {
 
 		tile.update();

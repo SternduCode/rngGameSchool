@@ -31,6 +31,8 @@ public class TileManager extends Pane {
 					images.add(new Image(new ByteArrayInputStream(new byte[0])));
 				}
 			}, null, x, y, null, null, 0, 0);
+			setWidth(gp.BgX);
+			setHeight(gp.BgY);
 		}
 
 		@SuppressWarnings("unused")
@@ -422,6 +424,22 @@ public class TileManager extends Pane {
 			return getTileAt(x, y);
 	}
 
+	public List<List<TextureHolder>> getPartOfMap(double layoutX, double layoutY, double width, double height) {
+		int lx, ly, w, h;
+		lx = (int) Math.floor((layoutX-gp.getPlayer().getScreenX()+gp.getPlayer().getX()) / gp.BgX);
+		ly = (int) Math.floor((layoutY-gp.getPlayer().getScreenY()+gp.getPlayer().getY()) / gp.BgY);
+		w = (int) Math.floor(width / gp.BgX);
+		h = (int) Math.floor(height / gp.BgY);
+
+		List<List<TextureHolder>> li = new ArrayList<>();
+
+		for (int i = 0; i < h; i++) {
+			li.add(new ArrayList<>());
+			for (int j = 0; j < w; j++) li.get(i).add(map.get(ly + i).get(lx + j));
+		}
+		return li;
+	}
+
 	public String getPath() { return path; }
 
 	public int getPlayerLayer() { return playerLayer; }
@@ -440,7 +458,8 @@ public class TileManager extends Pane {
 		try {
 			return map.get(ty).get(tx);
 		} catch (IndexOutOfBoundsException e) {
-			return new FakeTextureHolder(x, y);
+			return new FakeTextureHolder(tx * gp.BgX - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
+					ty * gp.BgY - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
 		}
 	}
 
@@ -698,19 +717,19 @@ public class TileManager extends Pane {
 					.add(new MenuItemWNPC(
 							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 									.findFirst().get()).getValue(),
-									new ImageView(
-											ImgUtil.resizeImage(np.getFirstImage(), (int) n.getFirstImage().getWidth(),
-													(int) np.getFirstImage().getHeight(), 16, 16)),
-									np));
+							new ImageView(
+									ImgUtil.resizeImage(np.getFirstImage(), (int) n.getFirstImage().getWidth(),
+											(int) np.getFirstImage().getHeight(), 16, 16)),
+							np));
 				else if (n instanceof MobRan mr)
 					mmobs.getItems()
-							.add(new MenuItemWMOB(
-									((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
-											.findFirst().get()).getValue(),
-									new ImageView(
-											ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
-													(int) mr.getFirstImage().getHeight(), 16, 16)),
-									mr));
+					.add(new MenuItemWMOB(
+							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
+									.findFirst().get()).getValue(),
+							new ImageView(
+									ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
+											(int) mr.getFirstImage().getHeight(), 16, 16)),
+							mr));
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));
@@ -743,7 +762,7 @@ public class TileManager extends Pane {
 		int worldCol = 0;
 		int worldRow = 0;
 
-		while (worldRow < mapTileNum.size() && worldCol < mapTileNum.get(worldRow).size()) {
+		while (worldRow < mapTileNum.size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
 			int worldX = worldCol * gp.BgX;
@@ -790,7 +809,7 @@ public class TileManager extends Pane {
 
 			worldCol++;
 
-			if (worldCol == mapTileNum.size()) {
+			if (worldCol == mapTileNum.get(worldRow).size()) {
 				worldCol = 0;
 				worldRow++;
 			}
