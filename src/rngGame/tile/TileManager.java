@@ -53,7 +53,7 @@ public class TileManager extends Pane {
 	List<List<Integer>> mapTileNum;
 	private boolean generated;
 	private List<List<TextureHolder>> map;
-	private Menu maps, insel_k, insel_m, insel_g;
+	private final Menu maps, insel_k, insel_m, insel_g;
 
 	private final Group group;
 	private List<Building> buildings;
@@ -622,19 +622,9 @@ public class TileManager extends Pane {
 
 				JsonArray ja_maps = (JsonArray) jo.get("maps");
 
-				JsonObject[] maps = new JsonObject[4];
-
-				Random r = new Random();
-				for (int i = 0; i < maps.length; i++) {
-					String fileName = ((StringValue) ja_maps.remove(r.nextInt(ja_maps.size()))).getValue();
-					maps[i] = (JsonObject) JsonParser.parse(new FileInputStream(
-							"./res/maps/" + fileName));
-					System.out.println(fileName);
-				}
-
 				String voidImg = ((StringValue) jo.get("void")).getValue();
 
-				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, maps,
+				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList());
