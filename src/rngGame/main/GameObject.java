@@ -956,8 +956,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				position.add(y / gamepanel.getScalingFactorY());
 				extraDatas.add(extraData);
 				fpss.add(fps);
-				requestedSize.add(reqWidth / gamepanel.getScalingFactorX());
-				requestedSize.add(reqHeight / gamepanel.getScalingFactorY());
+				requestedSize.add(reqWidth);
+				requestedSize.add(reqHeight);
 				backgrounds.add(background);
 				layers.add(layer);
 			} else {
@@ -968,8 +968,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				extraDatas.add(extraData);
 				fpss.add(fps);
 				JsonArray reqSize = new JsonArray();
-				reqSize.add(reqWidth / gamepanel.getScalingFactorX());
-				reqSize.add(reqHeight / gamepanel.getScalingFactorY());
+				reqSize.add(reqWidth);
+				reqSize.add(reqHeight);
 				requestedSize.add(reqSize);
 				backgrounds.add(background);
 				layers.add(layer);
@@ -981,8 +981,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					extraDatas.add(b.extraData);
 					fpss.add(b.fps);
 					reqSize = new JsonArray();
-					reqSize.add(b.reqWidth / gamepanel.getScalingFactorX());
-					reqSize.add(b.reqHeight / gamepanel.getScalingFactorY());
+					reqSize.add(b.reqWidth);
+					reqSize.add(b.reqHeight);
 					requestedSize.add(reqSize);
 					backgrounds.add(b.background);
 					layers.add(b.layer);
