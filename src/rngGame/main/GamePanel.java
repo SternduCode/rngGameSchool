@@ -187,7 +187,7 @@ public class GamePanel extends Pane {
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
 							BackgroundRepeat.NO_REPEAT,
 							BackgroundRepeat.NO_REPEAT, null,
-							new BackgroundSize(SpielLaenge, SpielHoehe, false, false, false, false))));
+							new BackgroundSize(SpielLaenge, SpielHoehe + scalingFactorY, false, false, false, false))));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
