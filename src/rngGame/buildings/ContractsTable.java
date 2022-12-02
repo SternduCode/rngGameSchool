@@ -66,7 +66,7 @@ public class ContractsTable extends Building {
 
 		Image hudp = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Ping.gif");
 		Image titlep = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/title.png");
-		
+
 		text = new ImageView(Text.getInstance().convertText("Underwater Caverns", 48));
 
 		Image ausbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MapAuswahlBackround.png");
@@ -115,7 +115,7 @@ public class ContractsTable extends Building {
 		titlebanner3.setOpacity(0);
 		titlebanner4 = new ImageView(titlep);
 		titlebanner4.setOpacity(0);
-		
+
 
 		ausBackround = new ImageView(ausbc);
 		ausXb = new ImageView(ausX);
@@ -167,7 +167,7 @@ public class ContractsTable extends Building {
 				tit1.setToValue(0);
 				tit2.setToValue(1);
 				pin2.setToValue(1);
-				
+
 				_tiw.play();
 				pin1.play();
 				tit1.play();
@@ -278,7 +278,7 @@ public class ContractsTable extends Building {
 		contractSaturn.setOnMouseReleased(me->{
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackround);
-			
+
 			tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
 			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 
@@ -417,6 +417,9 @@ public class ContractsTable extends Building {
 
 
 			FadeTransition pin1 = new FadeTransition(Duration.millis(0), HUD);
+			FadeTransition pin2 = new FadeTransition(Duration.millis(0), HUD2);
+			FadeTransition pin3 = new FadeTransition(Duration.millis(0), HUD3);
+			FadeTransition pin4 = new FadeTransition(Duration.millis(0), HUD4);
 			FadeTransition tit1 = new FadeTransition(Duration.millis(2000), titlebanner);
 			FadeTransition tit2 = new FadeTransition(Duration.millis(2000), titlebanner2);
 			FadeTransition tit3 = new FadeTransition(Duration.millis(2000), titlebanner3);
@@ -442,23 +445,23 @@ public class ContractsTable extends Building {
 
 			}
 			if(index == 1) {
-				pin1.play();
+				pin2.play();
 				tit3.play();
-				HUD.setVisible(true);
+				HUD2.setVisible(true);
 				titlebanner2.setVisible(true);
 				titlebanner3.setVisible(true);
 
 			}
 			if(index == 2) {
-				pin1.play();
+				pin3.play();
 				tit4.play();
-				HUD.setVisible(true);
+				HUD3.setVisible(true);
 				titlebanner3.setVisible(true);
 				titlebanner4.setVisible(true);
 			}
 			if(index == 4) {
-				pin1.play();
-				HUD.setVisible(true);
+				pin4.play();
+				HUD4.setVisible(true);
 				titlebanner4.setVisible(true);
 			}
 			tt.play();
@@ -478,9 +481,9 @@ public class ContractsTable extends Building {
 		gamepanel.getChildren().add(ausBackround);
 		ausXb.setVisible(false);
 		gamepanel.getChildren().add(ausXb);
-		
-		
-		
+
+
+
 
 		//contractNebel.setY(gamepanel.getPlayer().getScreenY() - contractNebel.getImage().getHeight() / 2 + 32);
 
@@ -492,9 +495,18 @@ public class ContractsTable extends Building {
 		titlebanner3.setX(gamepanel.SpielLaenge*2);
 		titlebanner4.setX(gamepanel.SpielLaenge*3);
 
-		HUD2.setX(gamepanel.SpielLaenge);
-		HUD3.setX(gamepanel.SpielLaenge*2);
-		HUD4.setX(gamepanel.SpielLaenge*3);
+		HUD.setX(HUD.getImage().getWidth() / 2 * gamepanel.getScalingFactorX() - HUD.getImage().getWidth() / 2);
+		HUD2.setX(gamepanel.SpielLaenge + HUD2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+				- HUD2.getImage().getWidth() / 2);
+		HUD3.setX(gamepanel.SpielLaenge * 2 + HUD3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+				- HUD3.getImage().getWidth() / 2);
+		HUD4.setX(gamepanel.SpielLaenge * 3 + HUD4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+				- HUD4.getImage().getWidth() / 2);
+		HUD.setY(HUD.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - HUD.getImage().getHeight() / 2);
+		HUD2.setY(HUD2.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - HUD2.getImage().getHeight() / 2);
+		HUD3.setY(HUD3.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - HUD3.getImage().getHeight() / 2);
+		HUD4.setY(HUD4.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - HUD4.getImage().getHeight() / 2);
+
 		//add
 		p1.setVisible(false);
 		p1.getChildren().add(contractSaturn);
@@ -506,12 +518,12 @@ public class ContractsTable extends Building {
 		p1.getChildren().add(HUD2);
 		p1.getChildren().add(HUD3);
 		p1.getChildren().add(HUD4);
-		
+
 		p1.getChildren().add(titlebanner);
 		p1.getChildren().add(titlebanner2);
 		p1.getChildren().add(titlebanner3);
 		p1.getChildren().add(titlebanner4);
-		
+
 		text.setX(gamepanel.SpielLaenge/2-164);
 		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+20);
 		text.setVisible(false);
@@ -581,6 +593,8 @@ public class ContractsTable extends Building {
 	@Override
 	public void update(long milis) {
 		inkreis = false;
+		System.out.println(HUD.getImage() + " " + HUD.getScaleX() + " " + HUD.getScaleY() + " " + HUD.isVisible());
+
 		super.update(milis);
 		if(!inkreis) {
 			iftest = false;
