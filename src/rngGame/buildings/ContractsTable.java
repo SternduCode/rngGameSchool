@@ -1,5 +1,6 @@
 package rngGame.buildings;
 
+import java.io.FileInputStream;
 import java.util.List;
 import com.sterndu.json.JsonObject;
 import javafx.animation.*;
@@ -66,8 +67,12 @@ public class ContractsTable extends Building {
 
 		Image hudp = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Ping.gif");
 		Image titlep = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/title.png");
-		
-		text = new ImageView(Text.getInstance().convertText("Underwater Caverns", 48));
+
+		Image ka = Text.getInstance().convertText("Underwater Caverns", 48);
+		ka = ImgUtil.resizeImage(
+				ka, (int) ka.getWidth(), (int) ka.getHeight(),
+				(int) (ka.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (ka.getHeight() * gamepanel.getScalingFactorY()));
 
 		Image ausbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MapAuswahlBackround.png");
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
@@ -86,6 +91,8 @@ public class ContractsTable extends Building {
 		contractNebel = new ImageView(nebel);
 		contractGalactus = new ImageView(galactus);
 		contractNova = new ImageView(nova);
+		
+		text = new ImageView(ka);
 
 		HUD = new ImageView(hudp);
 		HUD.setScaleX(gamepanel.getScalingFactorX());
@@ -512,8 +519,8 @@ public class ContractsTable extends Building {
 		p1.getChildren().add(titlebanner3);
 		p1.getChildren().add(titlebanner4);
 		
-		text.setX(gamepanel.SpielLaenge/2-164);
-		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+20);
+		text.setX(gamepanel.SpielLaenge/2-(164*gamepanel.getScalingFactorX()));
+		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+(20*gamepanel.getScalingFactorY()));
 		text.setVisible(false);
 		p1.getChildren().add(text);
 

@@ -6,19 +6,18 @@
 		
 	],
 	"map" : {
+		"playerLayer" : 0,
 		"textures" : [
 			"Void.png",
 			"EckeLinksOben.png",
 			"SeiteOben2.png",
 			"SeiteOben3.png",
 			"EckeRechtsOben.png",
-			"BrueckeH2.png",
 			"SeiteLinksBS.png",
 			"WasserEckeLinksO.png",
 			"WasserSeiteOben.png",
 			"WasserEckeRechtsO.png",
 			"SeiteRechts2.png",
-			"BRG.png",
 			"SeiteLinks2.png",
 			"WasserSeiteLinks.png",
 			"WasserS.png",
@@ -34,22 +33,21 @@
 			"SeiteUnten2.png",
 			"SeiteUntenBS.png",
 			"EckeRechtsUnten.png",
-			"Gehaenge.png",
-			"BrueckeV2.png"
+			"Gehaenge.png"
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
-			48,
-			48
+			48.0000,
+			48.0000
 		],
 		"dir" : "Insel",
 		"matrix" : [
-			"0 1 2 2 3 2 4 ",
-			"5 6 7 8 8 9 10 ",
-			"11 12 13 14 14 15 16 ",
-			"1 17 18 19 19 20 21 ",
-			"22 23 23 24 25 23 26 ",
-			"27 27 27 27 28 27 27 "
+			"0 1 2 2 3 2 4",
+			"0 5 6 7 7 8 9",
+			"0 10 11 12 12 13 14",
+			"1 15 16 17 17 18 19",
+			"20 21 21 22 23 21 24",
+			"25 25 25 25 0 25 25"
 		]
 	}
 }

@@ -411,6 +411,38 @@
 			"layer" : [
 				0
 			]
+		},
+		{
+			"requestedSize" : [
+				128,
+				128
+			],
+			"textures" : {
+				"default" : "Laterne.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1111.00,
+				910.000
+			],
+			"type" : "Building",
+			"originalSize" : [
+				128,
+				128
+			],
+			"layer" : [
+				0
+			]
 		}
 	],
 	"map" : {
