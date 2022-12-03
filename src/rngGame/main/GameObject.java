@@ -934,16 +934,16 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				jBox.put("name", box.getKey());
 				if (box.getValue() instanceof Ellipse circ) {
 					jBox.put("type", "circle");
-					jBox.put("x", (long) circ.getCenterX());
-					jBox.put("y", (long) circ.getCenterY());
+					jBox.put("x", (long) circ.getCenterX() / gamepanel.getScalingFactorX());
+					jBox.put("y", (long) circ.getCenterY() / gamepanel.getScalingFactorY());
 					jBox.put("radius", (long) ((circ.getRadiusX() / gamepanel.getScalingFactorX()
 							+ circ.getRadiusY() / gamepanel.getScalingFactorY()) / 2.0));
 				} else if (box.getValue() instanceof Rectangle rect) {
 					jBox.put("type", "rectangle");
-					jBox.put("x", (long) rect.getX());
-					jBox.put("y", (long) rect.getY());
-					jBox.put("width", (long) rect.getWidth());
-					jBox.put("height", (long) rect.getHeight());
+					jBox.put("x", (long) rect.getX() / gamepanel.getScalingFactorX());
+					jBox.put("y", (long) rect.getY() / gamepanel.getScalingFactorY());
+					jBox.put("width", (long) rect.getWidth() / gamepanel.getScalingFactorX());
+					jBox.put("height", (long) rect.getHeight() / gamepanel.getScalingFactorY());
 				} else if (box.getValue() instanceof Polygon poly) {
 					// TODO
 				} else if (box.getValue() instanceof Ring ring) {
@@ -952,8 +952,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				miscBoxes.add(jBox);
 			}
 			if (slaves == null || slaves.size() == 0) {
-				position.add(x);
-				position.add(y);
+				position.add(x / gamepanel.getScalingFactorX());
+				position.add(y / gamepanel.getScalingFactorY());
 				extraDatas.add(extraData);
 				fpss.add(fps);
 				requestedSize.add(reqWidth);
@@ -962,8 +962,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				layers.add(layer);
 			} else {
 				JsonArray pos = new JsonArray();
-				pos.add(x);
-				pos.add(y);
+				pos.add(x / gamepanel.getScalingFactorX());
+				pos.add(y / gamepanel.getScalingFactorY());
 				position.add(pos);
 				extraDatas.add(extraData);
 				fpss.add(fps);
@@ -975,8 +975,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				layers.add(layer);
 				for (GameObject b: slaves) {
 					pos = new JsonArray();
-					pos.add(b.x);
-					pos.add(b.y);
+					pos.add(b.x / gamepanel.getScalingFactorX());
+					pos.add(b.y / gamepanel.getScalingFactorY());
 					position.add(pos);
 					extraDatas.add(b.extraData);
 					fpss.add(b.fps);

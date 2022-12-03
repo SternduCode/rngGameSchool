@@ -12,7 +12,8 @@ import rngGame.main.GamePanel;
 public class DungeonGen {
 
 	private final GamePanel gp;
-	private final JsonObject mainMap, maps[];
+	private final JsonObject mainMap;
+	private final List<JsonObject> maps;
 	private final List<Tile> mainMapTiles, mapsTiles[];
 	private final List<List<Integer>> mainMapTileNum, mapsTileNum[];
 	private final List<JsonObject> connectors, connections, replacements;
@@ -22,17 +23,31 @@ public class DungeonGen {
 	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, mapsConnectorTiles[];
 
 	@SuppressWarnings("unchecked")
-	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonObject[] maps, List<JsonObject> connectors,
+	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, List<JsonObject> connectors,
 			List<JsonObject> connections, List<JsonObject> replacements) {
 		this.gp = gp;
 		mainMap = mainmap;
-		this.maps = maps;
-		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));
-		mainMapTileNum = gp.getTileM().mapTileNum;
+
+		this.maps = new ArrayList<>();
+
+		for (Object folder:maps) if (folder instanceof StringValue sv) {
+			File f = new File("./res/"+sv.getValue());
+			for (File m: f.listFiles((FilenameFilter) (dir, name) -> name.endsWith(".json"))) try {
+				this.maps.add((JsonObject) JsonParser.parse(m));
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
+		mainMapTileNum = gp.getTileM().mapTileNum; // save loaded mainmap matrix
 		gp.getTileM().mapTileNum = new ArrayList<>();
+
 		String dir = ((StringValue) ((JsonObject) mainmap.get("map")).get("dir")).getValue();
+
 		mainMapTiles = new ArrayList<>();
-		for (Object texture: (JsonArray) ((JsonObject) mainmap.get("map")).get("textures")) try {
+
+		for (Object texture: (JsonArray) ((JsonObject) mainmap.get("map")).get("textures")) try {// load mainmap tiles
 			Tile t = new Tile(((StringValue) texture).getValue(),
 					new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 					gp);
@@ -40,18 +55,21 @@ public class DungeonGen {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
 		for (List<Integer> xCol: mainMapTileNum) for (Integer v: xCol) if (mainMapTiles.get(v).name.equals(voidImg))
-			mainMapVoidNum = v;
-		mapsTileNum = new List[maps.length];
-		mapsTiles = new List[maps.length];
-		mapsVoidNum = new int[maps.length];
-		for (int i =0;i<maps.length;i++) {
-			gp.getTileM().loadMap((JsonArray) ((JsonObject) maps[i].get("map")).get("matrix"));
+			mainMapVoidNum = v; // find void in mainmap tiles
+
+		mapsTileNum = new List[maps.size()];
+		mapsTiles = new List[maps.size()];
+		mapsVoidNum = new int[maps.size()];
+
+		for (int i = 0; i < maps.size(); i++) {// TODO check for validity
+			gp.getTileM().loadMap((JsonArray) ((JsonObject) ((JsonObject) maps.get(i)).get("map")).get("matrix"));
 			mapsTileNum[i] = gp.getTileM().mapTileNum;
 			gp.getTileM().mapTileNum = new ArrayList<>();
-			dir = ((StringValue) ((JsonObject) maps[i].get("map")).get("dir")).getValue();
+			dir = ((StringValue) ((JsonObject) ((JsonObject) maps.get(i)).get("map")).get("dir")).getValue();
 			mapsTiles[i] = new ArrayList<>();
-			for (Object texture: (JsonArray) ((JsonObject) maps[i].get("map")).get("textures")) try {
+			for (Object texture: (JsonArray) ((JsonObject) ((JsonObject) maps.get(i)).get("map")).get("textures")) try {
 				Tile t = new Tile(((StringValue) texture).getValue(),
 						new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
@@ -70,8 +88,8 @@ public class DungeonGen {
 		mainMapConnectorTiles = new HashMap<>();
 		mapsConnectorTiles = new HashMap[mapsTiles.length];
 		mainMapConnectors = new ArrayList<>();
-		mapsConnectors = new List[maps.length];
-		for (int i = 0; i < maps.length; i++) mapsConnectors[i] = new ArrayList<>();
+		mapsConnectors = new List[maps.size()];
+		for (int i = 0; i < maps.size(); i++) mapsConnectors[i] = new ArrayList<>();
 		System.out.println(mainMapVoidNum);
 	}
 
