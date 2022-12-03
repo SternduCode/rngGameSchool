@@ -3,14 +3,9 @@
 	"background" : "backgrounds/dungeonhintergrund1.png",
 	"mainmap": "StawtMap.json",
 	"maps": [
-		"InselL1.json",
-		"InselL2.json",
-		"InselL3.json",
-		"InselL4.json",
-		"InselL5.json",
-		"InselL6.json",
-		"InselL7.json",
-		"InselL8.json"
+		"insel_g",
+		"insel_k",
+		"insel_m"
 	],
 	"void" : "Void.png",
 	"connectors" : [ 

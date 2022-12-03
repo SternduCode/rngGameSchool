@@ -1,6 +1,5 @@
 package rngGame.buildings;
 
-import java.io.FileInputStream;
 import java.util.List;
 import com.sterndu.json.JsonObject;
 import javafx.animation.*;
@@ -531,8 +530,8 @@ public class ContractsTable extends Building {
 		p1.getChildren().add(titlebanner3);
 		p1.getChildren().add(titlebanner4);
 		
-		text.setX(gamepanel.SpielLaenge/2-(164*gamepanel.getScalingFactorX()));
-		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+(20*gamepanel.getScalingFactorY()));
+		text.setX(gamepanel.SpielLaenge/2-164*gamepanel.getScalingFactorX());
+		text.setY(gamepanel.SpielHoehe/4+gamepanel.SpielHoehe/2+20*gamepanel.getScalingFactorY());
 
 		text.setVisible(false);
 		p1.getChildren().add(text);
@@ -601,7 +600,6 @@ public class ContractsTable extends Building {
 	@Override
 	public void update(long milis) {
 		inkreis = false;
-		System.out.println(HUD.getImage() + " " + HUD.getScaleX() + " " + HUD.getScaleY() + " " + HUD.isVisible());
 
 		super.update(milis);
 		if(!inkreis) {
