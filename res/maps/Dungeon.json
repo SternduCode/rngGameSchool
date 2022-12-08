@@ -3,9 +3,9 @@
 	"background" : "backgrounds/dungeonhintergrund1.png",
 	"mainmap": "StawtMap.json",
 	"maps": [
-		"insel_g",
-		"insel_k",
-		"insel_m"
+		{"folder" : "insel_g", "size" : "BIG" },
+		{"folder" : "insel_k", "size" : "SMALL" },
+		{"folder" : "insel_m", "size" : "MIDDLE" }
 	],
 	"void" : "Void.png",
 	"connectors" : [ 
