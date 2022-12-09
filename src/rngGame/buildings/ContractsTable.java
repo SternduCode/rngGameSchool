@@ -17,6 +17,8 @@ public class ContractsTable extends Building {
 
 	private final  Pane p1 = new Pane();
 	private final  Pane p2 = new Pane();
+	private final  Pane allPanes = new Pane();
+	private final  Pane infos = new Pane();
 	private final Group UGsachen = new Group();
 	private final Group Ausgroup = new Group();
 	private  ImageView contractBackround;
@@ -341,13 +343,10 @@ public class ContractsTable extends Building {
 			tt.setToX(-gamepanel.SpielLaenge/4-gamepanel.SpielLaenge*index);
 			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge/1.5+gamepanel.getScalingFactorX()*24);
 			
-			FadeTransition ft5 = new FadeTransition(Duration.millis(350), Ausgroup);
-			ft5.setFromValue(0);
-			ft5.setToValue(1);
-
-			
+	
 			UGbackround.setImage(UG_1);
-			FadeTransition UG = new FadeTransition(Duration.millis(350), p2);
+			
+			FadeTransition UG = new FadeTransition(Duration.millis(350), allPanes);
 			UG.setFromValue(0);
 			UG.setToValue(1);
 			UG.play();
@@ -355,13 +354,11 @@ public class ContractsTable extends Building {
 			FadeTransition _tiw = new FadeTransition(Duration.millis(1250), text);
 			_tiw.setFromValue(0);
 			_tiw.setToValue(1);
-			ft5.play();
 			
-			p2.setVisible(true);
+			allPanes.setVisible(true);
 			lvlBorder.setVisible(false);
 			Startbutton.setVisible(false);
 			text.setVisible(true);
-			Ausgroup.setVisible(true);
 			button_R.setVisible(false);
 			button_L.setVisible(false);
 			_tiw.play();
@@ -451,15 +448,12 @@ public class ContractsTable extends Building {
 			tt.setToX(gamepanel.SpielLaenge+gamepanel.SpielLaenge*(-index-1));
 			tth.setToX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge);
 
-			FadeTransition UG = new FadeTransition(Duration.millis(200), p2);
+			FadeTransition UG = new FadeTransition(Duration.millis(200), allPanes);
 			UG.setFromValue(1);
 			UG.setToValue(0);
 			UG.play();
 			
-			FadeTransition ft5 = new FadeTransition(Duration.millis(200), Ausgroup);
-			ft5.setFromValue(1);
-			ft5.setToValue(0);
-			ft5.play();
+
 
 
 			new Thread(()->{
@@ -582,11 +576,15 @@ public class ContractsTable extends Building {
 		// P2
 		p2.setVisible(false);
 		UGsachen.getChildren().addAll(UGbackround, Startbutton);
-		lvlBorder.setX(-11 * gamepanel.getScalingFactorX());
-		lvlBorder.setY(-110 * gamepanel.getScalingFactorY());
 		Startbutton.setX(383 * gamepanel.getScalingFactorX());
 		Startbutton.setY(4 * gamepanel.getScalingFactorY());
-		p2.getChildren().addAll(UGsachen, lvlBorder);
+		p2.getChildren().addAll(UGsachen);
+		
+		lvlBorder.setX(gamepanel.SpielLaenge /2 + 11 * gamepanel.getScalingFactorX());
+		//lvlBorder.setY( * gamepanel.getScalingFactorY());
+		
+		allPanes.setVisible(false);
+		allPanes.getChildren().addAll(Ausgroup, p2, lvlBorder);
 
 		Input.getInstance().setKeyHandler("contractbackround", mod -> {
 
@@ -657,8 +655,7 @@ public class ContractsTable extends Building {
 			contractBackround.setVisible(false);
 			gamepanel.getChildren().remove(contractBackround);
 			gamepanel.getChildren().remove(p1);
-			gamepanel.getChildren().remove(Ausgroup);
-			gamepanel.getChildren().remove(p2);
+			gamepanel.getChildren().remove(allPanes);
 			gamepanel.getChildren().remove(button_R);
 			gamepanel.getChildren().remove(button_L);
 
@@ -671,19 +668,10 @@ public class ContractsTable extends Building {
 			p1.setLayoutY(gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if(!gamepanel.getChildren().contains(p1))
 				gamepanel.getChildren().add(p1);
-
-			Ausgroup.setLayoutX(gamepanel.getPlayer().getScreenX() - gamepanel.SpielLaenge / 2 + gamepanel.getPlayer().getWidth() / 2);
-			Ausgroup.setLayoutY(0);
-			if(!gamepanel.getChildren().contains(Ausgroup))
-				gamepanel.getChildren().add(Ausgroup);
-			
-			p2.setLayoutX(gamepanel.getPlayer().getScreenX() + 11 * gamepanel.getScalingFactorX() + gamepanel.getPlayer().getWidth() / 2);
-			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
-			if(!gamepanel.getChildren().contains(p2))
-				gamepanel.getChildren().add(p2);
-
-
-
+			///////////////////////////////////////////////
+			if(!gamepanel.getChildren().contains(allPanes))
+				gamepanel.getChildren().add(allPanes);
+			//////////////////////////////////////////////
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if(!gamepanel.getChildren().contains(button_R))
