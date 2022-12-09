@@ -92,8 +92,8 @@ public class SelectTool extends Rectangle {
 			}
 		} else if (e.getSource()==copy) {
 			List<List<TextureHolder>> map = gp.getTileM().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
-			//TODO add copy
 		}
+		//TODO add copy
 	}
 
 	private void init() {
@@ -159,8 +159,9 @@ public class SelectTool extends Rectangle {
 			menuitem.setOnAction(this::handleContextMenu);
 			partialFill.getItems().add(menuitem);
 		}
-		cm.show(this, getLayoutX() + getScene().getWindow().getX(),
-				getLayoutY() + +getScene().getWindow().getY());
+		if (!gp.isBlockUserInputs())
+			cm.show(this, getLayoutX() + getScene().getWindow().getX(),
+					getLayoutY() + +getScene().getWindow().getY());
 
 	}
 
