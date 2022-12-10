@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.main.*;
 import rngGame.tile.ImgUtil;
-import rngGame.ui.MonsterSelction;
+import rngGame.ui.*;
 
 public class ContractsTable extends Building {
 
@@ -23,10 +23,10 @@ public class ContractsTable extends Building {
 	private final Group ugSachen = new Group();
 	private final Group ausGroup = new Group();
 	private ImageView contractBackground;
-	private ImageView contractSaturn;
-	private ImageView contractNebel;
-	private ImageView contractGalactus;
-	private ImageView contractNova;
+	private Button contractSaturn;
+	private Button contractNebel;
+	private Button contractGalactus;
+	private Button contractNova;
 
 	private MonsterSelction ms;
 
@@ -42,16 +42,16 @@ public class ContractsTable extends Building {
 
 	private ImageView text;
 
-	private ImageView button_R;
-	private ImageView button_L;
+	private Button button_R;
+	private Button button_L;
 
 	private ImageView ausBackground;
 
 	private ImageView ugBackground;
-	private ImageView startButton;
+	private Button startButton;
 	private ImageView lvlBorder;
 
-	private ImageView ausXb;
+	private Button ausXb;
 	private int index = 0;
 	private boolean iftest;
 	private boolean inkreis;
@@ -114,10 +114,10 @@ public class ContractsTable extends Building {
 		contractBackground.setTranslateY(-1);
 		contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
-		contractSaturn = new ImageView(saturn);
-		contractNebel = new ImageView(nebel);
-		contractGalactus = new ImageView(galactus);
-		contractNova = new ImageView(nova);
+		contractSaturn = new Button(saturn);
+		contractNebel = new Button(nebel);
+		contractGalactus = new Button(galactus);
+		contractNova = new Button(nova);
 
 		text = new ImageView(ka);
 
@@ -153,16 +153,16 @@ public class ContractsTable extends Building {
 		ausBackground = new ImageView(ausbc);
 
 		ugBackground = new ImageView(UGbc);
-		startButton = new ImageView(sButton);
+		startButton = new Button(sButton);
 		lvlBorder = new ImageView(lvlb);
 
 		Image UG_1 = UGbc;
 		Image UG_2 = UGbc2;
 
-		ausXb = new ImageView(ausX);
+		ausXb = new Button(ausX);
 
-		button_R = new ImageView(buttonR);
-		button_L = new ImageView(buttonL);
+		button_R = new Button(buttonR);
+		button_L = new Button(buttonL);
 		Image x1 = ausX;
 		Image x2 = ausX2;
 		Image brl = buttonRL;
@@ -170,7 +170,7 @@ public class ContractsTable extends Building {
 		Image br = buttonR;
 		Image bl = buttonL;
 
-		button_R.setOnMouseReleased(me -> {
+		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
 			TranslateTransition tt = new TranslateTransition(Duration.millis(1000), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackground);
@@ -242,7 +242,7 @@ public class ContractsTable extends Building {
 			button_L.setVisible(true);
 			if (index >= 4) button_R.setVisible(false);
 		});
-		button_L.setOnMouseReleased(me -> {
+		button_L.setOnAction(me -> {
 			button_L.setImage(bll);
 			TranslateTransition tt = new TranslateTransition(Duration.millis(1000), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackground);
@@ -340,7 +340,7 @@ public class ContractsTable extends Building {
 		});
 
 		///////////////////////
-		contractSaturn.setOnMouseReleased(me -> {
+		contractSaturn.setOnAction(me -> {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
@@ -371,7 +371,7 @@ public class ContractsTable extends Building {
 
 		});
 		///////////////////////
-		contractNebel.setOnMouseReleased(me -> {
+		contractNebel.setOnAction(me -> {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
@@ -392,7 +392,7 @@ public class ContractsTable extends Building {
 
 		});
 		///////////////////////
-		contractGalactus.setOnMouseReleased(me -> {
+		contractGalactus.setOnAction(me -> {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
@@ -414,7 +414,7 @@ public class ContractsTable extends Building {
 
 		});
 		///////////////////////
-		contractNova.setOnMouseReleased(me -> {
+		contractNova.setOnAction(me -> {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
@@ -440,7 +440,6 @@ public class ContractsTable extends Building {
 		});
 
 		ausXb.setOnMouseReleased(me -> {
-
 			ugBackground.setImage(UG_1);
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
@@ -519,8 +518,10 @@ public class ContractsTable extends Building {
 		});
 		/////////////////////
 		// Hintergrund
-		contractBackground.setX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2 + 48);
-		contractBackground.setY(gamepanel.getPlayer().getScreenY() - contractBackground.getImage().getHeight() / 2 + 32);
+		contractBackground
+		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2 + 48);
+		contractBackground
+		.setLayoutX(gamepanel.getPlayer().getScreenY() - contractBackground.getImage().getHeight() / 2 + 32);
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
@@ -532,25 +533,28 @@ public class ContractsTable extends Building {
 		// contractNebel.setY(gamepanel.getPlayer().getScreenY() -
 		// contractNebel.getImage().getHeight() / 2 + 32);
 
-		contractNebel.setX(gamepanel.SpielLaenge);
-		contractGalactus.setX(gamepanel.SpielLaenge * 2);
-		contractNova.setX(gamepanel.SpielLaenge * 3);
+		contractNebel.setLayoutX(gamepanel.SpielLaenge);
+		contractGalactus.setLayoutX(gamepanel.SpielLaenge * 2);
+		contractNova.setLayoutX(gamepanel.SpielLaenge * 3);
 
-		titlebanner2.setX(gamepanel.SpielLaenge);
-		titlebanner3.setX(gamepanel.SpielLaenge * 2);
-		titlebanner4.setX(gamepanel.SpielLaenge * 3);
+		titlebanner2.setLayoutX(gamepanel.SpielLaenge);
+		titlebanner3.setLayoutX(gamepanel.SpielLaenge * 2);
+		titlebanner4.setLayoutX(gamepanel.SpielLaenge * 3);
 
-		hud.setX(hud.getImage().getWidth() / 2 * gamepanel.getScalingFactorX() - hud.getImage().getWidth() / 2);
-		hud2.setX(gamepanel.SpielLaenge + hud2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud.setLayoutX(hud.getImage().getWidth() / 2 * gamepanel.getScalingFactorX() - hud.getImage().getWidth() / 2);
+		hud2.setLayoutX(gamepanel.SpielLaenge + hud2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud2.getImage().getWidth() / 2);
-		hud3.setX(gamepanel.SpielLaenge * 2 + hud3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud3.setLayoutX(gamepanel.SpielLaenge * 2 + hud3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud3.getImage().getWidth() / 2);
-		hud4.setX(gamepanel.SpielLaenge * 3 + hud4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud4.setLayoutX(gamepanel.SpielLaenge * 3 + hud4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud4.getImage().getWidth() / 2);
-		hud.setY(hud.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud.getImage().getHeight() / 2);
-		hud2.setY(hud2.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud2.getImage().getHeight() / 2);
-		hud3.setY(hud3.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud3.getImage().getHeight() / 2);
-		hud4.setY(hud4.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud4.getImage().getHeight() / 2);
+		hud.setLayoutY(hud.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud.getImage().getHeight() / 2);
+		hud2.setLayoutY(
+				hud2.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud2.getImage().getHeight() / 2);
+		hud3.setLayoutY(
+				hud3.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud3.getImage().getHeight() / 2);
+		hud4.setLayoutY(
+				hud4.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud4.getImage().getHeight() / 2);
 
 		// add
 		p1.setVisible(false);
@@ -568,8 +572,8 @@ public class ContractsTable extends Building {
 
 		// P2
 		ugSachen.getChildren().addAll(ugBackground, startButton);
-		startButton.setX(383 * gamepanel.getScalingFactorX());
-		startButton.setY(4 * gamepanel.getScalingFactorY());
+		startButton.setLayoutX(383 * gamepanel.getScalingFactorX());
+		startButton.setLayoutY(4 * gamepanel.getScalingFactorY());
 		p2.getChildren().addAll(ugSachen);
 
 		// Infos
