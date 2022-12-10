@@ -485,7 +485,7 @@ public class ContractsTable extends Building {
 		// Hintergrund
 		contractBackground
 		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2
-				+ gamepanel.getPlayer().getWidth());// TODO
+						+ gamepanel.getPlayer().getWidth());// TODO maybe
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
