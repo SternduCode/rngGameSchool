@@ -425,8 +425,10 @@ public class ContractsTable extends Building {
 				ausXb.setImage(x1);
 			}).start();
 
-			button_R.setVisible(true);
-			button_L.setVisible(true);
+			if (index < 4)
+				button_R.setVisible(true);
+			if (index > 0)
+				button_L.setVisible(true);
 
 			FadeTransition pin1 = new FadeTransition(Duration.millis(0), hud);
 			FadeTransition pin2 = new FadeTransition(Duration.millis(0), hud2);
@@ -482,8 +484,8 @@ public class ContractsTable extends Building {
 		/////////////////////
 		// Hintergrund
 		contractBackground
-				.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2
-						+ gamepanel.getPlayer().getWidth());// TODO
+		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2
+				+ gamepanel.getPlayer().getWidth());// TODO
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
@@ -582,6 +584,7 @@ public class ContractsTable extends Building {
 				text.setVisible(false);
 				button_R.setVisible(false);
 				button_L.setVisible(false);
+				allPanes.setVisible(false);
 				gamepanel.setBlockUserInputs(false);
 				index = 0;
 				p1.setTranslateX(0);

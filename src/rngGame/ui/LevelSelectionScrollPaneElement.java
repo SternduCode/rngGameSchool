@@ -30,7 +30,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		});
 		startButton.setOnMouseReleased(me -> {
 			startButton.setImage(sButton);
-			ct.setMs(new MonsterSelction(gamepanel));// TODO add needed parameters
+			ct.setMs(new MonsterSelction(gamepanel, ct));// TODO add needed parameters
 		});
 
 		background.setOnMouseReleased(me -> {
