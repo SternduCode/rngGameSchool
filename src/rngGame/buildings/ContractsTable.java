@@ -112,7 +112,7 @@ public class ContractsTable extends Building {
 
 		contractBackground = new ImageView(wi);
 		contractBackground.setTranslateY(-1);
-		contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
+		//contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
 		contractSaturn = new Button(saturn);
 		contractNebel = new Button(nebel);
@@ -334,7 +334,7 @@ public class ContractsTable extends Building {
 		});
 		startButton.setOnMouseReleased(me -> {
 			startButton.setImage(sButton);
-			ms = new MonsterSelction();// TODO add needed parameters
+			ms = new MonsterSelction(gamepanel);// TODO add needed parameters
 			allPanes.getChildren().add(ms);
 
 		});
@@ -519,9 +519,7 @@ public class ContractsTable extends Building {
 		/////////////////////
 		// Hintergrund
 		contractBackground
-		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2 + 48);
-		contractBackground
-		.setLayoutX(gamepanel.getPlayer().getScreenY() - contractBackground.getImage().getHeight() / 2 + 32);
+		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2 + gamepanel.getPlayer().getWidth());
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
