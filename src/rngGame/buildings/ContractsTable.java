@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.main.*;
 import rngGame.tile.ImgUtil;
+import rngGame.ui.MonsterSelction;
 
 public class ContractsTable extends Building {
 
@@ -26,6 +27,8 @@ public class ContractsTable extends Building {
 	private  ImageView contractNebel;
 	private  ImageView contractGalactus;
 	private  ImageView contractNova;
+
+	private MonsterSelction ms;
 
 	private  ImageView HUD;
 	private  ImageView HUD2;
@@ -333,6 +336,9 @@ public class ContractsTable extends Building {
 		});
 		Startbutton.setOnMouseReleased(me->{
 			Startbutton.setImage(sButton);
+			ms = new MonsterSelction();// TODO add needed parameters
+			allPanes.getChildren().add(ms);
+
 		});
 
 		///////////////////////
@@ -678,6 +684,6 @@ public class ContractsTable extends Building {
 			if(!gamepanel.getChildren().contains(button_L))
 				gamepanel.getChildren().add(button_L);
 		}
-
+		if (ms != null) ms.update(milis);
 	}
 }
