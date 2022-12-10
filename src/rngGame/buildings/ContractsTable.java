@@ -105,7 +105,7 @@ public class ContractsTable extends Building {
 
 		contractBackground = new ImageView(wi);
 		contractBackground.setTranslateY(-1);
-		contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
+		//contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
 		contractSaturn = new Button(saturn);
 		contractNebel = new Button(nebel);
@@ -481,6 +481,9 @@ public class ContractsTable extends Building {
 		});
 		/////////////////////
 		// Hintergrund
+		contractBackground
+				.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2
+						+ gamepanel.getPlayer().getWidth());// TODO
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
