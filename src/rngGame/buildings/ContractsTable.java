@@ -485,7 +485,7 @@ public class ContractsTable extends Building {
 		// Hintergrund
 		contractBackground
 		.setLayoutX(gamepanel.getPlayer().getScreenX() - contractBackground.getImage().getWidth() / 2
-						+ gamepanel.getPlayer().getWidth());// TODO maybe
+				+ gamepanel.getPlayer().getWidth());// TODO maybe
 		contractBackground.setVisible(false);
 		gamepanel.getChildren().add(contractBackground);
 		gamepanel.getChildren().add(p1);
@@ -585,6 +585,7 @@ public class ContractsTable extends Building {
 				button_R.setVisible(false);
 				button_L.setVisible(false);
 				allPanes.setVisible(false);
+				setMs(null);
 				gamepanel.setBlockUserInputs(false);
 				index = 0;
 				p1.setTranslateX(0);
