@@ -613,6 +613,11 @@ public class ContractsTable extends Building {
 		this.ms = ms;
 	}
 
+	
+	public void removeEnterAbbility() {
+		Input.getInstance().removeKeyHandler("contractBackground");	
+	}
+	
 	@Override
 	public void update(long milis) {
 		inkreis = false;

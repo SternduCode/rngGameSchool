@@ -5,6 +5,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import rngGame.buildings.ContractsTable;
 import rngGame.main.*;
+import rngGame.tile.DungeonGen;
 import rngGame.tile.ImgUtil;
 
 public class MonsterSelction extends Pane {
@@ -63,6 +64,10 @@ public class MonsterSelction extends Pane {
 		});
 		start.setOnMouseReleased(me -> {
 			start.setImage(startB);
+			Input.getInstance().keyPressed(new KeyEvent(null, "", "", KeyCode.ENTER, false, false, false, false));
+			gamepanel.setMap("./res/maps/Dungeon.json");
+			ct.setMs(null);
+			ct.removeEnterAbbility();
 		});
 
 
