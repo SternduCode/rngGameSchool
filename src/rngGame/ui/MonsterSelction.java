@@ -53,6 +53,7 @@ public class MonsterSelction extends Pane {
 		});
 		ausXb.setOnMouseReleased(me -> {
 			ausXb.setImage(ausX);
+			ct.setMs(null);
 			Input.getInstance().keyPressed(new KeyEvent(null, "", "", KeyCode.ENTER, false, false, false, false));
 		});
 
