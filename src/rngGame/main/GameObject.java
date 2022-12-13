@@ -52,6 +52,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected List<GameObject> slaves;
 	protected GameObject master;
 	protected Map<String, String> textureFiles;
+	protected Map<String, Boolean> isGif;
 	protected int reqWidth, reqHeight, origWidth, origHeight;
 
 	protected GamePanel gamepanel;
@@ -74,6 +75,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		removeCallbacks = new ArrayList<>();
 
 		images = new HashMap<>();
+		isGif = new HashMap<>();
 		textureFiles = new HashMap<>();
 		collisionBoxes = new HashMap<>();
 		miscBoxes = new HashMap<>();
@@ -133,12 +135,14 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		background = gameObject.background;
 		currentKey = gameObject.currentKey;
 		images = new HashMap<>(gameObject.images);
+		isGif = new HashMap<>(gameObject.isGif);
 		textureFiles = gameObject.textureFiles;
-		gameObject.collisionBoxes.forEach((key, poly) -> {
-			Polygon collisionBox = collisionBoxes.get(key);
-			if (collisionBox == null) collisionBoxes.put(key, collisionBox = new Polygon());
-			collisionBox.getPoints().addAll(poly.getPoints());
-			collisionBox.setFill(poly.getFill());
+		textureFiles.forEach((key, value) -> {
+			try {
+				getAnimatedImages(key, value);
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 
 		extraData = gameObject.extraData;
@@ -205,6 +209,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		this.directory = directory;
 
 		images = new HashMap<>();
+		isGif = new HashMap<>();
 		textureFiles = new HashMap<>();
 		collisionBoxes = new HashMap<>();
 		miscBoxes = new HashMap<>();
@@ -720,11 +725,17 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		try {
 			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
-			for (int i = 0; i < img.getWidth(); i += origWidth) {
-				WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
-				li.add(ImgUtil.resizeImage(wi,
-						(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
-						(int) (reqHeight * gamepanel.getScalingFactorY())));
+			if (path.endsWith("gif")) {
+				isGif.put(key, true);
+				li.add(img);
+			} else {
+				isGif.put(key, false);
+				for (int i = 0; i < img.getWidth(); i += origWidth) {
+					WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
+					li.add(ImgUtil.resizeImage(wi,
+							(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
+							(int) (reqHeight * gamepanel.getScalingFactorY())));
+				}
 			}
 			String[] sp = path.split("[.]");
 			Polygon collisionBox = collisionBoxes.get(key);
@@ -808,10 +819,18 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		layerI.setText("Layer: " + layer);
 		imagesM.getItems().clear();
 		for (Entry<String, String> en: textureFiles.entrySet()) {
+			ImageView lIV;
+			if (isGif(getCurrentKey())) {
+				lIV = new ImageView(images.get(getCurrentKey()).get(0));
+				//								lIV.setScaleX(16.0 / lIV.getImage().getWidth());
+				//								lIV.setScaleY(16.0 / lIV.getImage().getHeight());
+				lIV.setFitWidth(16);
+				lIV.setFitHeight(16);
+			} else lIV = new ImageView(ImgUtil.resizeImage(images.get(en.getKey()).get(0),
+					(int) images.get(en.getKey()).get(0).getWidth(),
+					(int) images.get(en.getKey()).get(0).getHeight(), 16, 16));
 			MenuItem img = new MenuItem(en.getKey() + " : " + en.getValue(),
-					new ImageView(ImgUtil.resizeImage(images.get(en.getKey()).get(0),
-							(int) images.get(en.getKey()).get(0).getWidth(),
-							(int) images.get(en.getKey()).get(0).getHeight(), 16, 16)));
+					lIV);
 			img.setOnAction(this::handleContextMenu);
 			imagesM.getItems().add(img);
 		}
@@ -848,6 +867,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public double getY() { return y; }
 
 	public boolean isBackground() { return background; }
+	public boolean isGif(String key) {
+		return isGif.get(key);
+	}
+
 	public boolean isMaster() { return !slave; }
 
 	public boolean isSlave() { return slave; }
@@ -911,6 +934,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		if (updateXY != null)
 			updateXY.run();
 	}
+
 
 	@Override
 	public JsonValue toJsonValue() {
@@ -1000,7 +1024,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		} else return new StringValue("");
 	}
 
-
 	@Override
 	public JsonValue toJsonValue(Function<Object, String> function) {
 		return toJsonValue();
@@ -1018,18 +1041,25 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		else
 			collisionBoxViewGroup.setVisible(false);
 
-		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
-			animationCounter = System.currentTimeMillis();
-			animationNum++;
-			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
-			iv.setImage(images.get(currentKey).get(animationNum));
-		}
 		if (!lastKey.equals(currentKey)) {
 			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			iv.setImage(images.get(currentKey).get(animationNum));
 			lastKey = currentKey;
 			collisionBoxViewGroup.getChildren().clear();
 			collisionBoxViewGroup.getChildren().add(getCollisionBox());
+		}
+		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
+			animationCounter = System.currentTimeMillis();
+			animationNum++;
+			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
+			iv.setImage(images.get(currentKey).get(animationNum));
+			if (isGif.get(currentKey)) {
+				iv.setScaleX(gamepanel.getScalingFactorX());
+				iv.setScaleY(gamepanel.getScalingFactorY());
+			} else {
+				iv.setScaleX(1);
+				iv.setScaleY(1);
+			}
 		}
 
 		double screenX = x - p.getX() + p.getScreenX();

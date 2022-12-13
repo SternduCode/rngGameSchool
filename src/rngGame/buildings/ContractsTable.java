@@ -62,16 +62,19 @@ public class ContractsTable extends Building {
 		super(building, buildings, cm, requestorB);
 		init();
 	}
+
 	public ContractsTable(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
 		init();
 	}
+
 	public ContractsTable(JsonObject building, GamePanel gp, String directory, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, directory, buildings, cm, requestorB);
 		init();
 	}
+
 	private void init() {
 		Image wi = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Mainbackground.png");
 		Image saturn = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Saturn.png");
@@ -105,7 +108,7 @@ public class ContractsTable extends Building {
 
 		contractBackground = new ImageView(wi);
 		contractBackground.setTranslateY(-1);
-		//contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
+		// contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
 		contractSaturn = new Button(saturn);
 		contractNebel = new Button(nebel);
@@ -606,6 +609,10 @@ public class ContractsTable extends Building {
 
 	public MonsterSelction getMs() { return ms; }
 
+	public void removeEnterAbbility() {
+		Input.getInstance().removeKeyHandler("contractBackground");
+	}
+
 	public void setMs(MonsterSelction ms) {
 		if (ms != null)
 			allPanes.getChildren().add(ms);
@@ -613,11 +620,6 @@ public class ContractsTable extends Building {
 		this.ms = ms;
 	}
 
-	
-	public void removeEnterAbbility() {
-		Input.getInstance().removeKeyHandler("contractBackground");	
-	}
-	
 	@Override
 	public void update(long milis) {
 		inkreis = false;

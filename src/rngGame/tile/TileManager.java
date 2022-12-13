@@ -200,7 +200,7 @@ public class TileManager extends Pane {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
@@ -234,11 +234,17 @@ public class TileManager extends Pane {
 
 					NPC n = new NPC(joN, gp, npcs, cm, requestorN);
 					mnpcs.getItems().remove(mi);
+					ImageView lIV;
+					if (n.isGif(n.getCurrentKey())) {
+						lIV = new ImageView(n.getImages().get(n.getCurrentKey()).get(0));
+						lIV.setFitWidth(16);
+						lIV.setFitHeight(16);
+					} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+							(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+							(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16));
 					mnpcs.getItems()
 					.add(new MenuItemWNPC(f.getName(),
-							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
-									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16)),
+							lIV,
 							n));
 					mnpcs.getItems().get(mnpcs.getItems().size() - 1).setOnAction(this::contextMenu);
 					mnpcs.getItems().add(mi);
@@ -250,7 +256,7 @@ public class TileManager extends Pane {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
@@ -283,11 +289,17 @@ public class TileManager extends Pane {
 
 					Building b = new Building(joB, gp, buildings, cm, requestorB);
 					mbuildings.getItems().remove(mi);
+					ImageView lIV;
+					if (b.isGif(b.getCurrentKey())) {
+						lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
+						lIV.setFitWidth(16);
+						lIV.setFitHeight(16);
+					} else lIV= new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+							(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+							(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
 					mbuildings.getItems()
 					.add(new MenuItemWBuilding(f.getName(),
-							new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
-									(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
-									(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16)),
+							lIV,
 							b));
 					mbuildings.getItems().get(mbuildings.getItems().size() - 1).setOnAction(this::contextMenu);
 					mbuildings.getItems().add(mi);
@@ -299,7 +311,7 @@ public class TileManager extends Pane {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
@@ -333,6 +345,14 @@ public class TileManager extends Pane {
 
 					MobRan n = new MobRan(joN, gp, mobs, cm, requestorM);
 					mmobs.getItems().remove(mi);
+					ImageView lIV;
+					if (n.isGif(n.getCurrentKey())) {
+						lIV = new ImageView(n.getImages().get(n.getCurrentKey()).get(0));
+						lIV.setFitWidth(16);
+						lIV.setFitHeight(16);
+					} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+							(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+							(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16));
 					mmobs.getItems()
 					.add(new MenuItemWMOB(f.getName(),
 							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
@@ -349,9 +369,7 @@ public class TileManager extends Pane {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
-				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.gif"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
