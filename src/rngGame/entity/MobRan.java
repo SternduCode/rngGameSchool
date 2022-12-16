@@ -14,6 +14,11 @@ public class MobRan extends NPC {
 
 	private record PathElement(int x, int y, int distance) {}
 
+	private final double[] diff = new double[2];
+
+	private int step = 0;
+	private final int steps = 150;
+
 	public MobRan(JsonObject en, GamePanel gp, List<MobRan> entities,
 			ContextMenu cm, ObjectProperty<MobRan> requestor) {
 		super(en, gp, 3 * 60, entities, cm, requestor);
@@ -32,11 +37,13 @@ public class MobRan extends NPC {
 
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
-			Player p = gpt.getPlayer();
-			Double[] pos = pathfinding(p.getX(), p.getY(), gpt);
-			if (pos != null) {
-				x = pos[0];
-				y = pos[1];
+			if (step == 0) {
+				Player p = gpt.getPlayer();
+				Double[] pos = pathfinding(p.getX(), p.getY(), gpt);
+				if (pos != null) {
+					diff[0] = pos[0] - x;
+					diff[1] = pos[1] - y;
+				}
 			}
 		});
 	}
@@ -69,12 +76,12 @@ public class MobRan extends NPC {
 				} else return a.x() < b.x() ? -1 : 1;
 			}).distinct();
 
-			List<PathElement> pel = stream.filter(pe -> Math.abs(pe.x() - (int) (MobRan.this.x / sp.BgX)) >= 1
-					&& Math.abs(pe.y() - (int) (MobRan.this.y / sp.BgY)) >= 1)
+			List<PathElement> pel = stream.filter(pe -> Math.abs(pe.x() - (int) (MobRan.this.x / sp.BgX)) == 1
+					^ Math.abs(pe.y() - (int) (MobRan.this.y / sp.BgY)) == 1)
 					.sorted((p1, p2) -> Integer.compare(p1.distance(), p2.distance())).collect(Collectors.toList());
 			System.out.println(pel);
 			if (pel.size() > 0) {
-				PathElement pe = pel.get(pel.size() - 1);
+				PathElement pe = pel.get(0);
 				return new Double[] {(double) pe.x() * sp.BgX, (double) pe.y() * sp.BgY};
 			} else return null;
 		}
@@ -84,6 +91,16 @@ public class MobRan extends NPC {
 	@Override
 	public void update(long milis) {
 		super.update(milis);
+
+		if (diff[0] > 0 || diff[1] > 0)
+			step++;
+		x += (long) (diff[0] / steps);
+		y += (long) (diff[1] / steps);
+		if (step == steps) {
+			step = 0;
+			diff[0] = 0;
+			diff[1] = 0;
+		}
 	}
 
 
