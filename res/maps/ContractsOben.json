@@ -1,0 +1,53 @@
+{
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		
+	],
+	"map" : {
+		"playerLayer" : 0,
+		"textures" : [
+			"Void.png",
+			"RechtsEckeMU.png",
+			"Oben.png",
+			"LinksEckeM.png",
+			"Rechts.png",
+			"BookWand.png",
+			"ScreenyWallAsleep.png",
+			"HalbBookWand.png",
+			"LeerWand.png",
+			"SchubWand.png",
+			"Links.png",
+			"RechtsEckeU.png",
+			"Boden.png",
+			"LinksEckeU.png",
+			"BodenAusgang.png",
+			"LinksEckeO.png",
+			"LinksEckeMO.png",
+			"RechtsEckeM.png",
+			"RechtsEcke.png",
+			"Unten.png"
+		],
+		"startingPosition" : [
+			264.000,
+			400.000
+		],
+		"dir" : "buildingInside",
+		"matrix" : [
+			"0 0 0 0 0 0 0 0 0 0 0 0 0",
+			"0 0 1 2 2 2 2 2 2 3 0 0 0",
+			"0 0 4 5 6 7 7 8 9 10 0 0 0",
+			"0 1 11 12 12 12 12 12 12 13 2 2 3",
+			"0 4 7 12 12 12 12 12 12 7 8 5 10",
+			"0 4 12 12 12 12 12 12 12 12 12 12 10",
+			"0 4 12 12 12 12 12 12 12 12 14 12 10",
+			"0 4 12 12 12 12 12 12 12 12 12 12 10",
+			"0 4 12 12 12 12 12 12 12 12 12 15 16",
+			"0 4 12 12 12 12 12 12 12 12 12 10 0",
+			"0 17 18 12 12 12 12 12 12 12 12 10 0",
+			"0 0 17 19 19 19 19 19 19 19 19 16 0",
+			"0 0 0 0 0 0 0 0 0 0 0 0 0"
+		]
+	}
+}
