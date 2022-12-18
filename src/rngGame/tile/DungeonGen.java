@@ -2,10 +2,12 @@ package rngGame.tile;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import com.sterndu.json.*;
 import javafx.geometry.Point2D;
+import javafx.scene.shape.*;
 import rngGame.main.GamePanel;
 
 public class DungeonGen {
@@ -249,6 +251,9 @@ public class DungeonGen {
 
 		int bigMaps = 0, middleMaps = 0, smallMaps = 0;
 
+		Shape map = new Rectangle(x, y, mainMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0),
+				mainMapTileNum.size());
+
 		while (true) {
 			int idx = r.nextInt(avail.size());
 			Entry<Entry<Point2D, Integer>, Direction> conn = avail.get(idx);
@@ -264,26 +269,32 @@ public class DungeonGen {
 								||
 								maps.get(conn2.getValue()).getValue() == Size.BIG
 								&& bigMaps < difficulty.getBigMaps()) {
-							if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
 							System.out.println(mapPositions.get(conn.getKey().getValue()).getX() + " "
 									+ conn.getKey().getKey().getY() + " " + conn2.getKey().getY());
 							int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX()
 									+ conn.getKey().getKey().getY() - conn2.getKey().getY());
 							int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY()
 									- mapsTileNum[conn2.getValue()].size() - r.nextInt(5) - 1);
-							mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
-							avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
-									.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
-									.collect(Collectors.toList()));
-							avail.remove(Map.entry(conn2, Direction.DOWN));
-							avail.remove(conn);
+							Rectangle mr = new Rectangle(x2, y2,
+									mapsTileNum[conn2.getValue()].parallelStream().mapToInt(List::size).max().orElse(0),
+									mapsTileNum[conn2.getValue()].size());
+							if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+								map = Shape.union(mr, map);
+								if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
+								mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
+								avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
+										.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
+										.collect(Collectors.toList()));
+								avail.remove(Map.entry(conn2, Direction.DOWN));
+								avail.remove(conn);
 
-							downmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							upmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								downmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+							}
 						}
 					}
 				}
@@ -298,9 +309,6 @@ public class DungeonGen {
 								||
 								maps.get(conn2.getValue()).getValue() == Size.BIG
 								&& bigMaps < difficulty.getBigMaps()) {
-							if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
 							System.out.println(mapPositions.get(conn.getKey().getValue()).getX() + " "
 									+ conn.getKey().getKey().getX() + " " + conn2.getKey().getX());
 							int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX()
@@ -310,17 +318,26 @@ public class DungeonGen {
 											: mapsTileNum[conn.getKey().getValue()])
 									.size()
 									+ r.nextInt(5) + 1);
-							mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
-							avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
-									.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
-									.collect(Collectors.toList()));
-							avail.remove(Map.entry(conn2, Direction.UP));
-							avail.remove(conn);
+							Rectangle mr = new Rectangle(x2, y2,
+									mapsTileNum[conn2.getValue()].parallelStream().mapToInt(List::size).max().orElse(0),
+									mapsTileNum[conn2.getValue()].size());
+							if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+								map = Shape.union(mr, map);
+								if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
+								mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
+								avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
+										.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
+										.collect(Collectors.toList()));
+								avail.remove(Map.entry(conn2, Direction.UP));
+								avail.remove(conn);
 
-							downmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							upmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								downmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+							}
 						}
 					}
 				}
@@ -335,26 +352,32 @@ public class DungeonGen {
 								||
 								maps.get(conn2.getValue()).getValue() == Size.BIG
 								&& bigMaps < difficulty.getBigMaps()) {
-							if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
 							int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX()
 									- mapsTileNum[conn2.getValue()].parallelStream().mapToInt(List::size).max()
 									.orElse(0)
 									- r.nextInt(5) - 1);
 							int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY()
 									+ conn.getKey().getKey().getX() - conn2.getKey().getX());
-							mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
-							avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
-									.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
-									.collect(Collectors.toList()));
-							avail.remove(Map.entry(conn2, Direction.RIGHT));
-							avail.remove(conn);
+							Rectangle mr = new Rectangle(x2, y2,
+									mapsTileNum[conn2.getValue()].parallelStream().mapToInt(List::size).max().orElse(0),
+									mapsTileNum[conn2.getValue()].size());
+							if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+								map = Shape.union(mr, map);
+								if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
+								mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
+								avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
+										.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
+										.collect(Collectors.toList()));
+								avail.remove(Map.entry(conn2, Direction.RIGHT));
+								avail.remove(conn);
 
-							downmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							upmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								downmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+							}
 						}
 					}
 				}
@@ -369,9 +392,6 @@ public class DungeonGen {
 								||
 								maps.get(conn2.getValue()).getValue() == Size.BIG
 								&& bigMaps < difficulty.getBigMaps()) {
-							if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
-							else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
 							int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX()
 									+ (conn.getKey().getValue() == -1 ? mainMapTileNum
 											: mapsTileNum[conn.getKey().getValue()])
@@ -380,17 +400,26 @@ public class DungeonGen {
 									+ r.nextInt(5) + 1);
 							int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY()
 									+ conn.getKey().getKey().getX() - conn2.getKey().getX());
-							mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
-							avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
-									.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
-									.collect(Collectors.toList()));
-							avail.remove(Map.entry(conn2, Direction.LEFT));
-							avail.remove(conn);
+							Rectangle mr = new Rectangle(x2, y2,
+									mapsTileNum[conn2.getValue()].parallelStream().mapToInt(List::size).max().orElse(0),
+									mapsTileNum[conn2.getValue()].size());
+							if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+								map = Shape.union(mr, map);
+								if (maps.get(conn2.getValue()).getValue() == Size.SMALL) smallMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.MIDDLE) middleMaps++;
+								else if (maps.get(conn2.getValue()).getValue() == Size.BIG) bigMaps++;
+								mapPositions.put(conn2.getValue(), new Point2D(x2, y2));
+								avail.addAll(mapsConnectors[conn2.getValue()].parallelStream()
+										.map(en -> Map.entry(Map.entry(en.getKey(), conn2.getValue()), en.getValue()))
+										.collect(Collectors.toList()));
+								avail.remove(Map.entry(conn2, Direction.LEFT));
+								avail.remove(conn);
 
-							downmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							upmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								downmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
+								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
+							}
 						}
 					}
 				}
@@ -462,6 +491,7 @@ public class DungeonGen {
 		// TODO detect overlap
 		// TODO clean up
 		// TODO make bridges
+		// TODO fix spawn point
 	}
 
 }
