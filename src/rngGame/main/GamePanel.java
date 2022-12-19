@@ -78,6 +78,15 @@ public class GamePanel extends Pane {
 
 	private final ImageView inv;
 
+	private Difficulty difficulty;
+	
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
 
 	private final Input input;
 
