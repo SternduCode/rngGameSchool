@@ -2,6 +2,7 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.*;
 import com.sterndu.json.*;
@@ -224,7 +225,7 @@ public class GamePanel extends Pane {
 			}
 		});
 		npcs = tileM.getNPCSFromMap();
-		test = tileM.getMobFromMap();
+		test = tileM.getMobsFromMap();
 
 		//		ImageView iv = new ImageView(Text.getInstance()
 		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #",
@@ -286,7 +287,7 @@ public class GamePanel extends Pane {
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
-		test = tileM.getMobFromMap();
+		test = tileM.getMobsFromMap();
 		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * scalingFactorX,
 				tileM.getSpawnPoint().getY() * scalingFactorY, 15,
 				Color.color(0, 1, 0, .75));
