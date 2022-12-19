@@ -58,16 +58,19 @@ public class MobRan extends NPC {
 			for (int i = 0; i < 11; i++) stream=stream.mapMulti((PathElement pe, Consumer<PathElement> out) -> {
 				out.accept(pe);
 				if (map.size() > pe.y() && map.get(pe.y()).size() > pe.x() + 1
-						&& map.get(pe.y()).get(pe.x() + 1).getPoly().getPoints().size() == 0)
+						&& map.get(pe.y()).get(pe.x() + 1).getPoly().getPoints().size() == 0) // rechts
 					out.accept(new PathElement(pe.x() + 1, pe.y(), pe.distance() + 1));
+				
 				if (pe.x() != 0 && map.size() > pe.y() && map.get(pe.y()).size() > pe.x() - 1
-						&& map.get(pe.y()).get(pe.x() - 1).getPoly().getPoints().size() == 0)
+						&& map.get(pe.y()).get(pe.x() - 1).getPoly().getPoints().size() == 0) // links
 					out.accept(new PathElement(pe.x() - 1, pe.y(), pe.distance() + 1));
+				
 				if (pe.y() != 0 && map.size() > pe.y() - 1 && map.get(pe.y() - 1).size() > pe.x()
-						&& map.get(pe.y() - 1).get(pe.x()).getPoly().getPoints().size() == 0)
+						&& map.get(pe.y() - 1).get(pe.x()).getPoly().getPoints().size() == 0) 	//hoch
 					out.accept(new PathElement(pe.x(), pe.y() - 1, pe.distance() + 1));
+				
 				if (map.size() > pe.y() + 1 && map.get(pe.y() + 1).size() > pe.x()
-						&& map.get(pe.y() + 1).get(pe.x()).getPoly().getPoints().size() == 0)
+						&& map.get(pe.y() + 1).get(pe.x()).getPoly().getPoints().size() == 0)	//runter
 					out.accept(new PathElement(pe.x(), pe.y() + 1, pe.distance() + 1));
 			}).sorted((a, b) -> {
 				if (a.x() == b.x()) {
@@ -76,8 +79,8 @@ public class MobRan extends NPC {
 				} else return a.x() < b.x() ? -1 : 1;
 			}).distinct();
 
-			List<PathElement> pel = stream.filter(pe -> Math.abs(pe.x() - (int) (MobRan.this.x / sp.BgX)) == 1
-					^ Math.abs(pe.y() - (int) (MobRan.this.y / sp.BgY)) == 1)
+			List<PathElement> pel = stream.filter(pe -> Math.abs(pe.x() - (int) (MobRan.this.x / sp.BgX)) != 0
+					^ Math.abs(pe.y() - (int) (MobRan.this.y / sp.BgY)) != 0)
 					.sorted((p1, p2) -> Integer.compare(p1.distance(), p2.distance())).collect(Collectors.toList());
 			System.out.println(pel);
 			if (pel.size() > 0) {
@@ -96,7 +99,9 @@ public class MobRan extends NPC {
 			step++;
 		x += (long) (diff[0] / steps);
 		y += (long) (diff[1] / steps);
+		System.out.println(step);
 		if (step == steps) {
+			System.out.println("Finish: " + step);
 			step = 0;
 			diff[0] = 0;
 			diff[1] = 0;
