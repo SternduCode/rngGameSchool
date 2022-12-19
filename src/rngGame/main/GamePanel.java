@@ -5,7 +5,9 @@ import java.util.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.*;
+
 import com.sterndu.json.*;
+
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -22,22 +24,51 @@ import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GamePanel.
+ */
 public class GamePanel extends Pane {
 
+	/**
+	 * The Class GroupGroup.
+	 */
 	class GroupGroup extends Group {
 
+		/**
+		 * The Class OutList.
+		 */
 		class OutList extends AbstractList<Group> {
+			
+			/** The li. */
 			ObservableList<Node> li;
 
+			/**
+			 * Instantiates a new out list.
+			 *
+			 * @param li the li
+			 */
 			public OutList(ObservableList<Node> li) {
 				this.li = li;
 			}
 
+			/**
+			 * Adds the.
+			 *
+			 * @param index the index
+			 * @param element the element
+			 */
 			@Override
 			public void add(int index, Group element) {
 				li.add(index, element);
 			}
 
+			/**
+			 * Gets the.
+			 *
+			 * @param index the index
+			 * @return the group
+			 */
 			@Override
 			public Group get(int index) {
 				int size = size();
@@ -45,75 +76,137 @@ public class GamePanel extends Pane {
 				return (Group) li.get(index);
 			}
 
+			/**
+			 * Removes the.
+			 *
+			 * @param index the index
+			 * @return the group
+			 */
 			@Override
 			public Group remove(int index) {
 				return (Group) li.remove(index);
 			}
 
+			/**
+			 * Sets the.
+			 *
+			 * @param index the index
+			 * @param element the element
+			 * @return the group
+			 */
 			@Override
 			public Group set(int index, Group element) {
 				return (Group) li.set(index, element);
 			}
 
+			/**
+			 * Size.
+			 *
+			 * @return the int
+			 */
 			@Override
 			public int size() {
 				return li.size();
 			}
 		}
 
+		/**
+		 * Gets the group children.
+		 *
+		 * @return the group children
+		 */
 		public List<Group> getGroupChildren() {
 			return new OutList(super.getChildren());
 		}
 	}
 
+	/** The Bg. */
 	private final int Bg = 48;
+	
+	/** The Bild S. */
 	public final int BildS = 20;
+	
+	/** The Bild H. */
 	public final int BildH = 11;
+	
+	/** The Bg Y. */
 	public int BgX = Bg, BgY = Bg;
+	
+	/** The Spiel laenge. */
 	public int SpielLaenge = BgX * BildS;
+	
+	/** The scaling factor Y. */
 	public double scalingFactorX = 1, scalingFactorY = 1;
 
+	/** The Spiel hoehe. */
 	public int SpielHoehe = BgY * BildH;
 
+	/** The fps. */
 	private final int FPS = 80;
 
+	/** The inv. */
 	private final ImageView inv;
 
+	/** The difficulty. */
 	private Difficulty difficulty;
 	
-	public Difficulty getDifficulty() {
-		return difficulty;
-	}
-
-	public void setDifficulty(Difficulty difficulty) {
-		this.difficulty = difficulty;
-	}
-
+	/** The input. */
 	private final Input input;
 
+	/** The player. */
 	private final Player player;
+
+	/** The tile M. */
 	private final TileManager tileM;
+
+	/** The select tool. */
 	private final SelectTool selectTool;
+	
+	/** The layer group. */
 	private final GroupGroup layerGroup;
+	
+	/** The point group. */
 	private final Group pointGroup;
+	
+	/** The buildings. */
 	private List<Building> buildings;
+	
+	/** The npcs. */
 	private List<NPC> npcs;
-
+	
+	/** The test. */
 	private List<MobRan> test;
-
+	
+	/** The frame times. */
 	private List<Long> frameTimes;
 
+	/** The last frame. */
 	private Long lastFrame;
 
+	/** The fps. */
 	private Double fps = 0d;
-	private final ImageView loadingScreen;
-	private final Label fpsLabel;
 
+	/** The loading screen. */
+	private final ImageView loadingScreen;
+
+	/** The fps label. */
+	private final Label fpsLabel;
+	
+	/** The points. */
 	private final Map<Point2D, Circle> points;
+	
+	/** The block user inputs. */
 	private boolean blockUserInputs;
 
+	/**
+	 * Instantiates a new game panel.
+	 *
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
+		
+		difficulty = Difficulty.EASY;
 
 		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
 		loadingScreen.setDisable(true);
@@ -157,36 +250,108 @@ public class GamePanel extends Pane {
 
 		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv, fpsLabel, loadingScreen);
 	}
-
+	
+	/**
+	 * Gets the buildings.
+	 *
+	 * @return the buildings
+	 */
 	public List<Building> getBuildings() { return buildings; }
 
+	/**
+	 * Gets the difficulty.
+	 *
+	 * @return the difficulty
+	 */
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
+	/**
+	 * Gets the fps.
+	 *
+	 * @return the fps
+	 */
 	public Double getFps() { return fps; }
 
+	/**
+	 * Gets the mob rans.
+	 *
+	 * @return the mob rans
+	 */
 	public List<MobRan> getMobRans() { return test; }
 
+	/**
+	 * Gets the npcs.
+	 *
+	 * @return the npcs
+	 */
 	public List<NPC> getNpcs() { return npcs; }
 
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
 	public Player getPlayer() { return player; }
 
+	/**
+	 * Gets the scaling factor X.
+	 *
+	 * @return the scaling factor X
+	 */
 	public double getScalingFactorX() { return scalingFactorX; }
 
+	/**
+	 * Gets the scaling factor Y.
+	 *
+	 * @return the scaling factor Y
+	 */
 	public double getScalingFactorY() { return scalingFactorY; }
 
+	/**
+	 * Gets the select tool.
+	 *
+	 * @return the select tool
+	 */
 	public SelectTool getSelectTool() { return selectTool; }
 
+	/**
+	 * Gets the tile M.
+	 *
+	 * @return the tile M
+	 */
 	public TileManager getTileM() { return tileM; }
 
-
+	/**
+	 * Gets the view groups.
+	 *
+	 * @return the view groups
+	 */
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
 
+
+	/**
+	 * Checks if is block user inputs.
+	 *
+	 * @return true, if is block user inputs
+	 */
 	public boolean isBlockUserInputs() {
 		return isInLoadingScreen() || blockUserInputs;
 	}
 
+	/**
+	 * Checks if is in loading screen.
+	 *
+	 * @return true, if is in loading screen
+	 */
 	public boolean isInLoadingScreen() {
 		return loadingScreen.getOpacity()>.5;
 	}
 
+	/**
+	 * Reload.
+	 */
 	public void reload() {
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
@@ -245,11 +410,20 @@ public class GamePanel extends Pane {
 		// TODO rem
 	}
 
+	/**
+	 * Save map.
+	 */
 	public void saveMap() {
 		tileM.save();
 		System.out.println("don");
 	}
 
+	/**
+	 * Scale textures.
+	 *
+	 * @param scaleFactorX the scale factor X
+	 * @param scaleFactorY the scale factor Y
+	 */
 	public void scaleTextures(double scaleFactorX, double scaleFactorY) {
 		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
 				player.getY() * (scaleFactorY / scalingFactorY));
@@ -265,13 +439,38 @@ public class GamePanel extends Pane {
 		System.out.println(player.getX() + " " + player.getY());
 	}
 
-
+	/**
+	 * Sets the block user inputs.
+	 *
+	 * @param blockUserInputs the new block user inputs
+	 */
 	public void setBlockUserInputs(boolean blockUserInputs) { this.blockUserInputs = blockUserInputs; }
 
+
+	/**
+	 * Sets the difficulty.
+	 *
+	 * @param difficulty the new difficulty
+	 */
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	/**
+	 * Sets the map.
+	 *
+	 * @param path the new map
+	 */
 	public void setMap(String path) {
 		setMap(path, null);
 	}
 
+	/**
+	 * Sets the map.
+	 *
+	 * @param path the path
+	 * @param position the position
+	 */
 	public void setMap(String path, double[] position) {
 
 		UndoRedo.getInstance().clearActions();
@@ -350,6 +549,9 @@ public class GamePanel extends Pane {
 
 	}
 
+	/**
+	 * Sst.
+	 */
 	public void SST() {
 
 		frameTimes = new ArrayList<>();
@@ -361,7 +563,7 @@ public class GamePanel extends Pane {
 				new KeyFrame(Duration.millis(1000 / FPS),
 						event -> {
 							update();
-							if (System.getProperty("alternateUpdate").equals("true")) {
+							if ("true".equals(System.getProperty("alternateUpdate"))) {
 								arTl.get().stop();
 								Platform.runLater(runnable.get());
 							}
@@ -370,20 +572,28 @@ public class GamePanel extends Pane {
 		tl.setCycleCount(Animation.INDEFINITE);
 		Runnable r = () -> {
 			update();
-			if (!MainClass.isStopping() && System.getProperty("alternateUpdate").equals("true"))
+			if (!MainClass.isStopping() && "true".equals(System.getProperty("alternateUpdate")))
 				Platform.runLater(runnable.get());
 			else arTl.get().play();
 		};
 		runnable.set(r);
 
-		if (System.getProperty("alternateUpdate").equals("false")) tl.play();
+		if ("false".equals(System.getProperty("alternateUpdate"))) tl.play();
 		else Platform.runLater(r);
 	}
 
+	/**
+	 * Toggle fps label visible.
+	 */
 	public void toggleFpsLabelVisible() {
 		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return "SpielPanel [inv=" + inv
@@ -393,6 +603,9 @@ public class GamePanel extends Pane {
 				+ "]";
 	}
 
+	/**
+	 * Update.
+	 */
 	public void update() {
 
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
@@ -429,7 +642,8 @@ public class GamePanel extends Pane {
 					else return b1.isBackground() ? -1
 							: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
 									n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
-				} else if (n2 instanceof GameObject b2) return b2.isBackground() ? 1
+				}
+				if (n2 instanceof GameObject b2) return b2.isBackground() ? 1
 						: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
 								n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
 				else return Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
@@ -445,7 +659,7 @@ public class GamePanel extends Pane {
 			point.getValue().setCenterY(point.getKey().getY() * getScalingFactorY() - player.y + player.getScreenY());
 		}
 
-		if (System.getProperty("edit").equals("true")) pointGroup.setVisible(true);
+		if ("true".equals(System.getProperty("edit"))) pointGroup.setVisible(true);
 		else pointGroup.setVisible(false);
 
 		tileM.update();

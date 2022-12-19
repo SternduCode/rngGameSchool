@@ -127,7 +127,7 @@ public class DungeonGen {
 		for (Object texture : (JsonArray) ((JsonObject) mainmap.get("map")).get("textures")) try {// load mainmap tiles
 			Tile t = new Tile( ((StringValue) texture).getValue(), new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 					gp);
-			mainMapTiles.add(t); 
+			mainMapTiles.add(t);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -329,8 +329,11 @@ public class DungeonGen {
 								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
-								
-								bridges.add(Map.entry(conn.getKey().getKey() , conn2.getKey())); 
+
+								bridges.add(Map.entry(
+										new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+										.add(mapPositions.get(conn.getKey().getValue())),
+										new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
 							}
 						}
 					}
@@ -367,8 +370,11 @@ public class DungeonGen {
 								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
-								
-								bridges.add(Map.entry(conn.getKey().getKey() , conn2.getKey())); 
+
+								bridges.add(Map.entry(
+										new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+										.add(mapPositions.get(conn.getKey().getValue())),
+										new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
 							}
 						}
 					}
@@ -402,8 +408,11 @@ public class DungeonGen {
 								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
-								
-								bridges.add(Map.entry(conn.getKey().getKey() , conn2.getKey())); 
+
+								bridges.add(Map.entry(
+										new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+										.add(mapPositions.get(conn.getKey().getValue())),
+										new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
 							}
 						}
 					}
@@ -439,10 +448,13 @@ public class DungeonGen {
 								upmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								leftmaps.removeIf(en -> en.getValue() == conn2.getValue());
 								rightmaps.removeIf(en -> en.getValue() == conn2.getValue());
-							
-								bridges.add(Map.entry(conn.getKey().getKey() , conn2.getKey())); 
+
+								bridges.add(Map.entry(
+										new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+										.add(mapPositions.get(conn.getKey().getValue())),
+										new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
 							}
-							
+
 						}
 					}
 				}
@@ -499,33 +511,32 @@ public class DungeonGen {
 				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().size() - 1);
 			}
 		}
-		
-		
+
 		bridges.forEach(bridge -> {
-			if(Math.abs(bridge.getKey().getX() - bridge.getValue().getX()) > 0) {
-				for(int i = 1 ; i < Math.abs(bridge.getKey().getX() - bridge.getValue().getX()) ; i++) {
-				gp.getTileM().mapTileNum.get((int) bridge.getKey().getY()).set((int) (Math.min(bridge.getKey().getX(), bridge.getValue().getX()) + i) , gp.getTileM().getTiles().size());
-			}
-			} else {
-				for(int i = 1 ; i < Math.abs(bridge.getKey().getY() - bridge.getValue().getY()) ; i++) {
-					gp.getTileM().mapTileNum.get((int) (Math.min(bridge.getKey().getY(), bridge.getValue().getY()) + i) ).set((int) bridge.getKey().getX(), gp.getTileM().getTiles().size() + 1);
-				}
-			}
+
+			System.out.println(bridge + " " + xOffset + " " + yOffset);
+			if (Math.abs(bridge.getKey().getX() - bridge.getValue().getX()) > 0)
+				for (int i = 1; i < Math.abs(bridge.getKey().getX() - bridge.getValue().getX()); i++)
+					gp.getTileM().mapTileNum.get((int) bridge.getKey().getY() - yOffset)
+					.set((int) (Math.min(bridge.getKey().getX(), bridge.getValue().getX()) + i) - xOffset, gp.getTileM().getTiles().size());
+			else for (int i = 1; i < Math.abs(bridge.getKey().getY() - bridge.getValue().getY()); i++)
+				gp.getTileM().mapTileNum.get((int) (Math.min(bridge.getKey().getY(), bridge.getValue().getY()) + i) - yOffset)
+				.set((int) bridge.getKey().getX() - xOffset, gp.getTileM().getTiles().size() + 1);
 		});
-		
+
 		try {
-			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + (((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue())), gp));
-			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + (((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue())), gp));
+			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue()), gp));
+			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue()), gp));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		gp.getTileM().setStartingPosition(new double[] {
 				(x - xOffset + .5) * gp.BgX, (y - yOffset + .5) * gp.BgY
 		});
 
 		// TODO clean up (code & map)
-		// TODO make bridges
+		// TODO fix 7 & fancy bridges (after 2)
 	}
 
 }
