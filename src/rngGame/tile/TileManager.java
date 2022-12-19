@@ -4,7 +4,9 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.*;
 import java.util.*;
+
 import com.sterndu.json.*;
+
 import javafx.beans.property.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -21,91 +23,157 @@ import rngGame.entity.*;
 import rngGame.main.*;
 import rngGame.main.UndoRedo.UndoRedoActionBase;
 
+
+/**
+ * The Class TileManager.
+ */
 public class TileManager extends Pane {
 
+	/**
+	 * The Class FakeTextureHolder for making tiles outside of the map.
+	 */
 	private class FakeTextureHolder extends TextureHolder {
 
+		/**
+		 * Instantiates a new fake texture holder.
+		 *
+		 * @param x the x coordinate
+		 * @param y the y coordinate
+		 */
 		public FakeTextureHolder(double x, double y) {
 			super(new Tile("", new ByteArrayInputStream(new byte[0]), null) {
+
 				{
 					images.add(new Image(new ByteArrayInputStream(new byte[0])));
 				}
+
 			}, null, x, y, null, null, 0, 0);
 			setWidth(gp.BgX);
 			setHeight(gp.BgY);
+
 		}
 
+		/**
+		 * Sets the tile.
+		 *
+		 * @param tile the new tile
+		 */
 		@SuppressWarnings("unused")
 		@Override
 		public void setTile(Tile tile) {
 			// TODO add row/column
-			for (List<TextureHolder> x: map) {
+			for (List<TextureHolder> x : map) {
 
 			}
+
 		}
 
 	}
 
+	/** The path to the map file. */
 	private String path;
+
+	/** The GamePanel. */
 	private final GamePanel gp;
 
+	/** The tiles. */
 	private final List<Tile> tiles;
+
+	/** The map tile numbers. */
 	List<List<Integer>> mapTileNum;
+
+	/** Is generated?. */
 	private boolean generated;
+
+	/** The map. */
 	private List<List<TextureHolder>> map;
+
+	/** The menus maps, insel_k, insel_m and insel_g. */
 	private final Menu maps, insel_k, insel_m, insel_g;
 
+	/** The ui group for the map. */
 	private final Group group;
+
+	/** The buildings. */
 	private List<Building> buildings;
+
+	/** The npcs. */
 	private List<NPC> npcs;
+
+	/** The background path, the path to the folder containing the tile textures and the path to the exit map. */
 	private String exitMap, dir, backgroundPath;
+
+	/** The context menu. */
 	private final ContextMenu cm;
-	private final ObjectProperty<TextureHolder> requestor = new ObjectPropertyBase<>() {
+
+	/** The requester for the context menu containing the TextureHolder. */
+	private final ObjectProperty<TextureHolder> requester = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
 
 		@Override
-		public String getName() { return "requestor"; }
+		public String getName() { return "requester"; }
+
 	};
-	private final ObjectProperty<Building> requestorB = new ObjectPropertyBase<>() {
+
+	/** The requester for the context menu containing the Building. */
+	private final ObjectProperty<Building> requesterB = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
 
 		@Override
-		public String getName() { return "requestor"; }
+		public String getName() { return "requester"; }
+
 	};
+
+	/** The requester for the context menu containing the NPC. */
 	private final ObjectProperty<NPC> requestorN = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
 
 		@Override
-		public String getName() { return "requestor"; }
+		public String getName() { return "requester"; }
+
 	};
 
+	/** The requester for the context menu containing the MobRan. */
 	private final ObjectProperty<MobRan> requestorM = new ObjectPropertyBase<>() {
 
 		@Override
 		public Object getBean() { return this; }
 
 		@Override
-		public String getName() { return "requestor"; }
+		public String getName() { return "requester"; }
+
 	};
 
+	/** The exit position, the starting position and the position one starts at when using the exit. */
 	private double[] startingPosition, exitStartingPosition, exitPosition;
+
+	/** The player layer. */
 	private int playerLayer;
+
+	/** The menus for tiles, npcs, buildings, mobs and extras. */
 	private final Menu mtiles, mnpcs, mbuildings, mextra, mmobs;
+
+	/** The mobs. */
 	private List<MobRan> mobs;
 
+	/**
+	 * Instantiates a new tile manager.
+	 *
+	 * @param gp the GamePanel
+	 */
 	public TileManager(GamePanel gp) {
-		cm = new ContextMenu();
-		mtiles = new Menu("Tiles");
-		mnpcs = new Menu("NPCs");
-		mbuildings = new Menu("Buildings");
-		mextra = new Menu("Extras");
-		mmobs = new Menu("Mob Test");
+		cm			= new ContextMenu();
+		mtiles		= new Menu("Tiles");
+		mnpcs		= new Menu("NPCs");
+		mbuildings	= new Menu("Buildings");
+		mextra		= new Menu("Extras");
+		mmobs		= new Menu("Mob Test");
 		MenuItem save = new MenuItem("save");
 		save.setOnAction(ae -> gp.saveMap());
 		mextra.getItems().add(save);
@@ -114,21 +182,23 @@ public class TileManager extends Pane {
 		backToSpawn.setOnAction(ae -> {
 			double[] posi = getStartingPosition();
 			gp.getPlayer()
-			.setPosition(new double[] {posi[0] * gp.getScalingFactorX(), posi[1] * gp.getScalingFactorY()});
+			.setPosition(new double[] {
+					posi[0] * gp.getScalingFactorX(), posi[1] * gp.getScalingFactorY()
+			});
 		});
 		mextra.getItems().add(backToSpawn);
 
-		maps = new Menu("Maps");
-		insel_k = new Menu("Insel_K");
-		insel_m = new Menu("Insel_M");
-		insel_g = new Menu("Insel_G");
+		maps	= new Menu("Maps");
+		insel_k	= new Menu("Insel_K");
+		insel_m	= new Menu("Insel_M");
+		insel_g	= new Menu("Insel_G");
 		mextra.getItems().addAll(maps, insel_k, insel_m, insel_g);
 
 		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true") && !cm.isShowing()) {
+			if ("true".equals(System.getProperty("edit")) && !cm.isShowing()) {
 				System.out.println("dg");
 				System.out.println();
-				requestor.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+				requester.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
 						e.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 				cm.getItems().clear();
 				cm.getItems().addAll(gp.getTileM().getMenus());
@@ -138,38 +208,52 @@ public class TileManager extends Pane {
 
 		this.gp = gp;
 
-		tiles = new ArrayList<>();
-		map = new ArrayList<>();
-		mapTileNum = new ArrayList<>();
+		tiles		= new ArrayList<>();
+		map			= new ArrayList<>();
+		mapTileNum	= new ArrayList<>();
 
-		npcs = new ArrayList<>();
-		buildings = new ArrayList<>();
-		mobs = new ArrayList<>();
+		npcs		= new ArrayList<>();
+		buildings	= new ArrayList<>();
+		mobs		= new ArrayList<>();
 
 		group = new Group();
 		getChildren().add(group);
+
 	}
 
+	/**
+	 * Collides?.
+	 *
+	 * @param collidable the collidable
+	 *
+	 * @return true, if collides
+	 */
 	public boolean collides(GameObject collidable) {
 
-		for (Node th: group.getChildren())
-			if (((TextureHolder) th).getPoly().getPoints().size() > 0) {
+		for (Node th : group.getChildren())
+			if ( ((TextureHolder) th).getPoly().getPoints().size() > 0) {
 				Shape intersect = Shape.intersect(collidable.getCollisionBox(), ((TextureHolder) th).getPoly());
 				if (!intersect.getBoundsInLocal().isEmpty()) return true;
 			}
 
 		return false;
+
 	}
 
+	/**
+	 * handles the context menus.
+	 *
+	 * @param e the event
+	 */
 	public void contextMenu(ActionEvent e) {
 		try {
-			if (requestor.get() instanceof FakeTextureHolder fth) {
+			if (requester.get() instanceof FakeTextureHolder fth) {
 				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().getScreenX() - gp.getPlayer().getX());
 				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().getScreenY() - gp.getPlayer().getY());
 			}
 			if (e.getSource() instanceof MenuItemWTile miwt) {
-				Tile t = requestor.get().getTile();
-				TextureHolder th = requestor.get();
+				Tile			t	= requester.get().getTile();
+				TextureHolder	th	= requester.get();
 				UndoRedo.getInstance().addAction(new UndoRedoActionBase(() -> {
 					th.setTile(t);
 				}, () -> {
@@ -179,24 +263,24 @@ public class TileManager extends Pane {
 				miwb.getBuilding().getClass()
 				.getDeclaredConstructor(miwb.getBuilding().getClass(), List.class,
 						ContextMenu.class, ObjectProperty.class)
-				.newInstance(miwb.getBuilding(), buildings, cm, requestorB)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
-						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
+				.newInstance(miwb.getBuilding(), buildings, cm, requesterB)
+				.setPosition(requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWNPC miwn)
 				miwn.getNPC().getClass()
 				.getDeclaredConstructor(miwn.getNPC().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
 				.newInstance(miwn.getNPC(), npcs, cm, requestorN)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
-						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
+				.setPosition(requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			else if (e.getSource() instanceof MenuItemWMOB miwn)
 				miwn.getMob().getClass()
 				.getDeclaredConstructor(miwn.getMob().getClass(), List.class, ContextMenu.class,
 						ObjectProperty.class)
 				.newInstance(miwn.getMob(), mobs, cm, requestorN)
-				.setPosition(requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
-						requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
-			else if (e.getSource() instanceof MenuItem mi && mi.getText().equals("add Texture")) if (mi.getParentMenu() == mnpcs) {
+				.setPosition(requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+						requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
+			else if (e.getSource() instanceof MenuItem mi && "add Texture".equals(mi.getText())) if (mi.getParentMenu() == mnpcs) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
@@ -204,13 +288,13 @@ public class TileManager extends Pane {
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
-					Path p1 = f.toPath();
-					Path p2 = new File("./res/npc/" + f.getName()).toPath();
+					Path	p1	= f.toPath();
+					Path	p2	= new File("./res/npc/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
-					Image img = new Image(new FileInputStream(p2.toFile()));
-					JsonObject joN = new JsonObject();
-					JsonArray requestedSize = new JsonArray();
+					Image		img				= new Image(new FileInputStream(p2.toFile()));
+					JsonObject	joN				= new JsonObject();
+					JsonArray	requestedSize	= new JsonArray();
 					requestedSize.add(new DoubleValue(img.getWidth()));
 					requestedSize.add(new DoubleValue(img.getHeight()));
 					joN.put("requestedSize", requestedSize);
@@ -223,9 +307,9 @@ public class TileManager extends Pane {
 					joN.put("fps", new DoubleValue(7d));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+							requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
 					position.add(new DoubleValue(
-							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+							requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 					joN.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					originalSize.add(new DoubleValue(img.getWidth()));
@@ -252,7 +336,7 @@ public class TileManager extends Pane {
 					e2.printStackTrace();
 				}
 				System.out.println(f);
-			} else if (mi.getParentMenu() == mbuildings){
+			} else if (mi.getParentMenu() == mbuildings) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
@@ -260,13 +344,13 @@ public class TileManager extends Pane {
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
-					Path p1 = f.toPath();
-					Path p2 = new File("./res/building/" + f.getName()).toPath();
+					Path	p1	= f.toPath();
+					Path	p2	= new File("./res/building/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
-					Image img = new Image(new FileInputStream(p2.toFile()));
-					JsonObject joB = new JsonObject();
-					JsonArray requestedSize = new JsonArray();
+					Image		img				= new Image(new FileInputStream(p2.toFile()));
+					JsonObject	joB				= new JsonObject();
+					JsonArray	requestedSize	= new JsonArray();
 					requestedSize.add(new DoubleValue(img.getWidth()));
 					requestedSize.add(new DoubleValue(img.getHeight()));
 					joB.put("requestedSize", requestedSize);
@@ -278,23 +362,23 @@ public class TileManager extends Pane {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+							requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
 					position.add(new DoubleValue(
-							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+							requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					originalSize.add(new DoubleValue(img.getWidth()));
 					originalSize.add(new DoubleValue(img.getHeight()));
 					joB.put("originalSize", originalSize);
 
-					Building b = new Building(joB, gp, buildings, cm, requestorB);
+					Building b = new Building(joB, gp, buildings, cm, requesterB);
 					mbuildings.getItems().remove(mi);
 					ImageView lIV;
 					if (b.isGif(b.getCurrentKey())) {
 						lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
 						lIV.setFitWidth(16);
 						lIV.setFitHeight(16);
-					} else lIV= new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+					} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 							(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
 							(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
 					mbuildings.getItems()
@@ -307,7 +391,7 @@ public class TileManager extends Pane {
 					e2.printStackTrace();
 				}
 				System.out.println(f);
-			}else if(mi.getParentMenu() == mmobs) {
+			} else if (mi.getParentMenu() == mmobs) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
@@ -315,13 +399,13 @@ public class TileManager extends Pane {
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
-					Path p1 = f.toPath();
-					Path p2 = new File("./res/npc/" + f.getName()).toPath();
+					Path	p1	= f.toPath();
+					Path	p2	= new File("./res/npc/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
-					Image img = new Image(new FileInputStream(p2.toFile()));
-					JsonObject joN = new JsonObject();
-					JsonArray requestedSize = new JsonArray();
+					Image		img				= new Image(new FileInputStream(p2.toFile()));
+					JsonObject	joN				= new JsonObject();
+					JsonArray	requestedSize	= new JsonArray();
 					requestedSize.add(new DoubleValue(img.getWidth()));
 					requestedSize.add(new DoubleValue(img.getHeight()));
 					joN.put("requestedSize", requestedSize);
@@ -334,9 +418,9 @@ public class TileManager extends Pane {
 					joN.put("fps", new DoubleValue(7d));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							requestor.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+							requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
 					position.add(new DoubleValue(
-							requestor.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+							requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 					joN.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					originalSize.add(new DoubleValue(img.getWidth()));
@@ -373,8 +457,8 @@ public class TileManager extends Pane {
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
-					Path p1 = f.toPath();
-					Path p2 = new File("./res/" + getDir() + "/" + f.getName()).toPath();
+					Path	p1	= f.toPath();
+					Path	p2	= new File("./res/" + getDir() + "/" + f.getName()).toPath();
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
 					Tile t = new Tile(f.getName(),
@@ -396,83 +480,153 @@ public class TileManager extends Pane {
 				| NoSuchMethodException | SecurityException ex) {
 			ex.printStackTrace();
 		}
+
 	}
 
+	/**
+	 * Gets the background path.
+	 *
+	 * @return the background path
+	 */
 	public String getBackgroundPath() { return backgroundPath; }
 
+	/**
+	 * Gets the buildings from map.
+	 *
+	 * @return the buildings from map
+	 */
 	public List<Building> getBuildingsFromMap() { return buildings; }
 
-
+	/**
+	 * Gets the context menu.
+	 *
+	 * @return the cm
+	 */
 	public ContextMenu getCM() { return cm; }
 
-	public String getDir() {
-		return dir;
-	}
+	/**
+	 * Gets the directory where the tile textures are stored.
+	 *
+	 * @return the directory where the tile textures are stored
+	 */
+	public String getDir() { return dir; }
 
+	/**
+	 * Gets the exit map path.
+	 *
+	 * @return the exit map path
+	 */
 	public String getExitMap() { return exitMap; }
 
+	/**
+	 * Gets the exit position.
+	 *
+	 * @return the exit position
+	 */
 	public double[] getExitPosition() { return exitPosition; }
 
+	/**
+	 * Gets position one starts at when using the exit.
+	 *
+	 * @return the position one starts at when using the exit
+	 */
 	public double[] getExitStartingPosition() { return exitStartingPosition; }
 
-	public List<List<TextureHolder>> getMap() {
-		return map;
-	}
+	/**
+	 * Gets the map.
+	 *
+	 * @return the map
+	 */
+	public List<List<TextureHolder>> getMap() { return map; }
 
+	/**
+	 * Gets the context menu menus.
+	 *
+	 * @return the menus
+	 */
 	public Menu[] getMenus() {
 		maps.getItems().clear();
 		insel_k.getItems().clear();
 		insel_m.getItems().clear();
 		insel_g.getItems().clear();
-		for (File f: new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
-			String[] sp = f.getName().split("[.]");
-			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+		for (File f : new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[]	sp	= f.getName().split("[.]");
+			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
 			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
 			maps.getItems().add(map);
 		}
-		for (File f: new File("./res/maps/insel_k").listFiles((dir, f) -> f.endsWith(".json"))) {
-			String[] sp = f.getName().split("[.]");
-			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+		for (File f : new File("./res/maps/insel_k").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[]	sp	= f.getName().split("[.]");
+			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
 			map.setOnAction(ae -> gp.setMap("./res/maps/insel_k/" + map.getText() + ".json"));
 			insel_k.getItems().add(map);
 		}
-		for (File f: new File("./res/maps/insel_m").listFiles((dir, f) -> f.endsWith(".json"))) {
-			String[] sp = f.getName().split("[.]");
-			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+		for (File f : new File("./res/maps/insel_m").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[]	sp	= f.getName().split("[.]");
+			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
 			map.setOnAction(ae -> gp.setMap("./res/maps/insel_m/" + map.getText() + ".json"));
 			insel_m.getItems().add(map);
 		}
-		for (File f: new File("./res/maps/insel_g").listFiles((dir, f) -> f.endsWith(".json"))) {
-			String[] sp = f.getName().split("[.]");
-			MenuItem map = new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+		for (File f : new File("./res/maps/insel_g").listFiles((dir, f) -> f.endsWith(".json"))) {
+			String[]	sp	= f.getName().split("[.]");
+			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
 			map.setOnAction(ae -> gp.setMap("./res/maps/insel_g/" + map.getText() + ".json"));
 			insel_g.getItems().add(map);
 		}
-		return new Menu[] {mtiles, mnpcs, mbuildings, mmobs, mextra};
+		return new Menu[] {
+				mtiles, mnpcs, mbuildings, mmobs, mextra
+		};
+
 	}
 
-	public List<MobRan> getMobFromMap() {
-		return mobs;
-	}
+	/**
+	 * Gets the mobs from map.
+	 *
+	 * @return the mobs from map
+	 */
+	public List<MobRan> getMobsFromMap() { return mobs; }
 
+	/**
+	 * Gets the NPCS from map.
+	 *
+	 * @return the NPCS from map
+	 */
 	public List<NPC> getNPCSFromMap() { return npcs; }
 
+	/**
+	 * Gets the object at.
+	 *
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 *
+	 * @return the object at x and y
+	 */
 	public Node getObjectAt(double x, double y) {
 		List<Node> nodes = gp.getViewGroups().stream().map(v -> v.getChildren()
 				.filtered(n -> n.contains(x - ((GameObject) n).getX(), y - ((GameObject) n).getY()) && n.isVisible()))
 				.flatMap(FilteredList::stream).toList();
 		if (nodes.size() != 0) return nodes.get(nodes.size() - 1);
-		else if (x < 0 || y < 0) return null;
-		else
-			return getTileAt(x, y);
+		if (x < 0 || y < 0) return null;
+		return getTileAt(x, y);
+
 	}
 
-	public List<List<TextureHolder>> getPartOfMap(double layoutX, double layoutY, double width, double height) {
+	/**
+	 * Gets a part of the map.
+	 *
+	 * @param x      the x position on screen
+	 * @param y      the y position on screen
+	 * @param width  the width
+	 * @param height the height
+	 *
+	 * @return the part of the map
+	 */
+	public List<List<TextureHolder>> getPartOfMap(double x, double y, double width, double height) {
 		int lx, ly, w, h;
-		lx = (int) Math.floor((layoutX-gp.getPlayer().getScreenX()+gp.getPlayer().getX()) / gp.BgX);
-		ly = (int) Math.floor((layoutY-gp.getPlayer().getScreenY()+gp.getPlayer().getY()) / gp.BgY);
-		w = (int) Math.floor(width / gp.BgX);
-		h = (int) Math.floor(height / gp.BgY);
+		lx	= (int) Math.floor( (x - gp.getPlayer().getScreenX() + gp.getPlayer().getX()) / gp.BgX);
+		ly	= (int) Math.floor( (y - gp.getPlayer().getScreenY() + gp.getPlayer().getY()) / gp.BgY);
+		w	= (int) Math.floor(width / gp.BgX);
+		h	= (int) Math.floor(height / gp.BgY);
 
 		List<List<TextureHolder>> li = new ArrayList<>();
 
@@ -481,21 +635,55 @@ public class TileManager extends Pane {
 			for (int j = 0; j < w; j++) li.get(i).add(map.get(ly + i).get(lx + j));
 		}
 		return li;
+
 	}
 
+	/**
+	 * Gets the path to the map file.
+	 *
+	 * @return the path to the map file
+	 */
 	public String getPath() { return path; }
 
+	/**
+	 * Gets the player layer.
+	 *
+	 * @return the player layer
+	 */
 	public int getPlayerLayer() { return playerLayer; }
 
+	/**
+	 * Gets the requestor for the context menu containing the NPC.
+	 *
+	 * @return the requestor for the context menu containing the NPC
+	 */
 	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
 
+	/**
+	 * Gets the spawn point.
+	 *
+	 * @return the spawn point
+	 */
 	public Point2D getSpawnPoint() { return new Point2D(startingPosition[0], startingPosition[1]); }
 
+	/**
+	 * Gets the starting position.
+	 *
+	 * @return the starting position
+	 */
 	public double[] getStartingPosition() { return startingPosition; }
 
+	/**
+	 * Gets the tile at x and y.
+	 *
+	 * @param x the x position
+	 * @param y the y position
+	 *
+	 * @return the tile at x and y
+	 */
 	public TextureHolder getTileAt(double x, double y) {
-		int tx = (int) Math.floor(x / gp.BgX);
-		int ty = (int) Math.floor(y / gp.BgY);
+		int	tx	= (int) Math.floor(x / gp.BgX);
+		int	ty	= (int) Math.floor(y / gp.BgY);
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
@@ -504,14 +692,25 @@ public class TileManager extends Pane {
 			return new FakeTextureHolder(tx * gp.BgX - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
 					ty * gp.BgY - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
 		}
+
 	}
 
+	/**
+	 * Gets the tiles.
+	 *
+	 * @return the tiles
+	 */
 	public List<Tile> getTiles() { return tiles; }
 
+	/**
+	 * Load map.
+	 *
+	 * @param data the map data/matrix
+	 */
 	public void loadMap(JsonArray data) {
 
-		int col = 0;
-		int row = 0;
+		int	col	= 0;
+		int	row	= 0;
 
 		try {
 
@@ -519,8 +718,8 @@ public class TileManager extends Pane {
 
 			while (row < data.size()) {
 
-				String line = ((StringValue) data.get(idx)).getValue();
-				String[] numbers = line.split(" ");
+				String		line	= ((StringValue) data.get(idx)).getValue();
+				String[]	numbers	= line.split(" ");
 
 				if (mapTileNum.size() == row)
 					mapTileNum.add(new ArrayList<>());
@@ -542,19 +741,24 @@ public class TileManager extends Pane {
 		} catch (Exception e) {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
+
 	}
 
-	public void reload() {
-		setMap(path);
-	}
+	/**
+	 * Reload the map.
+	 */
+	public void reload() { setMap(path); }
 
+	/**
+	 * Save the map.
+	 */
 	public void save() {
 		if (!generated) try {
 			File out = new File(path).getAbsoluteFile();
 			System.out.println(out);
 			if (out.exists()) {
-				JsonObject jo = (JsonObject) JsonParser.parse(out);
-				JsonArray buildings = (JsonArray) jo.get("buildings");
+				JsonObject	jo			= (JsonObject) JsonParser.parse(out);
+				JsonArray	buildings	= (JsonArray) jo.get("buildings");
 				buildings.clear();
 				buildings.addAll(this.buildings.stream().filter(Building::isMaster).toList());
 				JsonArray npcs = (JsonArray) jo.get("npcs");
@@ -578,9 +782,9 @@ public class TileManager extends Pane {
 				map.put("dir", getDir());
 				JsonArray matrix = (JsonArray) map.get("matrix");
 				matrix.clear();
-				for (List<TextureHolder> mapi: this.map) {
+				for (List<TextureHolder> mapi : this.map) {
 					StringBuilder sb = new StringBuilder();
-					for (TextureHolder th: mapi) if (textures.contains(th.getTile().name))
+					for (TextureHolder th : mapi) if (textures.contains(th.getTile().name))
 						sb.append(textures.indexOf(th.getTile().name) + " ");
 					else {
 						sb.append(textures.size() + " ");
@@ -588,8 +792,8 @@ public class TileManager extends Pane {
 					}
 					matrix.add(sb.toString().substring(0, sb.toString().length() - 1));
 				}
-				String jsonOut = jo.toJson();
-				BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+				String			jsonOut	= jo.toJson();
+				BufferedWriter	bw		= new BufferedWriter(new FileWriter(out));
 				bw.write(jsonOut);
 				bw.flush();
 				bw.close();
@@ -599,17 +803,25 @@ public class TileManager extends Pane {
 		} catch (JsonParseException | IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
+	/**
+	 * Sets the map.
+	 *
+	 * @param path the path to the new map
+	 */
 	public void setMap(String path) {
 		try {
 
-			this.path=path;
+			this.path = path;
 
-			exitPosition = null;
-			exitStartingPosition = null;
-			exitMap = null;
-			startingPosition = new double[] {0d, 0d};
+			exitPosition			= null;
+			exitStartingPosition	= null;
+			exitMap					= null;
+			startingPosition		= new double[] {
+					0d, 0d
+			};
 
 			mapTileNum.clear();
 			map.clear();
@@ -656,11 +868,11 @@ public class TileManager extends Pane {
 
 			generated = false;
 
-			JsonObject map = (JsonObject) jo.get("map");
-			JsonArray textures = (JsonArray) map.get("textures");
-			JsonArray npcs = (JsonArray) jo.get("npcs");
-			JsonArray buildings = (JsonArray) jo.get("buildings");
-			JsonArray startingPosition = (JsonArray) map.get("startingPosition");
+			JsonObject	map					= (JsonObject) jo.get("map");
+			JsonArray	textures			= (JsonArray) map.get("textures");
+			JsonArray	npcs				= (JsonArray) jo.get("npcs");
+			JsonArray	buildings			= (JsonArray) jo.get("buildings");
+			JsonArray	startingPosition	= (JsonArray) map.get("startingPosition");
 
 			dir = ((StringValue) map.get("dir")).getValue();
 
@@ -670,24 +882,22 @@ public class TileManager extends Pane {
 			if (jo.containsKey("exit")) {
 				JsonObject exit = (JsonObject) jo.get("exit");
 				exitMap = ((StringValue) exit.get("map")).getValue();
-				JsonArray spawnPosition = (JsonArray) exit.get("spawnPosition");
-				JsonArray position = (JsonArray) exit.get("position");
-				exitStartingPosition = new double[] {
-						((NumberValue) spawnPosition.get(0)).getValue().doubleValue(),
-						((NumberValue) spawnPosition.get(1)).getValue().doubleValue()
+				JsonArray	spawnPosition	= (JsonArray) exit.get("spawnPosition");
+				JsonArray	position		= (JsonArray) exit.get("position");
+				exitStartingPosition	= new double[] {
+						((NumberValue) spawnPosition.get(0)).getValue().doubleValue(), ((NumberValue) spawnPosition.get(1)).getValue().doubleValue()
 				};
-				exitPosition = new double[] {
-						((NumberValue) position.get(0)).getValue().doubleValue(),
-						((NumberValue) position.get(1)).getValue().doubleValue()
+				exitPosition			= new double[] {
+						((NumberValue) position.get(0)).getValue().doubleValue(), ((NumberValue) position.get(1)).getValue().doubleValue()
 				};
 			}
-			for (Object texture: textures) try {
-				Tile t = new Tile(((StringValue) texture).getValue(),
+			for (Object texture : textures) try {
+				Tile t = new Tile( ((StringValue) texture).getValue(),
 						new FileInputStream("./res/" + getDir() + "/" + ((StringValue) texture).getValue()),
 						gp);
 				tiles.add(t);
 				mtiles.getItems()
-				.add(new MenuItemWTile(((StringValue) texture).getValue(),
+				.add(new MenuItemWTile( ((StringValue) texture).getValue(),
 						new ImageView(ImgUtil.resizeImage(t.images.get(0),
 								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
 						t));
@@ -703,7 +913,7 @@ public class TileManager extends Pane {
 						t.poly = new ArrayList<>();
 						boolean s = false;
 						for (int i = 0; i < length; i++)
-							t.poly.add(raf.readDouble() * ((s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+							t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -713,24 +923,23 @@ public class TileManager extends Pane {
 				.printStackTrace();
 			}
 			this.startingPosition = new double[] {
-					((NumberValue) startingPosition.get(0)).getValue().doubleValue(),
-					((NumberValue) startingPosition.get(1)).getValue().doubleValue()
+					((NumberValue) startingPosition.get(0)).getValue().doubleValue(), ((NumberValue) startingPosition.get(1)).getValue().doubleValue()
 			};
 			if (map.containsKey("playerLayer"))
 				playerLayer = ((NumberValue) map.get("playerLayer")).getValue().intValue();
 			else playerLayer = 0;
-			mapTileNum = new ArrayList<>();
-			this.map = new ArrayList<>();
+			mapTileNum	= new ArrayList<>();
+			this.map	= new ArrayList<>();
 			loadMap((JsonArray) map.get("matrix"));
-			this.buildings = new ArrayList<>();
-			this.npcs = new ArrayList<>();
-			mobs = new ArrayList<>();
-			for (Object building: buildings) {
-				Building b = switch (((StringValue) ((JsonObject) building).get("type")).getValue()) {
-					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requestorB);
+			this.buildings	= new ArrayList<>();
+			this.npcs		= new ArrayList<>();
+			mobs			= new ArrayList<>();
+			for (Object building : buildings) {
+				Building b = switch ( ((StringValue) ((JsonObject) building).get("type")).getValue()) {
+					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requesterB);
 					case "ContractsTable" -> new ContractsTable((JsonObject) building, gp, this.buildings, cm,
-							requestorB);
-					default -> new Building((JsonObject) building, gp, this.buildings, cm, requestorB);
+							requesterB);
+					default -> new Building((JsonObject) building, gp, this.buildings, cm, requesterB);
 				};
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
@@ -739,8 +948,8 @@ public class TileManager extends Pane {
 								(int) b.getFirstImage().getHeight(), 16, 16)),
 						b));
 			}
-			for (Object npc: npcs) {
-				Entity n = switch (((StringValue) ((JsonObject) npc).get("type")).getValue()) {
+			for (Object npc : npcs) {
+				Entity n = switch ( ((StringValue) ((JsonObject) npc).get("type")).getValue()) {
 					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, cm, requestorN);
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
@@ -768,23 +977,34 @@ public class TileManager extends Pane {
 			mnpcs.getItems().add(new MenuItem("add Texture"));
 			mmobs.getItems().add(new MenuItem("add Texture"));
 			mbuildings.getItems().add(new MenuItem("add Texture"));
-			for (MenuItem mi: mtiles.getItems()) mi.setOnAction(this::contextMenu);
-			for (MenuItem mi: mnpcs.getItems()) mi.setOnAction(this::contextMenu);
-			for (MenuItem mi: mbuildings.getItems()) mi.setOnAction(this::contextMenu);
-			for (MenuItem mi: mmobs.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi : mtiles.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi : mnpcs.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi : mbuildings.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi : mmobs.getItems()) mi.setOnAction(this::contextMenu);
 
 		} catch (JsonParseException | FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
 	}
 
+	/**
+	 * Sets the starting position.
+	 *
+	 * @param startingPosition the new starting position
+	 */
+	public void setStartingPosition(double[] startingPosition) { this.startingPosition = startingPosition; }
+
+	/**
+	 * Update.
+	 */
 	public void update() {
 
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int worldX = (int) (exitPosition[0] * gp.getScalingFactorX());
-			int worldY = (int) (exitPosition[1] * gp.getScalingFactorY());
+			int	worldX	= (int) (exitPosition[0] * gp.getScalingFactorX());
+			int	worldY	= (int) (exitPosition[1] * gp.getScalingFactorY());
 
 			if (worldX + gp.BgX / 2 - p.getX() < 105 * gp.getScalingFactorX()
 					&& worldX + gp.BgX / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
@@ -792,16 +1012,16 @@ public class TileManager extends Pane {
 				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
-		int worldCol = 0;
-		int worldRow = 0;
+		int	worldCol	= 0;
+		int	worldRow	= 0;
 
 		while (worldRow < mapTileNum.size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
-			int worldX = worldCol * gp.BgX;
-			int worldY = worldRow * gp.BgY;
-			double screenX = worldX - p.getX() + p.getScreenX();
-			double screenY = worldY - p.getY() + p.getScreenY();
+			int		worldX	= worldCol * gp.BgX;
+			int		worldY	= worldRow * gp.BgY;
+			double	screenX	= worldX - p.getX() + p.getScreenX();
+			double	screenY	= worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldRow)
 				map.add(new ArrayList<>());
@@ -815,7 +1035,7 @@ public class TileManager extends Pane {
 					th = map.get(worldRow).get(worldCol);
 				if (th == null) {
 					th = new TextureHolder(tiles.get(tileNum < tiles.size() ? tileNum : 0), gp, screenX, screenY,
-							cm, requestor, worldX, worldY);
+							cm, requester, worldX, worldY);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);
 				} else {
@@ -833,7 +1053,7 @@ public class TileManager extends Pane {
 					th.update();
 				} else {
 					th = new TextureHolder(tiles.get(tileNum < tiles.size() ? tileNum : 0), gp, screenX, screenY, cm,
-							requestor, worldX, worldY);
+							requester, worldX, worldY);
 					th.setVisible(false);
 					group.getChildren().add(th);
 					map.get(worldRow).add(th);
