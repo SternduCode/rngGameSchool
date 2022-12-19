@@ -92,14 +92,15 @@ public class DungeonGen {
 	 * @param connectors   the connectors
 	 * @param connections  the connections
 	 * @param replacements the replacements
+	 * @param difficulty the difficulty
 	 */
 	@SuppressWarnings("unchecked")
 	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, List<JsonObject> connectors, List<JsonObject> connections,
-			List<JsonObject> replacements) {
+			List<JsonObject> replacements, Difficulty difficulty) {
 		this.gp	= gp;
 		mainMap	= mainmap;
 
-		difficulty = Difficulty.EASY;
+		this.difficulty = difficulty;
 
 		this.maps = new ArrayList<>();
 

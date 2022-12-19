@@ -24,6 +24,7 @@ import rngGame.main.*;
 import rngGame.main.UndoRedo.UndoRedoActionBase;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class TileManager.
  */
@@ -857,7 +858,7 @@ public class TileManager extends Pane {
 				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
-						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList());
+						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), gp.getDifficulty());
 
 				d.findFreeConnectors();
 
