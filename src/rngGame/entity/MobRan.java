@@ -72,8 +72,7 @@ public class MobRan extends NPC {
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
-				Player p = gpt.getPlayer();
-				Double[] pos = pathfinding(p.getX(), p.getY(), gpt);
+				Double[] pos = pathfinding(gpt);
 				if (pos != null) {
 					diff[0] = pos[0] - x;
 					diff[1] = pos[1] - y;
@@ -85,12 +84,13 @@ public class MobRan extends NPC {
 	/**
 	 * Pathfinding.
 	 *
-	 * @param x the x
-	 * @param y the y
 	 * @param sp the sp
 	 * @return the double[]
 	 */
-	public Double[] pathfinding (double x, double y,GamePanel sp) {
+	public Double[] pathfinding(GamePanel sp) {
+		Player	p	= sp.getPlayer();
+		double	x	= p.getX() + p.getColliBoxX(), y = p.getY() + p.getColliBoxY() / 2;
+
 		int	tileX	= (int) Math.round(x / sp.BgX);
 		int	tileY	= (int) Math.round(y / sp.BgY);
 
@@ -103,15 +103,15 @@ public class MobRan extends NPC {
 				if (map.size() > pe.y() && map.get(pe.y()).size() > pe.x() + 1
 						&& map.get(pe.y()).get(pe.x() + 1).getPoly().getPoints().size() == 0) // rechts
 					out.accept(new PathElement(pe.x() + 1, pe.y(), pe.distance() + 1));
-				
+
 				if (pe.x() != 0 && map.size() > pe.y() && map.get(pe.y()).size() > pe.x() - 1
 						&& map.get(pe.y()).get(pe.x() - 1).getPoly().getPoints().size() == 0) // links
 					out.accept(new PathElement(pe.x() - 1, pe.y(), pe.distance() + 1));
-				
+
 				if (pe.y() != 0 && map.size() > pe.y() - 1 && map.get(pe.y() - 1).size() > pe.x()
 						&& map.get(pe.y() - 1).get(pe.x()).getPoly().getPoints().size() == 0) 	//hoch
 					out.accept(new PathElement(pe.x(), pe.y() - 1, pe.distance() + 1));
-				
+
 				if (map.size() > pe.y() + 1 && map.get(pe.y() + 1).size() > pe.x()
 						&& map.get(pe.y() + 1).get(pe.x()).getPoly().getPoints().size() == 0)	//runter
 					out.accept(new PathElement(pe.x(), pe.y() + 1, pe.distance() + 1));
@@ -122,6 +122,26 @@ public class MobRan extends NPC {
 			}).distinct();
 
 			List<PathElement> pels = stream.collect(Collectors.toList());
+
+			int	minX	= pels.parallelStream().mapToInt(PathElement::x).min().orElse(0);
+			int	minY	= pels.parallelStream().mapToInt(PathElement::y).min().orElse(0);
+
+			int	maxX	= pels.parallelStream().mapToInt(PathElement::x).max().orElse(0);
+			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
+
+			for (int yU = minY; yU <= maxY; yU++) {
+				for (int xU = minX; xU <= maxX; xU++) {
+					int xU_ = xU, yU_ = yU;
+					System.out.print(switch (pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst()
+							.orElse(new PathElement(0, 0, -1)).distance()) {
+								case -1 -> "  ";
+								case 0 -> "P ";
+								default -> pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst().orElse(new PathElement(0, 0, -1))
+								.distance() + " ";
+					});
+				}
+				System.out.println();
+			}
 
 			System.out.println(pels);
 
@@ -151,7 +171,7 @@ public class MobRan extends NPC {
 			step++;
 		x += (long) (diff[0] / steps);
 		y += (long) (diff[1] / steps);
-		System.out.println(step);
+		// System.out.println(step);
 		if (step == steps) {
 			System.out.println("Finish: " + step);
 			step = 0;
