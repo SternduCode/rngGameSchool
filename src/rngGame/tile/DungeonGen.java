@@ -537,6 +537,7 @@ public class DungeonGen {
 		});
 
 		Map<Direction, List<Tile>> replacements = new HashMap<>();
+		List<Tile>					plus			= new ArrayList<>();
 
 		for (JsonObject replacement : this.replacements) {
 			Direction	dir		= Direction.valueOf( ((StringValue) replacement.get("direction")).getValue().toUpperCase());
@@ -550,6 +551,14 @@ public class DungeonGen {
 				e.printStackTrace();
 			}
 			replacements.put(dir, tiles);
+			if (replacement.containsKey("plus")) for (Object tileName : (JsonArray) replacement.get("plus")) try {
+				Tile tile = new Tile( ((StringValue) tileName).getValue(), new FileInputStream("./res/insel/" + ((StringValue) tileName).getValue()),
+						gp);
+				plus.add(tile);
+				gp.getTileM().getTiles().add(tile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 
 		for (Entry<Entry<Point2D, Integer>, Direction> en : avail) {
@@ -561,11 +570,15 @@ public class DungeonGen {
 			Point2D					correctedPoint	= new Point2D(key.getKey().getY(), key.getKey().getX()).add(mapPositions.get(key.getValue()));
 			gp.getTileM().mapTileNum.get((int) correctedPoint.getY()).set((int) correctedPoint.getX(),
 					gp.getTileM().getTiles().indexOf(replacementTile));
+			if (Direction.DOWN == dir) {
+				replacementTile = plus.get(random.nextInt(plus.size()));
+				gp.getTileM().mapTileNum.get((int) correctedPoint.getY() + 1).set((int) correctedPoint.getX(),
+						gp.getTileM().getTiles().indexOf(replacementTile));
+			}
 		}
 
 		// TODO clean up (code)
-		// TODO add Gehaenge
-		// TODO fix 7 & fancy bridges (after 2)
+		// TODO fancy bridges (after 2)
 		// TODO load collboxes
 		// TODO make menus work
 		// TODO add objects (Faggel ?% on corners and non border tiles have ?% to have book on them)
