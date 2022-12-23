@@ -16,11 +16,18 @@
 			"Mitte2.png",
 			"SeiteRechtsBS.png",
 			"BrueckeH2.png",
+			"SeiteRechts3.png",
+			"SeiteLinks.png",
 			"EckeLinksUnten.png",
-			"SeiteUntenBS.png",
+			"SeiteUnten2.png",
 			"EckeRechtsUnten.png",
+			"SeiteUntenBS.png",
 			"Gehaenge.png",
-			"BrueckeV2.png"
+			"BrueckeV2.png",
+			"SeiteRechts2.png",
+			"SeiteLinks2.png",
+			"SeiteUnten3.png",
+			"SeiteOben2.png"
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
 		"startingPosition" : [
@@ -30,19 +37,19 @@
 		"dir" : "Insel",
 		"matrix" : [
 			"0 1 2 3 3 0 1 2 3 3 0 1 2",
-			"4 5 6 7 7 4 5 6 3 3 4 5 6",
-			"8 9 10 3 3 8 9 10 3 3 8 9 10",
-			"11 3 11 3 3 11 12 11 3 3 11 12 11",
-			"3 3 3 3 3 3 12 3 3 3 3 12 3",
+			"4 5 6 7 7 4 5 8 3 3 9 5 6",
+			"10 11 12 3 3 10 13 12 3 3 10 13 12",
+			"14 14 14 3 3 14 15 14 3 3 14 15 14",
+			"3 3 3 3 3 3 15 3 3 3 3 15 3",
 			"0 1 2 3 3 0 1 2 3 3 0 1 2",
-			"4 5 6 7 7 4 5 6 3 3 4 5 6",
-			"8 9 10 3 3 8 9 10 3 3 8 9 10",
-			"11 12 11 3 3 11 3 11 3 3 11 12 11",
-			"3 12 3 3 3 3 3 3 3 3 3 12 3",
-			"0 1 2 3 3 0 1 2 3 3 0 1 2",
+			"4 5 6 7 7 4 5 16 3 3 17 5 6",
+			"10 13 12 3 3 10 18 12 3 3 10 13 12",
+			"14 15 14 3 3 14 14 14 3 3 14 15 14",
+			"3 15 3 3 3 3 3 3 3 3 3 15 3",
+			"0 1 2 3 3 0 19 2 3 3 0 1 2",
 			"4 5 6 7 7 4 5 6 7 7 4 5 6",
-			"8 9 10 3 3 8 9 10 3 3 8 9 10",
-			"11 3 11 3 3 11 3 11 3 3 11 3 11"
+			"10 13 12 3 3 10 13 12 3 3 10 13 12",
+			"14 3 14 3 3 14 3 14 3 3 14 3 14"
 		]
 	}
 }

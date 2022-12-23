@@ -942,11 +942,18 @@ public class TileManager extends Pane {
 							requesterB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requesterB);
 				};
+				ImageView	lIV;
+				if (b.isGif(b.getCurrentKey())) {
+					lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
+					lIV.setFitWidth(16);
+					lIV.setFitHeight(16);
+				} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
 				mbuildings.getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
-						new ImageView(ImgUtil.resizeImage(b.getFirstImage(), (int) b.getFirstImage().getWidth(),
-								(int) b.getFirstImage().getHeight(), 16, 16)),
+						lIV,
 						b));
 			}
 			for (Object npc : npcs) {
@@ -955,23 +962,27 @@ public class TileManager extends Pane {
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
+				ImageView	lIV;
+				if (n.isGif(n.getCurrentKey())) {
+					lIV = new ImageView(n.getImages().get(n.getCurrentKey()).get(0));
+					lIV.setFitWidth(16);
+					lIV.setFitHeight(16);
+				} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
+						(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
+						(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16));
 				if (n instanceof MobRan mr)
 					mmobs.getItems()
-							.add(new MenuItemWMOB(
-									((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
-											.findFirst().get()).getValue(),
-									new ImageView(
-											ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
-													(int) mr.getFirstImage().getHeight(), 16, 16)),
-									mr));
+					.add(new MenuItemWMOB(
+							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
+									.findFirst().get()).getValue(),
+							lIV,
+							mr));
 				else if (n instanceof NPC np)
 					mnpcs.getItems()
 					.add(new MenuItemWNPC(
 							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 									.findFirst().get()).getValue(),
-							new ImageView(
-									ImgUtil.resizeImage(np.getFirstImage(), (int) n.getFirstImage().getWidth(),
-											(int) np.getFirstImage().getHeight(), 16, 16)),
+									lIV,
 							np));
 
 			}
