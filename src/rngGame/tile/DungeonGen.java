@@ -565,7 +565,7 @@ public class DungeonGen {
 		}
 
 		gp.getTileM().setStartingPosition(new double[] {
-				(x - xOffset + .5) * gp.BgX, (y - yOffset + .5) * gp.BgY
+				(x - xOffset + .5) * 48, (y - yOffset + .5) * 48
 		});
 
 		Map<Direction, List<Tile>> replacements = new HashMap<>();
