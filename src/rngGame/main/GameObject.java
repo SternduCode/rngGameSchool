@@ -686,7 +686,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				fc.setInitialDirectory(new File("."));
 				fc.setTitle("Select a texture file");
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				TextInputDialog dialog = new TextInputDialog("");
@@ -735,7 +735,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				fc.setInitialDirectory(new File("."));
 				fc.setTitle("Select a texture file");
 				fc.getExtensionFilters().add(new ExtensionFilter(
-						"A file containing an Image", "*.png"));
+						"A file containing an Image", "*.png", "*.gif"));
 				File f = fc.showOpenDialog(cm.getScene().getWindow());
 				if (f == null || !f.exists()) return;
 				try {
