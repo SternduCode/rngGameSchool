@@ -128,6 +128,22 @@ public class DungeonGen {
 			Tile t = new Tile( ((StringValue) texture).getValue(), new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 					gp);
 			mainMapTiles.add(t);
+			String[] sp = ((StringValue) texture).getValue().split("[.]");
+			if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+			+ ".collisionbox").exists())
+				try {
+					RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+							+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+							+ ".collisionbox"), "rws");
+					raf.seek(0l);
+					int length = raf.readInt();
+					t.poly = new ArrayList<>();
+					boolean s = false;
+					for (int i = 0; i < length; i++)
+						t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -151,6 +167,22 @@ public class DungeonGen {
 				Tile t = new Tile( ((StringValue) texture).getValue(), new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
 						gp);
 				mapsTiles[i].add(t);
+				String[] sp = ((StringValue) texture).getValue().split("[.]");
+				if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				+ ".collisionbox").exists())
+					try {
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox"), "rws");
+						raf.seek(0l);
+						int length = raf.readInt();
+						t.poly = new ArrayList<>();
+						boolean s = false;
+						for (int ij = 0; ij < length; ij++)
+							t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}

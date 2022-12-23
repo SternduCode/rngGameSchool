@@ -231,9 +231,16 @@ public class TileManager extends Pane {
 	 */
 	public boolean collides(GameObject collidable) {
 
-		for (Node th : group.getChildren())
-			if ( ((TextureHolder) th).getPoly().getPoints().size() > 0) {
-				Shape intersect = Shape.intersect(collidable.getCollisionBox(), ((TextureHolder) th).getPoly());
+		List<TextureHolder>	ths	= new ArrayList<>();
+
+		int x = (int) collidable.getX() / gp.BgX, y = (int) collidable.getY() / gp.BgY;
+
+		for (int i = -2; i < 3; i++) for (int j = -2; j < 3; j++)
+			if (x + i > 0 && y + j > 0 && y + j < map.size() && x + i < map.get(y + j).size()) ths.add(map.get(y + j).get(x + i));
+
+		for (TextureHolder th : ths)
+			if ( th.getPoly().getPoints().size() > 0) {
+				Shape intersect = Shape.intersect(collidable.getCollisionBox(), th.getPoly());
 				if (!intersect.getBoundsInLocal().isEmpty()) return true;
 			}
 
@@ -982,7 +989,7 @@ public class TileManager extends Pane {
 					.add(new MenuItemWNPC(
 							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
 									.findFirst().get()).getValue(),
-									lIV,
+							lIV,
 							np));
 
 			}
