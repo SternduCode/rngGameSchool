@@ -1,6 +1,7 @@
 package rngGame.entity;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
@@ -9,9 +10,9 @@ import javafx.scene.shape.Polygon;
 import rngGame.main.*;
 import rngGame.tile.TileManager;
 
+// TODO: Auto-generated Javadoc
 /**
- *
- * A class that defines the Player
+ * A class that defines the Player.
  *
  * @author Sterndu
  * @author ICEBLUE
@@ -20,24 +21,38 @@ import rngGame.tile.TileManager;
 
 public class Player extends Entity {
 
+	/** The size. */
 	private final int size = 64; // The value that reqHeight will be set to
 
+	/** The p. */
 	private final AtomicBoolean p = new AtomicBoolean(false);
+
+	/** The w. */
 	private final AtomicBoolean w = new AtomicBoolean(false);
+
+	/** The a. */
 	private final AtomicBoolean a = new AtomicBoolean(false);
+
+	/** The s. */
 	private final AtomicBoolean s = new AtomicBoolean(false);
+
+	/** The d. */
 	private final AtomicBoolean d = new AtomicBoolean(false);
 
+	/** The colli box height. */
 	private final double colliBoxX = 33, colliBoxY = 45, colliBoxWidth = 31, colliBoxHeight = 20;
 
+	/** The screen X. */
 	private int screenX; // the players X position in the window
 
+	/** The screen Y. */
 	private int screenY; // the players Y position in the window
 
+	/** The old Y. */
 	private double oldX, oldY; // used for collision detection
 
 	/**
-	 * Player is not defined in map file but some attributes of it are
+	 * Player is not defined in map file but some attributes of it are.
 	 *
 	 * @param gp        A reference to the {@link GamePanel}
 	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu}
@@ -104,7 +119,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Sets all collisionBoxes to the correct size and position
+	 * Sets all collisionBoxes to the correct size and position.
 	 */
 	public void generateCollisionBox() {
 
@@ -118,13 +133,40 @@ public class Player extends Entity {
 					colliBoxY * gamepanel.getScalingFactorY()-0.5);
 		});
 	}
+
+	/**
+	 * Gets the colli box height.
+	 *
+	 * @return the colli box height
+	 */
 	public double getColliBoxHeight() { return colliBoxHeight * gamepanel.getScalingFactorY(); }
+
+	/**
+	 * Gets the colli box width.
+	 *
+	 * @return the colli box width
+	 */
 	public double getColliBoxWidth() { return colliBoxWidth * gamepanel.getScalingFactorX(); }
 
+	/**
+	 * Gets the colli box X.
+	 *
+	 * @return the colli box X
+	 */
 	public double getColliBoxX() { return colliBoxX * gamepanel.getScalingFactorX(); }
 
+	/**
+	 * Gets the colli box Y.
+	 *
+	 * @return the colli box Y
+	 */
 	public double getColliBoxY() { return colliBoxY * gamepanel.getScalingFactorY(); }
 
+	/**
+	 * Gets the player image.
+	 *
+	 * @return the player image
+	 */
 	public void getPlayerImage() {
 
 		try {
@@ -155,6 +197,8 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Gets the screen X.
+	 *
 	 * @return the players X position in the window
 	 */
 	public int getScreenX() {
@@ -162,6 +206,8 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Gets the screen Y.
+	 *
 	 * @return the players Y position in the window
 	 */
 	public int getScreenY() {
@@ -169,6 +215,8 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Gets the size.
+	 *
 	 * @return the height of the Player texture
 	 */
 	public int getSize() {
@@ -176,19 +224,23 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Gets the x.
+	 *
 	 * @return the players X position in the map
 	 */
 	@Override
 	public double getX() { return (long) x; }
 
 	/**
+	 * Gets the y.
+	 *
 	 * @return the players Y position in the map
 	 */
 	@Override
 	public double getY() { return (long) y; }
 
 	/**
-	 * Sets the players map position to {@code x} and {@code y}
+	 * Sets the players map position to {@code x} and {@code y}.
 	 *
 	 * @param x the players X position in the map
 	 * @param y the players Y position in the map
@@ -199,7 +251,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Sets the players map position to {@code x} and {@code y}
+	 * Sets the players map position to {@code x} and {@code y}.
 	 *
 	 * @param position an array containing the players x ({@code position[0]}) and y
 	 *                 ({@code position[1]}) positions
@@ -211,6 +263,11 @@ public class Player extends Entity {
 		oldY = y;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return "Player [size=" + getSize() + ", p=" + p + ", w=" + w + ", a=" + a + ", s=" + s
@@ -225,6 +282,11 @@ public class Player extends Entity {
 	}
 
 
+	/**
+	 * Update.
+	 *
+	 * @param milis the milis
+	 */
 	@Override
 	public void update(long milis) {
 
@@ -240,11 +302,11 @@ public class Player extends Entity {
 		}
 
 		if (w.get()) { // Hoch
-			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("upL");
+			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
 			y -= updateSpeed * gamepanel.getScalingFactorY();
 		} else if (s.get()) { // Runter
-			if (getCurrentKey().equals("left") || getCurrentKey().endsWith("L")) setCurrentKey("downL");
+			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
 			y += updateSpeed * gamepanel.getScalingFactorY();
 		} else if (a.get()) { // Links
@@ -267,8 +329,8 @@ public class Player extends Entity {
 		setLayoutX(getScreenX());
 		setLayoutY(getScreenY());
 
-		getCollisionBox().setTranslateX((x - oldX) * 2);
-		getCollisionBox().setTranslateY((y - oldY) * 2);
+		getCollisionBox().setTranslateX( (x - oldX) * 3);
+		getCollisionBox().setTranslateY( (y - oldY) * 3);
 
 		if (isVisible() && p.get()) setVisible(false);
 
