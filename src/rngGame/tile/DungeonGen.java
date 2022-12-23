@@ -560,6 +560,40 @@ public class DungeonGen {
 					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue()), gp));
 			gp.getTileM().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(),
 					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue()), gp));
+			String[] sp = ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue().split("[.]");
+			if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+			+ ".collisionbox").exists())
+				try {
+					RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+							+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+							+ ".collisionbox"), "rws");
+					raf.seek(0l);
+					int length = raf.readInt();
+					gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 2).poly = new ArrayList<>();
+					boolean s = false;
+					for (int ij = 0; ij < length; ij++)
+						gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 2).poly
+						.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			sp = ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue().split("[.]");
+			if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+			+ ".collisionbox").exists())
+				try {
+					RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+							+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+							+ ".collisionbox"), "rws");
+					raf.seek(0l);
+					int length = raf.readInt();
+					gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 1).poly = new ArrayList<>();
+					boolean s = false;
+					for (int ij = 0; ij < length; ij++)
+						gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 1).poly
+						.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -568,7 +602,7 @@ public class DungeonGen {
 				(x - xOffset + .5) * 48, (y - yOffset + .5) * 48
 		});
 
-		Map<Direction, List<Tile>> replacements = new HashMap<>();
+		Map<Direction, List<Tile>>	replacements	= new HashMap<>();
 		List<Tile>					plus			= new ArrayList<>();
 
 		for (JsonObject replacement : this.replacements) {
@@ -579,6 +613,22 @@ public class DungeonGen {
 						gp);
 				tiles.add(tile);
 				gp.getTileM().getTiles().add(tile);
+				String[] sp = ((StringValue) tileName).getValue().split("[.]");
+				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				+ ".collisionbox").exists())
+					try {
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox"), "rws");
+						raf.seek(0l);
+						int length = raf.readInt();
+						tile.poly = new ArrayList<>();
+						boolean s = false;
+						for (int ij = 0; ij < length; ij++)
+							tile.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -588,6 +638,22 @@ public class DungeonGen {
 						gp);
 				plus.add(tile);
 				gp.getTileM().getTiles().add(tile);
+				String[] sp = ((StringValue) tileName).getValue().split("[.]");
+				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				+ ".collisionbox").exists())
+					try {
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								+ ".collisionbox"), "rws");
+						raf.seek(0l);
+						int length = raf.readInt();
+						tile.poly = new ArrayList<>();
+						boolean s = false;
+						for (int ij = 0; ij < length; ij++)
+							tile.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
