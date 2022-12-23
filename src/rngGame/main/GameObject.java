@@ -794,7 +794,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		try {
 			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
-			if (path.endsWith("gif")) {
+			if (path.toLowerCase().endsWith("gif")) {
 				isGif.put(key, true);
 				li.add(img);
 			} else {
@@ -941,7 +941,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		imagesM.getItems().clear();
 		for (Entry<String, String> en: textureFiles.entrySet()) {
 			ImageView lIV;
-			if (isGif(getCurrentKey())) {
+			if (isGif(en.getKey())) {
 				lIV = new ImageView(images.get(getCurrentKey()).get(0));
 				//								lIV.setScaleX(16.0 / lIV.getImage().getWidth());
 				//								lIV.setScaleY(16.0 / lIV.getImage().getHeight());

@@ -100,7 +100,7 @@ public class MobRan extends NPC {
 	@Override
 	public void init() {
 		if (!getMiscBoxes().containsKey("fight"))
-			getMiscBoxes().put("fight", new Circle(32, 32, 64));
+			getMiscBoxes().put("fight", new Circle(32, 32, 32));
 		if (!getMiscBoxes().containsKey("visible"))
 			getMiscBoxes().put("visible", new Circle(32, 32, 528));
 		super.init();
