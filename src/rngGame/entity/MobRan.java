@@ -171,19 +171,20 @@ public class MobRan extends NPC {
 			int	maxX	= pels.parallelStream().mapToInt(PathElement::x).max().orElse(0);
 			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
 
-			//			for (int yU = minY; yU <= maxY; yU++) {
-			//				for (int xU = minX; xU <= maxX; xU++) {
-			//					int xU_ = xU, yU_ = yU;
-			//					System.out.print(switch (pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst()
-			//							.orElse(new PathElement(0, 0, -1)).distance()) {
-			//						case -1 -> "  ";
-			//						case 0 -> "P ";
-			//						default -> pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst().orElse(new PathElement(0, 0, -1))
-			//								.distance() + " ";
-			//					});
-			//				}
-			//				System.out.println();
-			//			}
+
+//			for (int yU = minY; yU <= maxY; yU++) {
+//				for (int xU = minX; xU <= maxX; xU++) {
+//					int xU_ = xU, yU_ = yU;
+//					System.out.print(switch (pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst()
+//							.orElse(new PathElement(0, 0, -1)).distance()) {
+//								case -1 -> "  ";
+//								case 0 -> "P ";
+//								default -> pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst().orElse(new PathElement(0, 0, -1))
+//								.distance() + " ";
+//					});
+//				}
+//				System.out.println();
+//			}
 
 			// System.out.println(pels);
 
@@ -218,7 +219,7 @@ public class MobRan extends NPC {
 		x	+= diff[0] / steps;
 		y	+= diff[1] / steps;
 		// System.out.println(step);
-		if (step == steps) {
+		if (step <= steps) {
 			//			System.out.println(Arrays.toString(diff));
 			//			System.out.println("Finish: " + step);
 			step	= 0;

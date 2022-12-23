@@ -168,7 +168,7 @@
 				64
 			],
 			"textures" : {
-				"default" : "testmob.png"
+				"default" : "rdmDemon.gif"
 			},
 			"extraData" : [
 				{
@@ -203,7 +203,7 @@
 					"x" : 32,
 					"y" : 32,
 					"type" : "circle",
-					"radius" : 64
+					"radius" : 32
 				}
 			],
 			"layer" : [
