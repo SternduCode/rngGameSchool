@@ -955,7 +955,16 @@ public class TileManager extends Pane {
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
-				if (n instanceof NPC np)
+				if (n instanceof MobRan mr)
+					mmobs.getItems()
+							.add(new MenuItemWMOB(
+									((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
+											.findFirst().get()).getValue(),
+									new ImageView(
+											ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
+													(int) mr.getFirstImage().getHeight(), 16, 16)),
+									mr));
+				else if (n instanceof NPC np)
 					mnpcs.getItems()
 					.add(new MenuItemWNPC(
 							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
@@ -964,15 +973,7 @@ public class TileManager extends Pane {
 									ImgUtil.resizeImage(np.getFirstImage(), (int) n.getFirstImage().getWidth(),
 											(int) np.getFirstImage().getHeight(), 16, 16)),
 							np));
-				else if (n instanceof MobRan mr)
-					mmobs.getItems()
-					.add(new MenuItemWMOB(
-							((StringValue) ((JsonObject) ((JsonObject) npc).get("textures")).values().stream()
-									.findFirst().get()).getValue(),
-							new ImageView(
-									ImgUtil.resizeImage(mr.getFirstImage(), (int) n.getFirstImage().getWidth(),
-											(int) mr.getFirstImage().getHeight(), 16, 16)),
-							mr));
+
 			}
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));

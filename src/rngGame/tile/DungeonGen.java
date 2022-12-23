@@ -92,7 +92,7 @@ public class DungeonGen {
 	 * @param connectors   the connectors
 	 * @param connections  the connections
 	 * @param replacements the replacements
-	 * @param difficulty the difficulty
+	 * @param difficulty   the difficulty
 	 */
 	@SuppressWarnings("unchecked")
 	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, List<JsonObject> connectors, List<JsonObject> connections,
@@ -514,7 +514,6 @@ public class DungeonGen {
 
 		bridges.forEach(bridge -> {
 
-			System.out.println(bridge + " " + xOffset + " " + yOffset);
 			if (Math.abs(bridge.getKey().getX() - bridge.getValue().getX()) > 0)
 				for (int i = 1; i < Math.abs(bridge.getKey().getX() - bridge.getValue().getX()); i++)
 					gp.getTileM().mapTileNum.get((int) bridge.getKey().getY() - yOffset)
@@ -525,8 +524,10 @@ public class DungeonGen {
 		});
 
 		try {
-			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue()), gp));
-			gp.getTileM().getTiles().add(new Tile(((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(), new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue()), gp));
+			gp.getTileM().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(),
+					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue()), gp));
+			gp.getTileM().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(),
+					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue()), gp));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -535,8 +536,52 @@ public class DungeonGen {
 				(x - xOffset + .5) * gp.BgX, (y - yOffset + .5) * gp.BgY
 		});
 
-		// TODO clean up (code & map)
-		// TODO fix 7 & fancy bridges (after 2)
+		Map<Direction, List<Tile>> replacements = new HashMap<>();
+		List<Tile>					plus			= new ArrayList<>();
+
+		for (JsonObject replacement : this.replacements) {
+			Direction	dir		= Direction.valueOf( ((StringValue) replacement.get("direction")).getValue().toUpperCase());
+			List<Tile>	tiles	= new ArrayList<>();
+			for (Object tileName : (JsonArray) replacement.get("name")) try {
+				Tile tile = new Tile( ((StringValue) tileName).getValue(), new FileInputStream("./res/insel/" + ((StringValue) tileName).getValue()),
+						gp);
+				tiles.add(tile);
+				gp.getTileM().getTiles().add(tile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			replacements.put(dir, tiles);
+			if (replacement.containsKey("plus")) for (Object tileName : (JsonArray) replacement.get("plus")) try {
+				Tile tile = new Tile( ((StringValue) tileName).getValue(), new FileInputStream("./res/insel/" + ((StringValue) tileName).getValue()),
+						gp);
+				plus.add(tile);
+				gp.getTileM().getTiles().add(tile);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
+		for (Entry<Entry<Point2D, Integer>, Direction> en : avail) {
+			Direction				dir				= en.getValue();
+			List<Tile>				tiles			= replacements.get(dir);
+			Random					random			= new Random();
+			Tile					replacementTile	= tiles.get(random.nextInt(tiles.size()));
+			Entry<Point2D, Integer>	key				= en.getKey();
+			Point2D					correctedPoint	= new Point2D(key.getKey().getY(), key.getKey().getX()).add(mapPositions.get(key.getValue()));
+			gp.getTileM().mapTileNum.get((int) correctedPoint.getY()).set((int) correctedPoint.getX(),
+					gp.getTileM().getTiles().indexOf(replacementTile));
+			if (Direction.DOWN == dir) {
+				replacementTile = plus.get(random.nextInt(plus.size()));
+				gp.getTileM().mapTileNum.get((int) correctedPoint.getY() + 1).set((int) correctedPoint.getX(),
+						gp.getTileM().getTiles().indexOf(replacementTile));
+			}
+		}
+
+		// TODO clean up (code)
+		// TODO fancy bridges (after 2)
+		// TODO load collboxes
+		// TODO make menus work
+		// TODO add objects (Faggel ?% on corners and non border tiles have ?% to have book on them)
 	}
 
 }

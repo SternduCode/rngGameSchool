@@ -8,6 +8,7 @@ import com.sterndu.json.JsonObject;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.shape.Circle;
 import rngGame.main.GamePanel;
 import rngGame.tile.TextureHolder;
 
@@ -21,7 +22,23 @@ public class MobRan extends NPC {
 	/**
 	 * The  PathElement.
 	 */
-	private record PathElement(int x, int y, int distance) {}
+	private record PathElement(int x, int y, int distance) {
+
+		/**
+		 * Equals.
+		 *
+		 * @param obj the obj
+		 *
+		 * @return true, if successful
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (! (obj instanceof PathElement pe)) return false;
+			return pe.x() == x() && pe.y() == y();
+
+		}
+
+	}
 
 	/** The diff. */
 	private final double[] diff = new double[2];
@@ -30,7 +47,7 @@ public class MobRan extends NPC {
 	private int step = 0;
 
 	/** The steps. */
-	private final int steps = 150;
+	private final int steps = 40;
 
 	/**
 	 * Instantiates a new mob ran.
@@ -62,11 +79,31 @@ public class MobRan extends NPC {
 	}
 
 	/**
+	 * Checks if is shit.
+	 *
+	 * @param pe the pe
+	 * @param mobX the mob X
+	 * @param mobY the mob Y
+	 * @return true, if is shit
+	 */
+	private boolean isShit(PathElement pe, int mobX, int mobY) {
+		int diffX = Math.abs(pe.x() - mobX);
+		int diffY = Math.abs(pe.y() - mobY);
+		//		System.out.println(pe);
+		//		System.out.println("diffX: "+diffX + " diffY: "+ diffY);
+		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
+	}
+
+	/**
 	 * Inits the.
 	 */
 	@Override
 	public void init() {
-
+		if (!getMiscBoxes().containsKey("fight"))
+			getMiscBoxes().put("fight", new Circle(32, 32, 64));
+		if (!getMiscBoxes().containsKey("visible"))
+			getMiscBoxes().put("visible", new Circle(32, 32, 528));
+		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 
 		});
@@ -74,8 +111,10 @@ public class MobRan extends NPC {
 			if (step == 0) {
 				Double[] pos = pathfinding(gpt);
 				if (pos != null) {
-					diff[0] = pos[0] - x;
-					diff[1] = pos[1] - y;
+					diff[0]	= pos[0] - x;
+					diff[1]	= pos[1] - y;
+					//					x	= pos[0];
+					//					y	= pos[1];
 				}
 			}
 		});
@@ -116,18 +155,22 @@ public class MobRan extends NPC {
 						&& map.get(pe.y() + 1).get(pe.x()).getPoly().getPoints().size() == 0)	//runter
 					out.accept(new PathElement(pe.x(), pe.y() + 1, pe.distance() + 1));
 			}).sorted((a, b) -> {
+				if (a.x() == b.x() && a.y() == b.y()) return a.distance() < b.distance() ? -1 : 1;
 				if (a.x() != b.x()) return a.x() < b.x() ? -1 : 1;
-				if (a.y() == b.y()) return a.distance() < b.distance() ? -1 : 1;
 				return a.y() < b.y() ? -1 : 1;
 			}).distinct();
 
 			List<PathElement> pels = stream.collect(Collectors.toList());
+
+			if (pels.parallelStream().filter(pe -> pe.distance() == 0)
+					.anyMatch(pe -> map.get(pe.y()).get(pe.x()).getPoly().getPoints().size() != 0)) pels.removeIf(pe -> pe.distance() == 0);
 
 			int	minX	= pels.parallelStream().mapToInt(PathElement::x).min().orElse(0);
 			int	minY	= pels.parallelStream().mapToInt(PathElement::y).min().orElse(0);
 
 			int	maxX	= pels.parallelStream().mapToInt(PathElement::x).max().orElse(0);
 			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
+
 
 //			for (int yU = minY; yU <= maxY; yU++) {
 //				for (int xU = minX; xU <= maxX; xU++) {
@@ -143,13 +186,17 @@ public class MobRan extends NPC {
 //				System.out.println();
 //			}
 
-			System.out.println(pels);
+			// System.out.println(pels);
 
-			List<PathElement> pel = pels.parallelStream().filter(pe -> (Math.abs(pe.x() - (int) Math.round(MobRan.this.x / sp.BgX)) == 1
-					|| Math.abs(pe.y() - (int) Math.round(MobRan.this.y / sp.BgY)) == 1)
-					&& ( Math.abs(pe.x() - (int) Math.round(MobRan.this.x / sp.BgX)) != 1 || Math.abs(pe.y() - (int) Math.round(MobRan.this.y / sp.BgY)) != 1))
-					.sorted(Comparator.comparing(PathElement::distance)).collect(Collectors.toList());
-			System.out.println(pel);
+			int mobX = (int) Math.round(MobRan.this.x / sp.BgX),
+					mobY = (int) Math.round(MobRan.this.y / sp.BgY);
+
+			// System.out.println(mobX + " " + mobY + " "
+			// + mobX * sp.BgX + " " + mobY * sp.BgY);
+
+			List<PathElement> pel = pels.parallelStream().filter(pe -> isShit(pe, mobX, mobY))
+					.sorted(Comparator.comparing(PathElement::distance)).distinct().collect(Collectors.toList());
+			// System.out.println(pel);
 			if (pel.size() > 0) {
 				PathElement pe = pel.get(0);
 				return new Double[] {(double) pe.x() * sp.BgX, (double) pe.y() * sp.BgY};
@@ -165,24 +212,21 @@ public class MobRan extends NPC {
 	 */
 	@Override
 	public void update(long milis) {
-		super.update(milis);
+		super.update(milis);// TODO make speed like with player
 
 		if (diff[0] > 0 || diff[1] > 0)
 			step++;
-		x += (long) (diff[0] / steps);
-		y += (long) (diff[1] / steps);
+		x	+= diff[0] / steps;
+		y	+= diff[1] / steps;
 		// System.out.println(step);
-		if (step == steps) {
-			System.out.println("Finish: " + step);
-			step = 0;
-			diff[0] = 0;
-			diff[1] = 0;
+		if (step <= steps) {
+			//			System.out.println(Arrays.toString(diff));
+			//			System.out.println("Finish: " + step);
+			step	= 0;
+			diff[0]	= 0;
+			diff[1]	= 0;
 		}
 	}
-
-
-
-
 
 
 
