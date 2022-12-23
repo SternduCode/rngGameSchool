@@ -168,7 +168,7 @@
 				64
 			],
 			"textures" : {
-				"default" : "rdmDemon.png"
+				"default" : "rdmDemon.gif"
 			},
 			"extraData" : [
 				{
@@ -182,8 +182,8 @@
 				7.00000
 			],
 			"position" : [
-				1711.00,
-				1096.00
+				1112.07,
+				912.695
 			],
 			"type" : "MobRan",
 			"originalSize" : [
@@ -193,15 +193,15 @@
 			"miscBoxes" : [
 				{
 					"name" : "visible",
-					"x" : 32,
-					"y" : 32,
+					"x" : 32.0000,
+					"y" : 32.0000,
 					"type" : "circle",
 					"radius" : 528
 				},
 				{
 					"name" : "fight",
-					"x" : 32,
-					"y" : 32,
+					"x" : 32.0000,
+					"y" : 32.0000,
 					"type" : "circle",
 					"radius" : 32
 				}
@@ -276,19 +276,19 @@
 			"miscBoxes" : [
 				{
 					"name" : "entrance",
-					"x" : 87,
-					"width" : 50,
-					"y" : 162,
+					"x" : 87.0000,
+					"width" : 50.0000,
+					"y" : 162.000,
 					"type" : "rectangle",
-					"height" : 60
+					"height" : 60.0000
 				},
 				{
 					"name" : "open",
-					"x" : 47,
-					"width" : 130,
-					"y" : 162,
+					"x" : 47.0000,
+					"width" : 130.000,
+					"y" : 162.000,
 					"type" : "rectangle",
-					"height" : 100
+					"height" : 100.000
 				}
 			],
 			"map" : "InnenContracts.json",
@@ -360,19 +360,19 @@
 			"miscBoxes" : [
 				{
 					"name" : "entrance",
-					"x" : 37,
-					"width" : 50,
-					"y" : 154,
+					"x" : 37.0000,
+					"width" : 50.0000,
+					"y" : 154.000,
 					"type" : "rectangle",
-					"height" : 60
+					"height" : 60.0000
 				},
 				{
 					"name" : "open",
-					"x" : -3,
-					"width" : 130,
-					"y" : 154,
+					"x" : -3.00000,
+					"width" : 130.000,
+					"y" : 154.000,
 					"type" : "rectangle",
-					"height" : 100
+					"height" : 100.000
 				}
 			],
 			"map" : "Shop.json",
