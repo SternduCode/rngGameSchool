@@ -23,6 +23,7 @@ import javafx.util.Duration;
 import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
+import rngGame.ui.Inventory;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -145,7 +146,7 @@ public class GamePanel extends Pane {
 	private final int FPS = 80;
 
 	/** The inv. */
-	private final ImageView inv;
+	
 
 	/** The difficulty. */
 	private Difficulty difficulty;
@@ -198,6 +199,8 @@ public class GamePanel extends Pane {
 	/** The block user inputs. */
 	private boolean blockUserInputs;
 
+	private Inventory gamemenu;
+
 	/**
 	 * Instantiates a new game panel.
 	 *
@@ -234,21 +237,13 @@ public class GamePanel extends Pane {
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
-		inv = new ImageView(new Image(new FileInputStream("./res/gui/Inv.png")));
-		inv.setX(player.getScreenX() - inv.getImage().getWidth() / 2 + 20);
-		inv.setY(player.getScreenY() - inv.getImage().getHeight() / 2);
-		inv.setVisible(false);
+		gamemenu = new Inventory(this);
 
-		AtomicBoolean ab = new AtomicBoolean(false);
-
-		Input.getInstance().setKeyHandler("inv", mod -> {
-			if (!ab.getAndSet(!ab.get())) inv.setVisible(true);
-			else inv.setVisible(false);
-		}, KeyCode.TAB, false);
+		
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, inv, fpsLabel, loadingScreen);
+		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, gamemenu ,fpsLabel, loadingScreen);
 	}
 	
 	/**
@@ -357,6 +352,7 @@ public class GamePanel extends Pane {
 		points.clear();
 		pointGroup.getChildren().clear();
 		tileM.reload();
+		gamemenu.f11Scale();
 		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
@@ -479,6 +475,8 @@ public class GamePanel extends Pane {
 		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
 
+		
+		
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
 		pointGroup.getChildren().clear();
@@ -596,7 +594,7 @@ public class GamePanel extends Pane {
 	 */
 	@Override
 	public String toString() {
-		return "SpielPanel [inv=" + inv
+		return "SpielPanel [" 
 				+ ", input=" + input + ", player=" + player + ", tileM=" + tileM + ", selectTool="
 				+ selectTool + ", layerGroup=" + layerGroup.getChildren().size() + ", buildings=" + buildings
 				+ ", npcs=" + npcs
