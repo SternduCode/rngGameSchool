@@ -18,7 +18,7 @@ import rngGame.main.GamePanel;
 import rngGame.main.Input;
 import rngGame.tile.ImgUtil;
 
-public class Inventory extends Pane {
+public class TabMenu extends Pane {
 	private final ImageView gamemenu;
 	
 	private final Group buttongroup = new Group();
@@ -38,7 +38,7 @@ public class Inventory extends Pane {
 	
 	private final GamePanel gamepanel;
 	
-	public Inventory(GamePanel gamepanel) throws FileNotFoundException {
+	public TabMenu(GamePanel gamepanel) throws FileNotFoundException {
 		gamemenu = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
 		
 		invB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton1.png");

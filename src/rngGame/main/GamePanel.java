@@ -23,7 +23,7 @@ import javafx.util.Duration;
 import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.tile.*;
-import rngGame.ui.Inventory;
+import rngGame.ui.TabMenu;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -199,7 +199,7 @@ public class GamePanel extends Pane {
 	/** The block user inputs. */
 	private boolean blockUserInputs;
 
-	private Inventory gamemenu;
+	private TabMenu gamemenu;
 
 	/**
 	 * Instantiates a new game panel.
@@ -237,7 +237,7 @@ public class GamePanel extends Pane {
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
-		gamemenu = new Inventory(this);
+		gamemenu = new TabMenu(this);
 
 		
 
