@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -200,6 +202,8 @@ public class GamePanel extends Pane {
 	private boolean blockUserInputs;
 
 	private TabMenu gamemenu;
+	
+	private MediaPlayer mp;
 
 	/**
 	 * Instantiates a new game panel.
@@ -209,6 +213,7 @@ public class GamePanel extends Pane {
 	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 		
+	
 		difficulty = Difficulty.EASY;
 
 		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
@@ -469,6 +474,7 @@ public class GamePanel extends Pane {
 	 */
 	public void setMap(String path, double[] position) {
 
+		
 		UndoRedo.getInstance().clearActions();
 
 		loadingScreen.setFitWidth(loadingScreen.getImage().getWidth() * getScalingFactorX());
@@ -491,6 +497,15 @@ public class GamePanel extends Pane {
 			e.printStackTrace();
 		}
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		
+		if (!tileM.getBackgroundMusic().equals("")) {
+			mp = new MediaPlayer(new Media(new File("./res/" + tileM.getBackgroundMusic()).toURI().toString()));
+			mp.setAutoPlay(true);
+			mp.setCycleCount(MediaPlayer.INDEFINITE);
+			
+		}
+		else mp = null;
+		
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
 		test = tileM.getMobsFromMap();

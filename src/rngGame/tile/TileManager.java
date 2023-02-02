@@ -7,6 +7,7 @@ import java.util.*;
 
 import com.sterndu.json.*;
 
+import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -162,6 +163,8 @@ public class TileManager extends Pane {
 
 	/** The mobs. */
 	private List<MobRan> mobs;
+
+	private String backgroundMusic;
 
 	/**
 	 * Instantiates a new tile manager.
@@ -884,6 +887,10 @@ public class TileManager extends Pane {
 
 			dir = ((StringValue) map.get("dir")).getValue();
 
+			
+			if(map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
+			else backgroundMusic = "";
+			
 			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
 			else backgroundPath = null;
 
@@ -1088,6 +1095,10 @@ public class TileManager extends Pane {
 			}
 		}
 
+	}
+
+	public String getBackgroundMusic() {
+		return backgroundMusic;
 	}
 
 }

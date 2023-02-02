@@ -14,6 +14,7 @@ module rngGame {
 	requires transitive java.desktop;
 	requires jdk.zipfs;
 	requires java.xml;
+	requires javafx.media;
 
 	opens rngGame.main to javafx.graphics;
 }
