@@ -504,6 +504,7 @@ public class GamePanel extends Pane {
 		if (!"".equals(tileM.getBackgroundMusic())) {
 			mp = new MediaPlayer(new Media(new File("./res/" + tileM.getBackgroundMusic()).toURI().toString()));
 			mp.setAutoPlay(true);
+			mp.setVolume(.2);
 			// mp.setCycleCount(MediaPlayer.INDEFINITE);
 			Updater.getInstance().add((Runnable) () -> {
 				Duration	duration	= mp.getMedia().getDuration();
