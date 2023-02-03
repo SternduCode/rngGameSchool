@@ -675,9 +675,7 @@ public class DungeonGen {
 			}
 		}
 
-		// TODO clean up (code)
 		// TODO fancy bridges (after 2)
-		// TODO load collboxes
 		// TODO make menus work
 		// TODO add objects (Faggel ?% on corners and non border tiles have ?% to have book on them)
 	}

@@ -4,9 +4,10 @@ import java.io.*;
 import java.util.*;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.sterndu.json.*;
+import com.sterndu.multicore.Updater;
 
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -15,10 +16,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -42,7 +41,7 @@ public class GamePanel extends Pane {
 		 * The Class OutList.
 		 */
 		class OutList extends AbstractList<Group> {
-			
+
 			/** The li. */
 			ObservableList<Node> li;
 
@@ -125,19 +124,19 @@ public class GamePanel extends Pane {
 
 	/** The Bg. */
 	private final int Bg = 48;
-	
+
 	/** The Bild S. */
 	public final int BildS = 20;
-	
+
 	/** The Bild H. */
 	public final int BildH = 11;
-	
+
 	/** The Bg Y. */
 	public int BgX = Bg, BgY = Bg;
-	
+
 	/** The Spiel laenge. */
 	public int SpielLaenge = BgX * BildS;
-	
+
 	/** The scaling factor Y. */
 	public double scalingFactorX = 1, scalingFactorY = 1;
 
@@ -148,11 +147,11 @@ public class GamePanel extends Pane {
 	private final int FPS = 80;
 
 	/** The inv. */
-	
+
 
 	/** The difficulty. */
 	private Difficulty difficulty;
-	
+
 	/** The input. */
 	private final Input input;
 
@@ -164,22 +163,22 @@ public class GamePanel extends Pane {
 
 	/** The select tool. */
 	private final SelectTool selectTool;
-	
+
 	/** The layer group. */
 	private final GroupGroup layerGroup;
-	
+
 	/** The point group. */
 	private final Group pointGroup;
-	
+
 	/** The buildings. */
 	private List<Building> buildings;
-	
+
 	/** The npcs. */
 	private List<NPC> npcs;
-	
+
 	/** The test. */
 	private List<MobRan> test;
-	
+
 	/** The frame times. */
 	private List<Long> frameTimes;
 
@@ -194,15 +193,17 @@ public class GamePanel extends Pane {
 
 	/** The fps label. */
 	private final Label fpsLabel;
-	
+
 	/** The points. */
 	private final Map<Point2D, Circle> points;
-	
+
 	/** The block user inputs. */
 	private boolean blockUserInputs;
 
-	private TabMenu gamemenu;
-	
+	/** The gamemenu. */
+	private final TabMenu gamemenu;
+
+	/** The mp. */
 	private MediaPlayer mp;
 
 	/**
@@ -212,8 +213,8 @@ public class GamePanel extends Pane {
 	 */
 	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
-		
-	
+
+
 		difficulty = Difficulty.EASY;
 
 		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
@@ -244,13 +245,13 @@ public class GamePanel extends Pane {
 
 		gamemenu = new TabMenu(this);
 
-		
+
 
 		setMap("./res/maps/lavaMap2.json");
 
 		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, gamemenu ,fpsLabel, loadingScreen);
 	}
-	
+
 	/**
 	 * Gets the buildings.
 	 *
@@ -474,15 +475,15 @@ public class GamePanel extends Pane {
 	 */
 	public void setMap(String path, double[] position) {
 
-		
+
 		UndoRedo.getInstance().clearActions();
 
 		loadingScreen.setFitWidth(loadingScreen.getImage().getWidth() * getScalingFactorX());
 		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
 
-		
-		
+
+
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
 		pointGroup.getChildren().clear();
@@ -497,15 +498,22 @@ public class GamePanel extends Pane {
 			e.printStackTrace();
 		}
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		
-		if (!tileM.getBackgroundMusic().equals("")) {
+
+		if (mp != null) mp.stop();
+
+		if (!"".equals(tileM.getBackgroundMusic())) {
 			mp = new MediaPlayer(new Media(new File("./res/" + tileM.getBackgroundMusic()).toURI().toString()));
 			mp.setAutoPlay(true);
-			mp.setCycleCount(MediaPlayer.INDEFINITE);
-			
+			// mp.setCycleCount(MediaPlayer.INDEFINITE);
+			Updater.getInstance().add((Runnable) () -> {
+				Duration	duration	= mp.getMedia().getDuration();
+				Duration curr = mp.getCurrentTime();
+				// System.out.println("meow " + duration + " " + curr);
+				if (duration.subtract(curr).lessThan(Duration.seconds(.333333333333333333333333333333333333333333))) mp.seek(Duration.ZERO);
+			}, "CheckIfMusicIsDone");
 		}
 		else mp = null;
-		
+
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
 		test = tileM.getMobsFromMap();
@@ -609,7 +617,7 @@ public class GamePanel extends Pane {
 	 */
 	@Override
 	public String toString() {
-		return "SpielPanel [" 
+		return "SpielPanel ["
 				+ ", input=" + input + ", player=" + player + ", tileM=" + tileM + ", selectTool="
 				+ selectTool + ", layerGroup=" + layerGroup.getChildren().size() + ", buildings=" + buildings
 				+ ", npcs=" + npcs
@@ -647,19 +655,17 @@ public class GamePanel extends Pane {
 			List<Node> nodes = new ArrayList<>(view.getChildren());
 
 			nodes.sort((n1, n2) -> {
-				if (n1 instanceof GameObject b1) {
-					if (n2 instanceof GameObject b2)
-						return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
-								: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
-										n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
-					else return b1.isBackground() ? -1
+				if (n1 instanceof GameObject b1) if (n2 instanceof GameObject b2)
+					return b1.isBackground() ^ b2.isBackground() ? b1.isBackground() ? -1 : 1
 							: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
 									n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
-				}
-				if (n2 instanceof GameObject b2) return b2.isBackground() ? 1
+				else return b1.isBackground() ? -1
 						: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
 								n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
-				else return Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+				if (n2 instanceof GameObject b21) return b21.isBackground() ? 1
+						: Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
+								n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
+				return Double.compare(n1.getLayoutY() + ((GameObject) n1).getTextureHeight(),
 						n2.getLayoutY() + ((GameObject) n2).getTextureHeight());
 			});
 

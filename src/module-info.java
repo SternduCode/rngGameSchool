@@ -15,6 +15,7 @@ module rngGame {
 	requires jdk.zipfs;
 	requires java.xml;
 	requires javafx.media;
+	requires com.sterndu.MultiCore;
 
 	opens rngGame.main to javafx.graphics;
 }
