@@ -507,9 +507,9 @@ public class GamePanel extends Pane {
 			// mp.setCycleCount(MediaPlayer.INDEFINITE);
 			Updater.getInstance().add((Runnable) () -> {
 				Duration	duration	= mp.getMedia().getDuration();
-				Duration curr = mp.getCurrentTime();
+				Duration	curr		= mp.getCurrentTime();
 				// System.out.println("meow " + duration + " " + curr);
-				if (duration.subtract(curr).lessThan(Duration.seconds(.333333333333333333333333333333333333333333))) mp.seek(Duration.ZERO);
+				if (duration.subtract(curr).lessThan(Duration.millis(34.2))) mp.seek(Duration.millis(2.5));
 			}, "CheckIfMusicIsDone");
 		}
 		else mp = null;
