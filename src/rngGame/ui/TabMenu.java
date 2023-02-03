@@ -35,6 +35,7 @@ public class TabMenu extends Pane {
 	private Image leavB1;
 	private Image leavB2;
 	
+	private Inventory inventory;
 	
 	private final GamePanel gamepanel;
 	
@@ -70,19 +71,26 @@ public class TabMenu extends Pane {
 			TranslateTransition ft = new TranslateTransition(Duration.millis(150), gamemenu);
 			TranslateTransition ib1 = new TranslateTransition(Duration.millis(150), buttongroup);
 			
+			
 			if (!ab.getAndSet(!ab.get())) {	
 				gamepanel.setBlockUserInputs(true);
 				this.setDisable(false);
 				gamemenu.setVisible(true);
 				buttongroup.setVisible(true);
-
+				
+				
 				invB.setOnMousePressed(me -> {
 					invB.setImage(invB2);
 				});
 				invB.setOnMouseReleased(me -> {
 					invB.setImage(invB1);
+					inventory.show();
+					inventory.setDisable(false);
 				});
 				
+				inventory = new Inventory(gamepanel, this);
+				getChildren().add(inventory);
+				inventory.setDisable(true);
 				
 				queB.setOnMousePressed(me -> {
 					queB.setImage(queB2);
@@ -130,6 +138,8 @@ public class TabMenu extends Pane {
 			}
 		}, KeyCode.TAB, false);
 	}
+	
+	public Inventory getInventory() { return inventory; }
 
 	public void f11Scale() {
 		gamemenu.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
