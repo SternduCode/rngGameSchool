@@ -418,6 +418,8 @@
 			"Unten.png",
 			"BodenAusgang.png"
 		],
+		"BackgroundMusic" : "music/Gandalfus Hausus.wav",
+		
 		"startingPosition" : [
 			264.000,
 			528.000
