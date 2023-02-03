@@ -9,13 +9,12 @@ module rngGame {
 	requires transitive javafx.graphics;
 	requires transitive javafx.controls;
 
-	requires transitive com.sterndu.JSONLib;
 	requires javafx.swing;
 	requires transitive java.desktop;
 	requires jdk.zipfs;
 	requires java.xml;
 	requires javafx.media;
-	requires com.sterndu.MultiCore;
+	requires transitive Lib;
 
 	opens rngGame.main to javafx.graphics;
 }
