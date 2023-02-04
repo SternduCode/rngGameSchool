@@ -8,6 +8,48 @@
 		{"folder" : "insel_m", "size" : "MIDDLE" }
 	],
 	"void" : "Void.png",
+	"additionalData" : {
+		"cornerPieces" : [ 
+			"EckeLinksOben.png",
+			"EckeLinksUnten.png",
+			"EckeRechtsOben.png",
+			"EckeRechtsUnten.png"
+		],
+		"cornerObject": { 
+			"texture" : "Faggel.png",
+			"requestedSize" : [ 96, 96 ]
+		},
+		"randomPieces" : [
+			"LochMiniEckeLinks.png",
+			"LochMiniEckeLinkU.png",
+			"LochMiniEckeRechts.png",
+			"LochMiniEckeRechtsO.png",
+			"Mitte.png",
+			"Mitte2.png",
+			"SeiteLinks.png",
+			"SeiteLinks2.png",
+			"SeiteLinks3.png",
+			"SeiteOben.png",
+			"SeiteOben2.png",
+			"SeiteOben3.png",
+			"SeiteRechts.png",
+			"SeiteRechts2.png",
+			"SeiteRechts3.png",
+			"SeiteUnten.png",
+			"SeiteUnten2.png",
+			"SeiteUnten3.png"
+		],
+		"randomObjects": [
+			{ 
+				"texture" : "Buecher1.png",
+				"requestedSize" : [ 50, 50 ]
+			},
+			{ 
+				"texture" : "Buecher2.png",
+				"requestedSize" : [ 50, 50 ]
+			}
+		]
+	},
 	"connectors" : [ 
 		{ "name" : "SeiteLinksB.png", "direction" : "left" },
 		{ "name" : "SeiteLinksBS.png", "direction" : "left" },

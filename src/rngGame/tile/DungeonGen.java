@@ -1,6 +1,7 @@
 package rngGame.tile;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,7 +10,9 @@ import java.util.stream.Collectors;
 import com.sterndu.json.*;
 
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.shape.*;
+import rngGame.buildings.Building;
 import rngGame.main.GamePanel;
 
 
@@ -75,6 +78,9 @@ public class DungeonGen {
 	/** The map void numbers. */
 	private final int mapsVoidNum[];
 
+	/** The additional data. */
+	private final JsonObject additionalData;
+
 	/** The map connector tiles. */
 	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, mapsConnectorTiles[];
 
@@ -92,13 +98,16 @@ public class DungeonGen {
 	 * @param connectors   the connectors
 	 * @param connections  the connections
 	 * @param replacements the replacements
+	 * @param additionalData the additional data
 	 * @param difficulty   the difficulty
 	 */
 	@SuppressWarnings("unchecked")
 	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, List<JsonObject> connectors, List<JsonObject> connections,
-			List<JsonObject> replacements, Difficulty difficulty) {
+			List<JsonObject> replacements, JsonObject additionalData, Difficulty difficulty) {
 		this.gp	= gp;
 		mainMap	= mainmap;
+
+		this.additionalData = additionalData;
 
 		this.difficulty = difficulty;
 
@@ -201,6 +210,50 @@ public class DungeonGen {
 		for (int i = 0; i < this.maps.size(); i++) mapsConnectors[i] = new ArrayList<>();
 		System.out.println(mainMapVoidNum);
 
+	}
+
+	/**
+	 * Decorate.
+	 */
+	public void decorate() {
+		// TODO fancy bridges (after 2)
+		// TODO add objects (Faggel 25% on corners and non border tiles have 1/7 to have book on them)
+
+		JsonArray	cornerPieces	= (JsonArray) additionalData.get("cornerPieces");
+		List<Tile>	corners			= cornerPieces.parallelStream().map(o -> ((StringValue) o).getValue())
+				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.collect(Collectors.toList());
+		System.out.println(corners);
+
+		JsonObject	cornerObject	= (JsonObject) additionalData.get("cornerObject");
+		String		texture			= ((StringValue) cornerObject.get("texture")).getValue();
+		JsonArray	requestedSize	= (JsonArray) cornerObject.get("requestedSize");
+
+		// TODO tiles and books
+
+		Path	p2	= new File("./res/building/" + texture).toPath();
+		Image	img	= new Image(new FileInputStream(p2.toFile()));
+
+		JsonObject joB = new JsonObject();
+		joB.put("requestedSize", requestedSize);
+		JsonObject textures = new JsonObject();
+		textures.put("default", new StringValue(texture));
+		joB.put("textures", textures);
+		JsonObject buildingData = new JsonObject();
+		joB.put("buildingData", buildingData);
+		joB.put("type", new StringValue("Building"));
+		JsonArray position = new JsonArray();
+		position.add(new DoubleValue(
+				requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+		position.add(new DoubleValue(
+				requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+		joB.put("position", position);
+		JsonArray originalSize = new JsonArray();
+		originalSize.add(new DoubleValue(img.getWidth()));
+		originalSize.add(new DoubleValue(img.getHeight()));
+		joB.put("originalSize", originalSize);
+
+		new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
 	}
 
 	/**
@@ -675,9 +728,9 @@ public class DungeonGen {
 			}
 		}
 
-		// TODO fancy bridges (after 2)
+		decorate();
+
 		// TODO make menus work
-		// TODO add objects (Faggel ?% on corners and non border tiles have ?% to have book on them)
 	}
 
 }
