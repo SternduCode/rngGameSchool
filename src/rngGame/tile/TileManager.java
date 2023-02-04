@@ -7,7 +7,6 @@ import java.util.*;
 
 import com.sterndu.json.*;
 
-import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -164,6 +163,7 @@ public class TileManager extends Pane {
 	/** The mobs. */
 	private List<MobRan> mobs;
 
+	/** The background music. */
 	private String backgroundMusic;
 
 	/**
@@ -495,6 +495,15 @@ public class TileManager extends Pane {
 	}
 
 	/**
+	 * Gets the background music.
+	 *
+	 * @return the background music
+	 */
+	public String getBackgroundMusic() {
+		return backgroundMusic;
+	}
+
+	/**
 	 * Gets the background path.
 	 *
 	 * @return the background path
@@ -662,6 +671,13 @@ public class TileManager extends Pane {
 	 * @return the player layer
 	 */
 	public int getPlayerLayer() { return playerLayer; }
+
+	/**
+	 * Gets the requester B.
+	 *
+	 * @return the requester B
+	 */
+	public ObjectProperty<Building> getRequesterB() { return requesterB; }
 
 	/**
 	 * Gets the requestor for the context menu containing the NPC.
@@ -868,7 +884,7 @@ public class TileManager extends Pane {
 				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
-						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), gp.getDifficulty());
+						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), (JsonObject) jo.get("additionalData"), gp.getDifficulty());
 
 				d.findFreeConnectors();
 
@@ -887,10 +903,10 @@ public class TileManager extends Pane {
 
 			dir = ((StringValue) map.get("dir")).getValue();
 
-			
+
 			if(map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
 			else backgroundMusic = "";
-			
+
 			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
 			else backgroundPath = null;
 
@@ -1095,10 +1111,6 @@ public class TileManager extends Pane {
 			}
 		}
 
-	}
-
-	public String getBackgroundMusic() {
-		return backgroundMusic;
 	}
 
 }
