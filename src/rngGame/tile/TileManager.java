@@ -7,7 +7,6 @@ import java.util.*;
 
 import com.sterndu.json.*;
 
-import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -164,7 +163,11 @@ public class TileManager extends Pane {
 	/** The mobs. */
 	private List<MobRan> mobs;
 
+	/** The background music. */
 	private String backgroundMusic;
+
+	/** The overlay. */
+	private String overlay;
 
 	/**
 	 * Instantiates a new tile manager.
@@ -495,6 +498,15 @@ public class TileManager extends Pane {
 	}
 
 	/**
+	 * Gets the background music.
+	 *
+	 * @return the background music
+	 */
+	public String getBackgroundMusic() {
+		return backgroundMusic;
+	}
+
+	/**
 	 * Gets the background path.
 	 *
 	 * @return the background path
@@ -621,6 +633,13 @@ public class TileManager extends Pane {
 		return getTileAt(x, y);
 
 	}
+
+	/**
+	 * Gets the overlay.
+	 *
+	 * @return the overlay
+	 */
+	public String getOverlay() { return overlay; }
 
 	/**
 	 * Gets a part of the map.
@@ -851,7 +870,15 @@ public class TileManager extends Pane {
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(new FileInputStream(path));
 
+			//overlay
+
 			if (jo.containsKey("generated") && jo.get("generated") instanceof BoolValue bv && bv.getValue()) {
+
+				if (jo.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) jo.get("BackgroundMusic")).getValue();
+				else backgroundMusic = "";
+
+				if (jo.containsKey("overlay")) overlay = ((StringValue) jo.get("overlay")).getValue();
+				else overlay = "";
 
 				generated = true;
 
@@ -887,10 +914,13 @@ public class TileManager extends Pane {
 
 			dir = ((StringValue) map.get("dir")).getValue();
 
-			
-			if(map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
+
+			if (map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
 			else backgroundMusic = "";
-			
+
+			if (map.containsKey("overlay")) overlay = ((StringValue) map.get("BackgroundMusic")).getValue();
+			else overlay = "";
+
 			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
 			else backgroundPath = null;
 
@@ -1095,10 +1125,6 @@ public class TileManager extends Pane {
 			}
 		}
 
-	}
-
-	public String getBackgroundMusic() {
-		return backgroundMusic;
 	}
 
 }

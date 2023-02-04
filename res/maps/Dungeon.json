@@ -8,6 +8,7 @@
 		{"folder" : "insel_m", "size" : "MIDDLE" }
 	],
 	"void" : "Void.png",
+	"overlay" : "DungeonBlinder.png",
 	"connectors" : [ 
 		{ "name" : "SeiteLinksB.png", "direction" : "left" },
 		{ "name" : "SeiteLinksBS.png", "direction" : "left" },
