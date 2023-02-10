@@ -95,8 +95,18 @@ public class Inventory extends Pane {
 
 		ausXb.setOnMouseReleased(me -> {
 			ausXb.setImage(ausX);
+			tabm.closeTabm(true);
+			new Thread(()->{
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			
 			endShow();
-		});
+			}).start();
+			
+			});
 		
 		
 		potionbutton.setOnMouseReleased(me -> {
@@ -146,6 +156,7 @@ public class Inventory extends Pane {
 	 * End show.
 	 */
 	public void endShow() {
+		
 		invBackround.setVisible(false);
 		ausXb.setVisible(false);
 		potionbutton.setVisible(false);
