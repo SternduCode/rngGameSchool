@@ -22,6 +22,7 @@ public class MobRan extends NPC {
 	/**
 	 * The  PathElement.
 	 */
+	private String wahl;
 	private record PathElement(int x, int y, int distance) {
 
 		/**
@@ -105,7 +106,7 @@ public class MobRan extends NPC {
 			getMiscBoxes().put("visible", new Circle(32, 32, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
-
+			MobGen();
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
@@ -132,7 +133,7 @@ public class MobRan extends NPC {
 
 		int	tileX	= (int) Math.round(x / sp.BgX);
 		int	tileY	= (int) Math.round(y / sp.BgY);
-
+		
 		List<List<TextureHolder>> map = sp.getTileM().getMap();
 		if (map.size() > 0) {
 
@@ -161,7 +162,7 @@ public class MobRan extends NPC {
 			}).distinct();
 
 			List<PathElement> pels = stream.collect(Collectors.toList());
-
+			
 			if (pels.parallelStream().filter(pe -> pe.distance() == 0)
 					.anyMatch(pe -> map.get(pe.y()).get(pe.x()).getPoly().getPoints().size() != 0)) pels.removeIf(pe -> pe.distance() == 0);
 
@@ -228,19 +229,43 @@ public class MobRan extends NPC {
 		}
 	}
 
+	Random gen = new Random();
+	public void MobGen() {
+		int r = gen.nextInt(101)+1;
+		if(r <= 30) wahl = "fire";
+		else if(r <= 60 && r >= 31) wahl = "water";
+		else if(r <= 90 && r >= 61) wahl = "plant";
+		else if(r <= 95 && r >= 91) wahl = "light"; 
+		else if(r <= 100 && r >= 96) wahl = "shadow";
+		else wahl = "void";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		String[] mobs = new String[]{"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
+		int mr = gen.nextInt(7);
+		String lol = mobs[mr];
+		
+		System.out.println(wahl + " " + lol);
+	}
+	
+//Durchlaufen lassen bis void LOL OMG 360
+//	for(int i = 1; wahl!="void"; i++) {
+//		int r = gen.nextInt(101)+1;
+//		if(r <= 30) {
+//			wahl = "fire";
+//		}else if(r <= 60 && r >= 31) {
+//			wahl = "water";
+//		}else if(r <= 90 && r >= 61) {
+//			wahl = "plant";
+//		}else if(r <= 95 && r >= 91) {
+//			wahl = "light";
+//			plantc++;
+//		}else if(r <= 100 && r >= 96) {
+//			wahl = "shadow";
+//			plantc++;
+//		}else {
+//			wahl = "void";
+//		}
+//		System.out.println(wahl + " " + i + " " + plantc);
+//		}
+	
+	
 }
