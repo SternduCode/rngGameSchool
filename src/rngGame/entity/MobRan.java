@@ -9,6 +9,8 @@ import com.sterndu.json.JsonObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.shape.Circle;
+import rngGame.Stats.Demon;
+import rngGame.Stats.Element;
 import rngGame.main.GamePanel;
 import rngGame.tile.TextureHolder;
 
@@ -22,7 +24,12 @@ public class MobRan extends NPC {
 	/**
 	 * The  PathElement.
 	 */
-	private String wahl;
+	private Element wahl;
+	private String mobName;
+	
+	public String getLol() {
+		return mobName;
+	}
 	private record PathElement(int x, int y, int distance) {
 
 		/**
@@ -107,6 +114,9 @@ public class MobRan extends NPC {
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 			MobGen();
+			Demon demonMob = new Demon(wahl, mobName);
+			gpt.getMobRans().remove(MobRan.this);
+			gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
@@ -232,19 +242,19 @@ public class MobRan extends NPC {
 	Random gen = new Random();
 	public void MobGen() {
 		int r = gen.nextInt(101)+1;
-		if(r <= 30) wahl = "fire";
-		else if(r <= 60 && r >= 31) wahl = "water";
-		else if(r <= 90 && r >= 61) wahl = "plant";
-		else if(r <= 95 && r >= 91) wahl = "light"; 
-		else if(r <= 100 && r >= 96) wahl = "shadow";
-		else wahl = "void";
+		if(r <= 30) wahl = Element.Fire;
+		else if(r <= 60 && r >= 31) wahl = Element.Water;
+		else if(r <= 90 && r >= 61) wahl = Element.Plant;
+		else if(r <= 95 && r >= 91) wahl = Element.Light; 
+		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
+		else wahl = Element.Void;
 
 		String[] mobs = new String[]{"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
 		int mr = gen.nextInt(7);
-		String lol = mobs[mr];
-		
-		System.out.println(wahl + " " + lol);
+		mobName = mobs[mr];
+		System.out.println(wahl + " " + mobName);
 	}
+	
 	
 //Durchlaufen lassen bis void LOL OMG 360
 //	for(int i = 1; wahl!="void"; i++) {

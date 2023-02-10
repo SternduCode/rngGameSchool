@@ -8,13 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import rngGame.main.GamePanel;
 
-public class Demon extends NPC {
+public class MonsterNPC extends NPC {
 
 	protected String dir;
 	private final Menu demon;
 	private final MenuItem dirI;
 
-	public Demon(Demon npc, List<NPC> npcs, ContextMenu cm,
+	public MonsterNPC(MonsterNPC npc, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, npcs, cm, requestorN);
 		dir = npc.dir;
@@ -24,7 +24,7 @@ public class Demon extends NPC {
 		demon.getItems().add(dirI);
 	}
 
-	public Demon(JsonObject npc, GamePanel gp, List<NPC> npcs, ContextMenu cm,
+	public MonsterNPC(JsonObject npc, GamePanel gp, List<NPC> npcs, ContextMenu cm,
 			ObjectProperty<NPC> requestorN) {
 		super(npc, gp, "demons/" + ((StringValue) npc.get("dir")).getValue(),npcs, cm, requestorN);
 		dir = ((StringValue) npc.get("dir")).getValue();
