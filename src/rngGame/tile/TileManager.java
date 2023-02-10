@@ -877,6 +877,8 @@ public class TileManager extends Pane {
 			JsonObject jo = (JsonObject) JsonParser
 					.parse(new FileInputStream(path));
 
+			//overlay
+
 			if (jo.containsKey("generated") && jo.get("generated") instanceof BoolValue bv && bv.getValue()) {
 
 				if (jo.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) jo.get("BackgroundMusic")).getValue();
@@ -1006,7 +1008,7 @@ public class TileManager extends Pane {
 			}
 			for (Object npc : npcs) {
 				Entity n = switch ( ((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, cm, requestorN);
+					case "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};

@@ -1,8 +1,11 @@
 package rngGame.main;
 
+import java.io.FileInputStream;
+
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.stage.*;
 
@@ -27,11 +30,11 @@ public class MainClass extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setFullScreen(false);
 		primaryStage.setResizable(false);
-		primaryStage.setTitle("RNG fun");
+		primaryStage.setTitle("Demon Universe");
 
 		primaryStage.setFullScreenExitHint("");
 		primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-
+		primaryStage.getIcons().add(new Image(new FileInputStream ("./res/gui/GameIschcon.png")));
 		Input input = Input.getInstance();
 
 		// set eventHandlers to detect Mouse and Key Events on the whole Window

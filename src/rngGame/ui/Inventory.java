@@ -23,6 +23,22 @@ public class Inventory extends Pane {
 	private final Button ausXb;
 
 
+
+	/** The potionbutton. */
+	private final Button potionbutton;
+
+	/** The armorbutton. */
+	private final Button armorbutton;
+
+	/** The usebutton. */
+	private final Button usebutton;
+
+	/** The keybutton. */
+	private final Button keybutton;
+
+	/** The idkbutton. */
+	private final Button idkbutton;
+
 	/**
 	 * Instantiates a new inventory.
 	 *
@@ -31,42 +47,148 @@ public class Inventory extends Pane {
 	 */
 	public Inventory(GamePanel gamepanel, TabMenu tabm) {
 		this.gamepanel = gamepanel;
+		// invBackround
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
-		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
+
+				//Xbutton
+				Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
 		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
 		ausXb = new Button(ausX);
 
-		getChildren().add(invBackround);
+		//PotionButtonFeld
+		Image potionButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
+		Image potionButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
+		potionbutton = new Button(potionButton1);
+
+		//ArmorButtonFeld
+		Image armorButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
+		Image armorButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
+		armorbutton = new Button(armorButton2);
+
+		//UseButtonFeld
+		Image useButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
+		Image useButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
+		usebutton = new Button(useButton2);
+
+		//KeyButtonFeld
+		Image keyButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
+		Image keyButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
+		keybutton = new Button(keyButton2);
+
+		//IdkButtonFeld
+		Image idkButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
+		Image idkButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
+		idkbutton = new Button(idkButton2);
+
+
+			getChildren().add(invBackround);
 		getChildren().add(ausXb);
-		invBackround.setVisible(false);
+
+		getChildren().add(potionbutton);
+		getChildren().add(armorbutton);
+		getChildren().add(usebutton);
+		getChildren().add(keybutton);
+		getChildren().add(idkbutton);
+			invBackround.setVisible(false);
 		ausXb.setVisible(false);
 
-		ausXb.setOnMousePressed(me -> {
-			ausXb.setImage(ausX2);
-		});
+		potionbutton.setVisible(false);
+		armorbutton.setVisible(false);
+		usebutton.setVisible(false);
+		keybutton.setVisible(false);
+		idkbutton.setVisible(false);
+
+
+			ausXb.setOnMousePressed(me -> {
+				ausXb.setImage(ausX2);
+			});
 
 		ausXb.setOnMouseReleased(me -> {
 			ausXb.setImage(ausX);
+				tabm.closeTabm(true);
+		new Thread(()->{
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
 			endShow();
-		});
-	}
+		}).start();
 
-	/**
-	 * End show.
-	 */
-	public void endShow() {
-		invBackround.setVisible(false);
-		ausXb.setVisible(false);
+	});
+
+
+	potionbutton.setOnMouseReleased(me -> {
+		potionbutton.setImage(potionButton1);
+		armorbutton.setImage(armorButton2);
+		usebutton.setImage(useButton2);
+		keybutton.setImage(keyButton2);
+		idkbutton.setImage(idkButton2);
+	});
+
+	armorbutton.setOnMouseReleased(me -> {
+		potionbutton.setImage(potionButton2);
+		armorbutton.setImage(armorButton1);
+		usebutton.setImage(useButton2);
+		keybutton.setImage(keyButton2);
+		idkbutton.setImage(idkButton2);
+	});
+
+	usebutton.setOnMouseReleased(me -> {
+		potionbutton.setImage(potionButton2);
+		armorbutton.setImage(armorButton2);
+		usebutton.setImage(useButton1);
+		keybutton.setImage(keyButton2);
+		idkbutton.setImage(idkButton2);
+	});
+
+	keybutton.setOnMouseReleased(me -> {
+		potionbutton.setImage(potionButton2);
+		armorbutton.setImage(armorButton2);
+		usebutton.setImage(useButton2);
+		keybutton.setImage(keyButton1);
+		idkbutton.setImage(idkButton2);
+	});
+
+	idkbutton.setOnMouseReleased(me -> {
+		potionbutton.setImage(potionButton2);
+		armorbutton.setImage(armorButton2);
+		usebutton.setImage(useButton2);
+		keybutton.setImage(keyButton2);
+		idkbutton.setImage(idkButton1);
+	});
+
+
+}
+
+/**
+ * End show.
+ */
+public void endShow() {
+
+	invBackround.setVisible(false);
+	ausXb.setVisible(false);
+	potionbutton.setVisible(false);
+	armorbutton.setVisible(false);
+	usebutton.setVisible(false);
+	keybutton.setVisible(false);
+	idkbutton.setVisible(false);
 		setDisable(true);
-	}
+}
 
-	/**
-	 * Show.
-	 */
-	public void show() {
-		invBackround.setVisible(true);
-		ausXb.setVisible(true);
+/**
+ * Show.
+ */
+public void show() {
+	invBackround.setVisible(true);
+	ausXb.setVisible(true);
+	potionbutton.setVisible(true);
+	armorbutton.setVisible(true);
+	usebutton.setVisible(true);
+	keybutton.setVisible(true);
+	idkbutton.setVisible(true);
 		setDisable(false);
-	}
+}
 
 }
