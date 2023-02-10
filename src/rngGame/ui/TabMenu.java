@@ -48,6 +48,8 @@ public class TabMenu extends Pane {
 
 	/** The leav B. */
 	private final ImageView leavB;
+	
+	private final ImageView blank;
 
 	/** The leav B 1. */
 	private Image leavB1;
@@ -84,6 +86,7 @@ public class TabMenu extends Pane {
 
 	/** The no input. */
 	private final AtomicBoolean noInput = new AtomicBoolean(false);
+	private final AtomicBoolean ab = new AtomicBoolean(false);
 	/**
 	 * Instantiates a new tab menu.
 	 *
@@ -92,6 +95,8 @@ public class TabMenu extends Pane {
 	 */
 	public TabMenu(GamePanel gamepanel) throws FileNotFoundException {
 		gamemenu = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
+		
+		blank = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
 
 		invB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton1.png");
 		invB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton2.png");
@@ -122,11 +127,12 @@ public class TabMenu extends Pane {
 
 		getChildren().add(gamemenu);
 		getChildren().add(buttongroup);
+		getChildren().add(blank);
 		getChildren().add(surebackround);
 		getChildren().add(YNbuttongroup);
 		
 		
-
+		blank.setVisible(false);
 		gamemenu.setVisible(false);
 		buttongroup.setVisible(false);
 		YNbuttongroup.setVisible(false);
@@ -135,7 +141,7 @@ public class TabMenu extends Pane {
 		setDisable(true);
 		this.gamepanel = gamepanel;
 
-		AtomicBoolean ab = new AtomicBoolean(false);
+		
 		Input.getInstance().setKeyHandler("inv", mod -> {
 			if(!noInput.get()) {
 			TranslateTransition ft = new TranslateTransition(Duration.millis(150), gamemenu);
@@ -174,6 +180,7 @@ public class TabMenu extends Pane {
 					leavB.setImage(leavB2);
 				});
 				leavB.setOnMouseReleased(me -> {
+					blank.setVisible(true);
 					leavB.setImage(leavB1);
 					noInput.set(true);
 					surebackround.setVisible(true);
@@ -185,6 +192,7 @@ public class TabMenu extends Pane {
 				});
 				sureN.setOnMouseReleased(me -> {
 					sureN.setImage(sureN1);
+					blank.setVisible(false);
 					noInput.set(false);
 					surebackround.setVisible(false);
 					YNbuttongroup.setVisible(false);
@@ -199,47 +207,54 @@ public class TabMenu extends Pane {
 				});
 				
 
-				ft.setFromY(gamepanel.SpielHoehe);
-				ib1.setFromY(gamepanel.SpielHoehe);
+				ft.setFromY(gamepanel.SpielHoehe/2);
+				ib1.setFromY(gamepanel.SpielHoehe/2);
 				ft.setToY(0);
 				ib1.setToY(0);
 				ft.play();
 				ib1.play();
-
+					
 
 			} else {
-
-				ft.setToY(gamepanel.SpielHoehe);
-				ib1.setToY(gamepanel.SpielHoehe);
+				ft.setToY(gamepanel.SpielHoehe/2);
+				ib1.setToY(gamepanel.SpielHoehe/2);
 				ft.play();
 				ib1.play();
-
-				gamepanel.setBlockUserInputs(false);
-
-				inventory.setDisable(true);
+				closeTabm(false);
 				inventory.endShow();
-
-				new Thread(()->{
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					gamemenu.setVisible(false);
-					buttongroup.setVisible(false);
-					setDisable(true);
-
-				}).start();
 			}
 			}
 		}, KeyCode.TAB, false);
 	}
 
+	
+	public void closeTabm(boolean toggleState) {
+		if(toggleState) {
+		ab.getAndSet(!ab.get());
+		}
+		gamepanel.setBlockUserInputs(false);
+
+		inventory.setDisable(true);
+
+		new Thread(()->{
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			gamemenu.setVisible(false);
+			blank.setVisible(false);
+			buttongroup.setVisible(false);
+			setDisable(true);
+		
+		}).start();
+	}
 	/**
 	 * F 11 scale.
 	 */
 	public void f11Scale() {
 		gamemenu.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
+		blank.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
 
 		invB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton1.png");
 		invB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton2.png");
