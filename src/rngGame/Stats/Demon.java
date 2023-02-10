@@ -5,7 +5,7 @@ import java.util.Random;
 import rngGame.tile.Difficulty;
 
 public class Demon {
-	private Element enu;
+	private Element element;
 	private Difficulty difficult;
 	
 	
@@ -17,14 +17,21 @@ public class Demon {
 	private int lvl;
 	
 	public Demon(Element wahl , String mobName) {
-		this.enu = wahl;
+		this.element = wahl;
 		this.mobName = mobName;
-		this.atk = enu.getAtk();
-		this.res = enu.getRes();
-		this.hp = enu.getHp();
-		this.dgc = enu.getDgc();
-		this.lvl = enu.getLvl();
+		this.atk = element.getAtk();
+		this.res = element.getRes();
+		this.hp = element.getHp();
+		this.dgc = element.getDgc();
+		this.lvl = element.getLvl();
 	}
+
+	@Override
+	public String toString() {
+		return "Demon [Element=" + element + ", mobName=" + mobName + ", atk=" + atk + ", res=" + res + ", hp=" + hp + ", dgc="
+				+ dgc + ", lvl=" + lvl + "]";
+	}
+	
 	
 
 		

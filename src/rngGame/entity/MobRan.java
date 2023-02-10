@@ -115,6 +115,7 @@ public class MobRan extends NPC {
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 			MobGen();
 			Demon demonMob = new Demon(wahl, mobName);
+			System.out.println(demonMob);
 			gpt.getMobRans().remove(MobRan.this);
 			gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
 		});
@@ -252,7 +253,6 @@ public class MobRan extends NPC {
 		String[] mobs = new String[]{"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
 		int mr = gen.nextInt(7);
 		mobName = mobs[mr];
-		System.out.println(wahl + " " + mobName);
 	}
 	
 	
