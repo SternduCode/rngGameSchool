@@ -106,7 +106,7 @@ public class CollisionBoxEditor extends Application {
 						f.getPath().length() - ".collisionbox".length());
 
 				System.out.println(subPath);
-				File img = new File("./res/" + subPath + ".png");
+				File img = new File("./res/" + subPath + ".gif");
 				try {
 					iv.setImage(new Image(new FileInputStream(img)));
 					imgi = iv.getImage();
@@ -154,7 +154,7 @@ public class CollisionBoxEditor extends Application {
 				String subPath = collboxFile.getPath().substring(
 						idx + ("res" + File.separator + "collisions").length() + 1,
 						collboxFile.getPath().length() - ".collisionbox".length());
-				File img = new File("./res/" + subPath + ".png");
+				File img = new File("./res/" + subPath + ".gif");
 				try {
 					Image imgi = new Image(new FileInputStream(img));
 					sf = (int) (iv.getImage().getWidth() + iv.getImage().getWidth() * .005 * e.getDeltaY())
