@@ -22,7 +22,12 @@ public class Inventory extends Pane {
 	/** The aus xb. */
 	private final Button ausXb;
 
-
+	private final Button potionbutton;
+	private final Button armorbutton;
+	private final Button usebutton;
+	private final Button keybutton;
+	private final Button idkbutton;
+	
 	/**
 	 * Instantiates a new inventory.
 	 *
@@ -31,15 +36,58 @@ public class Inventory extends Pane {
 	 */
 	public Inventory(GamePanel gamepanel, TabMenu tabm) {
 		this.gamepanel = gamepanel;
+		// invBackround
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
+		
+		//Xbutton
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
 		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
 		ausXb = new Button(ausX);
+		
+		//PotionButtonFeld
+		Image potionButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
+		Image potionButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
+		potionbutton = new Button(potionButton1);
+		
+		//ArmorButtonFeld
+		Image armorButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
+		Image armorButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
+		armorbutton = new Button(armorButton2);
+		
+		//UseButtonFeld
+		Image useButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
+		Image useButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
+		usebutton = new Button(useButton2);
+		
+		//KeyButtonFeld
+		Image keyButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
+		Image keyButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
+		keybutton = new Button(keyButton2);
+		
+		//IdkButtonFeld
+		Image idkButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
+		Image idkButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
+		idkbutton = new Button(idkButton2);
+				
+				
 
 		getChildren().add(invBackround);
 		getChildren().add(ausXb);
+		
+		getChildren().add(potionbutton);
+		getChildren().add(armorbutton);
+		getChildren().add(usebutton);
+		getChildren().add(keybutton);
+		getChildren().add(idkbutton);
 		invBackround.setVisible(false);
 		ausXb.setVisible(false);
+		
+		potionbutton.setVisible(false);
+		armorbutton.setVisible(false);
+		usebutton.setVisible(false);
+		keybutton.setVisible(false);
+		idkbutton.setVisible(false);
+		
 
 		ausXb.setOnMousePressed(me -> {
 			ausXb.setImage(ausX2);
@@ -49,6 +97,49 @@ public class Inventory extends Pane {
 			ausXb.setImage(ausX);
 			endShow();
 		});
+		
+		
+		potionbutton.setOnMouseReleased(me -> {
+			potionbutton.setImage(potionButton1);
+			armorbutton.setImage(armorButton2);
+			usebutton.setImage(useButton2);
+			keybutton.setImage(keyButton2);
+			idkbutton.setImage(idkButton2);
+		});
+		
+		armorbutton.setOnMouseReleased(me -> {
+			potionbutton.setImage(potionButton2);
+			armorbutton.setImage(armorButton1);
+			usebutton.setImage(useButton2);
+			keybutton.setImage(keyButton2);
+			idkbutton.setImage(idkButton2);
+		});
+		
+		usebutton.setOnMouseReleased(me -> {
+			potionbutton.setImage(potionButton2);
+			armorbutton.setImage(armorButton2);
+			usebutton.setImage(useButton1);
+			keybutton.setImage(keyButton2);
+			idkbutton.setImage(idkButton2);
+		});
+		
+		keybutton.setOnMouseReleased(me -> {
+			potionbutton.setImage(potionButton2);
+			armorbutton.setImage(armorButton2);
+			usebutton.setImage(useButton2);
+			keybutton.setImage(keyButton1);
+			idkbutton.setImage(idkButton2);
+		});
+		
+		idkbutton.setOnMouseReleased(me -> {
+			potionbutton.setImage(potionButton2);
+			armorbutton.setImage(armorButton2);
+			usebutton.setImage(useButton2);
+			keybutton.setImage(keyButton2);
+			idkbutton.setImage(idkButton1);
+		});
+
+		
 	}
 
 	/**
@@ -57,6 +148,11 @@ public class Inventory extends Pane {
 	public void endShow() {
 		invBackround.setVisible(false);
 		ausXb.setVisible(false);
+		potionbutton.setVisible(false);
+		armorbutton.setVisible(false);
+		usebutton.setVisible(false);
+		keybutton.setVisible(false);
+		idkbutton.setVisible(false);
 		setDisable(true);
 	}
 
@@ -66,6 +162,11 @@ public class Inventory extends Pane {
 	public void show() {
 		invBackround.setVisible(true);
 		ausXb.setVisible(true);
+		potionbutton.setVisible(true);
+		armorbutton.setVisible(true);
+		usebutton.setVisible(true);
+		keybutton.setVisible(true);
+		idkbutton.setVisible(true);
 		setDisable(false);
 	}
 
