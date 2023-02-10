@@ -172,19 +172,19 @@ public class MobRan extends NPC {
 			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
 
 
-//			for (int yU = minY; yU <= maxY; yU++) {
-//				for (int xU = minX; xU <= maxX; xU++) {
-//					int xU_ = xU, yU_ = yU;
-//					System.out.print(switch (pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst()
-//							.orElse(new PathElement(0, 0, -1)).distance()) {
-//								case -1 -> "  ";
-//								case 0 -> "P ";
-//								default -> pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst().orElse(new PathElement(0, 0, -1))
-//								.distance() + " ";
-//					});
-//				}
-//				System.out.println();
-//			}
+			//			for (int yU = minY; yU <= maxY; yU++) {
+			//				for (int xU = minX; xU <= maxX; xU++) {
+			//					int xU_ = xU, yU_ = yU;
+			//					System.out.print(switch (pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst()
+			//							.orElse(new PathElement(0, 0, -1)).distance()) {
+			//								case -1 -> "  ";
+			//								case 0 -> "P ";
+			//								default -> pels.parallelStream().filter(pe -> pe.x() == xU_ && pe.y() == yU_).findFirst().orElse(new PathElement(0, 0, -1))
+			//								.distance() + " ";
+			//					});
+			//				}
+			//				System.out.println();
+			//			}
 
 			// System.out.println(pels);
 

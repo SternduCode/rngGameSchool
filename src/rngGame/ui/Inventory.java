@@ -1,6 +1,6 @@
 package rngGame.ui;
 
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import rngGame.main.GamePanel;
 import rngGame.tile.ImgUtil;
@@ -19,6 +19,9 @@ public class Inventory extends Pane {
 	/** The inv backround. */
 	private final ImageView invBackround;
 
+	/** The aus xb. */
+	private final Button ausXb;
+
 
 	/**
 	 * Instantiates a new inventory.
@@ -29,10 +32,23 @@ public class Inventory extends Pane {
 	public Inventory(GamePanel gamepanel, TabMenu tabm) {
 		this.gamepanel = gamepanel;
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
+		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
+		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
+		ausXb = new Button(ausX);
+
 		getChildren().add(invBackround);
+		getChildren().add(ausXb);
 		invBackround.setVisible(false);
+		ausXb.setVisible(false);
 
+		ausXb.setOnMousePressed(me -> {
+			ausXb.setImage(ausX2);
+		});
 
+		ausXb.setOnMouseReleased(me -> {
+			ausXb.setImage(ausX);
+			endShow();
+		});
 	}
 
 	/**
@@ -40,6 +56,8 @@ public class Inventory extends Pane {
 	 */
 	public void endShow() {
 		invBackround.setVisible(false);
+		ausXb.setVisible(false);
+		setDisable(true);
 	}
 
 	/**
@@ -47,9 +65,8 @@ public class Inventory extends Pane {
 	 */
 	public void show() {
 		invBackround.setVisible(true);
-		invBackround.setTranslateY(0);
-		invBackround.setTranslateX(0);
-		invBackround.setOpacity(1);
+		ausXb.setVisible(true);
+		setDisable(false);
 	}
 
 }

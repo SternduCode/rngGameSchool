@@ -23,6 +23,8 @@ public class TabMenu extends Pane {
 
 	/** The buttongroup. */
 	private final Group buttongroup = new Group();
+	
+	/** The Y nbuttongroup. */
 	private final Group YNbuttongroup = new Group();
 
 
@@ -53,12 +55,25 @@ public class TabMenu extends Pane {
 	/** The leav B 2. */
 	private Image leavB2;
 	
-	private ImageView surebackround;
-	private ImageView sureY;
-	private ImageView sureN;
+	/** The surebackround. */
+	private final ImageView surebackround;
+	
+	/** The sure Y. */
+	private final ImageView sureY;
+	
+	/** The sure N. */
+	private final ImageView sureN;
+	
+	/** The sure Y 1. */
 	private Image sureY1;
+	
+	/** The sure N 1. */
 	private Image sureN1;
+	
+	/** The sure Y 2. */
 	private Image sureY2;
+	
+	/** The sure N 2. */
 	private Image sureN2;
 
 	/** The inventory. */
@@ -67,7 +82,8 @@ public class TabMenu extends Pane {
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
 
-	private AtomicBoolean noInput = new AtomicBoolean(false);
+	/** The no input. */
+	private final AtomicBoolean noInput = new AtomicBoolean(false);
 	/**
 	 * Instantiates a new tab menu.
 	 *
@@ -139,7 +155,6 @@ public class TabMenu extends Pane {
 				invB.setOnMouseReleased(me -> {
 					invB.setImage(invB1);
 					inventory.show();
-					inventory.setDisable(false);
 				});
 
 				inventory = new Inventory(gamepanel, this);

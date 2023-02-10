@@ -215,6 +215,7 @@ public class DungeonGen {
 	/**
 	 * Decorate.
 	 */
+	@SuppressWarnings("unchecked")
 	public void decorate() {
 		// TODO fancy bridges (after 2)
 		// TODO add objects (Faggel 25% on corners and non border tiles have 1/7 to have book on them)
@@ -225,11 +226,36 @@ public class DungeonGen {
 				.collect(Collectors.toList());
 		System.out.println(corners);
 
-		JsonObject	cornerObject	= (JsonObject) additionalData.get("cornerObject");
-		String		texture			= ((StringValue) cornerObject.get("texture")).getValue();
-		JsonArray	requestedSize	= (JsonArray) cornerObject.get("requestedSize");
+		JsonArray	cornerObject	= (JsonArray) additionalData.get("cornerObjects");
+		Entry<String, JsonArray>[] cornerObjects = new Entry[cornerObject.size()];
+		for (int i = 0; i < cornerObject.size(); i++) {
+			String		cornerTexture			= ((StringValue) ((JsonObject) cornerObject.get(i)).get("texture")).getValue();
+			JsonArray	cornerRequestedSize	= (JsonArray) ((JsonObject) cornerObject.get(i)).get("requestedSize");
+			cornerObjects[i] = Map.entry(cornerTexture, cornerRequestedSize);
+		}
+		
+		
+		JsonArray	randomPieces	= (JsonArray) additionalData.get("randomPieces");
+		List<Tile>	randoms			= randomPieces.parallelStream().map(o -> ((StringValue) o).getValue())
+				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.collect(Collectors.toList());
+		System.out.println(randoms);
+
+		JsonArray	randomObject	= (JsonArray) additionalData.get("randomObjects");
+		Entry<String, JsonArray>[] randomObjects = new Entry[randomObject.size()];
+		for (int i = 0; i < randomObject.size(); i++) {
+			String		cornerTexture			= ((StringValue) ((JsonObject) randomObject.get(i)).get("texture")).getValue();
+			JsonArray	cornerRequestedSize	= (JsonArray) ((JsonObject) randomObject.get(i)).get("requestedSize");
+			randomObjects[i] = Map.entry(cornerTexture, cornerRequestedSize);
+		}
 
 		// TODO tiles and books
+		
+		for (int i = 0; i < gp.getTileM().getMap().size(); i++) {
+			for (int j = 0; j < gp.getTileM().getMap().get(i).size(); j++) {
+				
+			}
+		}
 
 		Path	p2	= new File("./res/building/" + texture).toPath();
 		Image	img	= new Image(new FileInputStream(p2.toFile()));

@@ -8,6 +8,7 @@
 		{"folder" : "insel_m", "size" : "MIDDLE" }
 	],
 	"void" : "Void.png",
+	"overlay" : "DungeonBlinder.png",
 	"additionalData" : {
 		"cornerPieces" : [ 
 			"EckeLinksOben.png",
@@ -15,10 +16,10 @@
 			"EckeRechtsOben.png",
 			"EckeRechtsUnten.png"
 		],
-		"cornerObject": { 
+		"cornerObjects": [{ 
 			"texture" : "Faggel.png",
 			"requestedSize" : [ 96, 96 ]
-		},
+		}],
 		"randomPieces" : [
 			"LochMiniEckeLinks.png",
 			"LochMiniEckeLinkU.png",

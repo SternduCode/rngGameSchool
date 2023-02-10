@@ -166,6 +166,9 @@ public class TileManager extends Pane {
 	/** The background music. */
 	private String backgroundMusic;
 
+	/** The overlay. */
+	private String overlay;
+
 	/**
 	 * Instantiates a new tile manager.
 	 *
@@ -632,6 +635,13 @@ public class TileManager extends Pane {
 	}
 
 	/**
+	 * Gets the overlay.
+	 *
+	 * @return the overlay
+	 */
+	public String getOverlay() { return overlay; }
+
+	/**
 	 * Gets a part of the map.
 	 *
 	 * @param x      the x position on screen
@@ -869,6 +879,12 @@ public class TileManager extends Pane {
 
 			if (jo.containsKey("generated") && jo.get("generated") instanceof BoolValue bv && bv.getValue()) {
 
+				if (jo.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) jo.get("BackgroundMusic")).getValue();
+				else backgroundMusic = "";
+
+				if (jo.containsKey("overlay")) overlay = ((StringValue) jo.get("overlay")).getValue();
+				else overlay = "";
+
 				generated = true;
 
 				if (jo.containsKey("background")) backgroundPath = ((StringValue) jo.get("background")).getValue();
@@ -903,9 +919,11 @@ public class TileManager extends Pane {
 
 			dir = ((StringValue) map.get("dir")).getValue();
 
-
-			if(map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
+			if (map.containsKey("BackgroundMusic")) backgroundMusic = ((StringValue) map.get("BackgroundMusic")).getValue();
 			else backgroundMusic = "";
+
+			if (map.containsKey("overlay")) overlay = ((StringValue) map.get("BackgroundMusic")).getValue();
+			else overlay = "";
 
 			if (map.containsKey("background")) backgroundPath = ((StringValue) map.get("background")).getValue();
 			else backgroundPath = null;

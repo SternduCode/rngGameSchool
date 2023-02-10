@@ -206,6 +206,9 @@ public class GamePanel extends Pane {
 	/** The mp. */
 	private MediaPlayer mp;
 
+	/** The overlay. */
+	private final ImageView overlay;
+
 	/**
 	 * Instantiates a new game panel.
 	 *
@@ -214,6 +217,8 @@ public class GamePanel extends Pane {
 	public GamePanel() throws FileNotFoundException {
 		setPrefSize(SpielLaenge, SpielHoehe);
 
+		overlay = new ImageView();
+		overlay.setDisable(true);
 
 		difficulty = Difficulty.EASY;
 
@@ -249,7 +254,7 @@ public class GamePanel extends Pane {
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, pointGroup, selectTool, gamemenu ,fpsLabel, loadingScreen);
+		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, gamemenu, fpsLabel, loadingScreen);
 	}
 
 	/**
@@ -372,6 +377,9 @@ public class GamePanel extends Pane {
 		player.setLayer(tileM.getPlayerLayer());
 		buildings = tileM.getBuildingsFromMap();
 
+		if (!"".equals(tileM.getOverlay())) overlay.setImage(ImgUtil.getScaledImage(this, "./res/gui/" + tileM.getOverlay()));
+		else overlay.setImage(null);
+
 		Circle spawn = new Circle(tileM.getSpawnPoint().getX() * getScalingFactorX(),
 				tileM.getSpawnPoint().getY() * getScalingFactorY(), 15,
 				Color.color(0, 1, 0, .75));
@@ -482,8 +490,6 @@ public class GamePanel extends Pane {
 		loadingScreen.setFitHeight(loadingScreen.getImage().getHeight() * getScalingFactorY());
 		loadingScreen.setOpacity(1);
 
-
-
 		layerGroup.getChildren().stream().map(n -> ((Group) n).getChildren()).forEach(ObservableList::clear);
 		points.clear();
 		pointGroup.getChildren().clear();
@@ -512,8 +518,10 @@ public class GamePanel extends Pane {
 				// System.out.println("meow " + duration + " " + curr);
 				if (duration.subtract(curr).lessThan(Duration.millis(34.2))) mp.seek(Duration.millis(2.5));
 			}, "CheckIfMusicIsDone");
-		}
-		else mp = null;
+		} else mp = null;
+
+		if (!"".equals(tileM.getOverlay())) overlay.setImage(ImgUtil.getScaledImage(this, "./res/gui/"+tileM.getOverlay()));
+		else overlay.setImage(null);
 
 		buildings = tileM.getBuildingsFromMap();
 		npcs = tileM.getNPCSFromMap();
