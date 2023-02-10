@@ -1002,7 +1002,7 @@ public class TileManager extends Pane {
 			}
 			for (Object npc : npcs) {
 				Entity n = switch ( ((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new Demon((JsonObject) npc, gp, this.npcs, cm, requestorN);
+					case "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
