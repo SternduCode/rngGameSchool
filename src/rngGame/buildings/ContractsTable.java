@@ -24,7 +24,8 @@ public class ContractsTable extends Building {
 
 	private final Pane infos = new Pane();
 
-	private LevelSelectionScrollPaneElement ugSachen;
+	private LevelSelectionScrollPaneElement ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5;
+	
 	private final Group ausGroup = new Group();
 	private ImageView contractBackground;
 	private Button contractSaturn;
@@ -160,7 +161,11 @@ public class ContractsTable extends Building {
 		Image br = buttonR;
 		Image bl = buttonL;
 
-		ugSachen = new LevelSelectionScrollPaneElement(gamepanel, this);
+		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this);
+		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this);
+		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this);
+		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this);
+		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this);
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
@@ -314,7 +319,11 @@ public class ContractsTable extends Building {
 			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge / 1.5
 					+ gamepanel.getScalingFactorX() * 24);
 
-			ugSachen.setBackgroundImageToDefaullt();
+			ugSachen1.setBackgroundImageToDefaullt();
+			ugSachen2.setBackgroundImageToDefaullt();
+			ugSachen3.setBackgroundImageToDefaullt();
+			ugSachen4.setBackgroundImageToDefaullt();
+			ugSachen5.setBackgroundImageToDefaullt();
 
 			FadeTransition UG = new FadeTransition(Duration.millis(350), allPanes);
 			UG.setFromValue(0);
@@ -327,7 +336,11 @@ public class ContractsTable extends Building {
 
 			allPanes.setVisible(true);
 			infos.setVisible(false);
-			ugSachen.getStartButton().setVisible(false);
+			ugSachen1.getStartButton().setVisible(false);
+			ugSachen2.getStartButton().setVisible(false);
+			ugSachen3.getStartButton().setVisible(false);
+			ugSachen4.getStartButton().setVisible(false);
+			ugSachen5.getStartButton().setVisible(false);
 			text.setVisible(true);
 			button_R.setVisible(false);
 			button_L.setVisible(false);
@@ -406,7 +419,11 @@ public class ContractsTable extends Building {
 		});
 
 		ausXb.setOnMouseReleased(me -> {
-			ugSachen.setBackgroundImageToDefaullt();
+			ugSachen1.setBackgroundImageToDefaullt();
+			ugSachen2.setBackgroundImageToDefaullt();
+			ugSachen3.setBackgroundImageToDefaullt();
+			ugSachen4.setBackgroundImageToDefaullt();
+			ugSachen5.setBackgroundImageToDefaullt();
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
@@ -538,7 +555,7 @@ public class ContractsTable extends Building {
 		button_L.setVisible(false);
 
 		// P2
-		p2.getChildren().addAll(ugSachen);
+		p2.getChildren().addAll(ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5);
 
 		// Infos
 		infos.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
@@ -655,6 +672,11 @@ public class ContractsTable extends Building {
 
 			p2.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
 			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
+			
+			ugSachen2.setLayoutY(82);
+			ugSachen3.setLayoutY(82*2);
+			ugSachen4.setLayoutY(82*3);
+			ugSachen5.setLayoutY(82*4);
 			//////////////////////////////////////////////
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2
