@@ -17,36 +17,24 @@ import rngGame.ui.*;
 public class ContractsTable extends Building {
 
 	private final Pane p1 = new Pane();
-
 	private final Pane p2 = new Pane();
-
 	private final Pane allPanes = new Pane();
-
 	private final Pane infos = new Pane();
 
 	private LevelSelectionScrollPaneElement ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5;
-	
 	private final Group ausGroup = new Group();
 	private ImageView contractBackground;
-	private Button contractSaturn;
-	private Button contractNebel;
-	private Button contractGalactus;
-	private Button contractNova;
+	private Button contractSaturn,contractNebel,contractGalactus,contractNova;
+	private ImageView hud , hud2 , hud3 , hud4;
+	private ImageView titlebanner,titlebanner2,titlebanner3,titlebanner4;
 	private MonsterSelction ms;
-	private ImageView hud;
-	private ImageView hud2;
-	private ImageView hud3;
-
-	private ImageView hud4;
-
-	private ImageView titlebanner;
-	private ImageView titlebanner2;
-	private ImageView titlebanner3;
-	private ImageView titlebanner4;
 
 	private ImageView text;
-	private Button button_R;
-	private Button button_L;
+	private Button button_R,button_L;
+
+	
+	
+	
 	private ImageView ausBackground;
 
 	private ImageView lvlBorder;
@@ -55,7 +43,6 @@ public class ContractsTable extends Building {
 	private int index = 0;
 
 	private boolean iftest;
-
 	private boolean inkreis;
 
 	public ContractsTable(Building building, List<Building> buildings, ContextMenu cm,
@@ -106,6 +93,10 @@ public class ContractsTable extends Building {
 		Image buttonL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilL.png");
 		Image buttonRL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilRLeu.png");
 		Image buttonLL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilLLeu.png");
+		
+		Image difE = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difE.png");
+		Image difH = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difH.png");
+		Image difM = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difM.png");
 
 		contractBackground = new ImageView(wi);
 		contractBackground.setTranslateY(-1);
@@ -160,12 +151,14 @@ public class ContractsTable extends Building {
 		Image bll = buttonLL;
 		Image br = buttonR;
 		Image bl = buttonL;
+		
 
-		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this);
-		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this);
-		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this);
-		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this);
-		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this);
+
+		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor1");
+		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor2");
+		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor3");
+		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor4");
+		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor5");
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
@@ -335,7 +328,7 @@ public class ContractsTable extends Building {
 			_tiw.setToValue(1);
 
 			allPanes.setVisible(true);
-			infos.setVisible(false);
+			infos.setVisible(true);
 			ugSachen1.getStartButton().setVisible(false);
 			ugSachen2.getStartButton().setVisible(false);
 			ugSachen3.getStartButton().setVisible(false);
@@ -417,6 +410,8 @@ public class ContractsTable extends Building {
 		ausXb.setOnMousePressed(me -> {
 			ausXb.setImage(x2);
 		});
+		
+
 
 		ausXb.setOnMouseReleased(me -> {
 			ugSachen1.setBackgroundImageToDefaullt();
@@ -512,7 +507,7 @@ public class ContractsTable extends Building {
 		gamepanel.getChildren().add(button_R);
 		gamepanel.getChildren().add(button_L);
 
-		ausGroup.getChildren().addAll(ausBackground, ausXb);
+		ausGroup.getChildren().add(ausBackground);
 
 		// contractNebel.setY(gamepanel.getPlayer().getScreenY() -
 		// contractNebel.getImage().getHeight() / 2 + 32);
@@ -559,10 +554,9 @@ public class ContractsTable extends Building {
 
 		// Infos
 		infos.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
-		infos.getChildren().add(lvlBorder);
-
+		infos.getChildren().add(lvlBorder);	
 		allPanes.setVisible(false);
-		allPanes.getChildren().addAll(ausGroup, p2, infos);
+		allPanes.getChildren().addAll(ausGroup,infos,p2,ausXb);
 
 		Input.getInstance().setKeyHandler("contractBackground", mod -> {
 
@@ -637,6 +631,22 @@ public class ContractsTable extends Building {
 		this.ms = ms;
 	}
 
+	public void reloadUGtexture() {
+		ugSachen1.setBackgroundImageToDefaullt();
+		ugSachen2.setBackgroundImageToDefaullt();
+		ugSachen3.setBackgroundImageToDefaullt();
+		ugSachen4.setBackgroundImageToDefaullt();
+		ugSachen5.setBackgroundImageToDefaullt();
+		
+		ugSachen1.startBvisibleFalse();
+		ugSachen2.startBvisibleFalse();
+		ugSachen3.startBvisibleFalse();
+		ugSachen4.startBvisibleFalse();
+		ugSachen5.startBvisibleFalse();
+	}
+	
+
+	
 	@Override
 	public void update(long milis) {
 		inkreis = false;
@@ -673,10 +683,11 @@ public class ContractsTable extends Building {
 			p2.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
 			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
 			
-			ugSachen2.setLayoutY(82);
-			ugSachen3.setLayoutY(82*2);
-			ugSachen4.setLayoutY(82*3);
-			ugSachen5.setLayoutY(82*4);
+			ugSachen2.setLayoutY((82)*gamepanel.getScalingFactorY());
+			ugSachen3.setLayoutY((82*2)*gamepanel.getScalingFactorY());
+			ugSachen4.setLayoutY((82*3)*gamepanel.getScalingFactorY());
+			ugSachen5.setLayoutY((82*4)*gamepanel.getScalingFactorY());
+			
 			//////////////////////////////////////////////
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2

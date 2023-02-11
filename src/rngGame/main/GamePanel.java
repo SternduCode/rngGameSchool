@@ -202,6 +202,8 @@ public class GamePanel extends Pane {
 
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
+	
+	private final AktionButton aktionbutton;
 
 	/** The mp. */
 	private MediaPlayer mp;
@@ -249,12 +251,14 @@ public class GamePanel extends Pane {
 		fpsLabel.setVisible(false);
 
 		gamemenu = new TabMenu(this);
+		
+		aktionbutton = new AktionButton(this);
 
 
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, gamemenu, fpsLabel, loadingScreen);
+		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool,aktionbutton ,gamemenu, fpsLabel, loadingScreen);
 	}
 
 	/**
@@ -364,6 +368,7 @@ public class GamePanel extends Pane {
 		pointGroup.getChildren().clear();
 		tileM.reload();
 		gamemenu.f11Scale();
+		aktionbutton.f11Scale();
 		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileM.getBackgroundPath())),
