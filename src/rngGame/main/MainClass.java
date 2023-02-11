@@ -9,12 +9,27 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.stage.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainClass.
+ */
 public class MainClass extends Application {
 
+	/** The stopping. */
 	private static boolean stopping = false;
 
+	/**
+	 * Checks if is stopping.
+	 *
+	 * @return true, if is stopping
+	 */
 	public static boolean isStopping() { return stopping; }
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 
 		System.setProperty("edit", "false"); // set edit mode to disabled
@@ -24,8 +39,16 @@ public class MainClass extends Application {
 
 		launch(args);
 
+		System.exit(0);
+
 	}
 
+	/**
+	 * Start.
+	 *
+	 * @param primaryStage the primary stage
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setFullScreen(false);
