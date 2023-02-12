@@ -30,4 +30,4 @@ jobs:
         distribution: 'temurin'
         architecture: x64
     - name: Build with Javac
-      run: pwd && ls lib/lib && cd src && javac --module-path ../lib/lib -d ../bin *,rngGame/main/MainClass.java
+      run: pwd && ls lib/lib && cd src && javac --module-path ../lib/lib -d ../bin module-info.java,rngGame/main/MainClass.java
