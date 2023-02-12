@@ -23,7 +23,7 @@ public class MainClass extends Application {
 		System.setProperty("teleport", "false");
 
 		launch(args);
-
+		System.exit(0);
 	}
 
 	@Override
