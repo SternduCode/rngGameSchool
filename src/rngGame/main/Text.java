@@ -2,15 +2,25 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+
 import javafx.scene.image.*;
 import rngGame.tile.ImgUtil;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Text.
+ */
 public class Text {
 
+	/** The Constant INSTANCE. */
 	private static final Text INSTANCE = new Text();
 
+	/** The charmap. */
 	private final Map<Character, Image> charmap;
 
+	/**
+	 * Instantiates a new text.
+	 */
 	private Text() {
 		charmap = new HashMap<>();
 		try {
@@ -20,8 +30,19 @@ public class Text {
 		}
 	}
 
+	/**
+	 * Gets the single instance of Text.
+	 *
+	 * @return single instance of Text
+	 */
 	public static Text getInstance() { return INSTANCE; }
 
+	/**
+	 * Convert text.
+	 *
+	 * @param text the text
+	 * @return the image
+	 */
 	public Image convertText(String text) {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
 		int length = 0;
@@ -41,6 +62,13 @@ public class Text {
 		return im;
 	}
 
+	/**
+	 * Convert text.
+	 *
+	 * @param text the text
+	 * @param fontSize the font size
+	 * @return the image
+	 */
 	public Image convertText(String text, int fontSize) {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
 		int length = 0;
@@ -62,6 +90,11 @@ public class Text {
 		return im;
 	}
 
+	/**
+	 * Load character files.
+	 *
+	 * @throws FileNotFoundException the file not found exception
+	 */
 	public void loadCharacterFiles() throws FileNotFoundException {
 		File dir = new File("./res/letters/");
 
@@ -73,17 +106,17 @@ public class Text {
 				smallI = new Image(new FileInputStream(small)),
 				numbersI = new Image(new FileInputStream(numbers));
 
-		char[][] bigC = new char[][] {
-			{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'},
-			{'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'},
-			{'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'}
-		}, smallC = new char[][] {
-			{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'},
-			{'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r'},
-			{'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
-		}, numbersC = new char[][] {
-			{'1', '2', '3', '4', '5', '6', '7', '8', '9'},
-			{'0', '?', '!', '%', '"', '#'}
+		char[][] bigC = {
+				{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'},
+				{'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'},
+				{'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.'}
+		}, smallC = {
+				{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'},
+				{'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r'},
+				{'s', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
+		}, numbersC = {
+				{'1', '2', '3', '4', '5', '6', '7', '8', '9'},
+				{'0', '?', '!', '%', '"', '#'}
 		};
 
 		PixelReader bigPR = bigI.getPixelReader(),
@@ -94,14 +127,14 @@ public class Text {
 			for (int y = 0; y < bigI.getHeight() / 32; y++) if (y<bigC.length && x<bigC[y].length) {
 				WritableImage cha = new WritableImage(12, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 12, 32, bigPR, x * 32 + 8, y * 32);
+				pw.setPixels(0, 0, 12, 32, bigPR, x * 32 + 10, y * 32);
 				charmap.put(bigC[y][x], cha);
 			}
 		for (int x = 0; x < smallI.getWidth() / 32; x++)
 			for (int y = 0; y < smallI.getHeight() / 32; y++) if (y<smallC.length && x<smallC[y].length) {
 				WritableImage cha = new WritableImage(12, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 12, 32, smallPR, x * 32 + 8, y * 32);
+				pw.setPixels(0, 0, 12, 32, smallPR, x * 32 + 10, y * 32);
 				charmap.put(smallC[y][x], cha);
 			}
 		for (int x = 0; x < numbersI.getWidth() / 32; x++)
