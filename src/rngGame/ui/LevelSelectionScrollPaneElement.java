@@ -135,11 +135,12 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		// TODO make other stuffs
 		
-		getChildren().addAll(startButton,floor1,picture,difficul);
+		getChildren().addAll(startButton,floor1,picture);
 		floor1.setLayoutX(5*gamepanel.getScalingFactorX());
 		floor1.setLayoutY(5*gamepanel.getScalingFactorY());
 		picture.setLayoutX(7*gamepanel.getScalingFactorX());
 		picture.setLayoutY(7*gamepanel.getScalingFactorY());
+		
 		difficul.setLayoutX(360*gamepanel.getScalingFactorX());
 		difficul.setLayoutY(65*gamepanel.getScalingFactorY());
 	}
