@@ -223,51 +223,56 @@ public class DungeonGen {
 		// TODO add objects (Faggel 25% on corners and non border tiles have 1/7 to have book on them)
 
 		JsonArray	cornerPieces	= (JsonArray) additionalData.get("cornerPieces");
-		List<Tile>	corners			= cornerPieces.parallelStream().map(o -> ((StringValue) o).getValue())
+		List<Integer>	corners			= cornerPieces.parallelStream().map(o -> ((StringValue) o).getValue())
 				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.map(t -> gp.getTileM().getTiles().indexOf(t))
 				.collect(Collectors.toList());
 		System.out.println(corners);
 
 		JsonArray	cornerObject	= (JsonArray) additionalData.get("cornerObjects");
-		Entry<String, JsonArray>[] cornerObjects = new Entry[cornerObject.size()];
+		Entry<String, Entry<JsonArray, JsonArray>>[]	cornerObjects	= new Entry[cornerObject.size()];
 		for (int i = 0; i < cornerObject.size(); i++) {
 			String		cornerTexture			= ((StringValue) ((JsonObject) cornerObject.get(i)).get("texture")).getValue();
 			JsonArray	cornerRequestedSize	= (JsonArray) ((JsonObject) cornerObject.get(i)).get("requestedSize");
-			cornerObjects[i] = Map.entry(cornerTexture, cornerRequestedSize);
+			JsonArray	cornerPos			= (JsonArray) ((JsonObject) cornerObject.get(i)).get("position");
+			cornerObjects[i] = Map.entry(cornerTexture, Map.entry(cornerRequestedSize, cornerPos));
 		}
 
 
 		JsonArray	randomPieces	= (JsonArray) additionalData.get("randomPieces");
-		List<Tile>	randoms			= randomPieces.parallelStream().map(o -> ((StringValue) o).getValue())
+		List<Integer>	randoms			= randomPieces.parallelStream().map(o -> ((StringValue) o).getValue())
 				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.map(t -> gp.getTileM().getTiles().indexOf(t))
 				.collect(Collectors.toList());
 		System.out.println(randoms);
 
 		JsonArray	randomObject	= (JsonArray) additionalData.get("randomObjects");
-		Entry<String, JsonArray>[] randomObjects = new Entry[randomObject.size()];
+		Entry<String, Entry<JsonArray, JsonArray>>[]	randomObjects	= new Entry[randomObject.size()];
 		for (int i = 0; i < randomObject.size(); i++) {
 			String		cornerTexture			= ((StringValue) ((JsonObject) randomObject.get(i)).get("texture")).getValue();
 			JsonArray	cornerRequestedSize	= (JsonArray) ((JsonObject) randomObject.get(i)).get("requestedSize");
-			randomObjects[i] = Map.entry(cornerTexture, cornerRequestedSize);
+			JsonArray	cornerPos			= (JsonArray) ((JsonObject) randomObject.get(i)).get("position");
+			randomObjects[i] = Map.entry(cornerTexture, Map.entry(cornerRequestedSize, cornerPos));
 		}
 
 		// TODO tiles and books
 
 		Random r = new Random();
 
-		for (int i = 0; i < gp.getTileM().getMap().size(); i++) for (int j = 0; j < gp.getTileM().getMap().get(i).size(); j++) {
-			TextureHolder th = gp.getTileM().getMap().get(i).get(j);
+		for (int i = 0; i < gp.getTileM().mapTileNum.size(); i++) for (int j = 0; j < gp.getTileM().mapTileNum.get(i).size(); j++) {
+			Integer th = gp.getTileM().mapTileNum.get(i).get(j);
 
-			if (corners.contains(th.getTile())) {
+			if (corners.contains(th)) {
 				// TODO spawn faggel
-				if (.25 < r.nextDouble()) {
-					Entry<String, JsonArray>	object	= cornerObjects[r.nextInt(cornerObjects.length)];
+
+				if (.25 > r.nextDouble()) {
+					Entry<String, Entry<JsonArray, JsonArray>> object = cornerObjects[r.nextInt(cornerObjects.length)];
 					try {
 						Path						p2		= new File("./res/building/" + object.getKey()).toPath();
 						Image						img		= new Image(new FileInputStream(p2.toFile()));
 
 						JsonObject joB = new JsonObject();
-						joB.put("requestedSize", object.getValue());
+						joB.put("requestedSize", object.getValue().getKey());
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue(object.getKey()));
 						joB.put("textures", textures);
@@ -276,28 +281,29 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								j - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+								j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 						position.add(new DoubleValue(
-								i - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+								i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 						joB.put("position", position);
 						JsonArray originalSize = new JsonArray();
-						originalSize.add(new DoubleValue(img.getWidth()));
+						originalSize.add(new DoubleValue(img.getHeight()));
 						originalSize.add(new DoubleValue(img.getHeight()));
 						joB.put("originalSize", originalSize);
 
-						new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+						gp.getBuildings().add(
+								new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB()));
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
 				}
-			} else if (randoms.contains(th.getTile()) && 1.0/7.0<r.nextDouble()) {
-				Entry<String, JsonArray> object = randomObjects[r.nextInt(randomObjects.length)];
+			} else if (randoms.contains(th) && 1.0 / 8.0 > r.nextDouble()) {
+				Entry<String, Entry<JsonArray, JsonArray>> object = randomObjects[r.nextInt(randomObjects.length)];
 				try {
 					Path	p2	= new File("./res/building/" + object.getKey()).toPath();
 					Image	img	= new Image(new FileInputStream(p2.toFile()));
 
 					JsonObject joB = new JsonObject();
-					joB.put("requestedSize", object.getValue());
+					joB.put("requestedSize", object.getValue().getKey());
 					JsonObject textures = new JsonObject();
 					textures.put("default", new StringValue(object.getKey()));
 					joB.put("textures", textures);
@@ -306,16 +312,20 @@ public class DungeonGen {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							j - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+							j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 					position.add(new DoubleValue(
-							i - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+							i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
+					JsonArray	background		= new JsonArray();
+					background.add(new BoolValue(true));
+					joB.put("background", background);
 					originalSize.add(new DoubleValue(img.getWidth()));
 					originalSize.add(new DoubleValue(img.getHeight()));
 					joB.put("originalSize", originalSize);
 
-					new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+					gp.getBuildings().add(
+							new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB()));
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}

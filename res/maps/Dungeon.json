@@ -18,7 +18,8 @@
 		],
 		"cornerObjects": [{ 
 			"texture" : "Faggel.png",
-			"requestedSize" : [ 96, 96 ]
+			"requestedSize" : [ 96, 96 ],
+			"position" : [ -24, -48 ]
 		}],
 		"randomPieces" : [
 			"LochMiniEckeLinks.png",
@@ -43,11 +44,13 @@
 		"randomObjects": [
 			{ 
 				"texture" : "Buecher1.png",
-				"requestedSize" : [ 50, 50 ]
+				"requestedSize" : [ 50, 50 ],
+				"position" : [ 0, 0 ]
 			},
 			{ 
 				"texture" : "Buecher2.png",
-				"requestedSize" : [ 50, 50 ]
+				"requestedSize" : [ 50, 50 ],
+				"position" : [ 0, 0 ]
 			}
 		]
 	},
