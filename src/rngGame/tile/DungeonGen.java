@@ -233,8 +233,8 @@ public class DungeonGen {
 			JsonArray	cornerRequestedSize	= (JsonArray) ((JsonObject) cornerObject.get(i)).get("requestedSize");
 			cornerObjects[i] = Map.entry(cornerTexture, cornerRequestedSize);
 		}
-		
-		
+
+
 		JsonArray	randomPieces	= (JsonArray) additionalData.get("randomPieces");
 		List<Tile>	randoms			= randomPieces.parallelStream().map(o -> ((StringValue) o).getValue())
 				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
@@ -250,36 +250,75 @@ public class DungeonGen {
 		}
 
 		// TODO tiles and books
-		
-		for (int i = 0; i < gp.getTileM().getMap().size(); i++) {
-			for (int j = 0; j < gp.getTileM().getMap().get(i).size(); j++) {
-				
+
+		Random r = new Random();
+
+		for (int i = 0; i < gp.getTileM().getMap().size(); i++) for (int j = 0; j < gp.getTileM().getMap().get(i).size(); j++) {
+			TextureHolder th = gp.getTileM().getMap().get(i).get(j);
+
+			if (corners.contains(th.getTile())) {
+				// TODO spawn faggel
+				if (.25 < r.nextDouble()) {
+					Entry<String, JsonArray>	object	= cornerObjects[r.nextInt(cornerObjects.length)];
+					try {
+						Path						p2		= new File("./res/building/" + object.getKey()).toPath();
+						Image						img		= new Image(new FileInputStream(p2.toFile()));
+
+						JsonObject joB = new JsonObject();
+						joB.put("requestedSize", object.getValue());
+						JsonObject textures = new JsonObject();
+						textures.put("default", new StringValue(object.getKey()));
+						joB.put("textures", textures);
+						JsonObject buildingData = new JsonObject();
+						joB.put("buildingData", buildingData);
+						joB.put("type", new StringValue("Building"));
+						JsonArray position = new JsonArray();
+						position.add(new DoubleValue(
+								j - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+						position.add(new DoubleValue(
+								i - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+						joB.put("position", position);
+						JsonArray originalSize = new JsonArray();
+						originalSize.add(new DoubleValue(img.getWidth()));
+						originalSize.add(new DoubleValue(img.getHeight()));
+						joB.put("originalSize", originalSize);
+
+						new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			} else if (randoms.contains(th.getTile()) && 1.0/7.0<r.nextDouble()) {
+				Entry<String, JsonArray> object = randomObjects[r.nextInt(randomObjects.length)];
+				try {
+					Path	p2	= new File("./res/building/" + object.getKey()).toPath();
+					Image	img	= new Image(new FileInputStream(p2.toFile()));
+
+					JsonObject joB = new JsonObject();
+					joB.put("requestedSize", object.getValue());
+					JsonObject textures = new JsonObject();
+					textures.put("default", new StringValue(object.getKey()));
+					joB.put("textures", textures);
+					JsonObject buildingData = new JsonObject();
+					joB.put("buildingData", buildingData);
+					joB.put("type", new StringValue("Building"));
+					JsonArray position = new JsonArray();
+					position.add(new DoubleValue(
+							j - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
+					position.add(new DoubleValue(
+							i - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
+					joB.put("position", position);
+					JsonArray originalSize = new JsonArray();
+					originalSize.add(new DoubleValue(img.getWidth()));
+					originalSize.add(new DoubleValue(img.getHeight()));
+					joB.put("originalSize", originalSize);
+
+					new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-
-		Path	p2	= new File("./res/building/" + texture).toPath();
-		Image	img	= new Image(new FileInputStream(p2.toFile()));
-
-		JsonObject joB = new JsonObject();
-		joB.put("requestedSize", requestedSize);
-		JsonObject textures = new JsonObject();
-		textures.put("default", new StringValue(texture));
-		joB.put("textures", textures);
-		JsonObject buildingData = new JsonObject();
-		joB.put("buildingData", buildingData);
-		joB.put("type", new StringValue("Building"));
-		JsonArray position = new JsonArray();
-		position.add(new DoubleValue(
-				requester.get().getLayoutX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX()));
-		position.add(new DoubleValue(
-				requester.get().getLayoutY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
-		joB.put("position", position);
-		JsonArray originalSize = new JsonArray();
-		originalSize.add(new DoubleValue(img.getWidth()));
-		originalSize.add(new DoubleValue(img.getHeight()));
-		joB.put("originalSize", originalSize);
-
-		new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
 	}
 
 	/**

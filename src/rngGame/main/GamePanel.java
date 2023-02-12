@@ -202,7 +202,8 @@ public class GamePanel extends Pane {
 
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
-	
+
+	/** The aktionbutton. */
 	private final AktionButton aktionbutton;
 
 	/** The mp. */
@@ -251,14 +252,14 @@ public class GamePanel extends Pane {
 		fpsLabel.setVisible(false);
 
 		gamemenu = new TabMenu(this);
-		
+
 		aktionbutton = new AktionButton(this);
 
 
 
 		setMap("./res/maps/lavaMap2.json");
 
-		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool,aktionbutton ,gamemenu, fpsLabel, loadingScreen);
+		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, gamemenu, fpsLabel, loadingScreen);
 	}
 
 	/**

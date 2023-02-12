@@ -17,7 +17,10 @@ import rngGame.tile.ImgUtil;
 public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 	/** The lvls. */
-	private static Image[] lvls = Stream.of(new File("./res/lvl/vorgeschllagen").list()).map(t -> {
+	private static Image[] lvls = Stream.of(new File("./res/lvl/vorgeschlagen").listFiles())
+			.sorted((a, b) -> Integer.compare(Integer.parseInt(a.getName().substring(3, a.getName().length() - 4)),
+					Integer.parseInt(b.getName().substring(3, b.getName().length() - 4))))
+			.map(t -> {
 		try {
 			return new FileInputStream(t);
 		} catch (FileNotFoundException e) {
