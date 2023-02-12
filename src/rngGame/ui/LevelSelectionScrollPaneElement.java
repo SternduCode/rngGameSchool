@@ -15,6 +15,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	private final Image UGbc;
 	
 	private ImageView floor1;
+	private ImageView vlvl;
 
 	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct,String floor) {
 		super(new Button());
@@ -23,7 +24,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		Image UGbc2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground2.png");
 		setBackgroundImageToDefaullt();
 		
-		Image floor1 = Text.getInstance().convertText(floor, 48);
+		Image floor1 = Text.getInstance().convertText(floor, 64);
 		floor1 = ImgUtil.resizeImage(
 				floor1, (int) floor1.getWidth(), (int) floor1.getHeight(),
 				(int) (floor1.getWidth() * gamepanel.getScalingFactorX()),
@@ -65,7 +66,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		getChildren().addAll(startButton,this.floor1);
 		this.floor1.setLayoutX(5);
-		this.floor1.setLayoutY(15*gamepanel.getScalingFactorY());
+		this.floor1.setLayoutY(5*gamepanel.getScalingFactorY());
 	}
 
 	public Button getStartButton() { return startButton; }
