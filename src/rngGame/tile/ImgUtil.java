@@ -4,20 +4,47 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javafx.scene.image.*;
 import rngGame.main.GamePanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ImgUtil.
+ */
 public class ImgUtil {
 
 	/**
-	 * For gifs put {@code 			iv.setScaleX(gamepanel.getScalingFactorX());
-			iv.setScaleY(gamepanel.getScalingFactorY());} to set the scale
+	 * Gets the scaled image.
 	 *
+	 * @param gamepanel the gamepanel
+	 * @param path the path
+	 * @return the scaled image
 	 */
 	public static Image getScaledImage(GamePanel gamepanel, String path) {
+		try {
+			Image wi = new Image(new FileInputStream(path));
+			return getScaledImage(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * For gifs put {@code 			iv.setScaleX(gamepanel.getScalingFactorX());
+	 * 			iv.setScaleY(gamepanel.getScalingFactorY());} to set the scale
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param path the path
+	 * @param width the width
+	 * @param height the height
+	 * @return the scaled image
+	 */
+	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
 		String[] sp = path.split("[.]");
 		try {
-			if (sp[sp.length - 1].equals("gif")) {
+			if ("gif".equals(sp[sp.length - 1])) {
 				// ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 				// ImageWriter writer = ImageIO.getImageWritersByFormatName("gif").next();
 				// PipedInputStream pis = new PipedInputStream();
@@ -58,25 +85,39 @@ public class ImgUtil {
 				// pos.flush();
 				Image wi = new Image(new FileInputStream(path));
 				return wi;
-			} else {
-				Image wi = new Image(new FileInputStream(path));
-				wi = ImgUtil.resizeImage(
-						wi, (int) wi.getWidth(), (int) wi.getHeight(),
-						(int) (wi.getWidth() * gamepanel.getScalingFactorX()),
-						(int) (wi.getHeight() * gamepanel.getScalingFactorY()));
-				return wi;
 			}
-	} catch (IOException e) {
-		e.printStackTrace();
-		return null;
-	}
+			Image wi = new Image(new FileInputStream(path));
+			return ImgUtil.resizeImage(
+					wi, (int) wi.getWidth(), (int) wi.getHeight(),
+					(int) (width * gamepanel.getScalingFactorX()),
+					(int) (height * gamepanel.getScalingFactorY()));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
+	/**
+	 * Gets the scale factor.
+	 *
+	 * @param width the width
+	 * @param height the height
+	 * @param requestedWidth the requested width
+	 * @param requestedHeight the requested height
+	 * @return the scale factor
+	 */
 	public static Entry<Integer, Integer> getScaleFactor(int width, int height, int requestedWidth,
 			int requestedHeight) {
 		return Map.entry(requestedWidth / width, requestedHeight / height);
 	}
 
+	/**
+	 * Resample.
+	 *
+	 * @param input the input
+	 * @param scaleFactor the scale factor
+	 * @return the image
+	 */
 	public static Image resample(Image input, Map.Entry<Integer, Integer> scaleFactor) {
 		final int W = (int) input.getWidth();
 		final int H = (int) input.getHeight();
@@ -99,6 +140,16 @@ public class ImgUtil {
 		return output;
 	}
 
+	/**
+	 * Resize buffered image.
+	 *
+	 * @param input the input
+	 * @param w1 the w 1
+	 * @param h1 the h 1
+	 * @param w2 the w 2
+	 * @param h2 the h 2
+	 * @return the buffered image
+	 */
 	public static BufferedImage resizeBufferedImage(BufferedImage input, int w1, int h1, int w2, int h2) {
 		BufferedImage bi = new BufferedImage(w2, h2, input.getType());
 		double x_ratio = w1 / (double) w2;
@@ -112,6 +163,16 @@ public class ImgUtil {
 		return bi;
 	}
 
+	/**
+	 * Resize image.
+	 *
+	 * @param input the input
+	 * @param w1 the w 1
+	 * @param h1 the h 1
+	 * @param w2 the w 2
+	 * @param h2 the h 2
+	 * @return the image
+	 */
 	public static Image resizeImage(Image input, int w1, int h1, int w2, int h2) {
 		WritableImage wi = new WritableImage(w2, h2);
 		PixelReader reader = input.getPixelReader();
