@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.main.*;
+import rngGame.tile.Difficulty;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.*;
 
@@ -152,11 +153,11 @@ public class ContractsTable extends Building {
 		
 
 
-		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Eingang", index * 25 + 0);
-		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Passage", index * 25 + 5);
-		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Kreuzung", index * 25 + 10);
-		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Untergrund", index * 25 + 15);
-		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Zentrum", index * 25 + 20);
+		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Eingang", index * 25 + 0,"Icon_Eingang", Difficulty.EASY);
+		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Passage", index * 25 + 5,"Icon_Passage", Difficulty.EASY);
+		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Kreuzung", index * 25 + 10,"Icon_Kreuzung", Difficulty.MIDDLE);
+		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Untergrund", index * 25 + 15,"Icon_Untergrund", Difficulty.MIDDLE);
+		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Zentrum", index * 25 + 20,"Icon_Zentrum", Difficulty.HARD);
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
@@ -558,6 +559,12 @@ public class ContractsTable extends Building {
 		infos.getChildren().add(ugSachen3.getVlvl());
 		infos.getChildren().add(ugSachen4.getVlvl());
 		infos.getChildren().add(ugSachen5.getVlvl());
+		
+		infos.getChildren().add(ugSachen1.getDifficul());
+		infos.getChildren().add(ugSachen2.getDifficul());
+		infos.getChildren().add(ugSachen3.getDifficul());
+		infos.getChildren().add(ugSachen4.getDifficul());
+		infos.getChildren().add(ugSachen5.getDifficul());
 		allPanes.setVisible(false);
 		allPanes.getChildren().addAll(ausGroup,infos,p2,ausXb);
 
