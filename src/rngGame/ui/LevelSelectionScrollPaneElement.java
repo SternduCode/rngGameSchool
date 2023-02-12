@@ -21,13 +21,15 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 			.sorted((a, b) -> Integer.compare(Integer.parseInt(a.getName().substring(3, a.getName().length() - 4)),
 					Integer.parseInt(b.getName().substring(3, b.getName().length() - 4))))
 			.map(t -> {
-		try {
-			return new FileInputStream(t);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}).filter(s -> s != null).map(Image::new).collect(Collectors.toList()).toArray(new Image[0]);
+				try {
+					return new FileInputStream(t);
+				} catch (
+						/** The e. */
+						FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}).filter(s -> s != null).map(Image::new).collect(Collectors.toList()).toArray(new Image[0]);
 
 	/** The start button. */
 	private final Button background, startButton;
@@ -39,7 +41,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	private final ImageView floor1;
 
 	/** The vlvl. */
-	private ImageView vlvl;
+	private final ImageView vlvl;
 
 	/**
 	 * Instantiates a new level selection scroll pane element.
@@ -47,21 +49,26 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 * @param gamepanel the gamepanel
 	 * @param ct the ct
 	 * @param floor the floor
+	 * @param lvlneu the lvlneu
 	 */
-	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct,String floor) {
+	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct, String floor, int lvlneu) {
 		super(new Button());
 		background = getBackgroundElement();
 		UGbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground.png");
 		Image UGbc2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground2.png");
 		setBackgroundImageToDefaullt();
 
-		Image floor1 = Text.getInstance().convertText(floor, 64);
-		floor1 = ImgUtil.resizeImage(
-				floor1, (int) floor1.getWidth(), (int) floor1.getHeight(),
-				(int) (floor1.getWidth() * gamepanel.getScalingFactorX()),
-				(int) (floor1.getHeight() * gamepanel.getScalingFactorY()));
-		this.floor1 = new ImageView(floor1);
-		this.floor1.setDisable(true);
+
+		vlvl = new ImageView(ImgUtil.resizeImage(lvls[lvlneu/5], (int)lvls[lvlneu/5].getWidth(), (int) lvls[lvlneu/5].getHeight(), (int)(48 * gamepanel.getScalingFactorX()), (int)(48 * gamepanel.getScalingFactorY())));
+		vlvl.setVisible(false);
+		vlvl.setLayoutX(24*gamepanel.getScalingFactorX());
+		vlvl.setLayoutY(30*gamepanel.getScalingFactorY());
+
+
+
+		floor1 = new ImageView();
+		setFloor(gamepanel,floor);
+		floor1.setDisable(true);
 
 		// Start Button
 		Image sButton = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton.png");
@@ -79,6 +86,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		background.setOnMouseReleased(me -> {
 			ct.reloadUGtexture();
+			vlvl.setVisible(true);
 			background.setImage(UGbc2);
 			FadeTransition st = new FadeTransition(Duration.millis(100), startButton);
 			FadeTransition st2 = new FadeTransition(Duration.millis(100), ct.getInfos());
@@ -95,9 +103,9 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		// TODO make other stuffs
 
-		getChildren().addAll(startButton,this.floor1);
-		this.floor1.setLayoutX(5);
-		this.floor1.setLayoutY(5*gamepanel.getScalingFactorY());
+		getChildren().addAll(startButton,floor1);
+		floor1.setLayoutX(5);
+		floor1.setLayoutY(5*gamepanel.getScalingFactorY());
 	}
 
 	/**
@@ -108,10 +116,39 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	public Button getStartButton() { return startButton; }
 
 	/**
+	 * Gets the vlvl.
+	 *
+	 * @return the vlvl
+	 */
+	public ImageView getVlvl() { return vlvl; }
+
+	/**
 	 * Sets the background image to defaullt.
 	 */
 	public void setBackgroundImageToDefaullt() {
 		background.setImage(UGbc);
+	}
+
+	/**
+	 * Sets the floor.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param floor the floor
+	 */
+	public void setFloor(GamePanel gamepanel,String floor) {
+		Image floor1 = Text.getInstance().convertText(floor, 64);
+		floor1 = ImgUtil.resizeImage(
+				floor1, (int) floor1.getWidth(), (int) floor1.getHeight(),
+				(int) (floor1.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (floor1.getHeight() * gamepanel.getScalingFactorY()));
+		this.floor1.setImage(floor1);
+	}
+
+	/**
+	 * Sets the lvlfalse.
+	 */
+	public void setLvlfalse() {
+		vlvl.setVisible(false);
 	}
 
 	/**

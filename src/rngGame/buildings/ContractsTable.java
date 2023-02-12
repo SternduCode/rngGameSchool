@@ -31,9 +31,6 @@ public class ContractsTable extends Building {
 
 	private ImageView text;
 	private Button button_R,button_L;
-
-	
-	
 	
 	private ImageView ausBackground;
 
@@ -41,6 +38,7 @@ public class ContractsTable extends Building {
 
 	private Button ausXb;
 	private int index = 0;
+	private int lvlindex = 0;
 
 	private boolean iftest;
 	private boolean inkreis;
@@ -154,11 +152,11 @@ public class ContractsTable extends Building {
 		
 
 
-		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"Eingang");
-		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"Durchgang");
-		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"Kreuzung");
-		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"Untergrund");
-		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"Zentrum");
+		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Eingang", index * 25 + 0);
+		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Passage", index * 25 + 5);
+		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Kreuzung", index * 25 + 10);
+		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Untergrund", index * 25 + 15);
+		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Zentrum", index * 25 + 20);
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
@@ -554,7 +552,12 @@ public class ContractsTable extends Building {
 
 		// Infos
 		infos.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
-		infos.getChildren().add(lvlBorder);	
+		infos.getChildren().add(lvlBorder);
+		infos.getChildren().add(ugSachen1.getVlvl());
+		infos.getChildren().add(ugSachen2.getVlvl());
+		infos.getChildren().add(ugSachen3.getVlvl());
+		infos.getChildren().add(ugSachen4.getVlvl());
+		infos.getChildren().add(ugSachen5.getVlvl());
 		allPanes.setVisible(false);
 		allPanes.getChildren().addAll(ausGroup,infos,p2,ausXb);
 
@@ -643,6 +646,12 @@ public class ContractsTable extends Building {
 		ugSachen3.startBvisibleFalse();
 		ugSachen4.startBvisibleFalse();
 		ugSachen5.startBvisibleFalse();
+		
+		ugSachen1.setLvlfalse();
+		ugSachen2.setLvlfalse();
+		ugSachen3.setLvlfalse();
+		ugSachen4.setLvlfalse();
+		ugSachen5.setLvlfalse();
 	}
 	
 
