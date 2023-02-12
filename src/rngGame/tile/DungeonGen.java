@@ -123,7 +123,9 @@ public class DungeonGen {
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
+			
 		}
+		System.out.println(difficulty);
 
 		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
 		mainMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
