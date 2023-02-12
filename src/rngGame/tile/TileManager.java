@@ -239,7 +239,7 @@ public class TileManager extends Pane {
 
 		List<TextureHolder>	ths	= new ArrayList<>();
 
-		int x = (int) (collidable.getX()) / gp.BgX, y = (int) (collidable.getY()) / gp.BgY;
+		int x = (int) collidable.getX() / gp.BgX, y = (int) collidable.getY() / gp.BgY;
 
 		for (int i = -2; i < 3; i++) for (int j = -2; j < 3; j++)
 			if (x + i >= 0 && y + j >= 0 && y + j < map.size() && x + i < map.get(y + j).size()) ths.add(map.get(y + j).get(x + i));
