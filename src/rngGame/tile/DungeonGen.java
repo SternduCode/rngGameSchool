@@ -296,7 +296,7 @@ public class DungeonGen {
 						e.printStackTrace();
 					}
 				}
-			} else if (randoms.contains(th) && 1.0 / 8.0 > r.nextDouble()) {
+			} else if (randoms.contains(th) && 1.0 / 10.0 > r.nextDouble()) {
 				Entry<String, Entry<JsonArray, JsonArray>> object = randomObjects[r.nextInt(randomObjects.length)];
 				try {
 					Path	p2	= new File("./res/building/" + object.getKey()).toPath();
