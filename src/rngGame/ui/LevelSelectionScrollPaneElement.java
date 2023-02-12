@@ -8,8 +8,7 @@ import javafx.scene.image.*;
 import javafx.util.Duration;
 import rngGame.buildings.ContractsTable;
 import rngGame.main.*;
-import rngGame.tile.Difficulty;
-import rngGame.tile.ImgUtil;
+import rngGame.tile.*;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -43,16 +42,18 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 	/** The vlvl. */
 	private final ImageView vlvl;
-	
+
+	/** The picture. */
 	private final ImageView picture;
-	
+
+	/** The difficul. */
 	private final ImageView difficul;
 
-	
-	
 
 
-	
+
+
+
 
 	/**
 	 * Instantiates a new level selection scroll pane element.
@@ -61,6 +62,8 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 * @param ct the ct
 	 * @param floor the floor
 	 * @param lvlneu the lvlneu
+	 * @param pic the pic
+	 * @param dif the dif
 	 */
 	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct, String floor, int lvlneu, String pic, Difficulty dif) {
 		super(new Button());
@@ -69,28 +72,29 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		Image UGbc2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground2.png");
 		setBackgroundImageToDefaullt();
 
-		 
-		
+
+
 		Image difE = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difE.png");
 		Image difM = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difM.png");
 		Image difH = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difH.png");
-		
+
 		difficul = new ImageView(difE);
-		
+		difficul.setVisible(false);
+
 		vlvl = new ImageView(ImgUtil.resizeImage(lvls[lvlneu/5], (int)lvls[lvlneu/5].getWidth(), (int) lvls[lvlneu/5].getHeight(), (int)(48 * gamepanel.getScalingFactorX()), (int)(48 * gamepanel.getScalingFactorY())));
 		vlvl.setVisible(false);
 		vlvl.setLayoutX(24*gamepanel.getScalingFactorX());
 		vlvl.setLayoutY(30*gamepanel.getScalingFactorY());
-		
+
 		picture = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/"+pic+".png",64,64));
 		picture.setDisable(true);
-		
+
 		floor1 = new ImageView();
 		setFloor(gamepanel,floor);
 		floor1.setDisable(true);
-		
-		
-		
+
+
+
 		// Start Button
 		Image sButton = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton.png");
 		Image sButton2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton2.png");
@@ -119,29 +123,33 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 			st2.play();
 			startButton.setVisible(true);
 			ct.getInfos().setVisible(true);
-			
-			if(dif == Difficulty.MIDDLE) {
-				difficul.setImage(difM);
-			}
-			if(dif == Difficulty.HARD) {
-				difficul.setImage(difH);
-			}	
-			if(dif == Difficulty.EASY) {
-				difficul.setImage(difE);
-			}
-			
-			
+
+			if(dif == Difficulty.MIDDLE) difficul.setImage(difM);
+			if(dif == Difficulty.HARD) difficul.setImage(difH);
+			if(dif == Difficulty.EASY) difficul.setImage(difE);
+
+			difficul.setVisible(true);
+
 		});
 
 		// TODO make other stuffs
-		
-		getChildren().addAll(startButton,floor1,picture,difficul);
+
+		getChildren().addAll(startButton, floor1, picture);
 		floor1.setLayoutX(5*gamepanel.getScalingFactorX());
 		floor1.setLayoutY(5*gamepanel.getScalingFactorY());
 		picture.setLayoutX(7*gamepanel.getScalingFactorX());
 		picture.setLayoutY(7*gamepanel.getScalingFactorY());
 		difficul.setLayoutX(360*gamepanel.getScalingFactorX());
 		difficul.setLayoutY(65*gamepanel.getScalingFactorY());
+	}
+
+	/**
+	 * Gets the difficul.
+	 *
+	 * @return the difficul
+	 */
+	public ImageView getDifficul() {
+		return difficul;
 	}
 
 	/**
@@ -185,6 +193,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 */
 	public void setLvlfalse() {
 		vlvl.setVisible(false);
+		difficul.setVisible(false);
 	}
 
 	/**
@@ -192,9 +201,5 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 */
 	public void startBvisibleFalse() {
 		startButton.setVisible(false);
-	}
-	
-	public ImageView getDifficul() {
-		return difficul;
 	}
 }
