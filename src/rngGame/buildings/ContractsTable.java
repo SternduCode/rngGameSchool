@@ -154,11 +154,11 @@ public class ContractsTable extends Building {
 		
 
 
-		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor1");
-		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor2");
-		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor3");
-		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor4");
-		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"Floor5");
+		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"Eingang");
+		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"Durchgang");
+		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"Kreuzung");
+		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"Untergrund");
+		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"Zentrum");
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);
