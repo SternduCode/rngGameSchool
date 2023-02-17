@@ -653,8 +653,6 @@ public class GamePanel extends Pane {
 
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
 
-		aktionbutton.setInteractionbuttonKann(false);
-
 		input.update(lastFrameTime);
 
 		try {
@@ -663,6 +661,8 @@ public class GamePanel extends Pane {
 		}
 
 		selectTool.update();
+
+		aktionbutton.update();
 
 		fpsLabel.setText(String.format("%.2f", 1000 / fps));
 		fpsLabel.setLayoutX(SpielLaenge - fpsLabel.getWidth());

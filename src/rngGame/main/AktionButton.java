@@ -2,15 +2,15 @@ package rngGame.main;
 
 import java.io.*;
 
-import javafx.scene.Group;
 import javafx.scene.image.*;
+import javafx.scene.layout.Pane;
 import rngGame.tile.ImgUtil;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class AktionButton.
  */
-public class AktionButton extends Group {
+public class AktionButton extends Pane {
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -23,6 +23,9 @@ public class AktionButton extends Group {
 
 	/** The ifc. */
 	private boolean ifc;
+
+	/** The time the button was last set to true. */
+	private long lastSetToTrue = 0l;
 
 
 
@@ -40,7 +43,7 @@ public class AktionButton extends Group {
 		aktionbutton.setOnMousePressed(me -> {
 			if(ifc) aktionbutton.setImage(druck);
 		});
-		aktionbutton.setOnMousePressed(me -> {
+		aktionbutton.setOnMouseReleased(me -> {
 			if(ifc) aktionbutton.setImage(kann);
 		});
 
@@ -63,8 +66,8 @@ public class AktionButton extends Group {
 		druck = ImgUtil.resizeImage(druck, (int)druck.getWidth(), (int)druck.getHeight(), (int)(150* gamepanel.getScalingFactorX()), (int)(150*gamepanel.getScalingFactorY()));
 		aktionbutton.setImage(nichts);
 
-		aktionbutton.setLayoutX(gamepanel.SpielLaenge-220*gamepanel.getScalingFactorX());
-		aktionbutton.setLayoutY(gamepanel.SpielHoehe-220*gamepanel.getScalingFactorY());
+		setLayoutX(gamepanel.SpielLaenge - 220 * gamepanel.getScalingFactorX());
+		setLayoutY(gamepanel.SpielHoehe - 220 * gamepanel.getScalingFactorY());
 
 	}
 
@@ -75,7 +78,18 @@ public class AktionButton extends Group {
 	 */
 	public void setInteractionbuttonKann(boolean ifc) {
 		this.ifc = ifc;
-		if(ifc) aktionbutton.setImage(kann);
-		else aktionbutton.setImage(nichts);
+		if (ifc) {
+			if (aktionbutton.getImage() != druck)
+				aktionbutton.setImage(kann);
+			lastSetToTrue = System.currentTimeMillis();
+		} else aktionbutton.setImage(nichts);
 	}
+
+	/**
+	 * Update.
+	 */
+	public void update() {
+		if (System.currentTimeMillis() - lastSetToTrue > 50) setInteractionbuttonKann(false);
+	}
+
 }
