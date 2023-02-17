@@ -64,7 +64,7 @@ public class TreasureChest extends Building {
 	 * Inits the.
 	 */
 	public void init() {
-		addMiscBox("action", new Ellipse(getWidth() / 2.0, getHeight() / 2.0, gamepanel.BgX / 2.0, gamepanel.BgY / 2.0), (gpt, self) -> {
+		addMiscBox("action", new Ellipse(getReqWidth() / 2, getReqHeight() / 2, gamepanel.BgX / 2.0, gamepanel.BgY / 2.0), (gpt, self) -> {
 			gpt.getAktionbutton().setInteractionbuttonKann(true);
 		});
 	}

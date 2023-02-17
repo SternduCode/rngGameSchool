@@ -283,9 +283,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+								j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 						position.add(new DoubleValue(
-								i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+								i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 						joB.put("position", position);
 						JsonArray originalSize = new JsonArray();
 						originalSize.add(new DoubleValue(img.getHeight()));
@@ -314,9 +314,9 @@ public class DungeonGen {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+							j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 					position.add(new DoubleValue(
-							i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+							i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					JsonArray	background		= new JsonArray();
@@ -354,9 +354,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * gp.BgX));
+								en.getKey() * (gp.BgX / gp.getScalingFactorX())));
 						position.add(new DoubleValue(
-								en.getValue() * gp.BgY));
+								en.getValue() * (gp.BgY / gp.getScalingFactorY())));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
