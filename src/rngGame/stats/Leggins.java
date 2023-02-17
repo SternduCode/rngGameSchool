@@ -1,4 +1,4 @@
-package rngGame.Stats;
+package rngGame.stats;
 
 public class Leggins {
 

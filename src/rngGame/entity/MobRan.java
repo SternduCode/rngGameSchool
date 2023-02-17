@@ -9,9 +9,8 @@ import com.sterndu.json.JsonObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.shape.Circle;
-import rngGame.Stats.Demon;
-import rngGame.Stats.Element;
 import rngGame.main.GamePanel;
+import rngGame.stats.*;
 import rngGame.tile.TextureHolder;
 
 
@@ -24,12 +23,6 @@ public class MobRan extends NPC {
 	/**
 	 * The  PathElement.
 	 */
-	private Element wahl;
-	private String mobName;
-	
-	public String getLol() {
-		return mobName;
-	}
 	private record PathElement(int x, int y, int distance) {
 
 		/**
@@ -48,6 +41,14 @@ public class MobRan extends NPC {
 
 	}
 
+	/**
+	 * The  PathElement.
+	 */
+	private Element wahl;
+
+	/** The mob name. */
+	private String mobName;
+
 	/** The diff. */
 	private final double[] diff = new double[2];
 
@@ -56,6 +57,9 @@ public class MobRan extends NPC {
 
 	/** The steps. */
 	private final int steps = 40;
+
+	/** The gen. */
+	Random gen = new Random();
 
 	/**
 	 * Instantiates a new mob ran.
@@ -103,14 +107,23 @@ public class MobRan extends NPC {
 	}
 
 	/**
+	 * Gets the lol.
+	 *
+	 * @return the lol
+	 */
+	public String getLol() {
+		return mobName;
+	}
+
+	/**
 	 * Inits the.
 	 */
 	@Override
 	public void init() {
 		if (!getMiscBoxes().containsKey("fight"))
-			getMiscBoxes().put("fight", new Circle(32, 32, 32));
+			getMiscBoxes().put("fight", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
 		if (!getMiscBoxes().containsKey("visible"))
-			getMiscBoxes().put("visible", new Circle(32, 32, 528));
+			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 			MobGen();
@@ -133,6 +146,23 @@ public class MobRan extends NPC {
 	}
 
 	/**
+	 * Mob gen.
+	 */
+	public void MobGen() {
+		int r = gen.nextInt(101)+1;
+		if(r <= 30) wahl = Element.Fire;
+		else if(r <= 60 && r >= 31) wahl = Element.Water;
+		else if(r <= 90 && r >= 61) wahl = Element.Plant;
+		else if(r <= 95 && r >= 91) wahl = Element.Light;
+		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
+		else wahl = Element.Void;
+
+		String[] mobs = {"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
+		int mr = gen.nextInt(7);
+		mobName = mobs[mr];
+	}
+
+	/**
 	 * Pathfinding.
 	 *
 	 * @param sp the sp
@@ -144,7 +174,7 @@ public class MobRan extends NPC {
 
 		int	tileX	= (int) Math.round(x / sp.BgX);
 		int	tileY	= (int) Math.round(y / sp.BgY);
-		
+
 		List<List<TextureHolder>> map = sp.getTileM().getMap();
 		if (map.size() > 0) {
 
@@ -173,7 +203,7 @@ public class MobRan extends NPC {
 			}).distinct();
 
 			List<PathElement> pels = stream.collect(Collectors.toList());
-			
+
 			if (pels.parallelStream().filter(pe -> pe.distance() == 0)
 					.anyMatch(pe -> map.get(pe.y()).get(pe.x()).getPoly().getPoints().size() != 0)) pels.removeIf(pe -> pe.distance() == 0);
 
@@ -240,42 +270,27 @@ public class MobRan extends NPC {
 		}
 	}
 
-	Random gen = new Random();
-	public void MobGen() {
-		int r = gen.nextInt(101)+1;
-		if(r <= 30) wahl = Element.Fire;
-		else if(r <= 60 && r >= 31) wahl = Element.Water;
-		else if(r <= 90 && r >= 61) wahl = Element.Plant;
-		else if(r <= 95 && r >= 91) wahl = Element.Light; 
-		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
-		else wahl = Element.Void;
 
-		String[] mobs = new String[]{"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
-		int mr = gen.nextInt(7);
-		mobName = mobs[mr];
-	}
-	
-	
-//Durchlaufen lassen bis void LOL OMG 360
-//	for(int i = 1; wahl!="void"; i++) {
-//		int r = gen.nextInt(101)+1;
-//		if(r <= 30) {
-//			wahl = "fire";
-//		}else if(r <= 60 && r >= 31) {
-//			wahl = "water";
-//		}else if(r <= 90 && r >= 61) {
-//			wahl = "plant";
-//		}else if(r <= 95 && r >= 91) {
-//			wahl = "light";
-//			plantc++;
-//		}else if(r <= 100 && r >= 96) {
-//			wahl = "shadow";
-//			plantc++;
-//		}else {
-//			wahl = "void";
-//		}
-//		System.out.println(wahl + " " + i + " " + plantc);
-//		}
-	
-	
+	//Durchlaufen lassen bis void LOL OMG 360
+	//	for(int i = 1; wahl!="void"; i++) {
+	//		int r = gen.nextInt(101)+1;
+	//		if(r <= 30) {
+	//			wahl = "fire";
+	//		}else if(r <= 60 && r >= 31) {
+	//			wahl = "water";
+	//		}else if(r <= 90 && r >= 61) {
+	//			wahl = "plant";
+	//		}else if(r <= 95 && r >= 91) {
+	//			wahl = "light";
+	//			plantc++;
+	//		}else if(r <= 100 && r >= 96) {
+	//			wahl = "shadow";
+	//			plantc++;
+	//		}else {
+	//			wahl = "void";
+	//		}
+	//		System.out.println(wahl + " " + i + " " + plantc);
+	//		}
+
+
 }

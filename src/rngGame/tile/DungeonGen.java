@@ -12,7 +12,7 @@ import com.sterndu.json.*;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.shape.*;
-import rngGame.buildings.Building;
+import rngGame.buildings.*;
 import rngGame.main.GamePanel;
 
 
@@ -123,7 +123,7 @@ public class DungeonGen {
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		System.out.println(difficulty);
 
@@ -259,6 +259,8 @@ public class DungeonGen {
 
 		Random r = new Random();
 
+		List<Entry<Integer, Integer>> availChestSpots = new ArrayList<>();
+
 		for (int i = 0; i < gp.getTileM().mapTileNum.size(); i++) for (int j = 0; j < gp.getTileM().mapTileNum.get(i).size(); j++) {
 			Integer th = gp.getTileM().mapTileNum.get(i).get(j);
 
@@ -281,9 +283,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+								j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 						position.add(new DoubleValue(
-								i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+								i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 						joB.put("position", position);
 						JsonArray originalSize = new JsonArray();
 						originalSize.add(new DoubleValue(img.getHeight()));
@@ -296,7 +298,10 @@ public class DungeonGen {
 						e.printStackTrace();
 					}
 				}
-			} else if (randoms.contains(th) && 1.0 / 10.0 > r.nextDouble()) {
+
+
+			} else if (randoms.contains(th)) if ( 1.0 / 8.0 > r.nextDouble()) {
+
 				Entry<String, Entry<JsonArray, JsonArray>> object = randomObjects[r.nextInt(randomObjects.length)];
 				try {
 					Path	p2	= new File("./res/building/" + object.getKey()).toPath();
@@ -312,9 +317,9 @@ public class DungeonGen {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							j * gp.BgX + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+							j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 					position.add(new DoubleValue(
-							i * gp.BgY + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+							i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					JsonArray	background		= new JsonArray();
@@ -329,7 +334,129 @@ public class DungeonGen {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-			}
+			} else availChestSpots.add(Map.entry(j, i));
+		}
+		switch (difficulty) {
+			case EASY:
+				for (int i = 0; i < 3; i++) {
+					Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+					try {
+						Path	p2	= new File("./res/building/NormalChestClosed.png").toPath();
+						Image	img	= new Image(new FileInputStream(p2.toFile()));
+
+						JsonObject	joB		= new JsonObject();
+						JsonArray	reqSize	= new JsonArray();
+						reqSize.add(new DoubleValue(32));
+						reqSize.add(new DoubleValue(32));
+						joB.put("requestedSize", reqSize);
+						JsonObject textures = new JsonObject();
+						textures.put("default", new StringValue("NormalChestClosed.png"));
+						joB.put("textures", textures);
+						JsonObject buildingData = new JsonObject();
+						joB.put("buildingData", buildingData);
+						joB.put("type", new StringValue("Building"));
+						JsonArray position = new JsonArray();
+						position.add(new DoubleValue(
+								en.getKey() * (gp.BgX / gp.getScalingFactorX())));
+						position.add(new DoubleValue(
+								en.getValue() * (gp.BgY / gp.getScalingFactorY())));
+						joB.put("position", position);
+						JsonArray	originalSize	= new JsonArray();
+						JsonArray	background		= new JsonArray();
+						background.add(new BoolValue(false));
+						joB.put("background", background);
+						originalSize.add(new DoubleValue(img.getWidth()));
+						originalSize.add(new DoubleValue(img.getHeight()));
+						joB.put("originalSize", originalSize);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+								gp.getTileM().getRequesterB());
+						gp.getBuildings().add(tc);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					availChestSpots.remove(en);
+				}
+				break;
+			case MIDDLE:
+				for (int i = 0; i < 4; i++) {
+					Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+					try {
+						Path	p2	= new File("./res/building/NormalChestClosed.png").toPath();
+						Image	img	= new Image(new FileInputStream(p2.toFile()));
+
+						JsonObject	joB		= new JsonObject();
+						JsonArray	reqSize	= new JsonArray();
+						reqSize.add(new DoubleValue(32));
+						reqSize.add(new DoubleValue(32));
+						joB.put("requestedSize", reqSize);
+						JsonObject textures = new JsonObject();
+						textures.put("default", new StringValue("NormalChestClosed.png"));
+						joB.put("textures", textures);
+						JsonObject buildingData = new JsonObject();
+						joB.put("buildingData", buildingData);
+						joB.put("type", new StringValue("Building"));
+						JsonArray position = new JsonArray();
+						position.add(new DoubleValue(
+								en.getKey() * gp.BgX));
+						position.add(new DoubleValue(
+								en.getValue() * gp.BgY));
+						joB.put("position", position);
+						JsonArray	originalSize	= new JsonArray();
+						JsonArray	background		= new JsonArray();
+						background.add(new BoolValue(false));
+						joB.put("background", background);
+						originalSize.add(new DoubleValue(img.getWidth()));
+						originalSize.add(new DoubleValue(img.getHeight()));
+						joB.put("originalSize", originalSize);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+								gp.getTileM().getRequesterB());
+						gp.getBuildings().add(tc);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					availChestSpots.remove(en);
+				}
+				break;
+			case HARD:
+				for (int i = 0; i < 5; i++) {
+					Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+					try {
+						Path	p2	= new File("./res/building/NormalChestClosed.png").toPath();
+						Image	img	= new Image(new FileInputStream(p2.toFile()));
+
+						JsonObject	joB		= new JsonObject();
+						JsonArray	reqSize	= new JsonArray();
+						reqSize.add(new DoubleValue(32));
+						reqSize.add(new DoubleValue(32));
+						joB.put("requestedSize", reqSize);
+						JsonObject textures = new JsonObject();
+						textures.put("default", new StringValue("NormalChestClosed.png"));
+						joB.put("textures", textures);
+						JsonObject buildingData = new JsonObject();
+						joB.put("buildingData", buildingData);
+						joB.put("type", new StringValue("Building"));
+						JsonArray position = new JsonArray();
+						position.add(new DoubleValue(
+								en.getKey() * gp.BgX));
+						position.add(new DoubleValue(
+								en.getValue() * gp.BgY));
+						joB.put("position", position);
+						JsonArray	originalSize	= new JsonArray();
+						JsonArray	background		= new JsonArray();
+						background.add(new BoolValue(false));
+						joB.put("background", background);
+						originalSize.add(new DoubleValue(img.getWidth()));
+						originalSize.add(new DoubleValue(img.getHeight()));
+						joB.put("originalSize", originalSize);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+								gp.getTileM().getRequesterB());
+						gp.getBuildings().add(tc);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					availChestSpots.remove(en);
+				}
+				break;
 		}
 	}
 

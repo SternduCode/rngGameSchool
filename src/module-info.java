@@ -15,7 +15,7 @@ module rngGame {
 	requires java.xml;
 	requires javafx.media;
 	
-	requires Lib;
+	requires transitive Lib;
 
 	opens rngGame.main to javafx.graphics;
 }
