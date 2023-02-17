@@ -255,12 +255,19 @@ public class GamePanel extends Pane {
 
 		aktionbutton = new AktionButton(this);
 
-
-
 		setMap("./res/maps/lavaMap2.json");
+
+		System.out.println(aktionbutton.isDisable());
 
 		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, gamemenu, fpsLabel, loadingScreen);
 	}
+
+	/**
+	 * Gets the aktionbutton.
+	 *
+	 * @return the aktionbutton
+	 */
+	public AktionButton getAktionbutton() { return aktionbutton; }
 
 	/**
 	 * Gets the buildings.
@@ -645,6 +652,8 @@ public class GamePanel extends Pane {
 	public void update() {
 
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
+
+		aktionbutton.setInteractionbuttonKann(false);
 
 		input.update(lastFrameTime);
 
