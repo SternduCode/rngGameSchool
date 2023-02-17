@@ -1,5 +1,5 @@
 package rngGame.stats;
 
-public class Helmet {
+public class Key {
 
 }
