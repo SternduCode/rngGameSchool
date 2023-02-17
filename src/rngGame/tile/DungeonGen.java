@@ -348,6 +348,7 @@ public class DungeonGen {
 						joB.put("requestedSize", reqSize);
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue("NormalChestClosed.png"));
+						textures.put("open", new StringValue("NormalChestOpen.png"));
 						joB.put("textures", textures);
 						JsonObject buildingData = new JsonObject();
 						joB.put("buildingData", buildingData);

@@ -1,6 +1,7 @@
 package rngGame.main;
 
 import java.io.*;
+import java.util.function.Consumer;
 
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
@@ -22,10 +23,13 @@ public class AktionButton extends Pane {
 	private Image nichts,kann,druck;
 
 	/** The ifc. */
-	private boolean ifc;
+	private boolean ifc = false;
 
 	/** The time the button was last set to true. */
 	private long lastSetToTrue = 0l;
+
+	/** The handler. */
+	private Consumer<GamePanel> handler = null;
 
 
 
@@ -41,7 +45,10 @@ public class AktionButton extends Pane {
 		getChildren().add(aktionbutton);
 
 		aktionbutton.setOnMousePressed(me -> {
-			if(ifc) aktionbutton.setImage(druck);
+			if (ifc) {
+				aktionbutton.setImage(druck);
+				if (handler != null) handler.accept(gamepanel);
+			}
 		});
 		aktionbutton.setOnMouseReleased(me -> {
 			if(ifc) aktionbutton.setImage(kann);
@@ -75,21 +82,26 @@ public class AktionButton extends Pane {
 	 * Sets the interactionbutton kann.
 	 *
 	 * @param ifc the new interactionbutton kann
+	 * @param handler the handler
 	 */
-	public void setInteractionbuttonKann(boolean ifc) {
+	public void setInteractionbuttonKann(boolean ifc, Consumer<GamePanel> handler) {
 		this.ifc = ifc;
 		if (ifc) {
+			this.handler = handler;
 			if (aktionbutton.getImage() != druck)
 				aktionbutton.setImage(kann);
 			lastSetToTrue = System.currentTimeMillis();
-		} else aktionbutton.setImage(nichts);
+		} else {
+			aktionbutton.setImage(nichts);
+			this.handler = null;
+		}
 	}
 
 	/**
 	 * Update.
 	 */
 	public void update() {
-		if (System.currentTimeMillis() - lastSetToTrue > 50) setInteractionbuttonKann(false);
+		if (System.currentTimeMillis() - lastSetToTrue > 50) setInteractionbuttonKann(false, null);
 	}
 
 }
