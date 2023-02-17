@@ -16,6 +16,9 @@ import rngGame.main.GamePanel;
  */
 public class TreasureChest extends Building {
 
+	/** The is open. */
+	private boolean isOpen = false;
+
 	/**
 	 * Instantiates a new treasure chest.
 	 *
@@ -65,9 +68,13 @@ public class TreasureChest extends Building {
 	 */
 	public void init() {
 		addMiscBox("action", new Ellipse(getReqWidth() * gamepanel.getScalingFactorX() / 2, getReqHeight() * gamepanel.getScalingFactorY() / 2,
-				gamepanel.BgX / 2.0, gamepanel.BgY / 2.0), (gpt, self) -> {
-			gpt.getAktionbutton().setInteractionbuttonKann(true);
-		});
+				gamepanel.BgX / 2, gamepanel.BgY / 2), (gpt, self) -> {
+					if (!isOpen)
+						gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
+							isOpen = true;
+							TreasureChest.this.setCurrentKey("open");
+						});
+				});
 	}
 
 }
