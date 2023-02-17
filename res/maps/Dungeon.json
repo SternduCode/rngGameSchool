@@ -51,11 +51,6 @@
 				"texture" : "Buecher2.png",
 				"requestedSize" : [ 50, 50 ],
 				"position" : [ 0, 0 ]
-			},
-			{ 
-				"texture" : "NormalChestClosed.png",
-				"requestedSize" : [ 32, 32 ],
-				"position" : [ 0, 0 ]
 			}
 			
 			
