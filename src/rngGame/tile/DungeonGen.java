@@ -55,25 +55,25 @@ public class DungeonGen {
 	private final GamePanel gp;
 
 	/** The mainMap. */
-	private final JsonObject mainMap;
+	private final JsonObject mainMap,endMap;
 
 	/** The maps. */
 	private final List<Entry<JsonObject, Size>> maps;
 
 	/** The map tiles. */
-	private final List<Tile> mainMapTiles, mapsTiles[];
+	private final List<Tile> mainMapTiles, endMapTiles, mapsTiles[];
 
 	/** The map tile numbers. */
-	private final List<List<Integer>> mainMapTileNum, mapsTileNum[];
+	private final List<List<Integer>> mainMapTileNum, endMapTileNum, mapsTileNum[];
 
 	/** The connectors, connections and replacements. */
 	private final List<JsonObject> connectors, connections, replacements;
 
 	/** The map connector locations and directions. */
-	private final List<Entry<Point2D, Direction>> mainMapConnectors, mapsConnectors[];
+	private final List<Entry<Point2D, Direction>> mainMapConnectors,endMapConnectors, mapsConnectors[];
 
 	/** The mainMap void number. */
-	private int mainMapVoidNum;
+	private int mainMapVoidNum,endMapVoidNum ;
 
 	/** The map void numbers. */
 	private final int mapsVoidNum[];
@@ -82,7 +82,7 @@ public class DungeonGen {
 	private final JsonObject additionalData;
 
 	/** The map connector tiles. */
-	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, mapsConnectorTiles[];
+	private final Map<Integer, Map.Entry<Tile, JsonObject>> mainMapConnectorTiles, endMapConnectorTiles, mapsConnectorTiles[];
 
 	/** The difficulty. */
 	private final Difficulty difficulty;
@@ -102,10 +102,11 @@ public class DungeonGen {
 	 * @param difficulty   the difficulty
 	 */
 	@SuppressWarnings("unchecked")
-	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, List<JsonObject> connectors, List<JsonObject> connections,
+	public DungeonGen(GamePanel gp, String voidImg, JsonObject mainmap, JsonArray maps, JsonObject endmap, List<JsonObject> connectors, List<JsonObject> connections,
 			List<JsonObject> replacements, JsonObject additionalData, Difficulty difficulty) {
 		this.gp	= gp;
 		mainMap	= mainmap;
+		endMap = endmap;
 
 		this.additionalData = additionalData;
 
@@ -130,10 +131,16 @@ public class DungeonGen {
 		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
 		mainMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
 		gp.getTileM().mapTileNum	= new ArrayList<>();
+		
+		gp.getTileM().loadMap((JsonArray) ((JsonObject) endMap.get("map")).get("matrix"));// load mainmap matrix
+		endMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
+		gp.getTileM().mapTileNum	= new ArrayList<>();
+		
 
 		String dir = ((StringValue) ((JsonObject) mainmap.get("map")).get("dir")).getValue();
 
 		mainMapTiles = new ArrayList<>();
+		endMapTiles = new ArrayList<>();
 
 		for (Object texture : (JsonArray) ((JsonObject) mainmap.get("map")).get("textures")) try {// load mainmap tiles
 			Tile t = new Tile( ((StringValue) texture).getValue(), new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
@@ -159,7 +166,34 @@ public class DungeonGen {
 			e.printStackTrace();
 		}
 
+		for (Object texture : (JsonArray) ((JsonObject) endmap.get("map")).get("textures")) try {// load mainmap tiles
+			Tile t = new Tile( ((StringValue) texture).getValue(), new FileInputStream("./res/" + dir + "/" + ((StringValue) texture).getValue()),
+					gp);
+			endMapTiles.add(t);
+			String[] sp = ((StringValue) texture).getValue().split("[.]");
+			if (new File("./res/collisions/" + dir + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+			+ ".collisionbox").exists())
+				try {
+					RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/" + dir + "/"
+							+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
+							+ ".collisionbox"), "rws");
+					raf.seek(0l);
+					int length = raf.readInt();
+					t.poly = new ArrayList<>();
+					boolean s = false;
+					for (int i = 0; i < length; i++)
+						t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		
 		for (List<Integer> xCol : mainMapTileNum) for (Integer v : xCol) if (mainMapTiles.get(v).name.equals(voidImg)) mainMapVoidNum = v; // find
+		
+		for (List<Integer> xCol : endMapTileNum) for (Integer v : xCol) if (endMapTiles.get(v).name.equals(voidImg)) endMapVoidNum = v; // find
 		// void in
 		// mainmap
 		// tiles
@@ -167,6 +201,8 @@ public class DungeonGen {
 		mapsTileNum	= new List[this.maps.size()];
 		mapsTiles	= new List[this.maps.size()];
 		mapsVoidNum	= new int[this.maps.size()];
+		
+		
 
 		for (int i = 0; i < this.maps.size(); i++) {// TODO check for validity
 			gp.getTileM().loadMap((JsonArray) ((JsonObject) this.maps.get(i).getKey().get("map")).get("matrix"));
@@ -206,8 +242,10 @@ public class DungeonGen {
 		this.replacements	= replacements;
 
 		mainMapConnectorTiles	= new HashMap<>();
+		endMapConnectorTiles	= new HashMap<>();
 		mapsConnectorTiles		= new HashMap[mapsTiles.length];
 		mainMapConnectors		= new ArrayList<>();
+		endMapConnectors		= new ArrayList<>();
 		mapsConnectors			= new List[this.maps.size()];
 		for (int i = 0; i < this.maps.size(); i++) mapsConnectors[i] = new ArrayList<>();
 		System.out.println(mainMapVoidNum);
@@ -472,6 +510,13 @@ public class DungeonGen {
 					mainMapConnectorTiles.put(c_i, Map.entry(mainMapTiles.get(c_i), jobj));
 			});
 		}
+		for (int i = 0; i < endMapTiles.size(); i++) {
+			int c_i = i;
+			connectors.forEach(jobj -> {
+				if ( ((StringValue) jobj.get("name")).getValue().equals(endMapTiles.get(c_i).name))
+					endMapConnectorTiles.put(c_i, Map.entry(endMapTiles.get(c_i), jobj));
+			});
+		}
 		for (int i = 0; i < mapsConnectorTiles.length; i++) {
 			int c_i = i;
 			mapsConnectorTiles[i] = new HashMap<>();
@@ -489,6 +534,12 @@ public class DungeonGen {
 			for (int j = 0; j < mainMapTileNum.get(i).size(); j++) if (mainMapConnectorTiles.containsKey(mainMapTileNum.get(i).get(j))) {
 				String direction = ((StringValue) mainMapConnectorTiles.get(mainMapTileNum.get(i).get(j)).getValue().get("direction")).getValue();
 				mainMapConnectors.add(Map.entry(new Point2D(i, j), Direction.valueOf(direction.toUpperCase())));
+			}
+		
+		for (int i = 0; i < endMapTileNum.size(); i++)
+			for (int j = 0; j < endMapTileNum.get(i).size(); j++) if (endMapConnectorTiles.containsKey(endMapTileNum.get(i).get(j))) {
+				String direction = ((StringValue) endMapConnectorTiles.get(endMapTileNum.get(i).get(j)).getValue().get("direction")).getValue();
+				endMapConnectors.add(Map.entry(new Point2D(i, j), Direction.valueOf(direction.toUpperCase())));
 			}
 
 		for (int s = 0; s < mapsTileNum.length; s++) {
@@ -516,6 +567,27 @@ public class DungeonGen {
 						break;
 					case RIGHT:
 						if (mainMapVoidNum != mainMapTileNum.get((int) p.getKey().getX()).get((int) p.getKey().getY() + 1)) it.remove();
+						break;
+				}
+			} catch (Exception e) {}
+		}
+		
+		it = endMapConnectors.iterator();
+		while (it.hasNext()) {
+			Entry<Point2D, Direction> p = it.next();
+			try {
+				switch (p.getValue()) {
+					case UP:
+						if (endMapVoidNum != endMapTileNum.get((int) p.getKey().getX() - 1).get((int) p.getKey().getY())) it.remove();
+						break;
+					case DOWN:
+						if (endMapVoidNum != endMapTileNum.get((int) p.getKey().getX() + 1).get((int) p.getKey().getY())) it.remove();
+						break;
+					case LEFT:
+						if (endMapVoidNum != endMapTileNum.get((int) p.getKey().getX()).get((int) p.getKey().getY() - 1)) it.remove();
+						break;
+					case RIGHT:
+						if (endMapVoidNum != endMapTileNum.get((int) p.getKey().getX()).get((int) p.getKey().getY() + 1)) it.remove();
 						break;
 				}
 			} catch (Exception e) {}
@@ -751,6 +823,7 @@ public class DungeonGen {
 			}
 			if (smallMaps >= difficulty.getSmallMaps() && middleMaps >= difficulty.getMiddleMaps() && bigMaps >= difficulty.getBigMaps()) break;
 		}
+		//TODO
 		int xOffset = (int) (mapPositions.entrySet().parallelStream().map(Entry::getValue).mapToDouble(Point2D::getX).filter(lx -> lx <= 0.0).min()
 				.orElseGet(() -> 1.0) - 1.0),
 				yOffset = (int) (mapPositions.entrySet().parallelStream().map(Entry::getValue).mapToDouble(Point2D::getY).filter(ly -> ly <= 0.0)

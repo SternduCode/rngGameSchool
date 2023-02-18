@@ -894,12 +894,15 @@ public class TileManager extends Pane {
 
 				JsonObject mainmap = (JsonObject) JsonParser
 						.parse(new FileInputStream("./res/maps/" + ((StringValue) jo.get("mainmap")).getValue()));
+				
+				JsonObject endmap = (JsonObject) JsonParser
+						.parse(new FileInputStream("./res/maps/" + ((StringValue) jo.get("endmap")).getValue()));
 
 				JsonArray ja_maps = (JsonArray) jo.get("maps");
 
 				String voidImg = ((StringValue) jo.get("void")).getValue();
 
-				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,
+				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,endmap,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), (JsonObject) jo.get("additionalData"), gp.getDifficulty());

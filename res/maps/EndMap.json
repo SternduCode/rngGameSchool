@@ -1,0 +1,57 @@
+{
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		
+	],
+	"map" : {
+		"playerLayer" : 0,
+		"textures" : [
+			"Void.png",
+			"EckeLinksOben.png",
+			"WasserStrom.png",
+			"SeiteOben3.png",
+			"SeiteObenBS.png",
+			"SeiteOben2.png",
+			"EckeRechtsOben.png",
+			"LochMiniEckeRechtsO.png",
+			"Mitte.png",
+			"LochMiniEckeLinkU.png",
+			"WasserStromSeite.png",
+			"WasserStromkreuz.png",
+			"SeiteLinks3.png",
+			"LochMiniEckeLinks.png",
+			"SeiteUnten3.png",
+			"LochMiniEckeRechts.png",
+			"SeiteRechts3.png",
+			"SeiteLinksBS.png",
+			"EndChestSpawn.png",
+			"SeiteLinks2.png",
+			"SeiteRechtsBS.png",
+			"EckeLinksUnten.png",
+			"EckeRechtsUnten.png",
+			"Gehaenge.png",
+			"SeiteUntenBS.png",
+			"SeiteUnten2.png",
+			"WasserFall.png"
+		],
+		"startingPosition" : [
+			48.0000,
+			48.0000
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 1 2 3 4 5 2 6 0 0",
+			"1 7 2 8 8 8 2 9 6 0",
+			"10 10 11 10 10 10 11 10 10 0",
+			"12 8 2 13 14 15 2 8 16 0",
+			"17 8 2 16 18 19 2 8 20 0",
+			"19 8 2 9 3 7 2 8 16 0",
+			"10 10 11 10 10 10 11 10 10 0",
+			"21 15 2 8 8 8 2 13 22 0",
+			"23 21 2 14 24 25 2 22 23 0",
+			"0 23 26 23 0 23 26 23 0 0"
+		]
+	}
+}

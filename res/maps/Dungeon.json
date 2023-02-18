@@ -2,6 +2,7 @@
 	"generated" : true,
 	"background" : "backgrounds/dungeonhintergrund1.png",
 	"mainmap": "StawtMap.json",
+	"endmap": "EndMap.json",
 	"maps": [
 		{"folder" : "insel_g", "size" : "BIG" },
 		{"folder" : "insel_k", "size" : "SMALL" },
