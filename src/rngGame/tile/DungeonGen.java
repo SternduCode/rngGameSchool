@@ -95,6 +95,7 @@ public class DungeonGen {
 	 * @param voidImg      the void image path
 	 * @param mainmap      the mainMap
 	 * @param maps         the maps
+	 * @param endmap the endmap
 	 * @param connectors   the connectors
 	 * @param connections  the connections
 	 * @param replacements the replacements
@@ -131,11 +132,11 @@ public class DungeonGen {
 		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
 		mainMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
 		gp.getTileM().mapTileNum	= new ArrayList<>();
-		
+
 		gp.getTileM().loadMap((JsonArray) ((JsonObject) endMap.get("map")).get("matrix"));// load mainmap matrix
 		endMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
 		gp.getTileM().mapTileNum	= new ArrayList<>();
-		
+
 
 		String dir = ((StringValue) ((JsonObject) mainmap.get("map")).get("dir")).getValue();
 
@@ -190,9 +191,9 @@ public class DungeonGen {
 			e.printStackTrace();
 		}
 
-		
+
 		for (List<Integer> xCol : mainMapTileNum) for (Integer v : xCol) if (mainMapTiles.get(v).name.equals(voidImg)) mainMapVoidNum = v; // find
-		
+
 		for (List<Integer> xCol : endMapTileNum) for (Integer v : xCol) if (endMapTiles.get(v).name.equals(voidImg)) endMapVoidNum = v; // find
 		// void in
 		// mainmap
@@ -201,8 +202,8 @@ public class DungeonGen {
 		mapsTileNum	= new List[this.maps.size()];
 		mapsTiles	= new List[this.maps.size()];
 		mapsVoidNum	= new int[this.maps.size()];
-		
-		
+
+
 
 		for (int i = 0; i < this.maps.size(); i++) {// TODO check for validity
 			gp.getTileM().loadMap((JsonArray) ((JsonObject) this.maps.get(i).getKey().get("map")).get("matrix"));
@@ -535,7 +536,7 @@ public class DungeonGen {
 				String direction = ((StringValue) mainMapConnectorTiles.get(mainMapTileNum.get(i).get(j)).getValue().get("direction")).getValue();
 				mainMapConnectors.add(Map.entry(new Point2D(i, j), Direction.valueOf(direction.toUpperCase())));
 			}
-		
+
 		for (int i = 0; i < endMapTileNum.size(); i++)
 			for (int j = 0; j < endMapTileNum.get(i).size(); j++) if (endMapConnectorTiles.containsKey(endMapTileNum.get(i).get(j))) {
 				String direction = ((StringValue) endMapConnectorTiles.get(endMapTileNum.get(i).get(j)).getValue().get("direction")).getValue();
@@ -571,7 +572,7 @@ public class DungeonGen {
 				}
 			} catch (Exception e) {}
 		}
-		
+
 		it = endMapConnectors.iterator();
 		while (it.hasNext()) {
 			Entry<Point2D, Direction> p = it.next();
@@ -647,7 +648,14 @@ public class DungeonGen {
 
 		mapPositions.put(-1, new Point2D(x, y));
 
-		avail.addAll(mainMapConnectors.parallelStream().map(en -> Map.entry(Map.entry(en.getKey(), -1), en.getValue())).collect(Collectors.toList()));
+		avail.addAll(
+				mainMapConnectors.parallelStream().map(
+						en -> Map.entry(
+								Map.entry(en.getKey(), -1),
+								en.getValue()
+								)
+						).collect(Collectors.toList())
+				);
 
 		int bigMaps = 0, middleMaps = 0, smallMaps = 0;
 
@@ -823,7 +831,92 @@ public class DungeonGen {
 			}
 			if (smallMaps >= difficulty.getSmallMaps() && middleMaps >= difficulty.getMiddleMaps() && bigMaps >= difficulty.getBigMaps()) break;
 		}
-		//TODO
+
+		loop: while (true) {
+			int idx = r.nextInt(avail.size());
+			Entry<Entry<Point2D, Integer>, Direction> conn = avail.get(idx);
+
+			switch (conn.getValue()) {
+				case UP -> {
+					Entry<Point2D, Direction> conn2 = endMapConnectors.parallelStream().filter(c->c.getValue()==Direction.DOWN).findAny().orElse(null);
+					int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX() + conn.getKey().getKey().getY() - conn2.getKey().getY());
+					int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY() - endMapTileNum.size() - r.nextInt(5) - 1);
+					Rectangle mr = new Rectangle(x2, y2, endMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0), endMapTileNum.size());
+					if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+						map = Shape.union(mr, map);
+						mapPositions.put(-2, new Point2D(x2, y2));
+						avail.addAll(endMapConnectors.parallelStream()
+								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
+						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+						avail.remove(conn);
+						bridges.add(Map.entry(
+								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+								.add(mapPositions.get(conn.getKey().getValue())),
+								new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
+						break loop;
+					}
+				}
+				case DOWN -> {
+					Entry<Point2D, Direction> conn2 = endMapConnectors.parallelStream().filter(c->c.getValue()==Direction.UP).findAny().orElse(null);
+					int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX() + conn.getKey().getKey().getY() - conn2.getKey().getY());
+					int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY() + (conn.getKey().getValue() == -1 ? mainMapTileNum : mapsTileNum[conn.getKey().getValue()]).size() + r.nextInt(5) + 1);
+					Rectangle mr = new Rectangle(x2, y2, endMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0), endMapTileNum.size());
+					if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+						map = Shape.union(mr, map);
+						mapPositions.put(-2, new Point2D(x2, y2));
+						avail.addAll(endMapConnectors.parallelStream()
+								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
+						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+						avail.remove(conn);
+						bridges.add(Map.entry(
+								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+								.add(mapPositions.get(conn.getKey().getValue())),
+								new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
+						break loop;
+					}
+				}
+				case LEFT -> {
+					Entry<Point2D, Direction> conn2 = endMapConnectors.parallelStream().filter(c->c.getValue()==Direction.RIGHT).findAny().orElse(null);
+					int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX() - endMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0) - r.nextInt(5) - 1);
+					int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY() + conn.getKey().getKey().getX() - conn2.getKey().getX());
+					Rectangle mr = new Rectangle(x2, y2, endMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0), endMapTileNum.size());
+					if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+						map = Shape.union(mr, map);
+						mapPositions.put(-2, new Point2D(x2, y2));
+						avail.addAll(endMapConnectors.parallelStream()
+								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
+						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+						avail.remove(conn);
+						bridges.add(Map.entry(
+								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+								.add(mapPositions.get(conn.getKey().getValue())),
+								new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
+						break loop;
+					}
+				}
+				case RIGHT -> {
+					Entry<Point2D, Direction> conn2 = endMapConnectors.parallelStream().filter(c->c.getValue()==Direction.LEFT).findAny().orElse(null);
+					int x2 = (int) (mapPositions.get(conn.getKey().getValue()).getX() + (conn.getKey().getValue() == -1 ? mainMapTileNum : mapsTileNum[conn.getKey().getValue()]).parallelStream().mapToInt(List::size).max().orElse(0) + r.nextInt(5) + 1);
+					int y2 = (int) (mapPositions.get(conn.getKey().getValue()).getY() + conn.getKey().getKey().getX() - conn2.getKey().getX());
+					Rectangle mr = new Rectangle(x2, y2, endMapTileNum.parallelStream().mapToInt(List::size).max().orElse(0), endMapTileNum.size());
+					if (Shape.intersect(mr, map).getBoundsInLocal().isEmpty()) {
+						map = Shape.union(mr, map);
+						mapPositions.put(-2, new Point2D(x2, y2));
+						avail.addAll(endMapConnectors.parallelStream()
+								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
+						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+						avail.remove(conn);
+						bridges.add(Map.entry(
+								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
+								.add(mapPositions.get(conn.getKey().getValue())),
+								new Point2D(conn2.getKey().getY(), conn2.getKey().getX()).add(x2, y2)));
+						break loop;
+					}
+				}
+			}
+		}
+
+
 		int xOffset = (int) (mapPositions.entrySet().parallelStream().map(Entry::getValue).mapToDouble(Point2D::getX).filter(lx -> lx <= 0.0).min()
 				.orElseGet(() -> 1.0) - 1.0),
 				yOffset = (int) (mapPositions.entrySet().parallelStream().map(Entry::getValue).mapToDouble(Point2D::getY).filter(ly -> ly <= 0.0)
@@ -834,35 +927,36 @@ public class DungeonGen {
 
 		// Calculate Max Size
 		int	width	= (int) mapPositions.entrySet().parallelStream()
-				.mapToDouble(en -> en.getValue().getX()
-						+ (en.getKey() == -1 ? mainMapTileNum : mapsTileNum[en.getKey()]).parallelStream().mapToInt(List::size).max().orElse(0))
+				.mapToDouble(en -> en.getValue().getX() +
+						(switch(en.getKey()) { case -2 -> endMapTileNum; case -1 -> mainMapTileNum; default -> mapsTileNum[en.getKey()]; })
+				.parallelStream().mapToInt(List::size).max().orElse(0))
 				.max().orElse(0);
 		int	height	= (int) mapPositions.entrySet().parallelStream()
-				.mapToDouble(en -> en.getValue().getY() + (en.getKey() == -1 ? mainMapTileNum : mapsTileNum[en.getKey()]).size()).max().orElse(0);
+				.mapToDouble(en -> en.getValue().getY() + (switch(en.getKey()) { case -2 -> endMapTileNum; case -1 -> mainMapTileNum; default -> mapsTileNum[en.getKey()]; }).size()).max().orElse(0);
 
 		for (int i = 0; i < height + 1; i++) for (int j = 0; j < width + 1; j++) {
 			int _j = j, _i = i;
 
 			List<Entry<Integer, Integer>> tile = mapPositions.entrySet().parallelStream()
 					.filter(en -> en.getValue().getX() <= _j && en.getValue().getY() <= _i)
-					.map(en -> ( (en.getKey() != -1 ? mapsTileNum[en.getKey()] : mainMapTileNum).size() > _i - en.getValue().getY()
-							&& (en.getKey() != -1 ? mapsTileNum[en.getKey()] : mainMapTileNum).get((int) (_i - en.getValue().getY())).size() > _j
+					.map(en -> ( (switch(en.getKey()) { case -2 -> endMapTileNum; case -1 -> mainMapTileNum; default -> mapsTileNum[en.getKey()]; }).size() > _i - en.getValue().getY()
+							&& (switch(en.getKey()) { case -2 -> endMapTileNum; case -1 -> mainMapTileNum; default -> mapsTileNum[en.getKey()]; }).get((int) (_i - en.getValue().getY())).size() > _j
 							- en.getValue().getX()
 							? Map.entry(en.getKey(),
-									(en.getKey() != -1 ? mapsTileNum[en.getKey()] : mainMapTileNum)
-									.get((int) (_i - en.getValue().getY())).get((int) (_j - en.getValue().getX())))
+									(switch(en.getKey()) { case -2 -> endMapTileNum; case -1 -> mainMapTileNum; default -> mapsTileNum[en.getKey()]; })
+							.get((int) (_i - en.getValue().getY())).get((int) (_j - en.getValue().getX())))
 									: null))
 					.filter(Objects::nonNull).collect(Collectors.toList());
 			if (gp.getTileM().mapTileNum.size() <= i) gp.getTileM().mapTileNum.add(new ArrayList<>());
 			if (tile.size() > 0) try {
 				Tile t = gp.getTileM().getTiles().parallelStream()
 						.filter(ti -> ti.name.equals(
-								(tile.get(0).getKey() != -1 ? mapsTiles[tile.get(0).getKey()] : mainMapTiles).get(tile.get(0).getValue()).name))
+								(switch(tile.get(0).getKey()) { case -2 -> endMapTiles; case -1 -> mainMapTiles; default -> mapsTiles[tile.get(0).getKey()]; }).get(tile.get(0).getValue()).name))
 						.findFirst().get();
 				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().indexOf(t));
 			} catch (NoSuchElementException e) {
 				gp.getTileM().getTiles()
-				.add( (tile.get(0).getKey() != -1 ? mapsTiles[tile.get(0).getKey()] : mainMapTiles).get(tile.get(0).getValue()));
+				.add( (switch(tile.get(0).getKey()) { case -2 -> endMapTiles; case -1 -> mainMapTiles; default -> mapsTiles[tile.get(0).getKey()]; }).get(tile.get(0).getValue()));
 				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().size() - 1);
 			}
 			else try {
