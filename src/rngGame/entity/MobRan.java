@@ -158,7 +158,7 @@ public class MobRan extends NPC {
 		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
 		else wahl = Element.Void;
 
-		String[] mobs = {"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
+		String[] mobs = {"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl"};
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		
