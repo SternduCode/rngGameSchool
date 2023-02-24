@@ -1,5 +1,6 @@
 package rngGame.entity;
 
+import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.*;
@@ -161,7 +162,10 @@ public class MobRan extends NPC {
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		
-		pnG = "./res/demons/"+wahl+"/"+mobName+".png";
+		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
+			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
+		else 
+			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 	}
 	
 	//Durchlaufen lassen bis void LOL OMG 360
