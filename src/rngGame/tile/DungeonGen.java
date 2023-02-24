@@ -858,8 +858,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -877,8 +877,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -896,8 +896,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -915,8 +915,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -947,7 +947,6 @@ public class DungeonGen {
 			}
 		});
 		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
-		System.out.println(mapPositions.get(-2));
 		for (JsonObject building : builds) {
 			Building b = switch ( ((StringValue) building.get("type")).getValue()) {
 				case "House" -> new House(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());

@@ -82,7 +82,6 @@ public class TreasureChest extends Building {
 					TreasureChest.this.setCurrentKey("open");
 				});
 		});
-		System.out.println(getMiscBoxHandler() + " " + textureFiles);
 	}
 
 }
