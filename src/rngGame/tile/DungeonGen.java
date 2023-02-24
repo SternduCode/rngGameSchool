@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.sterndu.json.*;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 import javafx.scene.shape.*;
 import rngGame.buildings.*;
 import rngGame.main.GamePanel;
@@ -63,6 +63,9 @@ public class DungeonGen {
 	/** The map tiles. */
 	private final List<Tile> mainMapTiles, endMapTiles, mapsTiles[];
 
+	/** The buildings. */
+	private final Map<Integer, JsonArray> buildings;
+
 	/** The map tile numbers. */
 	private final List<List<Integer>> mainMapTileNum, endMapTileNum, mapsTileNum[];
 
@@ -108,6 +111,10 @@ public class DungeonGen {
 		this.gp	= gp;
 		mainMap	= mainmap;
 		endMap = endmap;
+
+		buildings = new HashMap<>();
+
+		buildings.put(-1, (JsonArray) mainmap.get("buildings"));
 
 		this.additionalData = additionalData;
 
@@ -924,6 +931,37 @@ public class DungeonGen {
 		mapPositions.entrySet().parallelStream().forEach(en -> { en.setValue(en.getValue().subtract(xOffset, yOffset)); });
 		System.out.println(avail);
 		System.out.println(mapPositions);
+
+		buildings.entrySet().parallelStream().forEach(en -> {
+			Point2D p = mapPositions.get(en.getKey());
+			for (Object building : en.getValue()) {
+				JsonArray position = (JsonArray) ((JsonObject) building).get("position");
+				position.set(0, new DoubleValue(((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()));
+				position.set(1, new DoubleValue(((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()));
+			}
+		});
+		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
+		for (JsonObject building : builds) {
+			Building b = switch ( ((StringValue) building.get("type")).getValue()) {
+				case "House" -> new House(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+				case "ContractsTable" -> new ContractsTable(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+						gp.getTileM().getRequesterB());
+				default -> new Building(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+			};
+			ImageView	lIV;
+			if (b.isGif(b.getCurrentKey())) {
+				lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
+				lIV.setFitWidth(16);
+				lIV.setFitHeight(16);
+			} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+					(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+					(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
+			gp.getTileM().getMbuildings().getItems().add(new MenuItemWBuilding(
+					((StringValue) ((JsonObject) building.get("textures")).values().stream()
+							.findFirst().get()).getValue(),
+					lIV,
+					b));
+		}
 
 		// Calculate Max Size
 		int	width	= (int) mapPositions.entrySet().parallelStream()

@@ -350,7 +350,7 @@ public class TileManager extends Pane {
 					e2.printStackTrace();
 				}
 				System.out.println(f);
-			} else if (mi.getParentMenu() == mbuildings) {
+			} else if (mi.getParentMenu() == getMbuildings()) {
 				FileChooser fc = new FileChooser();
 				fc.setInitialDirectory(new File("."));
 				fc.getExtensionFilters().add(new ExtensionFilter(
@@ -386,7 +386,7 @@ public class TileManager extends Pane {
 					joB.put("originalSize", originalSize);
 
 					Building b = new Building(joB, gp, buildings, cm, requesterB);
-					mbuildings.getItems().remove(mi);
+					getMbuildings().getItems().remove(mi);
 					ImageView lIV;
 					if (b.isGif(b.getCurrentKey())) {
 						lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
@@ -395,12 +395,12 @@ public class TileManager extends Pane {
 					} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 							(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
 							(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
-					mbuildings.getItems()
+					getMbuildings().getItems()
 					.add(new MenuItemWBuilding(f.getName(),
 							lIV,
 							b));
-					mbuildings.getItems().get(mbuildings.getItems().size() - 1).setOnAction(this::contextMenu);
-					mbuildings.getItems().add(mi);
+					getMbuildings().getItems().get(getMbuildings().getItems().size() - 1).setOnAction(this::contextMenu);
+					getMbuildings().getItems().add(mi);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -597,7 +597,7 @@ public class TileManager extends Pane {
 			insel_g.getItems().add(map);
 		}
 		return new Menu[] {
-				mtiles, mnpcs, mbuildings, mmobs, mextra
+				mtiles, mnpcs, getMbuildings(), mmobs, mextra
 		};
 
 	}
@@ -871,7 +871,7 @@ public class TileManager extends Pane {
 			mtiles.getItems().clear();
 			mnpcs.getItems().clear();
 			mmobs.getItems().clear();
-			mbuildings.getItems().clear();
+			getMbuildings().getItems().clear();
 			mmobs.getItems().clear();
 			playerLayer = 0;
 			JsonObject jo = (JsonObject) JsonParser
@@ -1003,7 +1003,7 @@ public class TileManager extends Pane {
 				} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 						(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
 						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
-				mbuildings.getItems().add(new MenuItemWBuilding(
+				getMbuildings().getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
 						lIV,
@@ -1042,10 +1042,10 @@ public class TileManager extends Pane {
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));
 			mmobs.getItems().add(new MenuItem("add Texture"));
-			mbuildings.getItems().add(new MenuItem("add Texture"));
+			getMbuildings().getItems().add(new MenuItem("add Texture"));
 			for (MenuItem mi : mtiles.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi : mnpcs.getItems()) mi.setOnAction(this::contextMenu);
-			for (MenuItem mi : mbuildings.getItems()) mi.setOnAction(this::contextMenu);
+			for (MenuItem mi : getMbuildings().getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi : mmobs.getItems()) mi.setOnAction(this::contextMenu);
 
 		} catch (JsonParseException | FileNotFoundException e) {
@@ -1135,5 +1135,7 @@ public class TileManager extends Pane {
 		}
 
 	}
+
+	public Menu getMbuildings() { return mbuildings; }
 
 }
