@@ -116,6 +116,7 @@ public class DungeonGen {
 		buildings = new HashMap<>();
 
 		buildings.put(-1, (JsonArray) mainmap.get("buildings"));
+		buildings.put(-2, (JsonArray) endmap.get("buildings"));
 
 		this.additionalData = additionalData;
 
@@ -130,6 +131,7 @@ public class DungeonGen {
 			File f	= new File("./res/maps/" + folderName.getValue());
 			for (File m : f.listFiles((FilenameFilter) (dir, name) -> name.endsWith(".json"))) try {
 				this.maps.add(Map.entry((JsonObject) JsonParser.parse(m), size));
+				buildings.put(this.maps.size()-1, (JsonArray)((JsonObject) JsonParser.parse(m)).get("buildings"));
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
@@ -347,7 +349,7 @@ public class DungeonGen {
 				}
 
 
-			} else if (randoms.contains(th)) if ( 1.0 / 8.0 > r.nextDouble()) {
+			} else if (randoms.contains(th)) if ( 1.0 / 10.0 > r.nextDouble()) {
 
 				Entry<String, Entry<JsonArray, JsonArray>> object = randomObjects[r.nextInt(randomObjects.length)];
 				try {
@@ -936,21 +938,26 @@ public class DungeonGen {
 		System.out.println(mapPositions);
 
 		buildings.entrySet().parallelStream().forEach(en -> {
+			if (!mapPositions.containsKey(en.getKey())) return;
 			Point2D p = mapPositions.get(en.getKey());
 			for (Object building : en.getValue()) {
 				JsonArray position = (JsonArray) ((JsonObject) building).get("position");
-				position.set(0, new DoubleValue(((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()));
-				position.set(1, new DoubleValue(((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()));
+				position.set(0, new DoubleValue((((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*gp.BgX)));
+				position.set(1, new DoubleValue((((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*gp.BgY)));
 			}
 		});
 		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
+		System.out.println(mapPositions.get(-2));
 		for (JsonObject building : builds) {
 			Building b = switch ( ((StringValue) building.get("type")).getValue()) {
 				case "House" -> new House(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
 				case "ContractsTable" -> new ContractsTable(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
 						gp.getTileM().getRequesterB());
+				case "TreasureChest" -> new TreasureChest(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+						gp.getTileM().getRequesterB());
 				default -> new Building(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
 			};
+			gp.getBuildings().add(b);
 			ImageView	lIV;
 			if (b.isGif(b.getCurrentKey())) {
 				lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));

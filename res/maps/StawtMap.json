@@ -3,27 +3,7 @@
 		
 	],
 	"buildings" : [
-		{
-			"requestedSize" : [
-				96,
-				96
-			],
-			"textures" : {
-				"default" : "Faggel.png"
-			},
-			"buildingData" : {
-				
-			},
-			"position" : [
-				-200.0,
-				-500.0
-			],
-			"type" : "Building",
-			"originalSize" : [
-				32,
-				32
-			]
-		}
+
 	],
 	"map" : {
 		"size" : [
