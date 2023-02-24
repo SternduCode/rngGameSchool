@@ -66,11 +66,11 @@
 		},
 		{
 			"requestedSize" : [
-				150,
-				150
+				300,
+				300
 			],
 			"textures" : {
-				"default" : "BOOMiIdle.png"
+				"default" : "Howl.gif"
 			},
 			"extraData" : [
 				{
@@ -92,7 +92,7 @@
 				64,
 				64
 			],
-			"dir" : "void",
+			"dir" : "Shadow",
 			"layer" : [
 				0
 			]
@@ -103,7 +103,7 @@
 				80
 			],
 			"textures" : {
-				"default" : "MayAshadow.png"
+				"default" : "May.png"
 			},
 			"extraData" : [
 				{
@@ -125,7 +125,7 @@
 				64,
 				64
 			],
-			"dir" : "shadow",
+			"dir" : "Void",
 			"layer" : [
 				0
 			]
