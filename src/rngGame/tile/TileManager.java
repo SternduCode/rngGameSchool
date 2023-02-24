@@ -993,6 +993,7 @@ public class TileManager extends Pane {
 					case "House" -> new House((JsonObject) building, gp, this.buildings, cm, requesterB);
 					case "ContractsTable" -> new ContractsTable((JsonObject) building, gp, this.buildings, cm,
 							requesterB);
+					case "TreasureChest" -> new TreasureChest((JsonObject) building, gp, this.buildings, cm, requesterB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requesterB);
 				};
 				ImageView	lIV;

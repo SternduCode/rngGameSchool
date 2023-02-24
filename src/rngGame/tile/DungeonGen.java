@@ -58,6 +58,7 @@ public class DungeonGen {
 	private final JsonObject mainMap,endMap;
 
 	/** The maps. */
+	
 	private final List<Entry<JsonObject, Size>> maps;
 
 	/** The map tiles. */
@@ -431,6 +432,7 @@ public class DungeonGen {
 						joB.put("requestedSize", reqSize);
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue("NormalChestClosed.png"));
+						textures.put("open", new StringValue("NormalChestOpen.png"));
 						joB.put("textures", textures);
 						JsonObject buildingData = new JsonObject();
 						joB.put("buildingData", buildingData);
@@ -471,6 +473,7 @@ public class DungeonGen {
 						joB.put("requestedSize", reqSize);
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue("NormalChestClosed.png"));
+						textures.put("open", new StringValue("NormalChestOpen.png"));
 						joB.put("textures", textures);
 						JsonObject buildingData = new JsonObject();
 						joB.put("buildingData", buildingData);
