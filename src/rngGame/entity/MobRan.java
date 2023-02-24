@@ -47,7 +47,7 @@ public class MobRan extends NPC {
 	private Element wahl;
 
 	/** The mob name. */
-	private String mobName;
+	private String mobName, pnG;
 
 	/** The diff. */
 	private final double[] diff = new double[2];
@@ -158,9 +158,32 @@ public class MobRan extends NPC {
 		else wahl = Element.Void;
 
 		String[] mobs = {"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer"};
-		int mr = gen.nextInt(7);
+		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
+		
+		pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 	}
+	
+	//Durchlaufen lassen bis void LOL OMG 360
+		//	for(int i = 1; wahl!="void"; i++) {
+		//		int r = gen.nextInt(101)+1;
+		//		if(r <= 30) {
+		//			wahl = "fire";
+		//		}else if(r <= 60 && r >= 31) {
+		//			wahl = "water";
+		//		}else if(r <= 90 && r >= 61) {
+		//			wahl = "plant";
+		//		}else if(r <= 95 && r >= 91) {
+		//			wahl = "light";
+		//			plantc++;
+		//		}else if(r <= 100 && r >= 96) {
+		//			wahl = "shadow";
+		//			plantc++;
+		//		}else {
+		//			wahl = "void";
+		//		}
+		//		System.out.println(wahl + " " + i + " " + plantc);
+		//		}
 
 	/**
 	 * Pathfinding.
@@ -271,26 +294,7 @@ public class MobRan extends NPC {
 	}
 
 
-	//Durchlaufen lassen bis void LOL OMG 360
-	//	for(int i = 1; wahl!="void"; i++) {
-	//		int r = gen.nextInt(101)+1;
-	//		if(r <= 30) {
-	//			wahl = "fire";
-	//		}else if(r <= 60 && r >= 31) {
-	//			wahl = "water";
-	//		}else if(r <= 90 && r >= 61) {
-	//			wahl = "plant";
-	//		}else if(r <= 95 && r >= 91) {
-	//			wahl = "light";
-	//			plantc++;
-	//		}else if(r <= 100 && r >= 96) {
-	//			wahl = "shadow";
-	//			plantc++;
-	//		}else {
-	//			wahl = "void";
-	//		}
-	//		System.out.println(wahl + " " + i + " " + plantc);
-	//		}
+	
 
 
 }
