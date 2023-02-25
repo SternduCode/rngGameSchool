@@ -5,12 +5,12 @@ import java.util.Random;
 import rngGame.tile.Difficulty;
 
 public enum Element {
-	Fire(4, 0.02, 20, 0.02, 1), 
-	Water(4, 0.02, 20, 0.02, 1), 
-	Plant(4, 0.02, 20, 0.02, 1), 
-	Shadow(6, 0.04, 24, 0.025, 1), 
-	Light(6, 0.04, 24, 0.025, 1), 
-	Void(10, 0.06, 30, 0.03, 1);
+	Fire(4, 0.01, 20, 0.005, 1), 
+	Water(4, 0.01, 20, 0.005, 1), 
+	Plant(4, 0.01, 20, 0.005, 1), 
+	Shadow(6, 0.02, 24, 0.01, 1), 
+	Light(6, 0.02, 24, 0.01, 1), 
+	Void(10, 0.03, 30, 0.015, 1);
 
 	private int atk;
 	private double res;

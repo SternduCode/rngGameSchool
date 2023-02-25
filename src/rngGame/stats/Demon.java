@@ -26,6 +26,46 @@ public class Demon {
 		this.lvl = element.getLvl();
 	}
 
+	public int getAtk() {
+		return atk;
+	}
+
+	public void setAtk(int atk) {
+		this.atk = element.getAtk() + atk;
+	}
+
+	public double getRes() {
+		return res;
+	}
+
+	public void setRes(double res) {
+		this.res = element.getRes() + res;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = element.getHp() + hp;
+	}
+
+	public double getDgc() {
+		return dgc;
+	}
+
+	public void setDgc(double dgc) {
+		this.dgc = element.getDgc()+dgc;
+	}
+
+	public int getLvl() {
+		return lvl;
+	}
+
+	public void setLvl(int lvl) {
+		this.lvl = lvl;
+	}
+	
 	@Override
 	public String toString() {
 		return "Demon [Element=" + element + ", mobName=" + mobName + ", atk=" + atk + ", res=" + res + ", hp=" + hp + ", dgc="

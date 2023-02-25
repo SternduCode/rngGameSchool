@@ -32,6 +32,7 @@
 				32,
 				32
 			],
+			"endChest" : true,
 			"miscBoxes" : [
 				{
 					"name" : "action",
