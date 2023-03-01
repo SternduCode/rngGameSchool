@@ -7,7 +7,7 @@ import rngGame.tile.Difficulty;
 public class Demon {
 	private Element element;
 	private Difficulty difficult;
-	
+	Random gen = new Random();
 	
 	private String mobName;
 	private int atk;
@@ -19,9 +19,9 @@ public class Demon {
 	public Demon(Element wahl , String mobName) {
 		this.element = wahl;
 		this.mobName = mobName;
-		this.atk = element.getAtk();
+		this.atk = element.getAtk()+gen.nextInt(6);
 		this.res = element.getRes();
-		this.hp = element.getHp();
+		this.hp = element.getHp()+ gen.nextInt(11);
 		this.dgc = element.getDgc();
 		this.lvl = element.getLvl();
 	}

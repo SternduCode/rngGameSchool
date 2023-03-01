@@ -5,6 +5,9 @@ import java.util.Random;
 public class Sword extends Item{
 
 	private Rarity rarity;
+	private int hp;
+	private double res;
+	private double dgc;
 	private int atk;
 	
 	
@@ -23,10 +26,37 @@ public class Sword extends Item{
 		case GOD ->	13 + gen.nextInt(4);							// 13-16
 		case VOID -> 17 + gen.nextInt(4);							// 17-20
 		};
+		
+		hp = switch(this.rarity) {
+		case VOID -> 23 + gen.nextInt(5);//
+		default -> 0;
+		};
+		
+		res = switch(this.rarity) {
+		case VOID -> 0.1/3; 
+		default -> 0;
+		};
+		
+		dgc = switch(this.rarity) {
+		case VOID -> 0.03;
+		default -> 0;
+		};
 	}
 	
 	public int getAtk() {
 		return atk;
+	}
+	
+	public int getHp() {
+		return hp;
+	}
+
+	public double getRes() {
+		return res;
+	}
+
+	public double getDgc() {
+		return dgc;
 	}
 
 }
