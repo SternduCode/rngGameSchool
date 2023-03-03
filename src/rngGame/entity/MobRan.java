@@ -115,6 +115,10 @@ public class MobRan extends NPC {
 	public String getLol() {
 		return mobName;
 	}
+	
+	public String getPnG() {
+		return pnG;
+	}
 
 	/**
 	 * Inits the.
@@ -167,6 +171,8 @@ public class MobRan extends NPC {
 		else 
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 	}
+	
+	
 	
 	//Durchlaufen lassen bis void LOL OMG 360
 		//	for(int i = 1; wahl!="void"; i++) {
