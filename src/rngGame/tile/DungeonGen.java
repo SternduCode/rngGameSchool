@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.sterndu.json.*;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 import javafx.scene.shape.*;
 import rngGame.buildings.*;
 import rngGame.main.GamePanel;
@@ -58,10 +58,14 @@ public class DungeonGen {
 	private final JsonObject mainMap,endMap;
 
 	/** The maps. */
+	
 	private final List<Entry<JsonObject, Size>> maps;
 
 	/** The map tiles. */
 	private final List<Tile> mainMapTiles, endMapTiles, mapsTiles[];
+
+	/** The buildings. */
+	private final Map<Integer, JsonArray> buildings;
 
 	/** The map tile numbers. */
 	private final List<List<Integer>> mainMapTileNum, endMapTileNum, mapsTileNum[];
@@ -109,6 +113,11 @@ public class DungeonGen {
 		mainMap	= mainmap;
 		endMap = endmap;
 
+		buildings = new HashMap<>();
+
+		buildings.put(-1, (JsonArray) mainmap.get("buildings"));
+		buildings.put(-2, (JsonArray) endmap.get("buildings"));
+
 		this.additionalData = additionalData;
 
 		this.difficulty = difficulty;
@@ -122,6 +131,7 @@ public class DungeonGen {
 			File f	= new File("./res/maps/" + folderName.getValue());
 			for (File m : f.listFiles((FilenameFilter) (dir, name) -> name.endsWith(".json"))) try {
 				this.maps.add(Map.entry((JsonObject) JsonParser.parse(m), size));
+				buildings.put(this.maps.size()-1, (JsonArray)((JsonObject) JsonParser.parse(m)).get("buildings"));
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
@@ -339,7 +349,7 @@ public class DungeonGen {
 				}
 
 
-			} else if (randoms.contains(th)) if ( 1.0 / 8.0 > r.nextDouble()) {
+			} else if (randoms.contains(th)) if ( 1.0 / 10.0 > r.nextDouble()) {
 
 				Entry<String, Entry<JsonArray, JsonArray>> object = randomObjects[r.nextInt(randomObjects.length)];
 				try {
@@ -431,6 +441,7 @@ public class DungeonGen {
 						joB.put("requestedSize", reqSize);
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue("NormalChestClosed.png"));
+						textures.put("open", new StringValue("NormalChestOpen.png"));
 						joB.put("textures", textures);
 						JsonObject buildingData = new JsonObject();
 						joB.put("buildingData", buildingData);
@@ -471,6 +482,7 @@ public class DungeonGen {
 						joB.put("requestedSize", reqSize);
 						JsonObject textures = new JsonObject();
 						textures.put("default", new StringValue("NormalChestClosed.png"));
+						textures.put("open", new StringValue("NormalChestOpen.png"));
 						joB.put("textures", textures);
 						JsonObject buildingData = new JsonObject();
 						joB.put("buildingData", buildingData);
@@ -846,8 +858,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -865,8 +877,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -884,8 +896,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -903,8 +915,8 @@ public class DungeonGen {
 						map = Shape.union(mr, map);
 						mapPositions.put(-2, new Point2D(x2, y2));
 						avail.addAll(endMapConnectors.parallelStream()
-								.map(en -> Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue())).collect(Collectors.toList()));
-						avail.remove(Map.entry(Map.entry(conn2.getKey(), -2), conn2.getValue()));
+								.map(en -> Map.entry(Map.entry(en.getKey(), -2), en.getValue())).collect(Collectors.toList()));
+						avail.remove(avail.parallelStream().filter(en->en.getValue()==conn2.getValue()&&en.getKey().getKey()==conn2.getKey()&&en.getKey().getValue()==-2).findFirst().orElse(null));
 						avail.remove(conn);
 						bridges.add(Map.entry(
 								new Point2D(conn.getKey().getKey().getY(), conn.getKey().getKey().getX())
@@ -924,6 +936,41 @@ public class DungeonGen {
 		mapPositions.entrySet().parallelStream().forEach(en -> { en.setValue(en.getValue().subtract(xOffset, yOffset)); });
 		System.out.println(avail);
 		System.out.println(mapPositions);
+
+		buildings.entrySet().parallelStream().forEach(en -> {
+			if (!mapPositions.containsKey(en.getKey())) return;
+			Point2D p = mapPositions.get(en.getKey());
+			for (Object building : en.getValue()) {
+				JsonArray position = (JsonArray) ((JsonObject) building).get("position");
+				position.set(0, new DoubleValue((((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*gp.BgX)));
+				position.set(1, new DoubleValue((((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*gp.BgY)));
+			}
+		});
+		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
+		for (JsonObject building : builds) {
+			Building b = switch ( ((StringValue) building.get("type")).getValue()) {
+				case "House" -> new House(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+				case "ContractsTable" -> new ContractsTable(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+						gp.getTileM().getRequesterB());
+				case "TreasureChest" -> new TreasureChest(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
+						gp.getTileM().getRequesterB());
+				default -> new Building(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+			};
+			gp.getBuildings().add(b);
+			ImageView	lIV;
+			if (b.isGif(b.getCurrentKey())) {
+				lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
+				lIV.setFitWidth(16);
+				lIV.setFitHeight(16);
+			} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+					(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+					(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
+			gp.getTileM().getMbuildings().getItems().add(new MenuItemWBuilding(
+					((StringValue) ((JsonObject) building.get("textures")).values().stream()
+							.findFirst().get()).getValue(),
+					lIV,
+					b));
+		}
 
 		// Calculate Max Size
 		int	width	= (int) mapPositions.entrySet().parallelStream()

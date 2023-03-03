@@ -3,7 +3,49 @@
 		
 	],
 	"buildings" : [
-		
+		{
+			"requestedSize" : [
+				48,
+				48
+			],
+			"textures" : {
+				"default" : "FinalChestClosed.png",
+				"open" : "FinalChestOpen.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				191.000,
+				181.000
+			],
+			"type" : "TreasureChest",
+			"originalSize" : [
+				32,
+				32
+			],
+			"endChest" : true,
+			"miscBoxes" : [
+				{
+					"name" : "action",
+					"x" : 24.0000,
+					"y" : 24.0000,
+					"type" : "circle",
+					"radius" : 64
+				}
+			],
+			"layer" : [
+				0
+			]
+		}
 	],
 	"map" : {
 		"playerLayer" : 0,
