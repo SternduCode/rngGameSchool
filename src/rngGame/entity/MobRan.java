@@ -1,15 +1,25 @@
 package rngGame.entity;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.*;
 
+import com.sterndu.json.DoubleValue;
+import com.sterndu.json.IntegerValue;
+import com.sterndu.json.JsonArray;
 import com.sterndu.json.JsonObject;
+import com.sterndu.json.NumberValue;
+import com.sterndu.json.StringValue;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
+import rngGame.buildings.Building;
 import rngGame.main.GamePanel;
 import rngGame.stats.*;
 import rngGame.tile.TextureHolder;
@@ -153,6 +163,7 @@ public class MobRan extends NPC {
 	/**
 	 * Mob gen.
 	 */
+	@SuppressWarnings("unchecked")
 	public void MobGen() {
 		int r = gen.nextInt(101)+1;
 		if(r <= 30) wahl = Element.Fire;
@@ -162,7 +173,7 @@ public class MobRan extends NPC {
 		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
 		else wahl = Element.Void;
 
-		String[] mobs = {"Arashi", "Booky", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum"};
+		String[] mobs = {"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum"};
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		
@@ -170,9 +181,42 @@ public class MobRan extends NPC {
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 		else 
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
+		
+		try {
+			Path p2	= new File(pnG).toPath();
+			Image img = new Image(new FileInputStream(p2.toFile()));
+
+			JsonArray reqSize = new JsonArray();
+			JsonArray position = new JsonArray();
+			JsonObject joB = new JsonObject();
+			reqSize.add(new IntegerValue(64));
+			reqSize.add(new IntegerValue(64));
+			joB.put("requestedSize", reqSize);
+			JsonObject textures = new JsonObject();
+			if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
+				textures.put("default", new StringValue(mobName + ".png"));
+			else 
+				textures.put("default", new StringValue(mobName + ".gif"));
+			joB.put("textures", textures);
+			JsonObject buildingData = new JsonObject();
+			joB.put("buildingData", buildingData);
+			joB.put("type", new StringValue("Building"));
+			joB.put("dir", new StringValue(wahl.toString()));
+			position.add(new DoubleValue(0));	
+			position.add(new DoubleValue(0));
+					
+			joB.put("position", position);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(new DoubleValue(img.getHeight()));
+			originalSize.add(new DoubleValue(img.getHeight()));
+			joB.put("originalSize", originalSize);
+
+			gamepanel.getNpcs().add(
+					new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), (ObjectProperty<NPC>) gamepanel.getTileM().getRequestorN()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
 	
 	//Durchlaufen lassen bis void LOL OMG 360
 		//	for(int i = 1; wahl!="void"; i++) {

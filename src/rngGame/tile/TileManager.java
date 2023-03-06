@@ -684,7 +684,7 @@ public class TileManager extends Pane {
 
 	/**
 	 * Gets the requester B.
-	 *
+	 * 
 	 * @return the requester B
 	 */
 	public ObjectProperty<Building> getRequesterB() { return requesterB; }
@@ -694,7 +694,7 @@ public class TileManager extends Pane {
 	 *
 	 * @return the requestor for the context menu containing the NPC
 	 */
-	public ObjectProperty<? extends Entity> getRequestorN() { return requestorN; }
+	public ObjectProperty<NPC> getRequestorN() { return requestorN; }
 
 	/**
 	 * Gets the spawn point.
