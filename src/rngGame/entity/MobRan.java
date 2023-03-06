@@ -1,25 +1,17 @@
 package rngGame.entity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.*;
 
-import com.sterndu.json.DoubleValue;
-import com.sterndu.json.IntegerValue;
-import com.sterndu.json.JsonArray;
-import com.sterndu.json.JsonObject;
-import com.sterndu.json.NumberValue;
-import com.sterndu.json.StringValue;
+import com.sterndu.json.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
-import rngGame.buildings.Building;
 import rngGame.main.GamePanel;
 import rngGame.stats.*;
 import rngGame.tile.TextureHolder;
@@ -125,7 +117,12 @@ public class MobRan extends NPC {
 	public String getLol() {
 		return mobName;
 	}
-	
+
+	/**
+	 * Gets the pn G.
+	 *
+	 * @return the pn G
+	 */
 	public String getPnG() {
 		return pnG;
 	}
@@ -174,16 +171,18 @@ public class MobRan extends NPC {
 		else wahl = Element.Void;
 
 
-		String[] mobs = {"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum"};
+		String[] mobs = {
+				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Serpah"
+		};
 
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
-		
+
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
-		else 
+		else
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
-		
+
 		try {
 			Path p2	= new File(pnG).toPath();
 			Image img = new Image(new FileInputStream(p2.toFile()));
@@ -197,16 +196,16 @@ public class MobRan extends NPC {
 			JsonObject textures = new JsonObject();
 			if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 				textures.put("default", new StringValue(mobName + ".png"));
-			else 
+			else
 				textures.put("default", new StringValue(mobName + ".gif"));
 			joB.put("textures", textures);
 			JsonObject buildingData = new JsonObject();
 			joB.put("buildingData", buildingData);
 			joB.put("type", new StringValue("Building"));
 			joB.put("dir", new StringValue(wahl.toString()));
-			position.add(new DoubleValue(0));	
 			position.add(new DoubleValue(0));
-					
+			position.add(new DoubleValue(0));
+
 			joB.put("position", position);
 			JsonArray originalSize = new JsonArray();
 			originalSize.add(new DoubleValue(img.getHeight()));
@@ -214,32 +213,32 @@ public class MobRan extends NPC {
 			joB.put("originalSize", originalSize);
 
 			gamepanel.getNpcs().add(
-					new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), (ObjectProperty<NPC>) gamepanel.getTileM().getRequestorN()));
+					new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), gamepanel.getTileM().getRequestorN()));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//Durchlaufen lassen bis void LOL OMG 360
-		//	for(int i = 1; wahl!="void"; i++) {
-		//		int r = gen.nextInt(101)+1;
-		//		if(r <= 30) {
-		//			wahl = "fire";
-		//		}else if(r <= 60 && r >= 31) {
-		//			wahl = "water";
-		//		}else if(r <= 90 && r >= 61) {
-		//			wahl = "plant";
-		//		}else if(r <= 95 && r >= 91) {
-		//			wahl = "light";
-		//			plantc++;
-		//		}else if(r <= 100 && r >= 96) {
-		//			wahl = "shadow";
-		//			plantc++;
-		//		}else {
-		//			wahl = "void";
-		//		}
-		//		System.out.println(wahl + " " + i + " " + plantc);
-		//		}
+	//	for(int i = 1; wahl!="void"; i++) {
+	//		int r = gen.nextInt(101)+1;
+	//		if(r <= 30) {
+	//			wahl = "fire";
+	//		}else if(r <= 60 && r >= 31) {
+	//			wahl = "water";
+	//		}else if(r <= 90 && r >= 61) {
+	//			wahl = "plant";
+	//		}else if(r <= 95 && r >= 91) {
+	//			wahl = "light";
+	//			plantc++;
+	//		}else if(r <= 100 && r >= 96) {
+	//			wahl = "shadow";
+	//			plantc++;
+	//		}else {
+	//			wahl = "void";
+	//		}
+	//		System.out.println(wahl + " " + i + " " + plantc);
+	//		}
 
 	/**
 	 * Pathfinding.
@@ -350,7 +349,7 @@ public class MobRan extends NPC {
 	}
 
 
-	
+
 
 
 }
