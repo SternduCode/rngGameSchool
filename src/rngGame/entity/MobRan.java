@@ -160,7 +160,6 @@ public class MobRan extends NPC {
 	/**
 	 * Mob gen.
 	 */
-	@SuppressWarnings("unchecked")
 	public void MobGen() {
 		int r = gen.nextInt(101)+1;
 		if(r <= 30) wahl = Element.Fire;
