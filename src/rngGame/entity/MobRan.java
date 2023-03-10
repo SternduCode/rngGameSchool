@@ -44,14 +44,6 @@ public class MobRan extends NPC {
 
 	}
 
-	/**
-	 * The  PathElement.
-	 */
-	private Element wahl;
-
-	/** The mob name. */
-	private String mobName, pnG;
-
 	/** The diff. */
 	private final double[] diff = new double[2];
 
@@ -108,8 +100,6 @@ public class MobRan extends NPC {
 		//		System.out.println("diffX: "+diffX + " diffY: "+ diffY);
 		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
 	}
-
-	//                                /(>*-*<)\
 	
 	/**
 	 * Inits the.
@@ -122,11 +112,12 @@ public class MobRan extends NPC {
 			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
-			MobGen();
-			Demon demonMob = new Demon(wahl, mobName);
+			Demon demonMob = MobGen();
 			System.out.println(demonMob);
-			gpt.getMobRans().remove(MobRan.this);
-			gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
+			if (demonMob != null) {
+				gpt.getMobRans().remove(MobRan.this);
+				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
+			}
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
@@ -144,7 +135,10 @@ public class MobRan extends NPC {
 	/**
 	 * Mob gen.
 	 */
-	public void MobGen() {
+	public Demon MobGen() {
+		String pnG, mobName;
+		Element wahl;
+
 		int r = gen.nextInt(101)+1;
 		if(r <= 30) wahl = Element.Fire;
 		else if(r <= 60 && r >= 31) wahl = Element.Water;
@@ -195,10 +189,14 @@ public class MobRan extends NPC {
 			originalSize.add(new DoubleValue(img.getHeight()));
 			joB.put("originalSize", originalSize);
 
-			gamepanel.getNpcs().add(
-					new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), gamepanel.getTileM().getRequestorN()));
+			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), gamepanel.getTileM().getRequestorN());
+
+			gamepanel.getNpcs().add(mnpc);
+
+			return new Demon(wahl, mobName, mnpc);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 

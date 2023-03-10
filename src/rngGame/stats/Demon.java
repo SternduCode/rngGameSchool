@@ -15,8 +15,10 @@ public class Demon {
 	private int hp;
 	private double dgc;
 	private int lvl;
+	private MonsterNPC demon;
 	
-	public Demon(Element wahl , String mobName) {
+	public Demon(Element wahl , String mobName, MonsterNPC demon) {
+		this.demon = demon;
 		this.element = wahl;
 		this.mobName = mobName;
 		this.atk = element.getAtk()+gen.nextInt(6);
