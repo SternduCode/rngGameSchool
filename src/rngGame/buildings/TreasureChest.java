@@ -9,10 +9,12 @@ import com.sterndu.json.JsonObject;
 import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Ellipse;
 import rngGame.main.GamePanel;
+import rngGame.main.Input;
 import rngGame.stats.Element;
-import rngGame.stats.Harnisch;
+import rngGame.stats.Harnish;
 import rngGame.stats.Helmet;
 import rngGame.stats.Item;
 import rngGame.stats.Pants;
@@ -64,6 +66,9 @@ public class TreasureChest extends Building {
 		if(building.containsKey("endChest")) {
 			this.ifEndchest=((BoolValue) building.get("endChest")).getValue();
 		}
+		Input.getInstance().setKeyHandler("Items", mod -> {
+			TestItem();
+		}, KeyCode.I, false);
 	}
 
 	/**
@@ -110,45 +115,55 @@ public class TreasureChest extends Building {
 	}
 
 	public void giveItem() {
-
-
 		if(ifEndchest) {
-			for(int i = 0 ; i < 3; i++){
-				createItem();
-			} 
+			Item r1 = createItem();
+			Item r2 = createItem();
+			Item r3 = createItem();
+			System.out.println(r1.toString()); 
+			System.out.println(r2.toString()); 
+			System.out.println(r3.toString()); 
 		} else {
-			createItem();
+			Item r4 = createItem();
+			System.out.println(r4.toString()); 
 		}
+	}
+	
+	
+	
+	
+	public void TestItem() {
+			Item r1 = createItem();
+			System.out.println(r1.toString()); 
 	}
 
 
 	public Item createItem() {
 		Random gen = new Random();
-		int r = gen.nextInt(146)+1;
-		Rarity wahl;
-
+		Rarity wahl = Rarity.COMMON;
+		
+		int r = gen.nextInt(100*2)+1;
 		////////////
-		if(r <= 30) wahl = Rarity.COMMON;
-		else if(r <= 60) wahl = Rarity.UNCOMMON; //30
-		else if(r <= 90) wahl = Rarity.RARE;
-		else if(r <= 120) wahl = Rarity.VERYRARE;
-
-		else if(r <= 130) wahl = Rarity.EPIC;		//10
-		else if(r <= 140) wahl = Rarity.LEGENDARY;
-
-		else if(r <= 145) wahl = Rarity.GOD; // 5
-
-		else wahl = Rarity.VOID; 	//1
+		if(r <= 60) wahl = Rarity.COMMON; //30%
+		else if(r <= 100) wahl = Rarity.UNCOMMON; //20%
+		else if(r <= 130) wahl = Rarity.RARE; //15%
+		else if(r <= 160) wahl = Rarity.VERYRARE; //15%
+		else if(r <= 178) wahl = Rarity.EPIC; //9%		
+		else if(r <= 190) wahl = Rarity.LEGENDARY; //6%
+		else if(r <= 199) wahl = Rarity.GOD; //4,5%
+		else wahl = Rarity.VOID; 	// 0,5%
 		////////////
-		return switch (gen.nextInt(6)+1) {
-		case 1 -> new Harnisch(wahl);
+		return switch (gen.nextInt(5)+1) {
+		case 1 -> new Harnish(wahl);
 		case 2 -> new Helmet(wahl);
 		case 3 -> new Pants(wahl);
 		case 4 -> new Sword(wahl);
 		case 5 -> new Potion(wahl);
-		case 6 -> new Use(wahl);
+		
 		default -> new Potion(wahl);
 		}; 
 	}
+	
+	
+	
 
 }

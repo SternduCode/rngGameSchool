@@ -9,6 +9,7 @@ public class Helmet extends Item{
 	private double dgc;
 	private int atk;
 	
+
 	public Helmet(Rarity ty) {
 		super("Helmet",ty.getTextureName());
 		this.rarity = ty;
@@ -68,5 +69,11 @@ public class Helmet extends Item{
 	public int getAtk() {
 		return atk;
 	}
+	
+	@Override
+	public String toString() {
+		return "Helmet [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";
+	}
+
 
 }

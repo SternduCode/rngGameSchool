@@ -3,6 +3,7 @@ package rngGame.stats;
 import java.util.Random;
 
 public class Potion extends Item{
+	
 	private Rarity rarity;
 	private int hp;
 	
@@ -27,4 +28,10 @@ public class Potion extends Item{
 	public int getHp() {
 		return hp;
 	}
+	
+	@Override
+	public String toString() {
+		return "Potion [rarity=" + rarity + ", hp=" + hp + "]";
+	}
+
 }

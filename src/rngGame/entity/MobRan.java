@@ -172,7 +172,7 @@ public class MobRan extends NPC {
 
 
 		String[] mobs = {
-				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Serpah"
+				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph"
 		};
 
 		int mr = gen.nextInt(mobs.length);

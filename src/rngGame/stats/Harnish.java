@@ -2,15 +2,15 @@ package rngGame.stats;
 
 import java.util.Random;
 
-public class Harnisch extends Item{
+public class Harnish extends Item{
 	private Rarity rarity;
 	private int hp;
 	private double res;
 	private double dgc;
 	private int atk;
 	
-	public Harnisch(Rarity ty) {
-		super("Harnisch",ty.getTextureName());
+	public Harnish(Rarity ty) {
+		super("Harnish",ty.getTextureName());
 		this.rarity = ty;
 		Random gen = new Random();
 		
@@ -53,6 +53,11 @@ public class Harnisch extends Item{
 		};
 	}
 	
+	@Override
+	public String toString() {
+		return "Harnish [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";
+	}
+
 	public int getHp() {
 		return hp;
 	}

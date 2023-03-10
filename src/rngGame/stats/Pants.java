@@ -9,6 +9,8 @@ public class Pants extends Item{
 	private double dgc;
 	private int atk;
 	
+	
+
 	public Pants(Rarity ty) {
 		super("Pants",ty.getTextureName());
 		this.rarity = ty;
@@ -69,4 +71,8 @@ public class Pants extends Item{
 		return atk;
 	}
 
+	@Override
+	public String toString() {
+		return "Pants [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";
+	}
 }
