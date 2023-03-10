@@ -2,6 +2,7 @@ package rngGame.stats;
 
 import java.util.Random;
 
+import rngGame.entity.MonsterNPC;
 import rngGame.tile.Difficulty;
 
 public class Demon {
@@ -16,6 +17,7 @@ public class Demon {
 	private double dgc;
 	private int lvl;
 	private MonsterNPC demon;
+	
 	
 	public Demon(Element wahl , String mobName, MonsterNPC demon) {
 		this.demon = demon;

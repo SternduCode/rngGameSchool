@@ -3,6 +3,11 @@ package rngGame.ui;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import rngGame.main.GamePanel;
+import rngGame.stats.Demon;
+import rngGame.stats.Item;
+import rngGame.stats.Key;
+import rngGame.stats.Potion;
+import rngGame.stats.Use;
 import rngGame.tile.ImgUtil;
 
 
@@ -13,6 +18,18 @@ import rngGame.tile.ImgUtil;
  */
 public class Inventory extends Pane {
 
+	private Potion[] potionArray = new Potion[30];
+	
+	private Item[] gearArray = new Item[30];
+	
+	private Use[] useArray = new Use[30];
+	
+	private Key[] keyArray = new Key[30];
+	
+	private Demon[] demonArray = new Demon[30];
+	
+	
+	
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
 
@@ -38,7 +55,8 @@ public class Inventory extends Pane {
 
 	/** The idkbutton. */
 	private final Button idkbutton;
-
+	
+	
 	/**
 	 * Instantiates a new inventory.
 	 *
