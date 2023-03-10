@@ -109,24 +109,8 @@ public class MobRan extends NPC {
 		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
 	}
 
-	/**
-	 * Gets the lol.
-	 *
-	 * @return the lol
-	 */
-	public String getLol() {
-		return mobName;
-	}
-
-	/**
-	 * Gets the pn G.
-	 *
-	 * @return the pn G
-	 */
-	public String getPnG() {
-		return pnG;
-	}
-
+	//                                /(>*-*<)\
+	
 	/**
 	 * Inits the.
 	 */
