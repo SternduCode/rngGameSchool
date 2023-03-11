@@ -22,7 +22,8 @@ public class Inventory extends Pane {
 	/** The aus xb. */
 	private final Button ausXb;
 
-
+	/** The inv slots. */
+	private final ImageView[][] invSlots = new ImageView[10][4];
 
 	/** The potionbutton. */
 	private final Button potionbutton;
@@ -80,6 +81,18 @@ public class Inventory extends Pane {
 		Image idkButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
 		idkbutton = new Button(idkButton2);
 
+		Pane p = new Pane();
+		p.setLayoutX(8 * gamepanel.getScalingFactorX());
+		p.setLayoutY(268 * gamepanel.getScalingFactorY());
+		for (int i = 0; i < 620; i += 62)
+			for (int j = 0; j < 247; j += 62) {
+				ImageView iv = new ImageView();
+				iv.setLayoutX(i * gamepanel.getScalingFactorX());
+				iv.setLayoutY(j * gamepanel.getScalingFactorY());
+				invSlots[i / 62][j / 62] = iv;
+				p.getChildren().add(iv);
+			}
+
 
 		getChildren().add(invBackround);
 		getChildren().add(ausXb);
@@ -89,6 +102,8 @@ public class Inventory extends Pane {
 		getChildren().add(usebutton);
 		getChildren().add(keybutton);
 		getChildren().add(idkbutton);
+
+		getChildren().add(p);
 
 		setVisible(false);
 
