@@ -117,16 +117,22 @@ public class TreasureChest extends Building {
 	public void giveItem() {
 		if(ifEndchest) {
 			Item r1 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 			Item r2 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
 			System.out.println(r1.toString()); 
 			System.out.println(r2.toString()); 
 			System.out.println(r3.toString()); 
 		} else {
-			Item r4 = createItem();
-			System.out.println(r4.toString()); 
+			Item r1 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
+			System.out.println(r1.toString()); 
 		}
 	}
+	
+	
 	
 	
 	
