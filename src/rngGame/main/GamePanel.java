@@ -203,6 +203,8 @@ public class GamePanel extends Pane {
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
 
+	
+
 	/** The aktionbutton. */
 	private final AktionButton aktionbutton;
 
@@ -644,6 +646,10 @@ public class GamePanel extends Pane {
 				+ selectTool + ", layerGroup=" + layerGroup.getChildren().size() + ", buildings=" + buildings
 				+ ", npcs=" + npcs
 				+ "]";
+	}
+	
+	public TabMenu getGamemenu() {
+		return gamemenu;
 	}
 
 	/**
