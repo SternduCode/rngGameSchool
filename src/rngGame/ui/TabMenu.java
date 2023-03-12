@@ -80,7 +80,7 @@ public class TabMenu extends Pane {
 	private Image sureN2;
 
 	/** The inventory. */
-	private Inventory inventory;
+	private final Inventory inventory;
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -144,6 +144,9 @@ public class TabMenu extends Pane {
 		setDisable(true);
 		this.gamepanel = gamepanel;
 
+		inventory = new Inventory(gamepanel, this);
+		getChildren().add(inventory);
+		inventory.setDisable(true);
 
 		Input.getInstance().setKeyHandler("inv", mod -> {
 			if(!noInput.get()) {
@@ -165,11 +168,6 @@ public class TabMenu extends Pane {
 						invB.setImage(invB1);
 						inventory.show();
 					});
-
-					inventory = new Inventory(gamepanel, this);
-					getChildren().add(inventory);
-
-					inventory.setDisable(true);
 
 					queB.setOnMousePressed(me -> {
 						queB.setImage(queB2);

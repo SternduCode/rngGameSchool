@@ -1,17 +1,11 @@
 package rngGame.ui;
 
+import java.util.Arrays;
+
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import rngGame.main.GamePanel;
-import rngGame.stats.Demon;
-import rngGame.stats.Harnish;
-import rngGame.stats.Helmet;
-import rngGame.stats.Item;
-import rngGame.stats.Key;
-import rngGame.stats.Pants;
-import rngGame.stats.Potion;
-import rngGame.stats.Sword;
-import rngGame.stats.Use;
+import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 
 
@@ -22,18 +16,42 @@ import rngGame.tile.ImgUtil;
  */
 public class Inventory extends Pane {
 
-	private Potion[] potionArray = new Potion[40];
-	
-	private Item[] gearArray = new Item[40];
-	
-	private Use[] useArray = new Use[40];
-	
-	private Key[] keyArray = new Key[40];
-	
-	private Demon[] demonArray = new Demon[40];
-	
-	
-	
+	/**
+	 * The Enum Tab.
+	 */
+	private enum Tab {
+
+		/** The potion. */
+		POTION,
+		/** The monster. */
+		MONSTER,
+		/** The use. */
+		USE,
+		/** The armor. */
+		ARMOR,
+		/** The key. */
+		KEY;
+	}
+
+	/** The potion array. */
+	private final Potion[] potionArray = new Potion[40];
+
+	/** The gear array. */
+	private final Item[] gearArray = new Item[40];
+
+	/** The use array. */
+	private final Use[] useArray = new Use[40];
+
+	/** The key array. */
+	private final Key[] keyArray = new Key[40];
+
+	/** The demon array. */
+	private final Demon[] demonArray = new Demon[40];
+
+	/** The current tab. */
+	private Tab currentTab = Tab.POTION;
+
+
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
 
@@ -60,8 +78,8 @@ public class Inventory extends Pane {
 
 	/** The idkbutton. */
 	private final Button idkbutton;
-	
-	
+
+
 	/**
 	 * Instantiates a new inventory.
 	 *
@@ -156,6 +174,8 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			currentTab = Tab.POTION;
+			moveFromArrayToView();
 		});
 
 		armorbutton.setOnMouseReleased(me -> {
@@ -164,6 +184,8 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			currentTab = Tab.ARMOR;
+			moveFromArrayToView();
 		});
 
 		usebutton.setOnMouseReleased(me -> {
@@ -172,6 +194,8 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton1);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			currentTab = Tab.USE;
+			moveFromArrayToView();
 		});
 
 		keybutton.setOnMouseReleased(me -> {
@@ -180,6 +204,8 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton1);
 			idkbutton.setImage(idkButton2);
+			currentTab = Tab.KEY;
+			moveFromArrayToView();
 		});
 
 		idkbutton.setOnMouseReleased(me -> {
@@ -188,9 +214,36 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton1);
+			currentTab = Tab.MONSTER;
+			moveFromArrayToView();
 		});
 
 
+	}
+
+	/**
+	 * Move from array to view.
+	 */
+	private void moveFromArrayToView() {
+		Item[] data = switch (currentTab) {
+			case POTION -> potionArray;
+			case ARMOR -> gearArray;
+			case KEY -> keyArray;
+			case MONSTER -> null;
+			case USE -> useArray;
+		};
+		if (data == null) {
+			// TODO monster
+		} else {
+			int k = 0;
+			System.out.println(data + " " + Arrays.toString(data));
+			for (int j = 0; j < invSlots[0].length; j++) for (ImageView[] invSlot : invSlots) {
+				System.out.println(data[k]);
+				if (data[k] != null) invSlot[j].setImage(data[k].getT1());
+				else invSlot[j].setImage(null);
+				k++;
+			}
+		}
 	}
 
 	/**
@@ -202,49 +255,49 @@ public class Inventory extends Pane {
 	}
 
 	/**
+	 * Find first null.
+	 *
+	 * @param itemArray the item array
+	 * @return the int
+	 */
+	public int findFirstNull(Item[] itemArray) {
+		for(int i = 0; i < itemArray.length; i++) if(itemArray[i]==null) return i;
+		return -1;
+	}
+
+	/**
+	 * Item to inventory.
+	 *
+	 * @param item the item
+	 */
+	public void itemToInventory(Item item) {
+		System.out.println(item);
+		if (item instanceof Potion p1) {
+			int x = findFirstNull(potionArray);
+			System.out.println(x);
+			if(x != -1) potionArray[x] = p1;
+
+		} else if(item instanceof Harnish || item instanceof Helmet || item instanceof Pants || item instanceof Sword) {
+			int x = findFirstNull(gearArray);
+			if(x != -1) gearArray[x] = item;
+
+		} else if(item instanceof Use u1) {
+			int x = findFirstNull(useArray);
+			if(x != -1) useArray[x] = u1;
+		} else if(item instanceof Key k1) {
+			int x = findFirstNull(keyArray);
+			if(x != -1) keyArray[x] = k1;
+
+		} else System.err.println("UNEXPECTED TYPE OF ITEM ABTREIBUNG FEHLGESCHLAGEN!!!");
+	}
+
+	/**
 	 * Show.
 	 */
 	public void show() {
+		moveFromArrayToView();
 		setVisible(true);
 		setDisable(false);
-	}
-	
-	public void itemToInventory(Item item) {
-		if (item instanceof Potion p1) {
-			int x = findFirstNull(potionArray);
-			if(x != -1) {
-				potionArray[x] = p1;
-			}
-			
-		} else if(item instanceof Harnish || item instanceof Helmet || item instanceof Pants || item instanceof Sword) {
-			int x = findFirstNull(gearArray);
-			if(x != -1) {
-				gearArray[x] = item;
-			}
-			
-		} else if(item instanceof Use u1) {
-			int x = findFirstNull(useArray);
-			if(x != -1) {
-				useArray[x] = u1;
-			}
-		} else if(item instanceof Key k1) {
-			int x = findFirstNull(keyArray);
-			if(x != -1) {
-				keyArray[x] = k1;
-			}
-			
-		} else {
-			System.err.println("UNEXPECTED TYPE OF ITEM ABTREIBUNG FEHLGESCHLAGEN!!!");
-		}
-	}
-	
-	public int findFirstNull(Item[] itemArray) {
-		for(int i = 0; i < itemArray.length; i++) {
-			if(itemArray[i]==null) {
-				return i;
-			} 
-		}
-		return -1;
 	}
 
 }
