@@ -1,28 +1,15 @@
 package rngGame.buildings;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-import com.sterndu.json.BoolValue;
-import com.sterndu.json.JsonObject;
+import com.sterndu.json.*;
 
-import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Ellipse;
-import rngGame.main.GamePanel;
-import rngGame.main.Input;
-import rngGame.stats.Element;
-import rngGame.stats.Harnish;
-import rngGame.stats.Helmet;
-import rngGame.stats.Item;
-import rngGame.stats.Pants;
-import rngGame.stats.Potion;
-import rngGame.stats.Rarity;
-import rngGame.stats.Sword;
-
-import rngGame.stats.Use;
+import rngGame.main.*;
+import rngGame.stats.*;
 
 
 // TODO: Auto-generated Javadoc
@@ -31,8 +18,13 @@ import rngGame.stats.Use;
  */
 public class TreasureChest extends Building {
 
+	/** The voidi. */
+	private static int common = 0, uncommon = 0, rare = 0, veryrare = 0, epic = 0, legendary = 0, god = 0, voidi = 0;
+
 	/** The is open. */
 	private boolean isOpen = false;
+
+	/** The if endchest. */
 	private boolean ifEndchest;
 
 
@@ -62,10 +54,8 @@ public class TreasureChest extends Building {
 	public TreasureChest(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm, ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
 		init();
-		this.ifEndchest = false;
-		if(building.containsKey("endChest")) {
-			this.ifEndchest=((BoolValue) building.get("endChest")).getValue();
-		}
+		ifEndchest = false;
+		if(building.containsKey("endChest")) ifEndchest=((BoolValue) building.get("endChest")).getValue();
 		Input.getInstance().setKeyHandler("Items", mod -> {
 			TestItem();
 		}, KeyCode.I, false);
@@ -85,11 +75,66 @@ public class TreasureChest extends Building {
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, directory, buildings, cm, requestorB);
 		init();
-		this.ifEndchest = false;
-		if(building.containsKey("endChest")) {
-			this.ifEndchest=((BoolValue) building.get("endChest")).getValue();
+		ifEndchest = false;
+		if(building.containsKey("endChest")) ifEndchest=((BoolValue) building.get("endChest")).getValue();
+	}
+
+	/**
+	 * Creates the item.
+	 *
+	 * @return the item
+	 */
+	public Item createItem() {
+		Random gen = new Random();
+		Rarity wahl = Rarity.COMMON;
+
+		int r = gen.nextInt(100*2)+1;
+		////////////
+		if (r <= 80) wahl = Rarity.COMMON; // 40%
+		else if (r <= 130) wahl = Rarity.UNCOMMON; // 25%
+		else if (r <= 160) wahl = Rarity.RARE; // 15%
+		else if (r <= 180) wahl = Rarity.VERYRARE; // 10%
+		else if (r <= 192) wahl = Rarity.EPIC; // 6%
+		else if (r <= 197) wahl = Rarity.LEGENDARY; // 2,5%
+		else if (r <= 199) wahl = Rarity.GOD; // 1%
+		else wahl = Rarity.VOID; 	// 0,5%
+		////////////
+		return switch (gen.nextInt(5)+1) {
+			case 1 -> new Harnish(wahl);
+			case 2 -> new Helmet(wahl);
+			case 3 -> new Pants(wahl);
+			case 4 -> new Sword(wahl);
+			case 5 -> new Potion(wahl);
+
+			default -> new Potion(wahl);
+		};
+	}
+
+	/**
+	 * Give item.
+	 */
+	public void giveItem() {
+		if(ifEndchest) {
+			Item r1 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
+			Item r2 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
+			Item r3 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
+			System.out.println(r1.toString());
+			System.out.println(r2.toString());
+			System.out.println(r3.toString());
+		} else {
+			Item r1 = createItem();
+			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
+			System.out.println(r1.toString());
 		}
 	}
+
+
+
+
+
 
 	/**
 	 * Inits the.
@@ -114,62 +159,31 @@ public class TreasureChest extends Building {
 		});
 	}
 
-	public void giveItem() {
-		if(ifEndchest) {
-			Item r1 = createItem();
-			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
-			Item r2 = createItem();
-			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
-			Item r3 = createItem();
-			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
-			System.out.println(r1.toString()); 
-			System.out.println(r2.toString()); 
-			System.out.println(r3.toString()); 
-		} else {
-			Item r1 = createItem();
-			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
-			System.out.println(r1.toString()); 
-		}
-	}
-	
-	
-	
-	
-	
-	
+
+	/**
+	 * Test item.
+	 */
 	public void TestItem() {
-			Item r1 = createItem();
-			System.out.println(r1.toString()); 
+		Item r1 = createItem();
+		switch (r1.getRarity()) {
+			case COMMON -> common++;
+			case UNCOMMON -> uncommon++;
+			case RARE -> rare++;
+			case VERYRARE -> veryrare++;
+			case EPIC -> epic++;
+			case LEGENDARY -> legendary++;
+			case GOD -> god++;
+			case VOID -> voidi++;
+			default ->
+			throw new IllegalArgumentException("Unexpected value: " + r1.getRarity());
+		}
+		System.out.println(r1.toString());
+		double sum = (common + uncommon + rare + veryrare + epic + legendary + god + voidi) / 100.0;
+		System.out.printf("Common %.2f%% Uncommon %.2f%% Rare %.2f%% Very Rare %.2f%% Epic %.2f%% Legendary %.2f%% God %.2f%% Void %.2f%% Items %d\n",
+				common / sum, uncommon / sum, rare / sum, veryrare / sum, epic / sum, legendary / sum, god / sum, voidi / sum, (long) sum);
 	}
 
 
-	public Item createItem() {
-		Random gen = new Random();
-		Rarity wahl = Rarity.COMMON;
-		
-		int r = gen.nextInt(100*2)+1;
-		////////////
-		if(r <= 60) wahl = Rarity.COMMON; //30%
-		else if(r <= 100) wahl = Rarity.UNCOMMON; //20%
-		else if(r <= 130) wahl = Rarity.RARE; //15%
-		else if(r <= 160) wahl = Rarity.VERYRARE; //15%
-		else if(r <= 178) wahl = Rarity.EPIC; //9%		
-		else if(r <= 190) wahl = Rarity.LEGENDARY; //6%
-		else if(r <= 199) wahl = Rarity.GOD; //4,5%
-		else wahl = Rarity.VOID; 	// 0,5%
-		////////////
-		return switch (gen.nextInt(5)+1) {
-		case 1 -> new Harnish(wahl);
-		case 2 -> new Helmet(wahl);
-		case 3 -> new Pants(wahl);
-		case 4 -> new Sword(wahl);
-		case 5 -> new Potion(wahl);
-		
-		default -> new Potion(wahl);
-		}; 
-	}
-	
-	
-	
+
 
 }
