@@ -22,15 +22,15 @@ import rngGame.tile.ImgUtil;
  */
 public class Inventory extends Pane {
 
-	private Potion[] potionArray = new Potion[30];
+	private Potion[] potionArray = new Potion[40];
 	
-	private Item[] gearArray = new Item[30];
+	private Item[] gearArray = new Item[40];
 	
-	private Use[] useArray = new Use[30];
+	private Use[] useArray = new Use[40];
 	
-	private Key[] keyArray = new Key[30];
+	private Key[] keyArray = new Key[40];
 	
-	private Demon[] demonArray = new Demon[30];
+	private Demon[] demonArray = new Demon[40];
 	
 	
 	
