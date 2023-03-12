@@ -274,7 +274,6 @@ public class Inventory extends Pane {
 		System.out.println(item);
 		if (item instanceof Potion p1) {
 			int x = findFirstNull(potionArray);
-			System.out.println(x);
 			if(x != -1) potionArray[x] = p1;
 
 		} else if(item instanceof Harnish || item instanceof Helmet || item instanceof Pants || item instanceof Sword) {

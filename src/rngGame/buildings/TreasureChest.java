@@ -121,20 +121,11 @@ public class TreasureChest extends Building {
 			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
-			System.out.println(r1.toString());
-			System.out.println(r2.toString());
-			System.out.println(r3.toString());
 		} else {
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
-			System.out.println(r1.toString());
 		}
 	}
-
-
-
-
-
 
 	/**
 	 * Inits the.
@@ -159,7 +150,6 @@ public class TreasureChest extends Building {
 		});
 	}
 
-
 	/**
 	 * Test item.
 	 */
@@ -177,7 +167,7 @@ public class TreasureChest extends Building {
 			default ->
 			throw new IllegalArgumentException("Unexpected value: " + r1.getRarity());
 		}
-		System.out.println(r1.toString());
+		gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 		double sum = (common + uncommon + rare + veryrare + epic + legendary + god + voidi) / 100.0;
 		System.out.printf("Common %.2f%% Uncommon %.2f%% Rare %.2f%% Very Rare %.2f%% Epic %.2f%% Legendary %.2f%% God %.2f%% Void %.2f%% Items %d\n",
 				common / sum, uncommon / sum, rare / sum, veryrare / sum, epic / sum, legendary / sum, god / sum, voidi / sum, (long) sum);
