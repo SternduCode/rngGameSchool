@@ -128,7 +128,6 @@ public class TreasureChest extends Building {
 		} else {
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
-			System.out.println(r1.toString()); 
 		}
 	}
 	
@@ -139,7 +138,7 @@ public class TreasureChest extends Building {
 	
 	public void TestItem() {
 			Item r1 = createItem();
-			System.out.println(r1.toString()); 
+			gamepanel.getGamemenu().getInventory().itemToInventory(r1); 
 	}
 
 
