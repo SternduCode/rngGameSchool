@@ -163,6 +163,13 @@ public class Inventory extends Pane {
 		getChildren().add(ausXb);
 
 		getChildren().add(m1.getDemon());
+		m1.getDemon().setFixToScreen(true);
+		m1.getDemon().setReqHeight((int) (192*gamepanel.getScalingFactorX()));
+		m1.getDemon().setReqWidth((int) (192*gamepanel.getScalingFactorY()));
+		m1.getDemon().reloadTextures();
+		m1.getDemon().setLayoutX(180*gamepanel.getScalingFactorX());
+		m1.getDemon().setLayoutY(50*gamepanel.getScalingFactorX());
+		
 		
 		getChildren().add(potionbutton);
 		getChildren().add(armorbutton);

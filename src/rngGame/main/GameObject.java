@@ -104,7 +104,10 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 	/** The background. */
 	protected boolean background;
+	
+	protected boolean fixToScreen;
 
+	
 	/** The remove. */
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
 	reloadTextures,
@@ -123,7 +126,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			ContextMenu cm,
 			ObjectProperty<? extends GameObject> requestor) {
 		removeCallbacks = new ArrayList<>();
-
+		fixToScreen = false;
 		images = new HashMap<>();
 		isGif = new HashMap<>();
 		textureFiles = new HashMap<>();
@@ -261,7 +264,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			ObjectProperty<? extends GameObject> requestor) {
 		gamepanel = gp;
 		this.directory = directory;
-
+		fixToScreen = false;
 		images = new HashMap<>();
 		isGif = new HashMap<>();
 		textureFiles = new HashMap<>();
@@ -1184,6 +1187,13 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			updateXY.run();
 	}
 
+	public boolean isFixToScreen() {
+		return fixToScreen;
+	}
+
+	public void setFixToScreen(boolean fixToScreen) {
+		this.fixToScreen = fixToScreen;
+	}
 
 	/**
 	 * To json value.
@@ -1324,8 +1334,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			}
 		}
 
-		double screenX = x - p.getX() + p.getScreenX();
-		double screenY = y - p.getY() + p.getScreenY();
+		
 
 		if ("true".equals(System.getProperty("edit"))) {
 			if (getBorder() == null)
@@ -1338,14 +1347,18 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			if (getBorder() != null)
 				setBorder(null);
 		}
-
+		
+		if(!fixToScreen) {
+		double screenX = x - p.getX() + p.getScreenX();
+		double screenY = y - p.getY() + p.getScreenY();
 		setLayoutX(screenX);
 		setLayoutY(screenY);
-
-		if (x + getWidth() > p.x - p.getScreenX()
+		}
+		
+		if ((x + getWidth() > p.x - p.getScreenX()
 				&& x < p.x + p.getScreenX() + p.getWidth()
 				&& y + getHeight() > p.y - p.getScreenY()
-				&& y < p.y + p.getScreenY() + p.getHeight())
+				&& y < p.y + p.getScreenY() + p.getHeight())||fixToScreen)
 			setVisible(true);
 		else setVisible(false);
 
