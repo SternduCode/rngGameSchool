@@ -14,6 +14,7 @@ import com.sterndu.json.StringValue;
 
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
+import rngGame.entity.MobRan;
 import rngGame.entity.MonsterNPC;
 import rngGame.main.GamePanel;
 import rngGame.stats.*;
@@ -106,35 +107,10 @@ public class Inventory extends Pane {
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
         
 		/////////////
-		Path p2	= new File("./res/demons/"+Element.Void+"/"+"Slyzer"+".png").toPath();
-		Image img = new Image(new FileInputStream(p2.toFile()));
-
-		JsonArray reqSize = new JsonArray();
-		JsonArray position = new JsonArray();
-		JsonObject joB = new JsonObject();
-		reqSize.add(new IntegerValue(64));
-		reqSize.add(new IntegerValue(64));
-		joB.put("requestedSize", reqSize);
-		JsonObject textures = new JsonObject();
-		if (new File("./res/demons/"+Element.Void+"/"+"Slyzer"+".png").exists())
-			textures.put("default", new StringValue("Slyzer" + ".png"));
-		else
-			textures.put("default", new StringValue("Slyzer" + ".gif"));
-		joB.put("textures", textures);
-		JsonObject buildingData = new JsonObject();
-		joB.put("buildingData", buildingData);
-		joB.put("type", new StringValue("Building"));
-		joB.put("dir", new StringValue(Element.Void.toString()));
-		position.add(new DoubleValue(0));
-		position.add(new DoubleValue(0));
-
-		joB.put("position", position);
-		JsonArray originalSize = new JsonArray();
-		originalSize.add(new DoubleValue(img.getHeight()));
-		originalSize.add(new DoubleValue(img.getHeight()));
-		joB.put("originalSize", originalSize);
-		MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), gamepanel.getTileM().getRequestorN());
-		gamepanel.getNpcs().add(mnpc);
+		
+		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
+		currentDemonArray[0] = m1;
+		
 		/////////////
 		
 		
@@ -186,7 +162,7 @@ public class Inventory extends Pane {
 		getChildren().add(invBackround);
 		getChildren().add(ausXb);
 
-		getChildren().add(mnpc);
+		getChildren().add(m1.getDemon());
 		
 		getChildren().add(potionbutton);
 		getChildren().add(armorbutton);
