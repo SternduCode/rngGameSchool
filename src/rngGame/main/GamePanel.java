@@ -253,12 +253,12 @@ public class GamePanel extends Pane {
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
-		gamemenu = new TabMenu(this);
+		
 
 		aktionbutton = new AktionButton(this);
 
 		setMap("./res/maps/lavaMap2.json");
-
+		gamemenu = new TabMenu(this);
 		System.out.println(aktionbutton.isDisable());
 
 		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, gamemenu, fpsLabel, loadingScreen);
