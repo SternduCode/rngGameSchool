@@ -1,10 +1,23 @@
 package rngGame.ui;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Arrays;
+
+import com.sterndu.json.DoubleValue;
+import com.sterndu.json.IntegerValue;
+import com.sterndu.json.JsonArray;
+import com.sterndu.json.JsonObject;
+import com.sterndu.json.StringValue;
 
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
+import rngGame.entity.MobRan;
+import rngGame.entity.MonsterNPC;
 import rngGame.main.GamePanel;
+import rngGame.main.Text;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 
@@ -47,10 +60,18 @@ public class Inventory extends Pane {
 
 	/** The demon array. */
 	private final Demon[] demonArray = new Demon[40];
+	
+	private final Demon[] currentDemonArray = new Demon[5];
 
 	/** The current tab. */
 	private Tab currentTab = Tab.POTION;
-
+	
+	private Pane namePane = new Pane();
+	private ImageView nameView,textBackroundCT,elementView;
+	
+	private Pane status = new Pane();
+	private ImageView hpView,atkView,resView,dgcView;
+	
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -65,19 +86,8 @@ public class Inventory extends Pane {
 	private final ImageView[][] invSlots = new ImageView[10][4];
 
 	/** The potionbutton. */
-	private final Button potionbutton;
+	private final Button potionbutton,armorbutton,usebutton,keybutton,idkbutton;
 
-	/** The armorbutton. */
-	private final Button armorbutton;
-
-	/** The usebutton. */
-	private final Button usebutton;
-
-	/** The keybutton. */
-	private final Button keybutton;
-
-	/** The idkbutton. */
-	private final Button idkbutton;
 
 
 	/**
@@ -85,12 +95,54 @@ public class Inventory extends Pane {
 	 *
 	 * @param gamepanel the gamepanel
 	 * @param tabm the tabm
+	 * @throws FileNotFoundException 
 	 */
-	public Inventory(GamePanel gamepanel, TabMenu tabm) {
+	public Inventory(GamePanel gamepanel, TabMenu tabm) throws FileNotFoundException {
 		this.gamepanel = gamepanel;
 		// invBackround
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
-
+		textBackroundCT	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invNameTitle.png"));
+		elementView	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png"));
+		/////////////
+		
+		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
+		currentDemonArray[0] = m1;
+		
+		/////////////
+		//TODO stats vom "Angeclickten" Monster
+		Image hpText = Text.getInstance().convertText("HP:"+currentDemonArray[0].getHp(), 48);
+		hpText = ImgUtil.resizeImage(
+				hpText, (int) hpText.getWidth(), (int) hpText.getHeight(),
+				(int) (hpText.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (hpText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		Image atkText = Text.getInstance().convertText("ATK:"+currentDemonArray[0].getAtk(), 48);
+		atkText = ImgUtil.resizeImage(
+				atkText, (int) atkText.getWidth(), (int) atkText.getHeight(),
+				(int) (atkText.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (atkText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		Image resText = Text.getInstance().convertText("RES:"+currentDemonArray[0].getRes()+"%", 48);
+		resText = ImgUtil.resizeImage(
+				resText, (int) resText.getWidth(), (int) resText.getHeight(),
+				(int) (resText.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (resText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		Image dgcText = Text.getInstance().convertText("DGC:"+currentDemonArray[0].getDgc()+"%", 48);
+		dgcText = ImgUtil.resizeImage(
+				dgcText, (int) dgcText.getWidth(), (int) resText.getHeight(),
+				(int) (dgcText.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (dgcText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		Image nameText = Text.getInstance().convertText(""+currentDemonArray[0].getMobName(), 48);
+		nameText = ImgUtil.resizeImage(
+				nameText, (int) nameText.getWidth(), (int) resText.getHeight(),
+				(int) (nameText.getWidth() * gamepanel.getScalingFactorX()),
+				(int) (nameText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		
+		
+		
 		//Xbutton
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
 		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
@@ -133,10 +185,52 @@ public class Inventory extends Pane {
 				p.getChildren().add(iv);
 			}
 
-
+		
+		
 		getChildren().add(invBackround);
+		
+		getChildren().add(m1.getDemon());
+		m1.getDemon().setFixToScreen(true);
+		m1.getDemon().setReqHeight((int) (192*gamepanel.getScalingFactorX()));
+		m1.getDemon().setReqWidth((int) (192*gamepanel.getScalingFactorY()));
+		m1.getDemon().reloadTextures();
+		m1.getDemon().setLayoutX(180*gamepanel.getScalingFactorX());
+		m1.getDemon().setLayoutY(50*gamepanel.getScalingFactorX());
+		
+		hpView = new ImageView(hpText);
+		atkView = new ImageView(atkText);
+		resView = new ImageView(resText);
+		dgcView = new ImageView(dgcText);
+		
+		elementView = new ImageView(showElementbr(currentDemonArray[0].getElement()));
+		getChildren().add(elementView);
+		
+		nameView = new ImageView(nameText);
+		nameView.setLayoutX(100*gamepanel.getScalingFactorX());
+		nameView.setLayoutY(9*gamepanel.getScalingFactorY());
+		namePane.getChildren().addAll(textBackroundCT,nameView);
+		
+//		namePane.setLayoutX(192);
+//		namePane.setLayoutY(192);
+		getChildren().add(namePane);
+		
+		getChildren().add(status);
+		status.getChildren().addAll(hpView,atkView,resView,dgcView);
+		hpView.setLayoutX(50*gamepanel.getScalingFactorX());
+		hpView.setLayoutY(64*gamepanel.getScalingFactorY());
+		atkView.setLayoutX(32*gamepanel.getScalingFactorX());
+		atkView.setLayoutY((64+32)*gamepanel.getScalingFactorY());
+		resView.setLayoutX(32*gamepanel.getScalingFactorX());
+		resView.setLayoutY((64+32*2)*gamepanel.getScalingFactorY());
+		dgcView.setLayoutX(32*gamepanel.getScalingFactorX());
+		dgcView.setLayoutY((64+32*3)*gamepanel.getScalingFactorY());
+		
+		status.setLayoutX((gamepanel.SpielLaenge/2+10)*gamepanel.getScalingFactorX());
+		status.setLayoutY(10*gamepanel.getScalingFactorY());
+		
+		
 		getChildren().add(ausXb);
-
+		
 		getChildren().add(potionbutton);
 		getChildren().add(armorbutton);
 		getChildren().add(usebutton);
@@ -297,6 +391,30 @@ public class Inventory extends Pane {
 		moveFromArrayToView();
 		setVisible(true);
 		setDisable(false);
+	}
+	
+	public Image showElementbr(Element e) {
+		Image test = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png");
+		if(e == Element.Fire) {
+	      Image firebr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png");
+	      test = firebr;
+		} else if(e == Element.Water) {
+		      Image waterbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWater.png");
+		      test = waterbr;
+		} else if(e == Element.Plant) {
+		      Image plantbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementPlant.png");
+		      test = plantbr;
+		} else if(e == Element.Shadow) {
+		      Image shadowbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementShadow.png");
+		      test = shadowbr;
+		} else if(e == Element.Light) {
+		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementLight.png");
+		      test = lightbr;
+		} else {
+		      Image voidbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementVoid.png");
+		      test = voidbr;
+		}
+		return test;
 	}
 
 }

@@ -2,6 +2,7 @@ package rngGame.stats;
 
 import java.util.Random;
 
+import javafx.scene.image.Image;
 import rngGame.entity.MonsterNPC;
 import rngGame.tile.Difficulty;
 
@@ -14,6 +15,8 @@ public class Demon {
 	/** The element. */
 	private final Element element;
 
+	
+
 	/** The difficult. */
 	private Difficulty difficult;
 
@@ -22,6 +25,8 @@ public class Demon {
 
 	/** The mob name. */
 	private final String mobName;
+
+	
 
 	/** The atk. */
 	private int atk;
@@ -40,6 +45,10 @@ public class Demon {
 
 	/** The demon. */
 	private final MonsterNPC demon;
+
+	
+
+	
 
 	/**
 	 * Instantiates a new demon.
@@ -74,7 +83,7 @@ public class Demon {
 	 * @return the dgc
 	 */
 	public double getDgc() {
-		return dgc;
+		return dgc*100;
 	}
 
 	/**
@@ -101,7 +110,7 @@ public class Demon {
 	 * @return the res
 	 */
 	public double getRes() {
-		return res;
+		return res * 100;
 	}
 
 	/**
@@ -147,6 +156,22 @@ public class Demon {
 	 */
 	public void setRes(double res) {
 		this.res = element.getRes() + res;
+	}
+	
+	public Image getDemonImg() {
+		return getDemon().getImages().get(getDemon().getCurrentKey()).get(0);
+	}
+	
+	public MonsterNPC getDemon() {
+		return demon;
+	}
+	
+	public String getMobName() {
+		return mobName;
+	}
+	
+	public Element getElement() {
+		return element;
 	}
 
 	/**
