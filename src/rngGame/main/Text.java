@@ -139,9 +139,9 @@ public class Text {
 			}
 		for (int x = 0; x < numbersI.getWidth() / 32; x++)
 			for (int y = 0; y < numbersI.getHeight() / 32; y++) if (y<numbersC.length && x<numbersC[y].length) {
-				WritableImage cha = new WritableImage(20, 32);
+				WritableImage cha = new WritableImage(12, 32);
 				PixelWriter pw = cha.getPixelWriter();
-				pw.setPixels(0, 0, 20, 32, numbersPR, x * 32 + 6, y * 32);
+				pw.setPixels(0, 0, 12, 32, numbersPR, x * 32 + 10, y * 32);
 				charmap.put(numbersC[y][x], cha);
 			}
 	}
