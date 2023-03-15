@@ -15,6 +15,8 @@ public class Demon {
 	/** The element. */
 	private final Element element;
 
+	
+
 	/** The difficult. */
 	private Difficulty difficult;
 
@@ -23,6 +25,8 @@ public class Demon {
 
 	/** The mob name. */
 	private final String mobName;
+
+	
 
 	/** The atk. */
 	private int atk;
@@ -79,7 +83,7 @@ public class Demon {
 	 * @return the dgc
 	 */
 	public double getDgc() {
-		return dgc;
+		return dgc*100;
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class Demon {
 	 * @return the res
 	 */
 	public double getRes() {
-		return res;
+		return res * 100;
 	}
 
 	/**
@@ -160,6 +164,14 @@ public class Demon {
 	
 	public MonsterNPC getDemon() {
 		return demon;
+	}
+	
+	public String getMobName() {
+		return mobName;
+	}
+	
+	public Element getElement() {
+		return element;
 	}
 
 	/**
