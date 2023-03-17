@@ -106,8 +106,8 @@ public class Inventory extends Pane {
 		/////////////
 		
 		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
-		m1.setLvl(5);
-		m1.setCurrentExp(1);
+		m1.setLvl(140);
+		m1.setCurrentExp(m1.getMaxExp()-1);
 		currentDemonArray[0] = m1;
 		
 		/////////////
@@ -206,9 +206,9 @@ public class Inventory extends Pane {
 		elementView = new ImageView(showElementbr(currentDemonArray[0].getElement()));
 		eIconView = new ImageView(showElementIcon(currentDemonArray[0].getElement()));
 		getChildren().add(elementView);
-		eIconView.setLayoutX(800*gamepanel.getScalingFactorX());
-		eIconView.setLayoutY(90*gamepanel.getScalingFactorY());
 		
+		eIconView.setLayoutX(785*gamepanel.getScalingFactorX());
+		eIconView.setLayoutY(100*gamepanel.getScalingFactorY());
 		getChildren().add(eIconView);
 		
 		getChildren().add(m1.getDemon());
@@ -219,16 +219,11 @@ public class Inventory extends Pane {
 		m1.getDemon().setLayoutX(180*gamepanel.getScalingFactorX());
 		m1.getDemon().setLayoutY(50*gamepanel.getScalingFactorX());
 		
-		
-		
-		
 		nameView = new ImageView(nameText);
 		nameView.setLayoutX(100*gamepanel.getScalingFactorX());
 		nameView.setLayoutY(9*gamepanel.getScalingFactorY());
 		namePane.getChildren().addAll(textBackroundCT,nameView);
 		
-//		namePane.setLayoutX(192);
-//		namePane.setLayoutY(192);
 		getChildren().add(namePane);
 		
 		hpView = new ImageView(hpText);
@@ -236,19 +231,16 @@ public class Inventory extends Pane {
 		resView = new ImageView(resText);
 		dgcView = new ImageView(dgcText);
 		lvlView = new ImageView(lvlText);
-		
-		
-		
 		expText = new ImageView(expMaxText);
 		expBar = new ImageView(showXPbr());
 		
-		expBar.setLayoutX(-5*gamepanel.getScalingFactorX());
-		expBar.setLayoutY(5*gamepanel.getScalingFactorY());
+		expBar.setLayoutX(-30*gamepanel.getScalingFactorX());
+//		expBar.setLayoutY(5*gamepanel.getScalingFactorY());
+		expText.setLayoutX(290*gamepanel.getScalingFactorX());
+		expText.setLayoutY(17*gamepanel.getScalingFactorY());
 		
 		getChildren().add(status);
 		status.getChildren().addAll(hpView,atkView,resView,dgcView,expBar,expText,lvlView);
-		expText.setLayoutX(215*gamepanel.getScalingFactorX());
-		expText.setLayoutY(2*gamepanel.getScalingFactorY());
 		
 		lvlView.setLayoutX(10+32*gamepanel.getScalingFactorX());
 		lvlView.setLayoutY(15+32*gamepanel.getScalingFactorY());

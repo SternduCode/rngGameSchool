@@ -150,7 +150,7 @@ public class MobRan extends NPC {
 		else wahl = Element.Void;
 
 		String[] mobs = {
-				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph"
+				"May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag"
 		};
 		
 		int mr = gen.nextInt(mobs.length);
