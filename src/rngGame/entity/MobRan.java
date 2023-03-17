@@ -150,11 +150,9 @@ public class MobRan extends NPC {
 		else wahl = Element.Void;
 
 		String[] mobs = {
-<<<<<<< HEAD
-				"May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag"
-=======
-				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Cultist", "CultistKing"
->>>>>>> branch 'main' of https://github.com/SternduCode/rngGame.git
+
+				"May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag", "Cultist", "CultistKing"
+
 		};
 		
 		int mr = gen.nextInt(mobs.length);
