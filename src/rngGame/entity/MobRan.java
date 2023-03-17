@@ -150,17 +150,22 @@ public class MobRan extends NPC {
 		else wahl = Element.Void;
 
 		String[] mobs = {
-				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph"
+				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Cultist", "CultistKing"
 		};
 		
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		
-		//The making of "NaberiusDev" very hard to get #Nebl
+		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
 		if(mobName.equals("Naberius")||mobName.equals("NaberiusDev")) {
 			r = gen.nextInt(10)+1;
 			if(r == 5) mobName = "NaberiusDev";
 			else mobName = "Naberius";
+			System.out.println(r);
+		}else if (mobName.equals("Cultist")||mobName.equals("CultistKing")) {
+			r = gen.nextInt(20)+1;
+			if(r == 13) mobName = "CultistKing";
+			else mobName = "Cultist";
 			System.out.println(r);
 		}
 		
