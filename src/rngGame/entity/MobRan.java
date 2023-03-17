@@ -161,10 +161,11 @@ public class MobRan extends NPC {
 			r = gen.nextInt(10)+1;
 			if(r == 5) mobName = "NaberiusDev";
 			else mobName = "Naberius";
-			System.out.println(r + " schwanz naberi");
-		}else if (mobName.equals("CultistKing")) {
+			System.out.println(r+" naberius "+wahl);
+		}else if (mobName.equals("CultistKing")||mobName.equals("Cultist")) {
+			System.out.println("Cutlist "+wahl);
 			mobName = "Cultist";
-			if (mobName.equals("Cultist")&&wahl==Element.Void) {
+			if (wahl==Element.Void) {
 			r = gen.nextInt(20)+1;
 			if(r == 13) mobName = "CultistKing";
 			else mobName = "Cultist";
