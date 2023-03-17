@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
 import rngGame.main.GamePanel;
 import rngGame.stats.*;
+import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
 
 
@@ -133,8 +134,9 @@ public class MobRan extends NPC {
 	}
 
 	/**
-	 * Mob gen.
+	 * Macht dir ein Mob vallah
 	 */
+	@SuppressWarnings("exports")
 	public Demon MobGen() {
 		String pnG, mobName;
 		Element wahl;
@@ -147,19 +149,30 @@ public class MobRan extends NPC {
 		else if(r <= 100 && r >= 96) wahl = Element.Shadow;
 		else wahl = Element.Void;
 
-
 		String[] mobs = {
 				"Arashi", "May", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph"
 		};
-
+		
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
-
+		
+		//The making of "NaberiusDev" very hard to get #Nebl
+		if(mobName.equals("Naberius")||mobName.equals("NaberiusDev")) {
+			r = gen.nextInt(10)+1;
+			if(r == 5) mobName = "NaberiusDev";
+			else mobName = "Naberius";
+			System.out.println(r);
+		}
+		
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 		else
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 
+		
+		
+		
+		
 		try {
 			Path p2	= new File(pnG).toPath();
 			Image img = new Image(new FileInputStream(p2.toFile()));
@@ -180,8 +193,8 @@ public class MobRan extends NPC {
 			joB.put("buildingData", buildingData);
 			joB.put("type", new StringValue("Building"));
 			joB.put("dir", new StringValue(wahl.toString()));
-			position.add(new DoubleValue(0));
-			position.add(new DoubleValue(0));
+			position.add(new DoubleValue(1730));
+			position.add(new DoubleValue(1113));
 
 			joB.put("position", position);
 			JsonArray originalSize = new JsonArray();
