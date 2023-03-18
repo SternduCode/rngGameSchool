@@ -26,9 +26,7 @@ public class Demon {
 	/** The mob name. */
 	private final String mobName;
 	
-	private Item[] Item4List = new Item[3];
-
-	
+	private Gear[] Item4List = new Gear[4];
 
 	/** The atk. */
 	private int atk, atkList;
@@ -68,9 +66,9 @@ public class Demon {
 		this.demon = demon;
 		element = wahl;
 		this.mobName = mobName;
-		atk = element.getAtk()+gen.nextInt(6);
+		atk = (element.getAtk()+gen.nextInt(6));
 		res = element.getRes();
-		hp = element.getHp()+ gen.nextInt(11);
+		hp = (element.getHp()+ gen.nextInt(11));
 		dgc = element.getDgc();
 		lvl = element.getLvl();
 		
@@ -82,7 +80,7 @@ public class Demon {
 	 * @return the atk
 	 */
 	public int getAtk() {
-		return atk;
+		return atk+getAtkList();
 	}
 
 	/**
@@ -91,7 +89,7 @@ public class Demon {
 	 * @return the dgc
 	 */
 	public double getDgc() {
-		return dgc*100;
+		return (dgc+getDgcList())*100;
 	}
 
 	/**
@@ -100,7 +98,7 @@ public class Demon {
 	 * @return the hp
 	 */
 	public int getHp() {
-		return hp;
+		return hp+getHpList();
 	}
 
 	/**
@@ -118,7 +116,7 @@ public class Demon {
 	 * @return the res
 	 */
 	public double getRes() {
-		return res * 100;
+		return res+getResList()* 100;
 	}
 
 	/**
@@ -195,34 +193,53 @@ public class Demon {
 		this.currentexp = currentexp;
 	}
 	
+	
 	public int getAtkList() {
-//		for(int i = 0; i<5; i++) {
-//			atkList += Item4List[i].;
-//		}
+		for(int i = 0; i<Item4List.length; i++) {
+			if(Item4List[i]!=null) {
+			atkList += Item4List[i].getAtk();
+		}
+	}
 		return atkList;
 	}
 
+	
 	public double getResList() {
-//		for(int i = 0; i<5; i++) {
-//		resList += Item4List[i].;
-//	}
+		for(int i = 0; i<Item4List.length; i++) {
+			if(Item4List[i]!=null) {
+			resList += Item4List[i].getRes();
+	  }
+	}
 		return resList;
 	}
 
+	
 	public int getHpList() {
-//		for(int i = 0; i<5; i++) {
-//		hpList += Item4List[i].;
-//	}
+		for(int i = 0; i<Item4List.length; i++) {
+			if(Item4List[i]!=null) {
+			hpList += Item4List[i].getHp();
+	  }
+	}
 		return hpList;
 	}
 
+	
 	public double getDgcList() {
-//		for(int i = 0; i<5; i++) {
-//		dgcList += Item4List[i].;
-//	}
+		for(int i = 0; i<Item4List.length; i++) {
+		if(Item4List[i]!=null) {
+			dgcList += Item4List[i].getDgc();
+		}
+	}
 		return dgcList;
 	}
+	
+	public Gear[] getItem4List() {
+		return Item4List;
+	}
 
+	public void setItem4List(Gear[] item4List) {
+		Item4List = item4List;
+	}
 
 	/**
 	 * To string.

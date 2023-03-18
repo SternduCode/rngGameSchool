@@ -50,7 +50,7 @@ public class Inventory extends Pane {
 	private final Potion[] potionArray = new Potion[40];
 
 	/** The gear array. */
-	private final Item[] gearArray = new Item[40];
+	private final Gear[] gearArray = new Gear[40];
 
 	/** The use array. */
 	private final Use[] useArray = new Use[40];
@@ -84,6 +84,10 @@ public class Inventory extends Pane {
 
 	/** The inv slots. */
 	private final ImageView[][] invSlots = new ImageView[10][4];
+	
+	private final ImageView[] Item4Slots = new ImageView[4];
+	
+	
 
 	/** The potionbutton. */
 	private final Button potionbutton,armorbutton,usebutton,keybutton,idkbutton;
@@ -123,6 +127,16 @@ public class Inventory extends Pane {
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp()-1);
 		currentDemonArray[0] = m1;
+		Sword g1 = new Sword(Rarity.VOID);
+		Harnish g2 = new Harnish(Rarity.VOID);
+		Pants g3 = new Pants(Rarity.VOID);
+		Helmet g4 = new Helmet(Rarity.VOID);
+		giveItem2Monster(g1);
+		giveItem2Monster(g2);
+		giveItem2Monster(g3);
+		giveItem2Monster(g4);
+		
+		
 		
 		/////////////
 		//TODO stats vom "Angeclickten" Monster
@@ -138,13 +152,13 @@ public class Inventory extends Pane {
 				(int) (atkText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (atkText.getHeight() * gamepanel.getScalingFactorY()));
 		
-		Image resText = Text.getInstance().convertText("RES:"+currentDemonArray[0].getRes()+"%", 48);
+		Image resText = Text.getInstance().convertText(String.format("RES:%.1f%%", currentDemonArray[0].getRes())  , 48);
 		resText = ImgUtil.resizeImage(
 				resText, (int) resText.getWidth(), (int) resText.getHeight(),
 				(int) (resText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (resText.getHeight() * gamepanel.getScalingFactorY()));
 		
-		Image dgcText = Text.getInstance().convertText("DGC:"+currentDemonArray[0].getDgc()+"%", 48);
+		Image dgcText = Text.getInstance().convertText(String.format("DGC:%.1f%%", currentDemonArray[0].getDgc()), 48);
 		dgcText = ImgUtil.resizeImage(
 				dgcText, (int) dgcText.getWidth(), (int) dgcText.getHeight(),
 				(int) (dgcText.getWidth() * gamepanel.getScalingFactorX()),
@@ -212,8 +226,35 @@ public class Inventory extends Pane {
 				invSlots[i / 62][j / 62] = iv;
 				p.getChildren().add(iv);
 			}
-
 		
+		Pane p2 = new Pane();
+		
+		
+		
+		
+		for(int i = 0 ; i < Item4Slots.length; i++) {
+			ImageView iv = new ImageView();
+			if(currentDemonArray[0] != null && currentDemonArray[0].getItem4List()[i] != null) {
+			Image iv2 = currentDemonArray[0].getItem4List()[i].getT1();
+			iv.setImage(iv2); 
+			}
+			Item4Slots[i] = iv; 
+			p2.getChildren().add(iv);
+		}
+		
+		
+		Item4Slots[1].setLayoutY((61+3)*gamepanel.getScalingFactorY());
+		Item4Slots[2].setLayoutY(((122+6))*gamepanel.getScalingFactorY());
+		Item4Slots[3].setLayoutY(((183+9))*gamepanel.getScalingFactorY());
+		
+		System.out.println(currentDemonArray[0].getItem4List()[3].toString());
+		
+		
+		
+		
+		
+		p2.setLayoutX(6*gamepanel.getScalingFactorX());
+		p2.setLayoutY(6*gamepanel.getScalingFactorY());
 		
 		getChildren().add(invBackround);
 		
@@ -279,7 +320,7 @@ public class Inventory extends Pane {
 		getChildren().add(keybutton);
 		getChildren().add(idkbutton);
 
-		getChildren().add(p);
+		getChildren().addAll(p,p2);
 
 		setVisible(false);
 
@@ -417,9 +458,9 @@ public class Inventory extends Pane {
 			int x = findFirstNull(potionArray);
 			if(x != -1) potionArray[x] = p1;
 
-		} else if(item instanceof Harnish || item instanceof Helmet || item instanceof Pants || item instanceof Sword) {
+		} else if(item instanceof Gear gear) {
 			int x = findFirstNull(gearArray);
-			if(x != -1) gearArray[x] = item;
+			if(x != -1) gearArray[x] = gear;
 
 		} else if(item instanceof Use u1) {
 			int x = findFirstNull(useArray);
@@ -457,7 +498,8 @@ public class Inventory extends Pane {
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementLight.png");
 		      test = lightbr;
-		} else if(e == Element.Supernova) {
+		} else if(e == Element.DimensionMaster) {
+
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWorld_Ender.png");
 		      test = lightbr;
 		}else {
@@ -484,7 +526,7 @@ public class Inventory extends Pane {
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconLight.png");
 		      test = lightbr;
-		}else if(e == Element.Supernova) {
+		}else if(e == Element.DimensionMaster) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconWorld_Ender.png");
 		      test = lightbr;
 		} else {
@@ -529,6 +571,18 @@ public class Inventory extends Pane {
 		      test = img;
 		}
 		return test;
+	}
+	
+	public void giveItem2Monster(Gear gear) {
+		if(gear instanceof Helmet) {
+			currentDemonArray[0].getItem4List()[0] = gear;
+		} else if(gear instanceof Harnish) {
+			currentDemonArray[0].getItem4List()[1] = gear;
+		} else if(gear instanceof Pants) {
+			currentDemonArray[0].getItem4List()[2] = gear;
+		} else if(gear instanceof Sword) {
+			currentDemonArray[0].getItem4List()[3] = gear;
+		}
 	}
 
 }
