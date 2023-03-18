@@ -457,7 +457,10 @@ public class Inventory extends Pane {
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementLight.png");
 		      test = lightbr;
-		} else {
+		} else if(e == Element.World_Ender) {
+		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWorld_Ender.png");
+		      test = lightbr;
+		}else {
 		      Image voidbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementVoid.png");
 		      test = voidbr;
 		}
@@ -480,6 +483,9 @@ public class Inventory extends Pane {
 		      test = shadowbr;
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconLight.png");
+		      test = lightbr;
+		}else if(e == Element.World_Ender) {
+		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconWorld_Ender.png");
 		      test = lightbr;
 		} else {
 		      Image voidbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconVoid.png");

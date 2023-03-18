@@ -151,7 +151,8 @@ public class MobRan extends NPC {
 
 		String[] mobs = {
 
-				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Cultist", "CultistKing"
+
+				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Cultist", "CultistKing", "Vardum", "Endor", "Seraph", "Malag", "Spye"
 
 		};
 		
@@ -167,7 +168,7 @@ public class MobRan extends NPC {
 			mobName = "Cultist";
 			if (wahl==Element.Void) {
 			r = gen.nextInt(20)+1;
-			if(r == 13) mobName = "CultistKing";
+			if(r == 13) { mobName = "CultistKing"; wahl = Element.World_Ender; }
 			else mobName = "Cultist";
 			}
 		}
