@@ -457,7 +457,7 @@ public class Inventory extends Pane {
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementLight.png");
 		      test = lightbr;
-		} else if(e == Element.SupernovaGuardians) {
+		} else if(e == Element.DimensionMaster) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWorld_Ender.png");
 		      test = lightbr;
 		}else {
@@ -484,7 +484,7 @@ public class Inventory extends Pane {
 		} else if(e == Element.Light) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconLight.png");
 		      test = lightbr;
-		}else if(e == Element.SupernovaGuardians) {
+		}else if(e == Element.DimensionMaster) {
 		      Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconWorld_Ender.png");
 		      test = lightbr;
 		} else {
