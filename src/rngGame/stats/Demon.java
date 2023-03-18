@@ -25,20 +25,23 @@ public class Demon {
 
 	/** The mob name. */
 	private final String mobName;
+	
+	private Item[] Item4List = new Item[3];
 
 	
 
 	/** The atk. */
-	private int atk;
+	private int atk, atkList;
 
 	/** The res. */
-	private double res;
+	private double res, resList;
 
 	/** The hp. */
-	private int hp;
+	private int hp, hpList;
 
 	/** The dgc. */
-	private double dgc;
+	private double dgc, dgcList;
+
 
 	/** The lvl. */
 	private int lvl,maxExp;
@@ -190,6 +193,34 @@ public class Demon {
 
 	public void setCurrentExp(int currentexp) {
 		this.currentexp = currentexp;
+	}
+	
+	public int getAtkList() {
+//		for(int i = 0; i<5; i++) {
+//			atkList += Item4List[i].;
+//		}
+		return atkList;
+	}
+
+	public double getResList() {
+//		for(int i = 0; i<5; i++) {
+//		resList += Item4List[i].;
+//	}
+		return resList;
+	}
+
+	public int getHpList() {
+//		for(int i = 0; i<5; i++) {
+//		hpList += Item4List[i].;
+//	}
+		return hpList;
+	}
+
+	public double getDgcList() {
+//		for(int i = 0; i<5; i++) {
+//		dgcList += Item4List[i].;
+//	}
+		return dgcList;
 	}
 
 
