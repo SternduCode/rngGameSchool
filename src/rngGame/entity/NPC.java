@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import rngGame.main.*;
 
 public class NPC extends Entity implements JsonValue {
@@ -43,6 +44,8 @@ public class NPC extends Entity implements JsonValue {
 	}
 
 	protected void init() {
+		if (!getMiscBoxes().containsKey("talk"))
+			getMiscBoxes().put("talk", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
 		collisionBoxes.entrySet().parallelStream()
 		.forEach(s -> {
 			if (s.getValue().getPoints().size() == 0) s.getValue().getPoints().addAll(0d, 0d, 0d,
@@ -51,6 +54,11 @@ public class NPC extends Entity implements JsonValue {
 					images.get(s.getKey()).get(0).getHeight(), images.get(s.getKey()).get(0).getWidth(),
 					0d);
 		});
+		getMiscBoxHandler().put("talk", (gpt,self)->{
+			
+		});
+		
+		
 		collisionBoxes.forEach((key, poly) -> poly.setFill(Color.color(0, 1, 1, 0.75)));
 		Input.getInstance().setKeyHandler("h" + hashCode(), mod -> {
 			h.set(!h.get());

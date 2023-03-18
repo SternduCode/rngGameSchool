@@ -41,7 +41,11 @@ public class Demon {
 	private double dgc;
 
 	/** The lvl. */
-	private int lvl;
+	private int lvl,maxExp;
+	
+	private int currentexp = 0;
+
+
 
 	/** The demon. */
 	private final MonsterNPC demon;
@@ -66,6 +70,7 @@ public class Demon {
 		hp = element.getHp()+ gen.nextInt(11);
 		dgc = element.getDgc();
 		lvl = element.getLvl();
+		
 	}
 
 	/**
@@ -173,6 +178,20 @@ public class Demon {
 	public Element getElement() {
 		return element;
 	}
+	
+	public int getMaxExp() {
+		maxExp = (lvl*lvl)+(lvl*5);
+		return maxExp;
+	}
+	
+	public int getCurrentExp() {
+		return currentexp;
+	}
+
+	public void setCurrentExp(int currentexp) {
+		this.currentexp = currentexp;
+	}
+
 
 	/**
 	 * To string.
