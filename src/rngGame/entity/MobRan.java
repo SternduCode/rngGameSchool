@@ -170,7 +170,7 @@ public class MobRan extends NPC {
 			if (wahl==Element.Void) {
 			r = gen.nextInt(200)+1;
 			r = 13;
-			if(r == 13) { mobName = "CultistKing"; wahl = Element.World_Ender; }
+			if(r == 13) { mobName = "CultistKing"; wahl = Element.SupernovaGuardians; }
 			else mobName = "Cultist";
 			}
 		}
