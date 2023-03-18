@@ -1,23 +1,11 @@
 package rngGame.ui;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.Arrays;
-
-import com.sterndu.json.DoubleValue;
-import com.sterndu.json.IntegerValue;
-import com.sterndu.json.JsonArray;
-import com.sterndu.json.JsonObject;
-import com.sterndu.json.StringValue;
 
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
-import rngGame.entity.MobRan;
-import rngGame.entity.MonsterNPC;
-import rngGame.main.GamePanel;
-import rngGame.main.Text;
+import rngGame.main.*;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 
@@ -61,15 +49,22 @@ public class Inventory extends Pane {
 	/** The demon array. */
 	private final Demon[] demonArray = new Demon[40];
 	
+	/** The current demon array. */
 	private final Demon[] currentDemonArray = new Demon[5];
 
 	/** The current tab. */
 	private Tab currentTab = Tab.POTION;
 	
-	private Pane namePane = new Pane();
+	/** The name pane. */
+	private final Pane namePane = new Pane();
+	
+	/** The element view. */
 	private ImageView nameView,textBackroundCT,elementView;
 	
-	private Pane status = new Pane();
+	/** The status. */
+	private final Pane status = new Pane();
+	
+	/** The dgc view. */
 	private ImageView hpView,atkView,resView,dgcView;
 	
 
@@ -77,28 +72,98 @@ public class Inventory extends Pane {
 	private final GamePanel gamepanel;
 
 	/** The inv backround. */
-	private final ImageView invBackround;
+	private ImageView invBackround;
 
 	/** The aus xb. */
-	private final Button ausXb;
+	private Button ausXb;
 
 	/** The inv slots. */
 	private final ImageView[][] invSlots = new ImageView[10][4];
 
 	/** The potionbutton. */
-	private final Button potionbutton,armorbutton,usebutton,keybutton,idkbutton;
+	private Button potionbutton;
 
+	/** The armorbutton. */
+	private Button armorbutton;
 
+	/** The usebutton. */
+	private Button usebutton;
+
+	/** The keybutton. */
+	private Button keybutton;
+
+	/** The idkbutton. */
+	private Button idkbutton;
+
+	/** The tabm. */
+	private final TabMenu tabm;
 
 	/**
 	 * Instantiates a new inventory.
 	 *
 	 * @param gamepanel the gamepanel
 	 * @param tabm the tabm
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException the file not found exception
 	 */
 	public Inventory(GamePanel gamepanel, TabMenu tabm) throws FileNotFoundException {
 		this.gamepanel = gamepanel;
+		this.tabm		= tabm;
+
+		init();
+
+	}
+
+	/**
+	 * Move from array to view.
+	 */
+	private void moveFromArrayToView() {
+		Item[] data = switch (currentTab) {
+			case POTION -> potionArray;
+			case ARMOR -> gearArray;
+			case KEY -> keyArray;
+			case MONSTER -> null;
+			case USE -> useArray;
+		};
+		if (data == null) {
+			// TODO monster
+		} else {
+			int k = 0;
+			System.out.println(data + " " + Arrays.toString(data));
+			for (int j = 0; j < invSlots[0].length; j++) for (ImageView[] invSlot : invSlots) {
+				System.out.println(data[k]);
+				if (data[k] != null) invSlot[j].setImage(data[k].getT1());
+				else invSlot[j].setImage(null);
+				k++;
+			}
+		}
+
+	}
+
+	/**
+	 * End show.
+	 */
+	public void endShow() {
+		setVisible(false);
+		setDisable(true);
+	}
+
+	/**
+	 * Find first null.
+	 *
+	 * @param itemArray the item array
+	 * @return the int
+	 */
+	public int findFirstNull(Item[] itemArray) {
+		for(int i = 0; i < itemArray.length; i++) if(itemArray[i]==null) return i;
+		return -1;
+	}
+
+	/**
+	 * Inits the.
+	 */
+	public void init() {
+		getChildren().clear();
+
 		// invBackround
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
 		textBackroundCT	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invNameTitle.png"));
@@ -139,10 +204,8 @@ public class Inventory extends Pane {
 				nameText, (int) nameText.getWidth(), (int) resText.getHeight(),
 				(int) (nameText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (nameText.getHeight() * gamepanel.getScalingFactorY()));
-		
-		
-		
-		
+	
+
 		//Xbutton
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
 		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
@@ -231,6 +294,8 @@ public class Inventory extends Pane {
 		
 		getChildren().add(ausXb);
 		
+		//TODO fix f11
+
 		getChildren().add(potionbutton);
 		getChildren().add(armorbutton);
 		getChildren().add(usebutton);
@@ -311,52 +376,6 @@ public class Inventory extends Pane {
 			currentTab = Tab.MONSTER;
 			moveFromArrayToView();
 		});
-
-
-	}
-
-	/**
-	 * Move from array to view.
-	 */
-	private void moveFromArrayToView() {
-		Item[] data = switch (currentTab) {
-			case POTION -> potionArray;
-			case ARMOR -> gearArray;
-			case KEY -> keyArray;
-			case MONSTER -> null;
-			case USE -> useArray;
-		};
-		if (data == null) {
-			// TODO monster
-		} else {
-			int k = 0;
-			System.out.println(data + " " + Arrays.toString(data));
-			for (int j = 0; j < invSlots[0].length; j++) for (ImageView[] invSlot : invSlots) {
-				System.out.println(data[k]);
-				if (data[k] != null) invSlot[j].setImage(data[k].getT1());
-				else invSlot[j].setImage(null);
-				k++;
-			}
-		}
-	}
-
-	/**
-	 * End show.
-	 */
-	public void endShow() {
-		setVisible(false);
-		setDisable(true);
-	}
-
-	/**
-	 * Find first null.
-	 *
-	 * @param itemArray the item array
-	 * @return the int
-	 */
-	public int findFirstNull(Item[] itemArray) {
-		for(int i = 0; i < itemArray.length; i++) if(itemArray[i]==null) return i;
-		return -1;
 	}
 
 	/**
@@ -385,6 +404,13 @@ public class Inventory extends Pane {
 	}
 
 	/**
+	 * Scale F 11.
+	 */
+	public void scaleF11() {
+		init();
+	}
+
+	/**
 	 * Show.
 	 */
 	public void show() {
@@ -393,6 +419,12 @@ public class Inventory extends Pane {
 		setDisable(false);
 	}
 	
+	/**
+	 * Show elementbr.
+	 *
+	 * @param e the e
+	 * @return the image
+	 */
 	public Image showElementbr(Element e) {
 		Image test = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png");
 		if(e == Element.Fire) {
