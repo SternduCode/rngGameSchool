@@ -168,7 +168,7 @@ public class MobRan extends NPC {
 		}else if (mobName.equals("CultistKing")||mobName.equals("Cultist")) {
 			mobName = "Cultist";
 			if (wahl==Element.Void) {
-			r = gen.nextInt(20)+1;
+			r = gen.nextInt(200)+1;
 			r = 13;
 			if(r == 13) { mobName = "CultistKing"; wahl = Element.World_Ender; }
 			else mobName = "Cultist";
