@@ -151,7 +151,7 @@ public class MobRan extends NPC {
 
 		String[] mobs = {
 
-				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag", "Cultist", "CultistKing"
+				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Cultist", "CultistKing"
 
 		};
 		
