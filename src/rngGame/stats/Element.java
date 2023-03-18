@@ -1,4 +1,4 @@
-package rngGame.stats;
+	package rngGame.stats;
 
 import java.util.Random;
 

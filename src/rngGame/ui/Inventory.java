@@ -105,7 +105,21 @@ public class Inventory extends Pane {
 		elementView	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png"));
 		/////////////
 		
+//		boolean testpopo = false;
 		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
+//		while(!testpopo){
+//			Demon m2 = gamepanel.getMobRans().get(0).MobGen();
+//			
+//			if(m2.getElement() == Element.Void) {
+//				m1 = m2;
+//				System.out.println();
+//				System.out.println();
+//				System.out.println();
+//				System.out.println(m1.toString()); 
+//				break;
+//			}
+//		}
+		
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp()-1);
 		currentDemonArray[0] = m1;
@@ -341,6 +355,11 @@ public class Inventory extends Pane {
 		});
 
 
+	}
+
+	private void While(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
