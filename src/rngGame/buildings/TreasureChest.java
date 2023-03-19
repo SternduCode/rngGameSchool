@@ -44,7 +44,7 @@ public class TreasureChest extends Building {
 
 	/**
 	 * Instantiates a new treasure chest.
-	 *
+	 * 
 	 * @param building   the building
 	 * @param gp         the gp
 	 * @param buildings  the buildings

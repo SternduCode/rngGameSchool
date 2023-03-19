@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 import javafx.scene.image.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import rngGame.main.*;
 import rngGame.stats.*;
@@ -114,9 +115,10 @@ public class Inventory extends Pane {
 	public Inventory(GamePanel gamepanel, TabMenu tabm) throws FileNotFoundException {
 		this.gamepanel = gamepanel;
 		this.tabm		= tabm;
-
+		Input.getInstance().setKeyHandler("Demons", mod -> {
+			init();
+		}, KeyCode.M, false);
 		init();
-
 	}
 
 	/**
@@ -177,24 +179,12 @@ public class Inventory extends Pane {
 		elementView	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png"));
 		/////////////
 
-		//		boolean testpopo = false;
 		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
-		//		while(!testpopo){
-		//			Demon m2 = gamepanel.getMobRans().get(0).MobGen();
-		//
-		//			if(m2.getElement() == Element.Void) {
-		//				m1 = m2;
-		//				System.out.println();
-		//				System.out.println();
-		//				System.out.println();
-		//				System.out.println(m1.toString());
-		//				break;
-		//			}
-		//		}
-
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp()-1);
 		currentDemonArray[0] = m1;
+		
+		
 
 		Sword g1 = new Sword(Rarity.VOID);
 		Harnish g2 = new Harnish(Rarity.VOID);
