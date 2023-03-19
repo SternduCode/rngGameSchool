@@ -57,7 +57,7 @@ public class Inventory extends Pane {
 	private Tab currentTab = Tab.POTION;
 
 	/** The name pane. */
-	private final Pane namePane = new Pane();
+	private Pane namePane;
 
 	/** The element view. */
 	private ImageView nameView, textBackroundCT, elementView, eIconView;
@@ -187,6 +187,7 @@ public class Inventory extends Pane {
 		getChildren().clear();
 
 		status = new Pane();
+		namePane	= new Pane();
 
 		// invBackround
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
@@ -198,8 +199,8 @@ public class Inventory extends Pane {
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp()-1);
 		currentDemonArray[0] = m1;
-		
-		
+
+
 
 		Sword g1 = new Sword(Rarity.VOID);
 		Harnish g2 = new Harnish(Rarity.VOID);
