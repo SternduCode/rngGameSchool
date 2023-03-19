@@ -104,10 +104,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 	/** The background. */
 	protected boolean background;
-	
+
+	/** The fix to screen. */
 	protected boolean fixToScreen;
 
-	
+
 	/** The remove. */
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
 	reloadTextures,
@@ -1052,13 +1053,22 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public boolean isBackground() { return background; }
 
 	/**
+	 * Checks if is fix to screen.
+	 *
+	 * @return true, if is fix to screen
+	 */
+	public boolean isFixToScreen() {
+		return fixToScreen;
+	}
+
+	/**
 	 * Checks if is gif.
 	 *
 	 * @param key the key
 	 * @return true, if is gif
 	 */
 	public boolean isGif(String key) {
-		return isGif.get(key);
+		return isGif.containsKey(key) ? isGif.get(key) : false;
 	}
 
 	/**
@@ -1104,6 +1114,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	public void setCurrentKey(String currentKey) {
 		if (images.containsKey(currentKey))
 			this.currentKey = currentKey;
+	}
+
+	/**
+	 * Sets the fix to screen.
+	 *
+	 * @param fixToScreen the new fix to screen
+	 */
+	public void setFixToScreen(boolean fixToScreen) {
+		this.fixToScreen = fixToScreen;
 	}
 
 	/**
@@ -1185,14 +1204,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		this.y = y;
 		if (updateXY != null)
 			updateXY.run();
-	}
-
-	public boolean isFixToScreen() {
-		return fixToScreen;
-	}
-
-	public void setFixToScreen(boolean fixToScreen) {
-		this.fixToScreen = fixToScreen;
 	}
 
 	/**
@@ -1326,15 +1337,19 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif.get(currentKey)) {
-				iv.setScaleX(gamepanel.getScalingFactorX());
-				iv.setScaleY(gamepanel.getScalingFactorY());
+				iv.setScaleX(getReqWidth() / images.get(currentKey).get(0).getWidth() * gamepanel.getScalingFactorX());
+				iv.setLayoutX( (getReqWidth() - images.get(currentKey).get(0).getWidth()) / 2);
+				iv.setScaleY(getReqHeight() / images.get(currentKey).get(0).getHeight() * gamepanel.getScalingFactorY());
+				iv.setLayoutY( (getReqHeight() - images.get(currentKey).get(0).getHeight()) / 2);
 			} else {
 				iv.setScaleX(1);
 				iv.setScaleY(1);
+				iv.setLayoutX(0);
+				iv.setLayoutY(0);
 			}
 		}
 
-		
+
 
 		if ("true".equals(System.getProperty("edit"))) {
 			if (getBorder() == null)
@@ -1347,18 +1362,18 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			if (getBorder() != null)
 				setBorder(null);
 		}
-		
+
 		if(!fixToScreen) {
-		double screenX = x - p.getX() + p.getScreenX();
-		double screenY = y - p.getY() + p.getScreenY();
-		setLayoutX(screenX);
-		setLayoutY(screenY);
+			double screenX = x - p.getX() + p.getScreenX();
+			double screenY = y - p.getY() + p.getScreenY();
+			setLayoutX(screenX);
+			setLayoutY(screenY);
 		}
-		
-		if ((x + getWidth() > p.x - p.getScreenX()
+
+		if (x + getWidth() > p.x - p.getScreenX()
 				&& x < p.x + p.getScreenX() + p.getWidth()
 				&& y + getHeight() > p.y - p.getScreenY()
-				&& y < p.y + p.getScreenY() + p.getHeight())||fixToScreen)
+				&& y < p.y + p.getScreenY() + p.getHeight()||fixToScreen)
 			setVisible(true);
 		else setVisible(false);
 

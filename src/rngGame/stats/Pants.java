@@ -6,27 +6,9 @@ import java.util.Random;
 /**
  * The Class Pants.
  */
-public class Pants extends Item{
-
-	/** The hp. */
-	private final int hp;
-
-	/** The res. */
-	private final double res;
-
-	/** The dgc. */
-	private final double dgc;
-
-	/** The atk. */
-	private final int atk;
+public class Pants extends Gear{
 
 
-
-	/**
-	 * Instantiates a new pants.
-	 *
-	 * @param ty the ty
-	 */
 	public Pants(Rarity ty) {
 		super("Pants", ty.getTextureName(), ty);
 		Random gen = new Random();
@@ -68,51 +50,5 @@ public class Pants extends Item{
 			case VOID -> 17 + gen.nextInt(4);// 17-20
 			default -> 0;
 		};
-	}
-
-	/**
-	 * Gets the atk.
-	 *
-	 * @return the atk
-	 */
-	public int getAtk() {
-		return atk;
-	}
-
-	/**
-	 * Gets the dgc.
-	 *
-	 * @return the dgc
-	 */
-	public double getDgc() {
-		return dgc;
-	}
-
-	/**
-	 * Gets the hp.
-	 *
-	 * @return the hp
-	 */
-	public int getHp() {
-		return hp;
-	}
-
-	/**
-	 * Gets the res.
-	 *
-	 * @return the res
-	 */
-	public double getRes() {
-		return res;
-	}
-
-	/**
-	 * To string.
-	 *
-	 * @return the string
-	 */
-	@Override
-	public String toString() {
-		return "Pants [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";
 	}
 }

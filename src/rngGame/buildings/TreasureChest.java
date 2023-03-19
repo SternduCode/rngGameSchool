@@ -44,7 +44,7 @@ public class TreasureChest extends Building {
 
 	/**
 	 * Instantiates a new treasure chest.
-	 *
+	 * 
 	 * @param building   the building
 	 * @param gp         the gp
 	 * @param buildings  the buildings
@@ -142,7 +142,7 @@ public class TreasureChest extends Building {
 				});
 		else getMiscBoxHandler().put("action", (gpt, self) -> {
 			if (!isOpen)
-				gpt .getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
+				gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
 					isOpen = true;
 					TreasureChest.this.setCurrentKey("open");
 					giveItem();
@@ -170,7 +170,7 @@ public class TreasureChest extends Building {
 		gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 		double sum = (common + uncommon + rare + veryrare + epic + legendary + god + voidi) / 100.0;
 		System.out.printf("Common %.2f%% Uncommon %.2f%% Rare %.2f%% Very Rare %.2f%% Epic %.2f%% Legendary %.2f%% God %.2f%% Void %.2f%% Items %d\n",
-				common / sum, uncommon / sum, rare / sum, veryrare / sum, epic / sum, legendary / sum, god / sum, voidi / sum, (long) sum);
+				common / sum, uncommon / sum, rare / sum, veryrare / sum, epic / sum, legendary / sum, god / sum, voidi / sum, (long) (sum * 100));
 	}
 
 
