@@ -60,7 +60,7 @@ public class Inventory extends Pane {
 	private Pane namePane;
 
 	/** The element view. */
-	private ImageView nameView, textBackroundCT, elementView, eIconView;
+	private ImageView nameView, textBackroundCT, elementView, eIconView, itemOverlay, transp, itemSureBackround, backButton, applyButton;
 
 	/** The status. */
 	private Pane status;
@@ -193,6 +193,10 @@ public class Inventory extends Pane {
 		invBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvBackround.png"));
 		textBackroundCT	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invNameTitle.png"));
 		elementView	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png"));
+		itemOverlay	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/ItemAuswahlOverlay.png"));
+		transp	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
+		itemSureBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/itemSureBackround.png"));
+		
 		/////////////
 
 		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
@@ -202,10 +206,10 @@ public class Inventory extends Pane {
 
 
 
-		Sword g1 = new Sword(Rarity.VOID);
-		Harnish g2 = new Harnish(Rarity.VOID);
-		Pants g3 = new Pants(Rarity.VOID);
-		Helmet g4 = new Helmet(Rarity.VOID);
+		Sword g1 = new Sword(Rarity.COMMON);
+		Harnish g2 = new Harnish(Rarity.COMMON);
+		Pants g3 = new Pants(Rarity.COMMON);
+		Helmet g4 = new Helmet(Rarity.COMMON);
 		giveItem2Monster(g1);
 		giveItem2Monster(g2);
 		giveItem2Monster(g3);
@@ -263,6 +267,11 @@ public class Inventory extends Pane {
 		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
 		ausXb = new Button(ausX);
 
+		//backbutton
+		Image back1 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
+		Image back2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
+		backButton = new ImageView(back1);
+		
 		//PotionButtonFeld
 		Image potionButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
 		Image potionButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
@@ -289,6 +298,9 @@ public class Inventory extends Pane {
 		idkbutton = new Button(idkButton2);
 
 		Pane p = new Pane();
+		Pane p2 = new Pane();
+		Pane itemStuff = new Pane();
+		
 		p.setLayoutX(8 * gamepanel.getScalingFactorX());
 		p.setLayoutY(268 * gamepanel.getScalingFactorY());
 		for (int i = 0; i < 620; i += 62)
@@ -297,11 +309,48 @@ public class Inventory extends Pane {
 				iv.setLayoutX(i * gamepanel.getScalingFactorX());
 				iv.setLayoutY(j * gamepanel.getScalingFactorY());
 				invSlots[i / 62][j / 62] = iv;
+				int _i = i;
+				int _j = j;
+				
+				
+				iv.setOnMousePressed(me -> {
+					itemOverlay.setLayoutX(_i* gamepanel.getScalingFactorX());
+					itemOverlay.setLayoutY(_j* gamepanel.getScalingFactorY());
+					itemOverlay.setVisible(true);
+				});
+				
+				iv.setOnMouseReleased(me -> {
+					ImageView itemShowcase = new ImageView(iv.getImage()); 
+					itemShowcase.setLayoutX(329*gamepanel.getScalingFactorX());
+					itemShowcase.setLayoutY(45*gamepanel.getScalingFactorY());
+					backButton.setLayoutX(302*gamepanel.getScalingFactorX());
+					backButton.setLayoutY(125*gamepanel.getScalingFactorY());
+					
+					itemStuff.getChildren().clear();
+					itemStuff.getChildren().add(itemShowcase);
+					itemStuff.getChildren().add(backButton);
+					transp.setVisible(true);
+					itemSureBackround.setVisible(true);
+					itemStuff.setVisible(true);
+					
+					backButton.setOnMousePressed(me2 -> {
+						backButton.setImage(back2);
+					});
+					
+					backButton.setOnMouseReleased(me2 -> {
+						backButton.setImage(back1);
+						transp.setVisible(false);
+						itemSureBackround.setVisible(false);
+						itemStuff.setVisible(false);
+					});
+				});
 				p.getChildren().add(iv);
 			}
+		
+			
 
-
-		Pane p2 = new Pane();
+		
+		
 
 
 
@@ -319,7 +368,7 @@ public class Inventory extends Pane {
 
 		Item4Slots[1].setLayoutY((61+3)*gamepanel.getScalingFactorY());
 		Item4Slots[2].setLayoutY((122+6)*gamepanel.getScalingFactorY());
-		Item4Slots[3].setLayoutY((183+9)*gamepanel.getScalingFactorY());
+		Item4Slots[3].setLayoutY((183+8)*gamepanel.getScalingFactorY());
 
 		System.out.println(currentDemonArray[0].getItem4List()[3].toString());
 
@@ -391,15 +440,25 @@ public class Inventory extends Pane {
 
 		//TODO fix f11
 
-		getChildren().add(potionbutton);
-		getChildren().add(armorbutton);
-		getChildren().add(usebutton);
-		getChildren().add(keybutton);
-		getChildren().add(idkbutton);
+		getChildren().addAll(potionbutton,armorbutton,usebutton,keybutton,idkbutton);
 
+		p.getChildren().add(itemOverlay);
+		itemOverlay.setVisible(false);
+		
+		
 		getChildren().addAll(p,p2);
-
+		
+		getChildren().addAll(transp,itemSureBackround,itemStuff);
+		transp.setVisible(false);
+		itemSureBackround.setVisible(false);
+		
+		
+		itemStuff.setLayoutX(240 * gamepanel.getScalingFactorX());
+		itemStuff.setLayoutY(130 * gamepanel.getScalingFactorY());
+		itemStuff.setVisible(false);
 		setVisible(false);
+		
+		
 
 
 		ausXb.setOnMousePressed(me -> {
