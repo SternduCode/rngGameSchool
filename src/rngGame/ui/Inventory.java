@@ -219,7 +219,7 @@ public class Inventory extends Pane {
 
 
 		/////////////
-		//TODO stats vom "Angeclickten" Monster
+
 		Image hpText = Text.getInstance().convertText("HP:"+currentDemonArray[0].getHp(), 48);
 		hpText = ImgUtil.resizeImage(
 				hpText, (int) hpText.getWidth(), (int) hpText.getHeight(),
@@ -232,13 +232,13 @@ public class Inventory extends Pane {
 				(int) (atkText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (atkText.getHeight() * gamepanel.getScalingFactorY()));
 
-		Image resText = Text.getInstance().convertText(String.format("RES:%.1f%%", currentDemonArray[0].getRes())  , 48);
+		Image resText = Text.getInstance().convertText(String.format("RES:%.2f%%", currentDemonArray[0].getRes())  , 48);
 		resText = ImgUtil.resizeImage(
 				resText, (int) resText.getWidth(), (int) resText.getHeight(),
 				(int) (resText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (resText.getHeight() * gamepanel.getScalingFactorY()));
 
-		Image dgcText = Text.getInstance().convertText(String.format("DGC:%.1f%%", currentDemonArray[0].getDgc()), 48);
+		Image dgcText = Text.getInstance().convertText(String.format("DGC:%.2f%%", currentDemonArray[0].getDgc()), 48);
 		dgcText = ImgUtil.resizeImage(
 				dgcText, (int) dgcText.getWidth(), (int) dgcText.getHeight(),
 				(int) (dgcText.getWidth() * gamepanel.getScalingFactorX()),
@@ -261,6 +261,9 @@ public class Inventory extends Pane {
 				lvlText, (int) lvlText.getWidth(), (int) lvlText.getHeight(),
 				(int) (lvlText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (lvlText.getHeight() * gamepanel.getScalingFactorY()));
+		
+		
+		
 
 		//Xbutton
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
@@ -272,6 +275,11 @@ public class Inventory extends Pane {
 		Image back2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
 		backButton = new ImageView(back1);
 		
+		//backbutton
+		Image apply1 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton1.png");
+		Image apply2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton2.png");
+		applyButton = new ImageView(apply1);
+				
 		//PotionButtonFeld
 		Image potionButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
 		Image potionButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
@@ -321,17 +329,83 @@ public class Inventory extends Pane {
 				
 				iv.setOnMouseReleased(me -> {
 					ImageView itemShowcase = new ImageView(iv.getImage()); 
+
 					itemShowcase.setLayoutX(329*gamepanel.getScalingFactorX());
 					itemShowcase.setLayoutY(45*gamepanel.getScalingFactorY());
 					backButton.setLayoutX(302*gamepanel.getScalingFactorX());
-					backButton.setLayoutY(125*gamepanel.getScalingFactorY());
+					backButton.setLayoutY((125+64)*gamepanel.getScalingFactorY());
+					applyButton.setLayoutX(302*gamepanel.getScalingFactorX());
+					applyButton.setLayoutY(125*gamepanel.getScalingFactorY());
 					
 					itemStuff.getChildren().clear();
 					itemStuff.getChildren().add(itemShowcase);
-					itemStuff.getChildren().add(backButton);
+					itemStuff.getChildren().addAll(backButton,applyButton);
 					transp.setVisible(true);
 					itemSureBackround.setVisible(true);
 					itemStuff.setVisible(true);
+					
+					Item[] itemTestArray = switch (currentTab) {
+					case POTION -> potionArray;
+					case ARMOR -> gearArray;
+					case KEY -> null;
+					case MONSTER -> null;
+					case USE -> null;
+					};
+					if(itemTestArray[_j/62*10+_i/62] instanceof Potion pp) {
+						Image itemhpText = Text.getInstance().convertText("HP:"+ pp.getHp() , 48);
+						itemhpText = ImgUtil.resizeImage(
+								itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
+								(int) (itemhpText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemhpText.getHeight() * gamepanel.getScalingFactorY()));
+					} else {
+						ImageView hpView2,atkView2,resView2,dgcView2;
+						
+						Gear g = (Gear) itemTestArray[_j/62*10+_i/62];
+						Image itemhpText = Text.getInstance().convertText("HP:"+ g.getHp() , 48);
+						itemhpText = ImgUtil.resizeImage(
+								itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
+								(int) (itemhpText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemhpText.getHeight() * gamepanel.getScalingFactorY()));
+						
+						Image itematkText = Text.getInstance().convertText("ATK:"+g.getAtk(), 48);
+						itematkText = ImgUtil.resizeImage(
+								itematkText, (int) itematkText.getWidth(), (int) itematkText.getHeight(),
+								(int) (itematkText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itematkText.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image itemresText = Text.getInstance().convertText(String.format("RES:%.2f%%", g.getRes())  , 48);
+						itemresText = ImgUtil.resizeImage(
+								itemresText, (int) itemresText.getWidth(), (int) itemresText.getHeight(),
+								(int) (itemresText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemresText.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image itemdgcText = Text.getInstance().convertText(String.format("DGC:%.2f%%", g.getDgc()), 48);
+						itemdgcText = ImgUtil.resizeImage(
+								itemdgcText, (int) itemdgcText.getWidth(), (int) itemdgcText.getHeight(),
+								(int) (itemdgcText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemdgcText.getHeight() * gamepanel.getScalingFactorY()));
+						
+						hpView2 = new ImageView(itemhpText);
+						atkView2 = new ImageView(itematkText);
+						resView2 = new ImageView(itemresText);
+						dgcView2 = new ImageView(itemdgcText);
+						
+						hpView2.setLayoutX(25*gamepanel.getScalingFactorX());
+						hpView2.setLayoutY(25*gamepanel.getScalingFactorY());
+						
+						atkView2.setLayoutX(25*gamepanel.getScalingFactorX());
+						atkView2.setLayoutY((25+48)*gamepanel.getScalingFactorY());
+						
+						resView2.setLayoutX(25*gamepanel.getScalingFactorX());
+						resView2.setLayoutY((25+96)*gamepanel.getScalingFactorY());
+						
+						dgcView2.setLayoutX(25*gamepanel.getScalingFactorX());
+						dgcView2.setLayoutY((25+144)*gamepanel.getScalingFactorY());
+						
+						
+						itemStuff.getChildren().addAll(hpView2,atkView2,resView2,dgcView2);
+					}
+					
 					
 					backButton.setOnMousePressed(me2 -> {
 						backButton.setImage(back2);
@@ -343,17 +417,21 @@ public class Inventory extends Pane {
 						itemSureBackround.setVisible(false);
 						itemStuff.setVisible(false);
 					});
+					
+					applyButton.setOnMousePressed(me2 -> {
+						applyButton.setImage(apply2);
+					});
+					
+					applyButton.setOnMouseReleased(me2 -> {
+						applyButton.setImage(apply1);
+						transp.setVisible(false);
+						itemSureBackround.setVisible(false);
+						itemStuff.setVisible(false);
+					});
+					
 				});
 				p.getChildren().add(iv);
 			}
-		
-			
-
-		
-		
-
-
-
 
 		for(int i = 0 ; i < Item4Slots.length; i++) {
 			ImageView iv = new ImageView();

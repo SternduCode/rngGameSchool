@@ -1334,6 +1334,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
 			animationCounter = System.currentTimeMillis();
 			animationNum++;
+			System.out.println(currentKey);
 			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif.get(currentKey)) {
