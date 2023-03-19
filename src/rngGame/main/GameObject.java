@@ -1341,10 +1341,14 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif.get(currentKey)) {
 				iv.setScaleX(getReqWidth() / images.get(currentKey).get(0).getWidth() * gamepanel.getScalingFactorX());
+				iv.setLayoutX( (getReqWidth() - images.get(currentKey).get(0).getWidth()) / 2);
 				iv.setScaleY(getReqHeight() / images.get(currentKey).get(0).getHeight() * gamepanel.getScalingFactorY());
+				iv.setLayoutY( (getReqHeight() - images.get(currentKey).get(0).getHeight()) / 2);
 			} else {
 				iv.setScaleX(1);
 				iv.setScaleY(1);
+				iv.setLayoutX(0);
+				iv.setLayoutY(0);
 			}
 		}
 
