@@ -13,6 +13,7 @@ public enum Element {
 	Void(10, 0.03, 30, 0.015, 1),
 	DimensionMaster(15, 0.05, 40, 0.03, 1);
 
+
 	private int atk;
 	private double res;
 	private int hp;

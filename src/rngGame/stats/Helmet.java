@@ -6,26 +6,8 @@ import java.util.Random;
 /**
  * The Class Helmet.
  */
-public class Helmet extends Item{
+public class Helmet extends Gear{
 
-	/** The hp. */
-	private final int hp;
-
-	/** The res. */
-	private final double res;
-
-	/** The dgc. */
-	private final double dgc;
-
-	/** The atk. */
-	private final int atk;
-
-
-	/**
-	 * Instantiates a new helmet.
-	 *
-	 * @param ty the ty
-	 */
 	public Helmet(Rarity ty) {
 		super("Helmet", ty.getTextureName(), ty);
 		Random gen = new Random();
@@ -68,52 +50,4 @@ public class Helmet extends Item{
 			default -> 0;
 		};
 	}
-
-	/**
-	 * Gets the atk.
-	 *
-	 * @return the atk
-	 */
-	public int getAtk() {
-		return atk;
-	}
-
-	/**
-	 * Gets the dgc.
-	 *
-	 * @return the dgc
-	 */
-	public double getDgc() {
-		return dgc;
-	}
-
-	/**
-	 * Gets the hp.
-	 *
-	 * @return the hp
-	 */
-	public int getHp() {
-		return hp;
-	}
-
-	/**
-	 * Gets the res.
-	 *
-	 * @return the res
-	 */
-	public double getRes() {
-		return res;
-	}
-
-	/**
-	 * To string.
-	 *
-	 * @return the string
-	 */
-	@Override
-	public String toString() {
-		return "Helmet [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";
-	}
-
-
 }
