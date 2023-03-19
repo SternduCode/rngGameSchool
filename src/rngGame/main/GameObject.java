@@ -1324,9 +1324,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		else
 			collisionBoxViewGroup.setVisible(false);
 
-		System.out.println(iv.getFitHeight());
-		System.out.println(iv.getFitWidth());
-
 		if (!lastKey.equals(currentKey)) {
 			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			iv.setImage(images.get(currentKey).get(animationNum));
