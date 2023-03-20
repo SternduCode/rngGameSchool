@@ -138,6 +138,7 @@ public class SelectTool extends Rectangle {
 
 	public void endDrag() {
 		dragging = false;
+		if (getWidth()<=gp.BgX && getHeight()<=gp.BgY) return;//Make dragging not drag if only short drag
 		ContextMenu cm = gp.getTileM().getCM();
 		cm.getItems().clear();
 		cm.getItems().add(select);
