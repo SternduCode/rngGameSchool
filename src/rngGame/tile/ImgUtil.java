@@ -5,6 +5,9 @@ import java.io.*;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
+
 import javafx.scene.image.*;
 import rngGame.main.GamePanel;
 
@@ -32,6 +35,36 @@ public class ImgUtil {
 	}
 
 	/**
+	 * Gets the scaled image.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param path the path
+	 * @param width the width
+	 * @param height the height
+	 * @return the scaled image
+	 */
+	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
+		return getScaledImages(gamepanel, path, width, height)[0];
+	}
+
+	/**
+	 * Gets the scaled image.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param path the path
+	 * @return the scaled image
+	 */
+	public static Image[] getScaledImages(GamePanel gamepanel, String path) {
+		try {
+			Image wi = new Image(new FileInputStream(path));
+			return getScaledImages(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
 	 * For gifs put {@code 			iv.setScaleX(gamepanel.getScalingFactorX());
 	 * 			iv.setScaleY(gamepanel.getScalingFactorY());} to set the scale
 	 *
@@ -41,21 +74,51 @@ public class ImgUtil {
 	 * @param height the height
 	 * @return the scaled image
 	 */
-	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
+	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height) {
 		String[] sp = path.split("[.]");
 		try {
 			if ("gif".equals(sp[sp.length - 1])) {
-				// ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
-				// ImageWriter writer = ImageIO.getImageWritersByFormatName("gif").next();
-				// PipedInputStream pis = new PipedInputStream();
-				// PipedOutputStream pos = new PipedOutputStream(pis);
-				// ImageInputStream iis = ImageIO
-				// .createImageInputStream(new FileInputStream("./res/Contractstuff/EZ.gif"));
-				// reader.setInput(iis, false);
+				ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
+				ImageWriter	writer	= ImageIO.getImageWritersByFormatName("png").next();
+
+				ImageInputStream iis = ImageIO
+						.createImageInputStream(new FileInputStream(path));
+				reader.setInput(iis, false);
 				// ImageOutputStream ios = ImageIO.createImageOutputStream(pos);
 				// writer.setOutput(ios);
-				// int noi = reader.getNumImages(true);
-				// System.out.println(noi);
+				int noi = reader.getNumImages(true);
+				System.out.println(noi);
+
+				BufferedImage[] imgs = new BufferedImage[noi];
+
+				for (int i = 0; i < noi; i++) {
+					imgs[i] = reader.read(i);
+
+					System.out.println(i + " r");
+
+					// PipedInputStream pis = new PipedInputStream();
+					// PipedOutputStream pos = new PipedOutputStream(pis);
+
+					// MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(pos);
+					// mcios.c
+
+					// System.out.println(i + " u");
+
+					//					writer.setOutput(mcios);
+					//					writer.write(bi);
+
+					// ImageIO.write(bi, "png", mcios);
+
+					// System.out.println(i + " w");
+
+					// imgs[i] = new Image(pis);
+
+					// pos.close();
+					// pis.close();
+
+					// System.out.println(i + " i");
+
+				}
 				//
 				// // IIOMetadata streamMeta = reader.getStreamMetadata();
 				// // System.out.println(Arrays.asList(streamMeta.getMetadataFormatNames()));
@@ -84,13 +147,17 @@ public class ImgUtil {
 				// ios.flush();
 				// pos.flush();
 				Image wi = new Image(new FileInputStream(path));
-				return wi;
+				return new Image[] {
+						wi
+				};
 			}
 			Image wi = new Image(new FileInputStream(path));
-			return ImgUtil.resizeImage(
-					wi, (int) wi.getWidth(), (int) wi.getHeight(),
-					(int) (width * gamepanel.getScalingFactorX()),
-					(int) (height * gamepanel.getScalingFactorY()));
+			return new Image[] {
+					ImgUtil.resizeImage(
+							wi, (int) wi.getWidth(), (int) wi.getHeight(),
+							(int) (width * gamepanel.getScalingFactorX()),
+							(int) (height * gamepanel.getScalingFactorY()))
+			};
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
