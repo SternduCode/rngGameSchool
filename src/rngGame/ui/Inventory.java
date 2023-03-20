@@ -358,7 +358,7 @@ public class Inventory extends Pane {
 								(int) (itemhpText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itemhpText.getHeight() * gamepanel.getScalingFactorY()));
 					} else {
-						ImageView hpView2,atkView2,resView2,dgcView2;
+						ImageView hpView2,atkView2,resView2,dgcView2,rarityView2;
 						
 						Gear g = (Gear) itemTestArray[_j/62*10+_i/62];
 						Image itemhpText = Text.getInstance().convertText("HP:"+ g.getHp() , 48);
@@ -385,25 +385,35 @@ public class Inventory extends Pane {
 								(int) (itemdgcText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itemdgcText.getHeight() * gamepanel.getScalingFactorY()));
 						
+						Image itemRarityText = Text.getInstance().convertText("Rarity:"+g.getRarity(), 48);
+						itemRarityText = ImgUtil.resizeImage(
+								itemRarityText, (int) itemRarityText.getWidth(), (int) itemRarityText.getHeight(),
+								(int) (itemRarityText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemRarityText.getHeight() * gamepanel.getScalingFactorY()));
+						
 						hpView2 = new ImageView(itemhpText);
 						atkView2 = new ImageView(itematkText);
 						resView2 = new ImageView(itemresText);
 						dgcView2 = new ImageView(itemdgcText);
+						rarityView2 = new ImageView(itemRarityText);
+						
+						rarityView2.setLayoutX(25*gamepanel.getScalingFactorX());
+						rarityView2.setLayoutY(16*gamepanel.getScalingFactorY());
 						
 						hpView2.setLayoutX(25*gamepanel.getScalingFactorX());
-						hpView2.setLayoutY(25*gamepanel.getScalingFactorY());
+						hpView2.setLayoutY((16+48)*gamepanel.getScalingFactorY());
 						
 						atkView2.setLayoutX(25*gamepanel.getScalingFactorX());
-						atkView2.setLayoutY((25+48)*gamepanel.getScalingFactorY());
+						atkView2.setLayoutY((16+96)*gamepanel.getScalingFactorY());
 						
 						resView2.setLayoutX(25*gamepanel.getScalingFactorX());
-						resView2.setLayoutY((25+96)*gamepanel.getScalingFactorY());
+						resView2.setLayoutY((16+144)*gamepanel.getScalingFactorY());
 						
 						dgcView2.setLayoutX(25*gamepanel.getScalingFactorX());
-						dgcView2.setLayoutY((25+144)*gamepanel.getScalingFactorY());
+						dgcView2.setLayoutY((16+192)*gamepanel.getScalingFactorY());
 						
 						
-						itemStuff.getChildren().addAll(hpView2,atkView2,resView2,dgcView2);
+						itemStuff.getChildren().addAll(hpView2,atkView2,resView2,dgcView2,rarityView2);
 					}
 					
 					
