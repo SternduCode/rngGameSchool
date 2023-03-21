@@ -139,7 +139,6 @@ public class Inventory extends Pane {
 			int k = 0;
 			System.out.println(data + " " + Arrays.toString(data));
 			for (int j = 0; j < invSlots[0].length; j++) for (ImageView[] invSlot : invSlots) {
-				System.out.println(data[k]);
 				if (data[k] != null) invSlot[j].setImage(data[k].getImage(gamepanel));
 				else invSlot[j].setImage(null);
 				k++;
@@ -204,8 +203,6 @@ public class Inventory extends Pane {
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		currentDemonArray[0] = m1;
 
-
-
 		Sword g1 = new Sword(Rarity.COMMON);
 		Harnish g2 = new Harnish(Rarity.COMMON);
 		Pants g3 = new Pants(Rarity.COMMON);
@@ -214,9 +211,6 @@ public class Inventory extends Pane {
 		giveItem2Monster(g2);
 		giveItem2Monster(g3);
 		giveItem2Monster(g4);
-
-
-
 
 		/////////////
 
@@ -261,9 +255,6 @@ public class Inventory extends Pane {
 				lvlText, (int) lvlText.getWidth(), (int) lvlText.getHeight(),
 				(int) (lvlText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (lvlText.getHeight() * gamepanel.getScalingFactorY()));
-
-
-
 
 		//Xbutton
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
@@ -613,6 +604,7 @@ public class Inventory extends Pane {
 			moveFromArrayToView();
 		});
 
+		System.out.println(getChildren());
 
 	}
 
