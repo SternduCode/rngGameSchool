@@ -1,7 +1,9 @@
 package rngGame.stats;
 
-import java.util.Random;
-
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Gear.
+ */
 public class Gear extends Item{
 
 	/** The hp. */
@@ -16,6 +18,13 @@ public class Gear extends Item{
 	/** The atk. */
 	protected int atk;
 	
+	/**
+	 * Instantiates a new gear.
+	 *
+	 * @param ordner the ordner
+	 * @param item the item
+	 * @param rarity the rarity
+	 */
 	public Gear(String ordner, String item, Rarity rarity) {
 		super(ordner, item, rarity);
 	}
@@ -55,6 +64,12 @@ public class Gear extends Item{
 	public double getRes() {
 		return res;
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " [rarity=" + rarity + ", hp=" + hp + ", res=" + res + ", dgc=" + dgc + ", atk=" + atk + "]";

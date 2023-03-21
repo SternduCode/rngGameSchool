@@ -4,6 +4,7 @@ module rngGame {
 	exports rngGame.entity;
 	exports rngGame.buildings;
 	exports rngGame.ui;
+	exports rngGame.stats;
 
 	requires javafx.base;
 	requires transitive javafx.graphics;

@@ -1,7 +1,9 @@
 package rngGame.buildings;
 
 import java.util.List;
+
 import com.sterndu.json.JsonObject;
+
 import javafx.animation.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
@@ -11,57 +13,120 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.main.*;
-import rngGame.tile.Difficulty;
-import rngGame.tile.ImgUtil;
+import rngGame.tile.*;
 import rngGame.ui.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ContractsTable.
+ */
 public class ContractsTable extends Building {
 
+	/** The p 1. */
 	private final Pane p1 = new Pane();
+	
+	/** The p 2. */
 	private final Pane p2 = new Pane();
+	
+	/** The all panes. */
 	private final Pane allPanes = new Pane();
+	
+	/** The infos. */
 	private final Pane infos = new Pane();
 
+	/** The ug sachen 5. */
 	private LevelSelectionScrollPaneElement ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5;
+	
+	/** The aus group. */
 	private final Group ausGroup = new Group();
+	
+	/** The contract background. */
 	private ImageView contractBackground;
+	
+	/** The contract nova. */
 	private Button contractSaturn,contractNebel,contractGalactus,contractNova;
+	
+	/** The hud 4. */
 	private ImageView hud , hud2 , hud3 , hud4;
+	
+	/** The titlebanner 4. */
 	private ImageView titlebanner,titlebanner2,titlebanner3,titlebanner4;
+	
+	/** The ms. */
 	private MonsterSelction ms;
 
+	/** The text. */
 	private ImageView text;
+	
+	/** The button L. */
 	private Button button_R,button_L;
 	
+	/** The aus background. */
 	private ImageView ausBackground;
 
+	/** The lvl border. */
 	private ImageView lvlBorder;
 
+	/** The aus xb. */
 	private Button ausXb;
+	
+	/** The index. */
 	private int index = 0;
-	private int lvlindex = 0;
-
+	
+	/** The iftest. */
 	private boolean iftest;
+	
+	/** The inkreis. */
 	private boolean inkreis;
 
+	/**
+	 * Instantiates a new contracts table.
+	 *
+	 * @param building the building
+	 * @param buildings the buildings
+	 * @param cm the cm
+	 * @param requestorB the requestor B
+	 */
 	public ContractsTable(Building building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
 		init();
 	}
 
+	/**
+	 * Instantiates a new contracts table.
+	 *
+	 * @param building the building
+	 * @param gp the gp
+	 * @param buildings the buildings
+	 * @param cm the cm
+	 * @param requestorB the requestor B
+	 */
 	public ContractsTable(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
 		init();
 	}
 
+	/**
+	 * Instantiates a new contracts table.
+	 *
+	 * @param building the building
+	 * @param gp the gp
+	 * @param directory the directory
+	 * @param buildings the buildings
+	 * @param cm the cm
+	 * @param requestorB the requestor B
+	 */
 	public ContractsTable(JsonObject building, GamePanel gp, String directory, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, directory, buildings, cm, requestorB);
 		init();
 	}
 
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 		Image wi = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Mainbackground.png");
 		Image saturn = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Saturn.png");
@@ -626,21 +691,23 @@ public class ContractsTable extends Building {
 		});
 	}
 
+	/**
+	 * Gets the infos.
+	 *
+	 * @return the infos
+	 */
 	public Pane getInfos() { return infos; }
 
+	/**
+	 * Gets the ms.
+	 *
+	 * @return the ms
+	 */
 	public MonsterSelction getMs() { return ms; }
 
-	public void removeEnterAbbility() {
-		Input.getInstance().removeKeyHandler("contractBackground");
-	}
-
-	public void setMs(MonsterSelction ms) {
-		if (ms != null)
-			allPanes.getChildren().add(ms);
-		else allPanes.getChildren().remove(this.ms);
-		this.ms = ms;
-	}
-
+	/**
+	 * Reload U gtexture.
+	 */
 	public void reloadUGtexture() {
 		ugSachen1.setBackgroundImageToDefaullt();
 		ugSachen2.setBackgroundImageToDefaullt();
@@ -660,9 +727,33 @@ public class ContractsTable extends Building {
 		ugSachen4.setLvlfalse();
 		ugSachen5.setLvlfalse();
 	}
+
+	/**
+	 * Removes the enter abbility.
+	 */
+	public void removeEnterAbbility() {
+		Input.getInstance().removeKeyHandler("contractBackground");
+	}
+
+	/**
+	 * Sets the ms.
+	 *
+	 * @param ms the new ms
+	 */
+	public void setMs(MonsterSelction ms) {
+		if (ms != null)
+			allPanes.getChildren().add(ms);
+		else allPanes.getChildren().remove(this.ms);
+		this.ms = ms;
+	}
 	
 
 	
+	/**
+	 * Update.
+	 *
+	 * @param milis the milis
+	 */
 	@Override
 	public void update(long milis) {
 		inkreis = false;
@@ -699,10 +790,10 @@ public class ContractsTable extends Building {
 			p2.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
 			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
 			
-			ugSachen2.setLayoutY((82)*gamepanel.getScalingFactorY());
-			ugSachen3.setLayoutY((82*2)*gamepanel.getScalingFactorY());
-			ugSachen4.setLayoutY((82*3)*gamepanel.getScalingFactorY());
-			ugSachen5.setLayoutY((82*4)*gamepanel.getScalingFactorY());
+			ugSachen2.setLayoutY(82*gamepanel.getScalingFactorY());
+			ugSachen3.setLayoutY(82*2*gamepanel.getScalingFactorY());
+			ugSachen4.setLayoutY(82*3*gamepanel.getScalingFactorY());
+			ugSachen5.setLayoutY(82*4*gamepanel.getScalingFactorY());
 			
 			//////////////////////////////////////////////
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());

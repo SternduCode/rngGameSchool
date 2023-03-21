@@ -5,19 +5,33 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import rngGame.buildings.ContractsTable;
 import rngGame.main.*;
-import rngGame.tile.DungeonGen;
 import rngGame.tile.ImgUtil;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MonsterSelction.
+ */
 public class MonsterSelction extends Pane {
-	private final GamePanel gamepanel;
+	
+	/** The Monster background. */
 	private final ImageView MonsterBackground;
+	
+	/** The aus xb. */
 	private final Button ausXb;
+	
+	/** The start. */
 	private final Button start;
+	
+	/** The back. */
 	private final Button back;
 
+	/**
+	 * Instantiates a new monster selction.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param ct the ct
+	 */
 	public MonsterSelction(GamePanel gamepanel, ContractsTable ct) {
-		this.gamepanel = gamepanel;
-
 		Image bi = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Monsterauswahlbackround.png");
 
 		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterXbutton.png");
@@ -80,6 +94,11 @@ public class MonsterSelction extends Pane {
 		});
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param milis the milis
+	 */
 	public void update(long milis) {}
 
 }
