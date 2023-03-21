@@ -957,14 +957,22 @@ public class DungeonGen {
 				default -> new Building(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
 			};
 			gp.getBuildings().add(b);
-			ImageView	lIV;
-			if (b.isGif(b.getCurrentKey())) {
-				lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
-				lIV.setFitWidth(16);
-				lIV.setFitHeight(16);
-			} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
-					(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
-					(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
+			ImageView	lIV = new ImageView();
+			try {
+				if (b.isGif(b.getCurrentKey())) {
+					lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
+					lIV.setFitWidth(16);
+					lIV.setFitHeight(16);
+				} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
+			} catch (Exception e) {
+				System.out.println(b.getClass());
+				System.out.println(b.getCurrentKey());
+				System.out.println(b.getImages());
+				System.out.println(b.getTextureFiles());
+				e.printStackTrace();
+			}
 			gp.getTileM().getMbuildings().getItems().add(new MenuItemWBuilding(
 					((StringValue) ((JsonObject) building.get("textures")).values().stream()
 							.findFirst().get()).getValue(),
