@@ -253,13 +253,10 @@ public class GamePanel extends Pane {
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
-		
-
 		aktionbutton = new AktionButton(this);
 
 		setMap("./res/maps/lavaMap2.json");
 		gamemenu = new TabMenu(this);
-		System.out.println(aktionbutton.isDisable());
 
 		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, gamemenu, fpsLabel, loadingScreen);
 	}
@@ -293,6 +290,15 @@ public class GamePanel extends Pane {
 	 * @return the fps
 	 */
 	public Double getFps() { return fps; }
+
+	/**
+	 * Gets the gamemenu.
+	 *
+	 * @return the gamemenu
+	 */
+	public TabMenu getGamemenu() {
+		return gamemenu;
+	}
 
 	/**
 	 * Gets the mob rans.
@@ -343,13 +349,13 @@ public class GamePanel extends Pane {
 	 */
 	public TileManager getTileM() { return tileM; }
 
+
 	/**
 	 * Gets the view groups.
 	 *
 	 * @return the view groups
 	 */
 	public List<Group> getViewGroups() { return layerGroup.getGroupChildren(); }
-
 
 	/**
 	 * Checks if is block user inputs.
@@ -464,13 +470,13 @@ public class GamePanel extends Pane {
 		System.out.println(player.getX() + " " + player.getY());
 	}
 
+
 	/**
 	 * Sets the block user inputs.
 	 *
 	 * @param blockUserInputs the new block user inputs
 	 */
 	public void setBlockUserInputs(boolean blockUserInputs) { this.blockUserInputs = blockUserInputs; }
-
 
 	/**
 	 * Sets the difficulty.
@@ -633,7 +639,7 @@ public class GamePanel extends Pane {
 	public void toggleFpsLabelVisible() {
 		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
-
+	
 	/**
 	 * To string.
 	 *
@@ -646,10 +652,6 @@ public class GamePanel extends Pane {
 				+ selectTool + ", layerGroup=" + layerGroup.getChildren().size() + ", buildings=" + buildings
 				+ ", npcs=" + npcs
 				+ "]";
-	}
-	
-	public TabMenu getGamemenu() {
-		return gamemenu;
 	}
 
 	/**
