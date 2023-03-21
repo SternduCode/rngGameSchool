@@ -203,7 +203,7 @@ public class GamePanel extends Pane {
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
 
-	
+
 
 	/** The aktionbutton. */
 	private final AktionButton aktionbutton;
@@ -383,7 +383,6 @@ public class GamePanel extends Pane {
 		points.clear();
 		pointGroup.getChildren().clear();
 		tileM.reload();
-		gamemenu.f11Scale();
 		aktionbutton.f11Scale();
 		if (tileM.getBackgroundPath() != null) try {
 			setBackground(new Background(
@@ -431,6 +430,7 @@ public class GamePanel extends Pane {
 		});
 		npcs = tileM.getNPCSFromMap();
 		test = tileM.getMobsFromMap();
+		gamemenu.f11Scale();
 
 		//		ImageView iv = new ImageView(Text.getInstance()
 		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #",
@@ -639,7 +639,7 @@ public class GamePanel extends Pane {
 	public void toggleFpsLabelVisible() {
 		fpsLabel.setVisible(!fpsLabel.isVisible());
 	}
-	
+
 	/**
 	 * To string.
 	 *
