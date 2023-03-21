@@ -799,9 +799,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
 			if (path.toLowerCase().endsWith("gif")) {
-				isGif.put(key, true);
-				ImgUtil.getScaledImage(gamepanel, "./res/" + directory + "/" + path);
-				li.add(img);
+				isGif.put(key, false);
+				Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight));
+
+				fps = 10;
+				// li.add(img);
 			} else {
 				isGif.put(key, false);
 				for (int i = 0; i < img.getWidth(); i += origWidth) {
@@ -1335,7 +1337,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
 			animationCounter = System.currentTimeMillis();
 			animationNum++;
-			System.out.println(currentKey);
 			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif.get(currentKey)) {

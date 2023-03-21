@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
 
+import org.w3c.dom.Node;
+
 import javafx.scene.image.*;
 import rngGame.main.GamePanel;
 
@@ -79,77 +81,50 @@ public class ImgUtil {
 		try {
 			if ("gif".equals(sp[sp.length - 1])) {
 				ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
-				ImageWriter	writer	= ImageIO.getImageWritersByFormatName("png").next();
 
 				ImageInputStream iis = ImageIO
 						.createImageInputStream(new FileInputStream(path));
 				reader.setInput(iis, false);
-				// ImageOutputStream ios = ImageIO.createImageOutputStream(pos);
-				// writer.setOutput(ios);
 				int noi = reader.getNumImages(true);
-				System.out.println(noi);
 
 				BufferedImage[] imgs = new BufferedImage[noi];
+				int[]			xOffsets	= new int[noi];
+				int[]			yOffsets	= new int[noi];
+				int				origWidth, origHeight;
+
+				Image origImg = new Image(new FileInputStream(path));
+
+				origWidth	= (int) origImg.getWidth();
+				origHeight	= (int) origImg.getHeight();
 
 				for (int i = 0; i < noi; i++) {
+					Node node = reader.getImageMetadata(i).getAsTree("javax_imageio_gif_image_1.0");
+					xOffsets[i]	= Integer.parseInt(node.getFirstChild().getAttributes().getNamedItem("imageLeftPosition").getNodeValue());
+					yOffsets[i]	= Integer.parseInt(node.getFirstChild().getAttributes().getNamedItem("imageTopPosition").getNodeValue());
+
 					imgs[i] = reader.read(i);
-
-					System.out.println(i + " r");
-
-					// PipedInputStream pis = new PipedInputStream();
-					// PipedOutputStream pos = new PipedOutputStream(pis);
-
-					// MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(pos);
-					// mcios.c
-
-					// System.out.println(i + " u");
-
-					//					writer.setOutput(mcios);
-					//					writer.write(bi);
-
-					// ImageIO.write(bi, "png", mcios);
-
-					// System.out.println(i + " w");
-
-					// imgs[i] = new Image(pis);
-
-					// pos.close();
-					// pis.close();
-
-					// System.out.println(i + " i");
-
 				}
-				//
-				// // IIOMetadata streamMeta = reader.getStreamMetadata();
-				// // System.out.println(Arrays.asList(streamMeta.getMetadataFormatNames()));
-				// // Node node =
-				// streamMeta.getAsTree("javax_imageio_gif_stream_1.0").getFirstChild().getNextSibling();
-				// // node.getAttributes().getNamedItem("logicalScreenHeight").setNodeValue(
-				// // (int)
-				// (Integer.parseInt(node.getAttributes().getNamedItem("logicalScreenHeight").getNodeValue())
-				// // * gamepanel.getScalingFactorY()) + "");
-				// // node.getAttributes().getNamedItem("logicalScreenWidth").setNodeValue(
-				// // (int)
-				// (Integer.parseInt(node.getAttributes().getNamedItem("logicalScreenWidth").getNodeValue())
-				// // * gamepanel.getScalingFactorY()) + "");
-				// writer.prepareWriteSequence(null);
-				// for (int i = 0; i < noi; i++) {
-				// BufferedImage bi = reader.read(i);
-				// System.out.println(bi);
-				// bi = ImgUtil.resizeBufferedImage(
-				// bi, bi.getWidth(), bi.getHeight(), (int) (bi.getWidth() *
-				// gamepanel.getScalingFactorX()),
-				// (int) (bi.getHeight() * gamepanel.getScalingFactorY()));
-				// writer.writeToSequence(new IIOImage(bi, null, null), null);
-				// }
-				// writer.endWriteSequence();
-				// writer.dispose();
-				// ios.flush();
-				// pos.flush();
-				Image wi = new Image(new FileInputStream(path));
-				return new Image[] {
-						wi
-				};
+
+				WritableImage[] awtToFx = new WritableImage[imgs.length];
+
+				for (int i = 0; i < imgs.length; i++) {
+					BufferedImage bi = imgs[i];
+					System.out.println(bi.getWidth() + " " + bi.getHeight());
+					awtToFx[i] = new WritableImage(origWidth, origHeight);
+					PixelWriter pw = awtToFx[i].getPixelWriter();
+					int[] data = new int[bi.getWidth() * bi.getHeight()];
+					bi.getRGB(0, 0, bi.getWidth(), bi.getHeight(), data, 0, bi.getWidth());
+					pw.setPixels(xOffsets[i], yOffsets[i], bi.getWidth(), bi.getHeight(), PixelFormat.getIntArgbInstance(), data, 0, bi.getWidth());
+				}
+
+				Image[] out = new Image[awtToFx.length];
+
+				for (int i = 0; i < out.length; i++) out[i] = ImgUtil.resizeImage(
+						awtToFx[i], (int) awtToFx[i].getWidth(), (int) awtToFx[i].getHeight(),
+						(int) (width * gamepanel.getScalingFactorX()),
+						(int) (height * gamepanel.getScalingFactorY()));
+
+				return out;
 			}
 			Image wi = new Image(new FileInputStream(path));
 			return new Image[] {
