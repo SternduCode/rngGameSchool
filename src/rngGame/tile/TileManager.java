@@ -563,6 +563,13 @@ public class TileManager extends Pane {
 	public List<List<TextureHolder>> getMap() { return map; }
 
 	/**
+	 * Gets the mbuildings.
+	 *
+	 * @return the mbuildings
+	 */
+	public Menu getMbuildings() { return mbuildings; }
+
+	/**
 	 * Gets the context menu menus.
 	 *
 	 * @return the menus
@@ -684,7 +691,7 @@ public class TileManager extends Pane {
 
 	/**
 	 * Gets the requester B.
-	 * 
+	 *
 	 * @return the requester B
 	 */
 	public ObjectProperty<Building> getRequesterB() { return requesterB; }
@@ -894,7 +901,7 @@ public class TileManager extends Pane {
 
 				JsonObject mainmap = (JsonObject) JsonParser
 						.parse(new FileInputStream("./res/maps/" + ((StringValue) jo.get("mainmap")).getValue()));
-				
+
 				JsonObject endmap = (JsonObject) JsonParser
 						.parse(new FileInputStream("./res/maps/" + ((StringValue) jo.get("endmap")).getValue()));
 
@@ -1012,7 +1019,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc : npcs) {
 				Entity n = switch ( ((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-					case "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
+									case "MonsterNPC", "monsternpc", "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm,
+											requestorN);
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
@@ -1136,7 +1144,5 @@ public class TileManager extends Pane {
 		}
 
 	}
-
-	public Menu getMbuildings() { return mbuildings; }
 
 }

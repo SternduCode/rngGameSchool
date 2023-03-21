@@ -799,9 +799,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
 
 			if (path.toLowerCase().endsWith("gif")) {
-				isGif.put(key, true);
-				ImgUtil.getScaledImage(gamepanel, "./res/" + directory + "/" + path);
-				li.add(img);
+				isGif.put(key, false);
+				Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight));
+
+				fps = 10;
+				// li.add(img);
 			} else {
 					isGif.put(key, false);
 					for (int i = 0; i < img.getWidth(); i += origWidth) {
@@ -1335,12 +1337,16 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
 			animationCounter = System.currentTimeMillis();
 			animationNum++;
+<<<<<<< HEAD
 			try {
 				if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			} catch (Exception e) {
 				System.out.println(currentKey);
 				e.printStackTrace();
 			}
+=======
+			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
+>>>>>>> branch 'main' of https://github.com/SternduCode/rngGame.git
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif(currentKey)) {
 				//				iv.setScaleX(getReqWidth() / images.get(currentKey).get(0).getWidth() * gamepanel.getScalingFactorX());

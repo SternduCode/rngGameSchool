@@ -28,6 +28,9 @@
 				128,
 				64
 			],
+			"miscBoxes" : [
+				
+			],
 			"layer" : [
 				0
 			]
@@ -60,14 +63,17 @@
 				64,
 				64
 			],
+			"miscBoxes" : [
+				
+			],
 			"layer" : [
 				0
 			]
 		},
 		{
 			"requestedSize" : [
-				300,
-				300
+				150,
+				150
 			],
 			"textures" : {
 				"default" : "Howl.gif"
@@ -81,16 +87,19 @@
 				false
 			],
 			"fps" : [
-				5.00000
+				10.0000
 			],
 			"position" : [
 				266.000,
 				1616.00
 			],
-			"type" : "Demon",
+			"type" : "monsternpc",
 			"originalSize" : [
 				64,
 				64
+			],
+			"miscBoxes" : [
+				
 			],
 			"dir" : "Shadow",
 			"layer" : [
@@ -120,10 +129,13 @@
 				301.000,
 				1850.00
 			],
-			"type" : "Demon",
+			"type" : "MonsterNPC",
 			"originalSize" : [
 				64,
 				64
+			],
+			"miscBoxes" : [
+				
 			],
 			"dir" : "Void",
 			"layer" : [
@@ -158,6 +170,9 @@
 				16,
 				16
 			],
+			"miscBoxes" : [
+				
+			],
 			"layer" : [
 				0
 			]
@@ -179,7 +194,7 @@
 				false
 			],
 			"fps" : [
-				7.00000
+				10.0000
 			],
 			"position" : [
 				1608.00,
