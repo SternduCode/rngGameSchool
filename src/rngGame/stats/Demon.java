@@ -13,32 +13,32 @@ public class Demon {
 
 	/** The element. */
 	private final Element element;
-	
+
 	/** The gen. */
 	Random gen = new Random();
 
 	/** The mob name. */
 	private final String mobName;
-	
+
 	/** The Item 4 list. */
 	private Gear[] Item4List = new Gear[4];
 
 	/** The atk. */
-	private int atk, atkList;
+	private int atk;
 
 	/** The res. */
-	private double res, resList;
+	private double res;
 
 	/** The hp. */
-	private int hp, hpList;
+	private int hp;
 
 	/** The dgc. */
-	private double dgc, dgcList;
+	private double dgc;
 
 
 	/** The lvl. */
 	private int lvl,maxExp;
-	
+
 	/** The currentexp. */
 	private int currentexp = 0;
 
@@ -47,9 +47,9 @@ public class Demon {
 	/** The demon. */
 	private final MonsterNPC demon;
 
-	
 
-	
+
+
 
 	/**
 	 * Instantiates a new demon.
@@ -67,7 +67,7 @@ public class Demon {
 		hp = element.getHp()+ gen.nextInt(11);
 		dgc = element.getDgc();
 		lvl = element.getLvl();
-		
+
 	}
 
 	/**
@@ -85,6 +85,7 @@ public class Demon {
 	 * @return the atk list
 	 */
 	public int getAtkList() {
+		int atkList = 0;
 		for (Gear element2 : Item4List) if(element2!=null) atkList += element2.getAtk();
 		return atkList;
 	}
@@ -131,6 +132,7 @@ public class Demon {
 	 * @return the dgc list
 	 */
 	public double getDgcList() {
+		double dgcList = 0.0;
 		for (Gear element2 : Item4List) if(element2!=null) dgcList += element2.getDgc();
 		return dgcList;
 	}
@@ -159,10 +161,11 @@ public class Demon {
 	 * @return the hp list
 	 */
 	public int getHpList() {
+		int hpList = 0;
 		for (Gear element2 : Item4List) if(element2!=null) hpList += element2.getHp();
 		return hpList;
 	}
-	
+
 	/**
 	 * Gets the item 4 list.
 	 *
@@ -171,7 +174,7 @@ public class Demon {
 	public Gear[] getItem4List() {
 		return Item4List;
 	}
-	
+
 	/**
 	 * Gets the lvl.
 	 *
@@ -180,7 +183,7 @@ public class Demon {
 	public int getLvl() {
 		return lvl;
 	}
-	
+
 	/**
 	 * Gets the max exp.
 	 *
@@ -190,7 +193,7 @@ public class Demon {
 		maxExp = lvl*lvl+lvl*5;
 		return maxExp;
 	}
-	
+
 	/**
 	 * Gets the mob name.
 	 *
@@ -199,7 +202,7 @@ public class Demon {
 	public String getMobName() {
 		return mobName;
 	}
-	
+
 	/**
 	 * Gets the res.
 	 *
@@ -208,13 +211,14 @@ public class Demon {
 	public double getRes() {
 		return res+getResList()* 100;
 	}
-	
+
 	/**
 	 * Gets the res list.
 	 *
 	 * @return the res list
 	 */
 	public double getResList() {
+		double resList = 0.0;
 		for (Gear element2 : Item4List) if(element2!=null) resList += element2.getRes();
 		return resList;
 	}
@@ -227,8 +231,8 @@ public class Demon {
 	public void setAtk(int atk) {
 		this.atk = element.getAtk() + atk;
 	}
-	
-	
+
+
 	/**
 	 * Sets the current exp.
 	 *
@@ -238,7 +242,7 @@ public class Demon {
 		this.currentexp = currentexp;
 	}
 
-	
+
 	/**
 	 * Sets the dgc.
 	 *
@@ -248,7 +252,7 @@ public class Demon {
 		this.dgc = element.getDgc()+dgc;
 	}
 
-	
+
 	/**
 	 * Sets the hp.
 	 *
@@ -258,7 +262,7 @@ public class Demon {
 		this.hp = element.getHp() + hp;
 	}
 
-	
+
 	/**
 	 * Sets the item 4 list.
 	 *
@@ -267,7 +271,7 @@ public class Demon {
 	public void setItem4List(Gear[] item4List) {
 		Item4List = item4List;
 	}
-	
+
 	/**
 	 * Sets the lvl.
 	 *
