@@ -1337,16 +1337,16 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
 			animationCounter = System.currentTimeMillis();
 			animationNum++;
-<<<<<<< HEAD
+
 			try {
 				if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			} catch (Exception e) {
 				System.out.println(currentKey);
 				e.printStackTrace();
 			}
-=======
-			if (animationNum >= images.get(currentKey).size()) animationNum = 0;
->>>>>>> branch 'main' of https://github.com/SternduCode/rngGame.git
+
+			
+
 			iv.setImage(images.get(currentKey).get(animationNum));
 			if (isGif(currentKey)) {
 				//				iv.setScaleX(getReqWidth() / images.get(currentKey).get(0).getWidth() * gamepanel.getScalingFactorX());
