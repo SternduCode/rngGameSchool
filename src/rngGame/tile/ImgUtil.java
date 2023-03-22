@@ -109,7 +109,6 @@ public class ImgUtil {
 
 				for (int i = 0; i < imgs.length; i++) {
 					BufferedImage bi = imgs[i];
-					System.out.println(bi.getWidth() + " " + bi.getHeight());
 					awtToFx[i] = new WritableImage(origWidth, origHeight);
 					PixelWriter pw = awtToFx[i].getPixelWriter();
 					int[] data = new int[bi.getWidth() * bi.getHeight()];

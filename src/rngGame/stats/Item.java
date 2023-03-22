@@ -1,8 +1,8 @@
 package rngGame.stats;
 
-import java.io.*;
-
 import javafx.scene.image.Image;
+import rngGame.main.GamePanel;
+import rngGame.tile.ImgUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -10,8 +10,8 @@ import javafx.scene.image.Image;
  */
 public class Item {
 
-	/** The t 1. */
-	protected Image t1;
+	/** The path. */
+	protected String path;
 
 	/** The rarity. */
 	protected Rarity rarity;
@@ -24,14 +24,18 @@ public class Item {
 	 * @param rarity the rarity
 	 */
 	public Item(String ordner, String item, Rarity rarity) {
-		try {
-			t1 = new Image(new FileInputStream(new File("./res/Items/" + ordner, item + ".png")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		this.rarity = rarity;
+		path		= "./res/Items/" + ordner + "/" + item + ".png";
+		this.rarity	= rarity;
 
 	}
+
+	/**
+	 * Gets the t1.
+	 *
+	 * @param gp the gp
+	 * @return the t1
+	 */
+	public Image getImage(GamePanel gp) { return ImgUtil.getScaledImage(gp, path); }
 
 	/**
 	 * Gets the rarity.
@@ -40,14 +44,7 @@ public class Item {
 	 */
 	public Rarity getRarity() { return rarity; }
 
-	/**
-	 * Gets the t1.
-	 *
-	 * @return the t1
-	 */
-	public Image getT1() { return t1; }
 
-	
 	/**
 	 * To string.
 	 *
@@ -55,6 +52,6 @@ public class Item {
 	 */
 	@Override
 	public String toString() {
-		return "Item [t1=" + t1 + "]";
+		return "Item [path=" + path + ", rarity=" + rarity + "]";
 	}
 }

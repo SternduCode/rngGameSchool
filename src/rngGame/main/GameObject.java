@@ -805,13 +805,13 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				fps = 10;
 				// li.add(img);
 			} else {
-					isGif.put(key, false);
-					for (int i = 0; i < img.getWidth(); i += origWidth) {
-						WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
-						li.add(ImgUtil.resizeImage(wi,
-								(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
-								(int) (reqHeight * gamepanel.getScalingFactorY())));
-					}
+				isGif.put(key, false);
+				for (int i = 0; i < img.getWidth(); i += origWidth) {
+					WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
+					li.add(ImgUtil.resizeImage(wi,
+							(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
+							(int) (reqHeight * gamepanel.getScalingFactorY())));
+				}
 			}
 			String[] sp = path.split("[.]");
 			Polygon collisionBox = collisionBoxes.get(key);
@@ -1345,20 +1345,12 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				e.printStackTrace();
 			}
 
+<<<<<<< HEAD
 			
 
+=======
+>>>>>>> branch 'main' of https://github.com/SternduCode/rngGame.git
 			iv.setImage(images.get(currentKey).get(animationNum));
-			if (isGif(currentKey)) {
-				//				iv.setScaleX(getReqWidth() / images.get(currentKey).get(0).getWidth() * gamepanel.getScalingFactorX());
-				//				iv.setLayoutX( (getReqWidth() - images.get(currentKey).get(0).getWidth()) / 2);
-				//				iv.setScaleY(getReqHeight() / images.get(currentKey).get(0).getHeight() * gamepanel.getScalingFactorY());
-				//				iv.setLayoutY( (getReqHeight() - images.get(currentKey).get(0).getHeight()) / 2);
-			} else {
-				//				iv.setScaleX(1);
-				//				iv.setScaleY(1);
-				//				iv.setLayoutX(0);
-				//				iv.setLayoutY(0);
-			}
 		}
 
 

@@ -280,6 +280,8 @@ public class TabMenu extends Pane {
 		sureN1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN.png");
 		sureN2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN2.png");
 		sureN.setImage(sureN1);
+
+		inventory.scaleF11();
 	}
 
 	/**

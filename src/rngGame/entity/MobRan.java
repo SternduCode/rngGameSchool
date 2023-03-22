@@ -14,7 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
 import rngGame.main.GamePanel;
 import rngGame.stats.*;
-import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
 
 
@@ -101,7 +100,7 @@ public class MobRan extends NPC {
 		//		System.out.println("diffX: "+diffX + " diffY: "+ diffY);
 		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
 	}
-	
+
 	/**
 	 * Inits the.
 	 */
@@ -134,9 +133,10 @@ public class MobRan extends NPC {
 	}
 
 	/**
-	 * Macht dir ein Mob vallah
+	 * Macht dir ein Mob vallah.
+	 *
+	 * @return the demon
 	 */
-	@SuppressWarnings("exports")
 	public Demon MobGen() {
 		String pnG, mobName;
 		Element wahl;
@@ -154,37 +154,37 @@ public class MobRan extends NPC {
 
 				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Cultist", "CultistKing", "Vardum", "Endor", "Seraph", "Malag", "Spye"
 
-		}; 
-		
+		};
+
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
-//		mobName = "May";
-//		wahl = Element.Void;
+		//		mobName = "May";
+		//		wahl = Element.Void;
 		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
-		if(mobName.equals("Naberius")||mobName.equals("NaberiusDev")) {
+		if("Naberius".equals(mobName)||"NaberiusDev".equals(mobName)) {
 			r = gen.nextInt(10)+1;
 			if(r == 5) mobName = "NaberiusDev";
 			else mobName = "Naberius";
-		}else if (mobName.equals("CultistKing")||mobName.equals("Cultist")) {
+		}else if ("CultistKing".equals(mobName)||"Cultist".equals(mobName)) {
 			mobName = "Cultist";
 			if (wahl==Element.Void) {
-			r = gen.nextInt(200)+1;
-//			r = 13;
-			if(r == 13) { mobName = "CultistKing"; wahl = Element.DimensionMaster; }
+				r = gen.nextInt(200)+1;
+				//			r = 13;
+				if(r == 13) { mobName = "CultistKing"; wahl = Element.DimensionMaster; }
 
-			else mobName = "Cultist";
+				else mobName = "Cultist";
 			}
 		}
-		
+
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 		else
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 
-		
-		
-		
-		
+
+
+
+
 		try {
 			Path p2	= new File(pnG).toPath();
 			Image img = new Image(new FileInputStream(p2.toFile()));
@@ -293,11 +293,11 @@ public class MobRan extends NPC {
 			if (pels.parallelStream().filter(pe -> pe.distance() == 0)
 					.anyMatch(pe -> map.get(pe.y()).get(pe.x()).getPoly().getPoints().size() != 0)) pels.removeIf(pe -> pe.distance() == 0);
 
-			int	minX	= pels.parallelStream().mapToInt(PathElement::x).min().orElse(0);
-			int	minY	= pels.parallelStream().mapToInt(PathElement::y).min().orElse(0);
-
-			int	maxX	= pels.parallelStream().mapToInt(PathElement::x).max().orElse(0);
-			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
+			//			int	minX	= pels.parallelStream().mapToInt(PathElement::x).min().orElse(0);
+			//			int	minY	= pels.parallelStream().mapToInt(PathElement::y).min().orElse(0);
+			//
+			//			int	maxX	= pels.parallelStream().mapToInt(PathElement::x).max().orElse(0);
+			//			int	maxY	= pels.parallelStream().mapToInt(PathElement::y).max().orElse(0);
 
 
 			//			for (int yU = minY; yU <= maxY; yU++) {
