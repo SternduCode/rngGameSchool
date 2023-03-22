@@ -1345,11 +1345,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				e.printStackTrace();
 			}
 
-<<<<<<< HEAD
-			
-
-=======
->>>>>>> branch 'main' of https://github.com/SternduCode/rngGame.git
 			iv.setImage(images.get(currentKey).get(animationNum));
 		}
 
