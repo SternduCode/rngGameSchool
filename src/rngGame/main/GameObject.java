@@ -1342,6 +1342,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			} catch (Exception e) {
 				System.out.println(currentKey);
+				System.out.println(images);
 				e.printStackTrace();
 			}
 

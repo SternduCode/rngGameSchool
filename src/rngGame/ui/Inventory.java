@@ -147,7 +147,7 @@ public class Inventory extends Pane {
 				k++;
 			}
 		}
-
+		for (int i = 0; i < Item4Slots.length; i++) if (currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null) Item4Slots[i].setImage(currentDemonArray[currentDemonIndex].getItem4List()[i].getImage(gamepanel));
 	}
 
 	/**
@@ -612,6 +612,13 @@ public class Inventory extends Pane {
 	}
 
 	/**
+	 * Item 2 current item 4 list.
+	 */
+	public void Item2CurrentItem4List() {
+
+	}
+
+	/**
 	 * Item to inventory.
 	 *
 	 * @param item the item
@@ -718,6 +725,7 @@ public class Inventory extends Pane {
 		return test;
 	}
 
+
 	/**
 	 * Show X pbr.
 	 *
@@ -760,9 +768,4 @@ public class Inventory extends Pane {
 		return test;
 	}
 
-	
-	public void Item2CurrentItem4List() {
-		
-	}
-	
 }

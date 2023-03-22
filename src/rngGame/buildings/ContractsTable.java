@@ -24,43 +24,43 @@ public class ContractsTable extends Building {
 
 	/** The p 1. */
 	private final Pane p1 = new Pane();
-	
+
 	/** The p 2. */
 	private final Pane p2 = new Pane();
-	
+
 	/** The all panes. */
 	private final Pane allPanes = new Pane();
-	
+
 	/** The infos. */
 	private final Pane infos = new Pane();
 
 	/** The ug sachen 5. */
 	private LevelSelectionScrollPaneElement ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5;
-	
+
 	/** The aus group. */
 	private final Group ausGroup = new Group();
-	
+
 	/** The contract background. */
 	private ImageView contractBackground;
-	
+
 	/** The contract nova. */
 	private Button contractSaturn,contractNebel,contractGalactus,contractNova;
-	
+
 	/** The hud 4. */
 	private ImageView hud , hud2 , hud3 , hud4;
-	
+
 	/** The titlebanner 4. */
 	private ImageView titlebanner,titlebanner2,titlebanner3,titlebanner4;
-	
+
 	/** The ms. */
 	private MonsterSelction ms;
 
 	/** The text. */
 	private ImageView text;
-	
+
 	/** The button L. */
 	private Button button_R,button_L;
-	
+
 	/** The aus background. */
 	private ImageView ausBackground;
 
@@ -69,13 +69,13 @@ public class ContractsTable extends Building {
 
 	/** The aus xb. */
 	private Button ausXb;
-	
+
 	/** The index. */
 	private int index = 0;
-	
+
 	/** The iftest. */
 	private boolean iftest;
-	
+
 	/** The inkreis. */
 	private boolean inkreis;
 
@@ -157,7 +157,7 @@ public class ContractsTable extends Building {
 		Image buttonL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilL.png");
 		Image buttonRL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilRLeu.png");
 		Image buttonLL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilLLeu.png");
-		
+
 		Image difE = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difE.png");
 		Image difH = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difH.png");
 		Image difM = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difM.png");
@@ -174,23 +174,15 @@ public class ContractsTable extends Building {
 		text = new ImageView(ka);
 
 		hud = new ImageView(hudp);
-		hud.setScaleX(gamepanel.getScalingFactorX());
-		hud.setScaleY(gamepanel.getScalingFactorY());
 		hud.setOpacity(0);
 
 		hud2 = new ImageView(hudp);
-		hud2.setScaleX(gamepanel.getScalingFactorX());
-		hud2.setScaleY(gamepanel.getScalingFactorY());
 		hud2.setOpacity(0);
 
 		hud3 = new ImageView(hudp);
-		hud3.setScaleX(gamepanel.getScalingFactorX());
-		hud3.setScaleY(gamepanel.getScalingFactorY());
 		hud3.setOpacity(0);
 
 		hud4 = new ImageView(hudp);
-		hud4.setScaleX(gamepanel.getScalingFactorX());
-		hud4.setScaleY(gamepanel.getScalingFactorY());
 		hud4.setOpacity(0);
 
 		titlebanner = new ImageView(titlep);
@@ -215,7 +207,7 @@ public class ContractsTable extends Building {
 		Image bll = buttonLL;
 		Image br = buttonR;
 		Image bl = buttonL;
-		
+
 
 
 		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Eingang", index * 25 + 0,"Icon_Eingang", Difficulty.EASY);
@@ -474,7 +466,7 @@ public class ContractsTable extends Building {
 		ausXb.setOnMousePressed(me -> {
 			ausXb.setImage(x2);
 		});
-		
+
 
 
 		ausXb.setOnMouseReleased(me -> {
@@ -624,7 +616,7 @@ public class ContractsTable extends Building {
 		infos.getChildren().add(ugSachen3.getVlvl());
 		infos.getChildren().add(ugSachen4.getVlvl());
 		infos.getChildren().add(ugSachen5.getVlvl());
-		
+
 		infos.getChildren().add(ugSachen1.getDifficul());
 		infos.getChildren().add(ugSachen2.getDifficul());
 		infos.getChildren().add(ugSachen3.getDifficul());
@@ -714,13 +706,13 @@ public class ContractsTable extends Building {
 		ugSachen3.setBackgroundImageToDefaullt();
 		ugSachen4.setBackgroundImageToDefaullt();
 		ugSachen5.setBackgroundImageToDefaullt();
-		
+
 		ugSachen1.startBvisibleFalse();
 		ugSachen2.startBvisibleFalse();
 		ugSachen3.startBvisibleFalse();
 		ugSachen4.startBvisibleFalse();
 		ugSachen5.startBvisibleFalse();
-		
+
 		ugSachen1.setLvlfalse();
 		ugSachen2.setLvlfalse();
 		ugSachen3.setLvlfalse();
@@ -746,9 +738,9 @@ public class ContractsTable extends Building {
 		else allPanes.getChildren().remove(this.ms);
 		this.ms = ms;
 	}
-	
 
-	
+
+
 	/**
 	 * Update.
 	 *
@@ -779,8 +771,8 @@ public class ContractsTable extends Building {
 
 			p1.setLayoutX(gamepanel.getPlayer().getScreenX() - gamepanel.SpielLaenge / 2
 					+ gamepanel.getPlayer().getWidth() / 2);
-			p1.setLayoutY(
-					gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
+			//			p1.setLayoutY(
+			//					gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
 			if (!gamepanel.getChildren().contains(p1))
 				gamepanel.getChildren().add(p1);
 			///////////////////////////////////////////////
@@ -789,12 +781,12 @@ public class ContractsTable extends Building {
 
 			p2.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
 			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
-			
+
 			ugSachen2.setLayoutY(82*gamepanel.getScalingFactorY());
 			ugSachen3.setLayoutY(82*2*gamepanel.getScalingFactorY());
 			ugSachen4.setLayoutY(82*3*gamepanel.getScalingFactorY());
 			ugSachen5.setLayoutY(82*4*gamepanel.getScalingFactorY());
-			
+
 			//////////////////////////////////////////////
 			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2
