@@ -36,7 +36,7 @@ public class Inventory extends Pane {
 	}
 
 	/** The Constant currentDemonIndex. */
-	private static final int currentDemonIndex = 0;
+	private int currentDemonIndex = 0;
 
 	/** The potion array. */
 	private final Potion[] potionArray = new Potion[40];
@@ -206,14 +206,14 @@ public class Inventory extends Pane {
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		currentDemonArray[currentDemonIndex] = m1;
 
-		Sword g1 = new Sword(Rarity.COMMON);
-		Harnish g2 = new Harnish(Rarity.COMMON);
-		Pants g3 = new Pants(Rarity.COMMON);
-		Helmet g4 = new Helmet(Rarity.COMMON);
-		giveItem2Monster(g1);
-		giveItem2Monster(g2);
-		giveItem2Monster(g3);
-		giveItem2Monster(g4);
+//		Sword g1 = new Sword(Rarity.COMMON);
+//		Harnish g2 = new Harnish(Rarity.COMMON);
+//		Pants g3 = new Pants(Rarity.COMMON);
+//		Helmet g4 = new Helmet(Rarity.COMMON);
+//		giveItem2Monster(g1);
+//		giveItem2Monster(g2);
+//		giveItem2Monster(g3);
+//		giveItem2Monster(g4);
 
 		/////////////
 
@@ -346,11 +346,41 @@ public class Inventory extends Pane {
 						case USE -> null;
 					};
 					if (itemTestArray[_j / 62 * 10 + _i / 62] instanceof Potion pp) {
+						ImageView hpView2,rarityView2;
+						
+						
 						Image itemhpText = Text.getInstance().convertText("HP:" + pp.getHp(), 48);
 						itemhpText = ImgUtil.resizeImage(
 								itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
 								(int) (itemhpText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itemhpText.getHeight() * gamepanel.getScalingFactorY()));
+						
+						Image itemRarityText = Text.getInstance().convertText("Rarity:" + pp.getRarity(), 48);
+						itemRarityText = ImgUtil.resizeImage(
+								itemRarityText, (int) itemRarityText.getWidth(), (int) itemRarityText.getHeight(),
+								(int) (itemRarityText.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (itemRarityText.getHeight() * gamepanel.getScalingFactorY()));
+						
+						applyButton.setOnMouseReleased(me2 -> {
+							applyButton.setImage(apply1);
+							transp.setVisible(false);
+							itemSureBackround.setVisible(false);
+							itemStuff.setVisible(false);
+						});
+						
+						
+						hpView2 = new ImageView(itemhpText);
+						
+						rarityView2 = new ImageView(itemRarityText);
+
+						hpView2.setLayoutX(25 * gamepanel.getScalingFactorX());
+						hpView2.setLayoutY( (16 + 48) * gamepanel.getScalingFactorY());
+						rarityView2.setLayoutX(25 * gamepanel.getScalingFactorX());
+						rarityView2.setLayoutY(16 * gamepanel.getScalingFactorY());
+						
+						
+						itemStuff.getChildren().addAll(hpView2,rarityView2);
+						
 					} else {
 						ImageView hpView2,atkView2,resView2,dgcView2,rarityView2;
 
@@ -385,6 +415,16 @@ public class Inventory extends Pane {
 								(int) (itemRarityText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itemRarityText.getHeight() * gamepanel.getScalingFactorY()));
 
+						
+
+						applyButton.setOnMouseReleased(me2 -> {
+							applyButton.setImage(apply1);
+							giveItem2Monster(g);
+							transp.setVisible(false);
+							itemSureBackround.setVisible(false);
+							itemStuff.setVisible(false);
+						});
+						
 						hpView2 = new ImageView(itemhpText);
 						atkView2 = new ImageView(itematkText);
 						resView2 = new ImageView(itemresText);
@@ -426,13 +466,6 @@ public class Inventory extends Pane {
 						applyButton.setImage(apply2);
 					});
 
-					applyButton.setOnMouseReleased(me2 -> {
-						applyButton.setImage(apply1);
-						transp.setVisible(false);
-						itemSureBackround.setVisible(false);
-						itemStuff.setVisible(false);
-					});
-
 				});
 				p.getChildren().add(iv);
 			}
@@ -451,7 +484,7 @@ public class Inventory extends Pane {
 		Item4Slots[2].setLayoutY( (122 + 6) * gamepanel.getScalingFactorY());
 		Item4Slots[3].setLayoutY( (183 + 8) * gamepanel.getScalingFactorY());
 
-		System.out.println(currentDemonArray[currentDemonIndex].getItem4List()[3].toString());
+//		System.out.println(currentDemonArray[currentDemonIndex].getItem4List()[3].toString());
 
 		p2.setLayoutX(6 * gamepanel.getScalingFactorX());
 		p2.setLayoutY(6 * gamepanel.getScalingFactorY());
@@ -629,6 +662,7 @@ public class Inventory extends Pane {
 		} else if(item instanceof Use u1) {
 			int x = findFirstNull(useArray);
 			if(x != -1) useArray[x] = u1;
+			
 		} else if(item instanceof Key k1) {
 			int x = findFirstNull(keyArray);
 			if(x != -1) keyArray[x] = k1;
