@@ -431,7 +431,8 @@ public class GamePanel extends Pane {
 		npcs = tileM.getNPCSFromMap();
 		test = tileM.getMobsFromMap();
 		gamemenu.f11Scale();
-
+		if (gamemenu != null && gamemenu.getInventory().getCurrentDemon() != null && gamemenu.getInventory().getCurrentDemon().getDemon() != null)
+			npcs.add(gamemenu.getInventory().getCurrentDemon().getDemon());
 		//		ImageView iv = new ImageView(Text.getInstance()
 		//				.convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #",
 		//						48));
@@ -583,6 +584,9 @@ public class GamePanel extends Pane {
 			player.setPosition(new double[] {posi[0] * getScalingFactorX(), posi[1] * getScalingFactorY()});
 		}
 		player.setLayer(tileM.getPlayerLayer());
+
+		if (gamemenu != null && gamemenu.getInventory().getCurrentDemon() != null && gamemenu.getInventory().getCurrentDemon().getDemon() != null)
+			npcs.add(gamemenu.getInventory().getCurrentDemon().getDemon());
 
 		new Thread(() -> {
 			try {

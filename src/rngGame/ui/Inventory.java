@@ -11,7 +11,6 @@ import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 
 
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Inventory.
@@ -69,10 +68,10 @@ public class Inventory extends Pane {
 	private Pane status;
 
 	/** The dgc view. */
-	private ImageView hpView,atkView,resView,dgcView;
+	private ImageView hpView, atkView, resView, dgcView;
 
 	/** The lvl view. */
-	private ImageView expBar,expText,lvlView;
+	private ImageView expBar, expText, lvlView;
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -88,8 +87,6 @@ public class Inventory extends Pane {
 
 	/** The Item 4 slots. */
 	private final ImageView[] Item4Slots = new ImageView[4];
-
-
 
 	/** The potionbutton. */
 	private Button potionbutton;
@@ -113,16 +110,18 @@ public class Inventory extends Pane {
 	 * Instantiates a new inventory.
 	 *
 	 * @param gamepanel the gamepanel
-	 * @param tabm the tabm
+	 * @param tabm      the tabm
+	 *
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	public Inventory(GamePanel gamepanel, TabMenu tabm) throws FileNotFoundException {
-		this.gamepanel = gamepanel;
+		this.gamepanel	= gamepanel;
 		this.tabm		= tabm;
 		Input.getInstance().setKeyHandler("Demons", mod -> {
 			init();
 		}, KeyCode.M, false);
 		init();
+
 	}
 
 	/**
@@ -147,7 +146,10 @@ public class Inventory extends Pane {
 				k++;
 			}
 		}
-		for (int i = 0; i < Item4Slots.length; i++) if (currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null) Item4Slots[i].setImage(currentDemonArray[currentDemonIndex].getItem4List()[i].getImage(gamepanel));
+		for (int i = 0; i < Item4Slots.length; i++)
+			if (currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null)
+				Item4Slots[i].setImage(currentDemonArray[currentDemonIndex].getItem4List()[i].getImage(gamepanel));
+
 	}
 
 	/**
@@ -156,12 +158,14 @@ public class Inventory extends Pane {
 	public void endShow() {
 		setVisible(false);
 		setDisable(true);
+
 	}
 
 	/**
 	 * Find first null.
 	 *
 	 * @param itemArray the item array
+	 *
 	 * @return the int
 	 */
 	public int findFirstNull(Item[] itemArray) {
@@ -169,6 +173,13 @@ public class Inventory extends Pane {
 		return -1;
 
 	}
+
+	/**
+	 * Gets the current demon.
+	 *
+	 * @return the current demon
+	 */
+	public Demon getCurrentDemon() { return currentDemonArray[currentDemonIndex]; }
 
 	/**
 	 * Give item 2 monster.
@@ -190,21 +201,19 @@ public class Inventory extends Pane {
 			gearArray[idx]											= currentDemonArray[currentDemonIndex].getItem4List()[3];
 			currentDemonArray[currentDemonIndex].getItem4List()[3]	= g;
 		}
-		
+
 		int i = findFirstNull(gearArray);
-		
+
 		loop: while (i < gearArray.length) {
-			for (int j = i; j < gearArray.length; j++) {
-				if (gearArray[j] != null) {
-					gearArray[i] = gearArray[j];
-					gearArray[j] = null;
-					i = j;
-					continue loop;
-				}
+			for (int j = i; j < gearArray.length; j++) if (gearArray[j] != null) {
+				gearArray[i]	= gearArray[j];
+				gearArray[j]	= null;
+				i				= j;
+				continue loop;
 			}
-			break;
+			break loop;
 		}
-		
+
 		moveFromArrayToView();
 
 		Image hpText = Text.getInstance().convertText("HP:" + currentDemonArray[currentDemonIndex].getHp(), 48);
@@ -257,6 +266,7 @@ public class Inventory extends Pane {
 		nameView.setImage(nameText);
 		expText.setImage(expMaxText);
 		lvlView.setImage(lvlText);
+
 	}
 
 	/**
@@ -283,14 +293,14 @@ public class Inventory extends Pane {
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		currentDemonArray[currentDemonIndex] = m1;
 
-		//		Sword g1 = new Sword(Rarity.COMMON);
-		//		Harnish g2 = new Harnish(Rarity.COMMON);
-		//		Pants g3 = new Pants(Rarity.COMMON);
-		//		Helmet g4 = new Helmet(Rarity.COMMON);
-		//		giveItem2Monster(g1);
-		//		giveItem2Monster(g2);
-		//		giveItem2Monster(g3);
-		//		giveItem2Monster(g4);
+		// Sword g1 = new Sword(Rarity.COMMON);
+		// Harnish g2 = new Harnish(Rarity.COMMON);
+		// Pants g3 = new Pants(Rarity.COMMON);
+		// Helmet g4 = new Helmet(Rarity.COMMON);
+		// giveItem2Monster(g1);
+		// giveItem2Monster(g2);
+		// giveItem2Monster(g3);
+		// giveItem2Monster(g4);
 
 		/////////////
 
@@ -324,7 +334,8 @@ public class Inventory extends Pane {
 				(int) (nameText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (nameText.getHeight() * gamepanel.getScalingFactorY()));
 
-		Image expMaxText = Text.getInstance().convertText(currentDemonArray[currentDemonIndex].getCurrentExp() + ":" + currentDemonArray[currentDemonIndex].getMaxExp(), 32);
+		Image expMaxText = Text.getInstance()
+				.convertText(currentDemonArray[currentDemonIndex].getCurrentExp() + ":" + currentDemonArray[currentDemonIndex].getMaxExp(), 32);
 		expMaxText = ImgUtil.resizeImage(
 				expMaxText, (int) expMaxText.getWidth(), (int) expMaxText.getHeight(),
 				(int) (expMaxText.getWidth() * gamepanel.getScalingFactorX()),
@@ -336,49 +347,49 @@ public class Inventory extends Pane {
 				(int) (lvlText.getWidth() * gamepanel.getScalingFactorX()),
 				(int) (lvlText.getHeight() * gamepanel.getScalingFactorY()));
 
-		//Xbutton
-		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
-		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
+		// Xbutton
+		Image	ausX	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
+		Image	ausX2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
 		ausXb = new Button(ausX);
 
-		//backbutton
-		Image back1 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
-		Image back2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
+		// backbutton
+		Image	back1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
+		Image	back2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
 		backButton = new ImageView(back1);
 
-		//backbutton
-		Image apply1 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton1.png");
-		Image apply2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton2.png");
+		// backbutton
+		Image	apply1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton1.png");
+		Image	apply2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton2.png");
 		applyButton = new ImageView(apply1);
 
-		//PotionButtonFeld
-		Image potionButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
-		Image potionButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
+		// PotionButtonFeld
+		Image	potionButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
+		Image	potionButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
 		potionbutton = new Button(potionButton1);
 
-		//ArmorButtonFeld
-		Image armorButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
-		Image armorButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
+		// ArmorButtonFeld
+		Image	armorButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
+		Image	armorButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
 		armorbutton = new Button(armorButton2);
 
-		//UseButtonFeld
-		Image useButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
-		Image useButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
+		// UseButtonFeld
+		Image	useButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
+		Image	useButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
 		usebutton = new Button(useButton2);
 
-		//KeyButtonFeld
-		Image keyButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
-		Image keyButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
+		// KeyButtonFeld
+		Image	keyButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
+		Image	keyButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
 		keybutton = new Button(keyButton2);
 
-		//IdkButtonFeld
-		Image idkButton2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
-		Image idkButton1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
+		// IdkButtonFeld
+		Image	idkButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
+		Image	idkButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
 		idkbutton = new Button(idkButton2);
 
-		Pane p = new Pane();
-		Pane p2 = new Pane();
-		Pane itemStuff = new Pane();
+		Pane	p			= new Pane();
+		Pane	p2			= new Pane();
+		Pane	itemStuff	= new Pane();
 
 		p.setLayoutX(8 * gamepanel.getScalingFactorX());
 		p.setLayoutY(268 * gamepanel.getScalingFactorY());
@@ -390,7 +401,6 @@ public class Inventory extends Pane {
 				invSlots[i / 62][j / 62] = iv;
 				int _i = i;
 				int _j = j;
-
 
 				iv.setOnMousePressed(me -> {
 					itemOverlay.setLayoutX(_i * gamepanel.getScalingFactorX());
@@ -423,8 +433,7 @@ public class Inventory extends Pane {
 						case USE -> null;
 					};
 					if (itemTestArray[_j / 62 * 10 + _i / 62] instanceof Potion pp) {
-						ImageView hpView2,rarityView2;
-
+						ImageView hpView2, rarityView2;
 
 						Image itemhpText = Text.getInstance().convertText("HP:" + pp.getHp(), 48);
 						itemhpText = ImgUtil.resizeImage(
@@ -445,7 +454,6 @@ public class Inventory extends Pane {
 							itemStuff.setVisible(false);
 						});
 
-
 						hpView2 = new ImageView(itemhpText);
 
 						rarityView2 = new ImageView(itemRarityText);
@@ -455,13 +463,12 @@ public class Inventory extends Pane {
 						rarityView2.setLayoutX(25 * gamepanel.getScalingFactorX());
 						rarityView2.setLayoutY(16 * gamepanel.getScalingFactorY());
 
-
-						itemStuff.getChildren().addAll(hpView2,rarityView2);
+						itemStuff.getChildren().addAll(hpView2, rarityView2);
 
 					} else {
-						ImageView hpView2,atkView2,resView2,dgcView2,rarityView2;
+						ImageView hpView2, atkView2, resView2, dgcView2, rarityView2;
 
-						Gear g = (Gear) itemTestArray[_j/62*10+_i/62];
+						Gear g			= (Gear) itemTestArray[_j / 62 * 10 + _i / 62];
 						Image itemhpText = Text.getInstance().convertText("HP:" + g.getHp(), 48);
 						itemhpText = ImgUtil.resizeImage(
 								itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
@@ -474,7 +481,7 @@ public class Inventory extends Pane {
 								(int) (itematkText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itematkText.getHeight() * gamepanel.getScalingFactorY()));
 
-						Image itemresText = Text.getInstance().convertText(String.format("RES:%.2f%%", g.getRes())  , 48);
+						Image itemresText = Text.getInstance().convertText(String.format("RES:%.2f%%", g.getRes()), 48);
 						itemresText = ImgUtil.resizeImage(
 								itemresText, (int) itemresText.getWidth(), (int) itemresText.getHeight(),
 								(int) (itemresText.getWidth() * gamepanel.getScalingFactorX()),
@@ -492,8 +499,6 @@ public class Inventory extends Pane {
 								(int) (itemRarityText.getWidth() * gamepanel.getScalingFactorX()),
 								(int) (itemRarityText.getHeight() * gamepanel.getScalingFactorY()));
 
-
-
 						applyButton.setOnMouseReleased(me2 -> {
 							applyButton.setImage(apply1);
 							giveItem2Monster(_j / 62 * 10 + _i / 62);
@@ -502,7 +507,7 @@ public class Inventory extends Pane {
 							itemStuff.setVisible(false);
 						});
 
-						hpView2 = new ImageView(itemhpText);
+						hpView2	= new ImageView(itemhpText);
 						atkView2 = new ImageView(itematkText);
 						resView2 = new ImageView(itemresText);
 						dgcView2 = new ImageView(itemdgcText);
@@ -523,10 +528,8 @@ public class Inventory extends Pane {
 						dgcView2.setLayoutX(25 * gamepanel.getScalingFactorX());
 						dgcView2.setLayoutY( (16 + 192) * gamepanel.getScalingFactorY());
 
-
 						itemStuff.getChildren().addAll(hpView2, atkView2, resView2, dgcView2, rarityView2);
 					}
-
 
 					backButton.setOnMousePressed(me2 -> {
 						backButton.setImage(back2);
@@ -549,7 +552,7 @@ public class Inventory extends Pane {
 
 		for (int i = 0; i < Item4Slots.length; i++) {
 			ImageView iv = new ImageView();
-			if(currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null) {
+			if (currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null) {
 				Image iv2 = currentDemonArray[currentDemonIndex].getItem4List()[i].getImage(gamepanel);
 				iv.setImage(iv2);
 			}
@@ -561,11 +564,10 @@ public class Inventory extends Pane {
 		Item4Slots[2].setLayoutY( (122 + 6) * gamepanel.getScalingFactorY());
 		Item4Slots[3].setLayoutY( (183 + 8) * gamepanel.getScalingFactorY());
 
-		//		System.out.println(currentDemonArray[currentDemonIndex].getItem4List()[3].toString());
+		// System.out.println(currentDemonArray[currentDemonIndex].getItem4List()[3].toString());
 
 		p2.setLayoutX(6 * gamepanel.getScalingFactorX());
 		p2.setLayoutY(6 * gamepanel.getScalingFactorY());
-
 
 		getChildren().add(invBackround);
 
@@ -592,16 +594,16 @@ public class Inventory extends Pane {
 
 		getChildren().add(namePane);
 
-		hpView = new ImageView(hpText);
-		atkView = new ImageView(atkText);
-		resView = new ImageView(resText);
-		dgcView = new ImageView(dgcText);
-		lvlView = new ImageView(lvlText);
-		expText = new ImageView(expMaxText);
-		expBar = new ImageView(showXPbr());
+		hpView	= new ImageView(hpText);
+		atkView	= new ImageView(atkText);
+		resView	= new ImageView(resText);
+		dgcView	= new ImageView(dgcText);
+		lvlView	= new ImageView(lvlText);
+		expText	= new ImageView(expMaxText);
+		expBar	= new ImageView(showXPbr());
 
 		expBar.setLayoutX(-30 * gamepanel.getScalingFactorX());
-		//		expBar.setLayoutY(5*gamepanel.getScalingFactorY());
+		// expBar.setLayoutY(5*gamepanel.getScalingFactorY());
 		expText.setLayoutX(290 * gamepanel.getScalingFactorX());
 		expText.setLayoutY(17 * gamepanel.getScalingFactorY());
 
@@ -624,13 +626,12 @@ public class Inventory extends Pane {
 
 		getChildren().add(ausXb);
 
-		//TODO fix f11
+		// TODO fix f11
 
 		getChildren().addAll(potionbutton, armorbutton, usebutton, keybutton, idkbutton);
 
 		p.getChildren().add(itemOverlay);
 		itemOverlay.setVisible(false);
-
 
 		getChildren().addAll(p, p2);
 
@@ -638,14 +639,10 @@ public class Inventory extends Pane {
 		transp.setVisible(false);
 		itemSureBackround.setVisible(false);
 
-
 		itemStuff.setLayoutX(240 * gamepanel.getScalingFactorX());
 		itemStuff.setLayoutY(130 * gamepanel.getScalingFactorY());
 		itemStuff.setVisible(false);
 		setVisible(false);
-
-
-
 
 		ausXb.setOnMousePressed(me -> {
 			ausXb.setImage(ausX2);
@@ -654,7 +651,7 @@ public class Inventory extends Pane {
 		ausXb.setOnMouseReleased(me -> {
 			ausXb.setImage(ausX);
 			tabm.closeTabm(true);
-			new Thread(()->{
+			new Thread(() -> {
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
@@ -665,7 +662,6 @@ public class Inventory extends Pane {
 			}).start();
 
 		});
-
 
 		potionbutton.setOnMouseReleased(me -> {
 			potionbutton.setImage(potionButton1);
@@ -717,8 +713,6 @@ public class Inventory extends Pane {
 			moveFromArrayToView();
 		});
 
-		System.out.println(getChildren());
-
 	}
 
 	/**
@@ -737,29 +731,28 @@ public class Inventory extends Pane {
 		System.out.println(item);
 		if (item instanceof Potion p1) {
 			int x = findFirstNull(potionArray);
-			if(x != -1) potionArray[x] = p1;
+			if (x != -1) potionArray[x] = p1;
 
-		} else if(item instanceof Gear gear) {
+		} else if (item instanceof Gear gear) {
 			int x = findFirstNull(gearArray);
-			if(x != -1) gearArray[x] = gear;
+			if (x != -1) gearArray[x] = gear;
 
-		} else if(item instanceof Use u1) {
+		} else if (item instanceof Use u1) {
 			int x = findFirstNull(useArray);
-			if(x != -1) useArray[x] = u1;
+			if (x != -1) useArray[x] = u1;
 
-		} else if(item instanceof Key k1) {
+		} else if (item instanceof Key k1) {
 			int x = findFirstNull(keyArray);
-			if(x != -1) keyArray[x] = k1;
+			if (x != -1) keyArray[x] = k1;
 
 		} else System.err.println("UNEXPECTED TYPE OF ITEM ABTREIBUNG FEHLGESCHLAGEN!!!");
+
 	}
 
 	/**
 	 * Scale F 11.
 	 */
-	public void scaleF11() {
-		init();
-	}
+	public void scaleF11() { init(); }
 
 	/**
 	 * Show.
@@ -768,65 +761,69 @@ public class Inventory extends Pane {
 		moveFromArrayToView();
 		setVisible(true);
 		setDisable(false);
+
 	}
 
 	/**
 	 * Show elementbr.
 	 *
 	 * @param e the e
+	 *
 	 * @return the image
 	 */
 	public Image showElementbr(Element e) {
 		Image test = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png");
-		if(e == Element.Fire) {
+		if (e == Element.Fire) {
 			Image firebr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementFire.png");
 			test = firebr;
-		} else if(e == Element.Water) {
+		} else if (e == Element.Water) {
 			Image waterbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWater.png");
 			test = waterbr;
-		} else if(e == Element.Plant) {
+		} else if (e == Element.Plant) {
 			Image plantbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementPlant.png");
 			test = plantbr;
-		} else if(e == Element.Shadow) {
+		} else if (e == Element.Shadow) {
 			Image shadowbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementShadow.png");
 			test = shadowbr;
-		} else if(e == Element.Light) {
+		} else if (e == Element.Light) {
 			Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementLight.png");
 			test = lightbr;
-		} else if(e == Element.DimensionMaster) {
+		} else if (e == Element.DimensionMaster) {
 			Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementWorld_Ender.png");
 			test = lightbr;
-		}else {
+		} else {
 			Image voidbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/invElementVoid.png");
 			test = voidbr;
 		}
 		return test;
+
 	}
 
 	/**
 	 * Show element icon.
 	 *
 	 * @param e the e
+	 *
 	 * @return the image
 	 */
 	public Image showElementIcon(Element e) {
 		Image test = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconFire.png");
-		if(e == Element.Fire) {
+		if (e == Element.Fire) {
 			Image firebr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconFire.png");
 			test = firebr;
-		} else if(e == Element.Water) {
+		} else if (e == Element.Water) {
 			Image waterbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconWater.png");
 			test = waterbr;
-		} else if(e == Element.Plant) {
+		} else if (e == Element.Plant) {
 			Image plantbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconPlant.png");
 			test = plantbr;
-		} else if(e == Element.Shadow) {
+		} else if (e == Element.Shadow) {
 			Image shadowbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconShadow.png");
 			test = shadowbr;
-		} else if(e == Element.Light) {
+		} else if (e == Element.Light) {
 			Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconLight.png");
 			test = lightbr;
-		}else if(e == Element.DimensionMaster) {
+		} else if (e == Element.DimensionMaster) {
 			Image lightbr = ImgUtil.getScaledImage(gamepanel, "./res/gui/IconWorld_Ender.png");
 			test = lightbr;
 		} else {
@@ -834,8 +831,8 @@ public class Inventory extends Pane {
 			test = voidbr;
 		}
 		return test;
-	}
 
+	}
 
 	/**
 	 * Show X pbr.
@@ -843,33 +840,32 @@ public class Inventory extends Pane {
 	 * @return the image
 	 */
 	public Image showXPbr() {
-		int crExp = currentDemonArray[currentDemonIndex].getCurrentExp();
-		double _1prozent = currentDemonArray[currentDemonIndex].getMaxExp()/100.0;
-		Image test;
+		int		crExp		= currentDemonArray[currentDemonIndex].getCurrentExp();
+		double	_1prozent	= currentDemonArray[currentDemonIndex].getMaxExp() / 100.0;
+		Image	test;
 
-
-		if(crExp <= _1prozent*10) {
+		if (crExp <= _1prozent * 10) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar1.1.png");
 			test = img;
-		} else if(crExp <= _1prozent*20) {
+		} else if (crExp <= _1prozent * 20) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar1.2.png");
 			test = img;
-		} else if(crExp <= _1prozent*30) {
-			Image img = ImgUtil.getScaledImage(gamepanel,"./res/gui/XPBar1.3.png");
+		} else if (crExp <= _1prozent * 30) {
+			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar1.3.png");
 			test = img;
-		} else if(crExp <= _1prozent*40) {
+		} else if (crExp <= _1prozent * 40) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar2.1.png");
 			test = img;
-		} else if(crExp <= _1prozent*50) {
+		} else if (crExp <= _1prozent * 50) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar2.2.png");
 			test = img;
-		} else if(crExp <= _1prozent*60) {
+		} else if (crExp <= _1prozent * 60) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar2.3.png");
 			test = img;
-		} else if(crExp <= _1prozent*70) {
+		} else if (crExp <= _1prozent * 70) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar3.1.png");
 			test = img;
-		} else if(crExp <= _1prozent*80) {
+		} else if (crExp <= _1prozent * 80) {
 			Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/XPBar3.2.png");
 			test = img;
 		} else {
@@ -877,6 +873,7 @@ public class Inventory extends Pane {
 			test = img;
 		}
 		return test;
+
 	}
 
 }
