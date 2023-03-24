@@ -93,7 +93,7 @@ public class TreasureChest extends Building {
 		if (r <= 80) wahl = Rarity.COMMON; // 40%
 		else if (r <= 130) wahl = Rarity.UNCOMMON; // 25%
 		else if (r <= 160) wahl = Rarity.RARE; // 15%
-		else if (r <= 180) wahl = Rarity.VERYRARE; // 10%
+		else if (r <= 180) wahl = Rarity.VERY_RARE; // 10%
 		else if (r <= 192) wahl = Rarity.EPIC; // 6%
 		else if (r <= 197) wahl = Rarity.LEGENDARY; // 2,5%
 		else if (r <= 199) wahl = Rarity.GOD; // 1%
@@ -159,7 +159,7 @@ public class TreasureChest extends Building {
 			case COMMON -> common++;
 			case UNCOMMON -> uncommon++;
 			case RARE -> rare++;
-			case VERYRARE -> veryrare++;
+			case VERY_RARE -> veryrare++;
 			case EPIC -> epic++;
 			case LEGENDARY -> legendary++;
 			case GOD -> god++;

@@ -25,7 +25,7 @@ public class Potion extends Item{
 			case COMMON -> 8 + gen.nextInt(5); //10
 			case UNCOMMON -> 15 + gen.nextInt(11); //20
 			case RARE -> 35 + gen.nextInt(11); //40
-			case VERYRARE -> 40 + gen.nextInt(21); //50
+			case VERY_RARE -> 40 + gen.nextInt(21); //50
 			case EPIC -> 55 + gen.nextInt(31); //70
 			case LEGENDARY -> 75 + gen.nextInt(31); //90
 			case GOD ->	110 + gen.nextInt(41); //130

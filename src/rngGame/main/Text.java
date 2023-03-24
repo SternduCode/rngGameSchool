@@ -80,7 +80,7 @@ public class Text {
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x += (int) (20 / 32.0 * fontSize);
+		} else if (c == ' ') x += (int) (10 / 32.0 * fontSize);
 		else {
 			Image wi = ImgUtil.resizeImage(charmap.get(c), (int) charmap.get(c).getWidth(), 32,
 					(int) (charmap.get(c).getWidth() / 32.0 * fontSize), fontSize);

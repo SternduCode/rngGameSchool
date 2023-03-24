@@ -13,7 +13,7 @@ public enum Rarity {
 	/** The rare. */
 	RARE,
 	/** The veryrare. */
-	VERYRARE,
+	VERY_RARE,
 	/** The epic. */
 	EPIC,
 	/** The legendary. */
