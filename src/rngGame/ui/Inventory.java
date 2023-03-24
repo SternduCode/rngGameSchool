@@ -149,6 +149,7 @@ public class Inventory extends Pane {
 		for (int i = 0; i < Item4Slots.length; i++)
 			if (currentDemonArray[currentDemonIndex] != null && currentDemonArray[currentDemonIndex].getItem4List()[i] != null)
 				Item4Slots[i].setImage(currentDemonArray[currentDemonIndex].getItem4List()[i].getImage(gamepanel));
+			else Item4Slots[i].setImage(null);
 
 	}
 
