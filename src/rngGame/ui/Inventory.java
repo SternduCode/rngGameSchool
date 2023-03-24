@@ -294,10 +294,10 @@ public class Inventory extends Pane {
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		currentDemonArray[currentDemonIndex] = m1;
 
-		 Sword g1 = new Sword(Rarity.VOID);
-		 Harnish g2 = new Harnish(Rarity.VOID);
-		 Pants g3 = new Pants(Rarity.VOID);
-		 Helmet g4 = new Helmet(Rarity.VOID);
+		Sword g1 = new Sword(Rarity.VOID);
+		Harnish g2 = new Harnish(Rarity.VOID);
+		Pants g3 = new Pants(Rarity.VOID);
+		Helmet g4 = new Helmet(Rarity.VOID);
 		// giveItem2Monster(g1);
 		// giveItem2Monster(g2);
 		// giveItem2Monster(g3);
@@ -361,7 +361,7 @@ public class Inventory extends Pane {
 		Image	back1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
 		Image	back2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
 		backButton = new ImageView(back1);
-		
+
 		Image	remove1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Removeb1.png");
 		Image	remove2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Removeb2.png");
 		removeButton = new ImageView(remove1);
@@ -571,7 +571,7 @@ public class Inventory extends Pane {
 				itemOverlay.setLayoutY(iv.getLayoutY()+6 * gamepanel.getScalingFactorY());
 				itemOverlay.setVisible(true);
 			});
-			
+
 			iv.setOnMouseReleased(me -> {
 				ImageView itemShowcase = new ImageView(iv.getImage());
 
@@ -581,18 +581,18 @@ public class Inventory extends Pane {
 				backButton.setLayoutY( (125 + 64) * gamepanel.getScalingFactorY());
 				removeButton.setLayoutX(302 * gamepanel.getScalingFactorX());
 				removeButton.setLayoutY(125 * gamepanel.getScalingFactorY());
-				
+
 				itemStuff.getChildren().clear();
 				itemStuff.getChildren().add(itemShowcase);
 				itemStuff.getChildren().addAll(backButton,removeButton);
 				transp.setVisible(true);
 				itemSureBackround.setVisible(true);
 				itemStuff.setVisible(true);
-				
-				
+
+
 				ImageView hpView2, atkView2, resView2, dgcView2, rarityView2;
 
-				Gear g	= (Gear) currentDemonArray[currentDemonIndex].getItem4List()[_i];
+				Gear g	= currentDemonArray[currentDemonIndex].getItem4List()[_i];
 				Image itemhpText = Text.getInstance().convertText("HP:" + g.getHp(), 48);
 				itemhpText = ImgUtil.resizeImage(
 						itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
@@ -645,38 +645,92 @@ public class Inventory extends Pane {
 				dgcView2.setLayoutY( (16 + 192) * gamepanel.getScalingFactorY());
 
 				itemStuff.getChildren().addAll(hpView2, atkView2, resView2, dgcView2, rarityView2);
-			
 
-			backButton.setOnMousePressed(me2 -> {
-				backButton.setImage(back2);
+
+				backButton.setOnMousePressed(me2 -> {
+					backButton.setImage(back2);
+				});
+
+				backButton.setOnMouseReleased(me2 -> {
+					backButton.setImage(back1);
+					transp.setVisible(false);
+					itemSureBackround.setVisible(false);
+					itemStuff.setVisible(false);
+				});
+
+				removeButton.setOnMousePressed(me2 -> {
+					removeButton.setImage(remove2);
+				});
+
+				removeButton.setOnMouseReleased(me2 -> {
+					removeButton.setImage(remove1);
+					int z = findFirstNull(gearArray);
+					if(z != -1) {
+						gearArray[z] = currentDemonArray[currentDemonIndex].getItem4List()[_i];
+						currentDemonArray[currentDemonIndex].getItem4List()[_i] = null;
+						moveFromArrayToView();
+						Image hpText1 = Text.getInstance().convertText("HP:" + currentDemonArray[currentDemonIndex].getHp(), 48);
+						hpText1 = ImgUtil.resizeImage(
+								hpText1, (int) hpText1.getWidth(), (int) hpText1.getHeight(),
+								(int) (hpText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (hpText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image atkText1 = Text.getInstance().convertText("ATK:" + currentDemonArray[currentDemonIndex].getAtk(), 48);
+						atkText1 = ImgUtil.resizeImage(
+								atkText1, (int) atkText1.getWidth(), (int) atkText1.getHeight(),
+								(int) (atkText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (atkText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image resText1 = Text.getInstance().convertText(String.format("RES:%.2f%%", currentDemonArray[currentDemonIndex].getRes()),
+								48);
+						resText1 = ImgUtil.resizeImage(
+								resText1, (int) resText1.getWidth(), (int) resText1.getHeight(),
+								(int) (resText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (resText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image dgcText1 = Text.getInstance().convertText(String.format("DGC:%.2f%%", currentDemonArray[currentDemonIndex].getDgc()),
+								48);
+						dgcText1 = ImgUtil.resizeImage(
+								dgcText1, (int) dgcText1.getWidth(), (int) dgcText1.getHeight(),
+								(int) (dgcText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (dgcText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image nameText1 = Text.getInstance().convertText("" + currentDemonArray[currentDemonIndex].getMobName(), 48);
+						nameText1 = ImgUtil.resizeImage(
+								nameText1, (int) nameText1.getWidth(), (int) nameText1.getHeight(),
+								(int) (nameText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (nameText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image expMaxText1 = Text.getInstance()
+								.convertText(
+										currentDemonArray[currentDemonIndex].getCurrentExp() + ":" + currentDemonArray[currentDemonIndex].getMaxExp(),
+										32);
+						expMaxText1 = ImgUtil.resizeImage(
+								expMaxText1, (int) expMaxText1.getWidth(), (int) expMaxText1.getHeight(),
+								(int) (expMaxText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (expMaxText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						Image lvlText1 = Text.getInstance().convertText("lvl:" + currentDemonArray[currentDemonIndex].getLvl(), 48);
+						lvlText1 = ImgUtil.resizeImage(
+								lvlText1, (int) lvlText1.getWidth(), (int) lvlText1.getHeight(),
+								(int) (lvlText1.getWidth() * gamepanel.getScalingFactorX()),
+								(int) (lvlText1.getHeight() * gamepanel.getScalingFactorY()));
+
+						hpView.setImage(hpText1);
+						atkView.setImage(atkText1);
+						resView.setImage(resText1);
+						dgcView.setImage(dgcText1);
+						nameView.setImage(nameText1);
+						expText.setImage(expMaxText1);
+						lvlView.setImage(lvlText1);
+					}
+					transp.setVisible(false);
+					itemSureBackround.setVisible(false);
+					itemStuff.setVisible(false);
+				});
+
 			});
 
-			backButton.setOnMouseReleased(me2 -> {
-				backButton.setImage(back1);
-				transp.setVisible(false);
-				itemSureBackround.setVisible(false);
-				itemStuff.setVisible(false);
-			});
-			
-			removeButton.setOnMousePressed(me2 -> {
-				removeButton.setImage(remove2);
-			});
-			
-			removeButton.setOnMouseReleased(me2 -> {
-				removeButton.setImage(remove1);
-				int z = findFirstNull(gearArray);
-				if(z != -1) {
-					gearArray[z] = currentDemonArray[currentDemonIndex].getItem4List()[_i];
-					currentDemonArray[currentDemonIndex].getItem4List()[_i] = null;
-					moveFromArrayToView();
-				}
-				transp.setVisible(false);
-				itemSureBackround.setVisible(false);
-				itemStuff.setVisible(false);
-			});
-			
-			});
-			
 			p2.getChildren().add(iv);
 		}
 
@@ -686,9 +740,9 @@ public class Inventory extends Pane {
 
 		// System.out.println(currentDemonArray[currentDemonIndex].getItem4List()[3].toString());
 
-		
-		
-		
+
+
+
 		p2.setLayoutX(6 * gamepanel.getScalingFactorX());
 		p2.setLayoutY(6 * gamepanel.getScalingFactorY());
 
