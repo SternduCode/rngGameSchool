@@ -16,7 +16,7 @@ public class Sword extends Gear{
 			case COMMON -> 2 + gen.nextInt(3); 							// 2-4
 			case UNCOMMON -> 3 + gen.nextInt(3);						// 3-5
 			case RARE -> 5 + gen.nextInt(3);							// 5-7
-			case VERYRARE -> 7 + gen.nextInt(4); 						// 7-10
+			case VERY_RARE -> 7 + gen.nextInt(4); 						// 7-10
 			case EPIC -> 9 + gen.nextInt(4); 							// 9-12
 			case LEGENDARY -> 11 + gen.nextInt(4);						// 11-14
 			case GOD ->	13 + gen.nextInt(4);							// 13-16

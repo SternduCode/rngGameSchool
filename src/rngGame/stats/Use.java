@@ -23,7 +23,7 @@ public class Use extends Item{
 			case COMMON -> 10;
 			case UNCOMMON -> 20;
 			case RARE -> 40;
-			case VERYRARE -> 50;
+			case VERY_RARE -> 50;
 			case EPIC -> 70;
 			case LEGENDARY -> 90;
 			case GOD ->	130;

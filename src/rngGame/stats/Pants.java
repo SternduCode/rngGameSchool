@@ -17,7 +17,7 @@ public class Pants extends Gear{
 			case COMMON -> 3 + gen.nextInt(5); //5
 			case UNCOMMON -> 5 + gen.nextInt(5);	//7
 			case RARE -> 7 + gen.nextInt(5);	//9
-			case VERYRARE -> 9 + gen.nextInt(5); //11
+			case VERY_RARE -> 9 + gen.nextInt(5); //11
 			case EPIC -> 12 + gen.nextInt(5); //14
 			case LEGENDARY -> 15 + gen.nextInt(5); //17
 			case GOD ->	18 + gen.nextInt(5); //20
@@ -28,7 +28,7 @@ public class Pants extends Gear{
 			case COMMON -> 0.01;
 			case UNCOMMON -> 0.0125;
 			case RARE -> 0.015;
-			case VERYRARE -> 0.0175;
+			case VERY_RARE -> 0.0175;
 			case EPIC -> 0.02;
 			case LEGENDARY -> 0.025;
 			case GOD ->	0.0275;
@@ -39,7 +39,7 @@ public class Pants extends Gear{
 			case COMMON -> 0.010;
 			case UNCOMMON -> 0.0150;
 			case RARE -> 0.0175;
-			case VERYRARE -> 0.020;
+			case VERY_RARE -> 0.020;
 			case EPIC -> 0.025;
 			case LEGENDARY -> 0.0275;
 			case GOD ->	0.030;
