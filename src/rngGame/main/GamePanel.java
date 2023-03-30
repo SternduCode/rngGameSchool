@@ -203,7 +203,11 @@ public class GamePanel extends Pane {
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
 
+	private Pane bubble;
 
+	public Pane getBubble() {
+		return bubble;
+	}
 
 	/** The aktionbutton. */
 	private final AktionButton aktionbutton;
@@ -212,7 +216,7 @@ public class GamePanel extends Pane {
 	private MediaPlayer mp;
 
 	/** The overlay. */
-	private final ImageView overlay;
+	private final ImageView overlay, bubbleText;
 
 	/**
 	 * Instantiates a new game panel.
@@ -253,12 +257,19 @@ public class GamePanel extends Pane {
 		fpsLabel.setDisable(true);
 		fpsLabel.setVisible(false);
 
+		bubble = new Pane();
+		bubbleText = new ImageView();
+
 		aktionbutton = new AktionButton(this);
 
 		setMap("./res/maps/lavaMap2.json");
 		gamemenu = new TabMenu(this);
 
-		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, gamemenu, fpsLabel, loadingScreen);
+		getChildren().addAll(tileM, layerGroup, overlay, pointGroup, selectTool, aktionbutton, bubble, bubbleText, gamemenu, fpsLabel, loadingScreen);
+	}
+
+	public ImageView getBubbleText() {
+		return bubbleText;
 	}
 
 	/**
