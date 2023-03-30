@@ -47,14 +47,14 @@ public class Text {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
 		int length = 0;
 		for (String line: text.split("\n")) length = Math.max(length, line.length());
-		WritableImage im = new WritableImage(length * 32, lines * 32);
+		WritableImage	im		= new WritableImage(length * 12, lines * 32);
 		PixelWriter pw = im.getPixelWriter();
 		char[] chars = text.toCharArray();
 		int x = 0, y = 0;
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x += 20;
+		} else if (c == ' ') x += 12;
 		else {
 			pw.setPixels(x, y * 32, (int) charmap.get(c).getWidth(), 32, charmap.get(c).getPixelReader(), 0, 0);
 			x += charmap.get(c).getWidth();
@@ -73,14 +73,14 @@ public class Text {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
 		int length = 0;
 		for (String line: text.split("\n")) length = Math.max(length, line.length());
-		WritableImage im = new WritableImage(length * (int) (20 / 32.0 * fontSize), lines * fontSize);
+		WritableImage	im		= new WritableImage(length * (int) (12 / 32.0 * fontSize), lines * fontSize);
 		PixelWriter pw = im.getPixelWriter();
 		char[] chars = text.toCharArray();
 		int x = 0, y = 0;
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x += (int) (10 / 32.0 * fontSize);
+		} else if (c == ' ') x += (int) (12 / 32.0 * fontSize);
 		else {
 			Image wi = ImgUtil.resizeImage(charmap.get(c), (int) charmap.get(c).getWidth(), 32,
 					(int) (charmap.get(c).getWidth() / 32.0 * fontSize), fontSize);
