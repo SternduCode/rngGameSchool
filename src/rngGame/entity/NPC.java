@@ -8,12 +8,16 @@ import java.io.*;
 import com.sterndu.json.*;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.scene.image.*;
 import rngGame.main.*;
+import rngGame.tile.ImgUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -117,7 +121,7 @@ public class NPC extends Entity implements JsonValue {
 			gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
 				try {
                     gp2.setBlockUserInputs(true);
-                	Image img = new Image(new FileInputStream(new File("./res/gui/bubble/SpeakBubble2.png")));
+                	Image img = ImgUtil.getScaledImage(gp2, "./res/gui/bubble/SpeakBubble2.png");
                     gamepanel.getBubble().getChildren().add(new ImageView(img));
                     Random r = new Random();
                     BufferedReader flr = new BufferedReader(new FileReader(new File("./res/texts/Guenther.txt")));
@@ -140,9 +144,10 @@ public class NPC extends Entity implements JsonValue {
                     } catch (IOException e) {
                         e.printStackTrace();
                 	}
-                    gp2.getBubbleText().setImage(Text.getInstance().convertText(line));
-                    gp2.getBubbleText().setLayoutX((gp2.SpielLaenge/10));
+                    gp2.getBubbleText().setImage(Text.getInstance().convertText(line.replace("<<", "\n"),64));
+                    gp2.getBubbleText().setLayoutX((gp2.SpielLaenge/2)-(gp2.getBubbleText().getImage().getWidth()/2));
                     gp2.getBubbleText().setLayoutY((gp2.SpielHoehe/1.4)-(gp2.getBubbleText().getImage().getHeight()/2.0));
+             
                     System.out.println(gp2.getBubbleText().getImage().getWidth());
                     System.out.println(line);
                     System.out.println(uff);                    

@@ -12,7 +12,6 @@ module rngGame {
 
 	requires javafx.swing;
 	requires transitive java.desktop;
-	requires jdk.zipfs;
 	requires java.xml;
 	requires javafx.media;
 	
