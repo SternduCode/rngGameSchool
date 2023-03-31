@@ -184,7 +184,6 @@ public class MobRan extends NPC {
 
 
 
-
 		try {
 			Path p2	= new File(pnG).toPath();
 			Image img = new Image(new FileInputStream(p2.toFile()));
