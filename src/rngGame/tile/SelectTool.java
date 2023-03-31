@@ -2,7 +2,9 @@ package rngGame.tile;
 
 import java.io.*;
 import java.util.*;
+
 import com.sterndu.json.*;
+
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -12,23 +14,46 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import rngGame.main.GamePanel;
 import rngGame.ui.PartialFillDialog;
+import rngGame.visual.GamePanel;
 
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SelectTool.
+ */
 public class SelectTool extends Rectangle {
 
+	/** The dragging. */
 	private boolean dragging = false;
+
+	/** The gp. */
 	private final GamePanel gp;
 
+	/** The y. */
 	private int x, y;
+
+	/** The partial fill. */
 	private Menu select, fill, partialFill;
+
+	/** The save as map. */
 	private MenuItem copy, saveAsMap;
 
+	/**
+	 * Instantiates a new select tool.
+	 *
+	 * @param gp the gp
+	 */
 	public SelectTool(GamePanel gp) {
 		this.gp = gp;
 		init();
 	}
 
+	/**
+	 * Handle context menu.
+	 *
+	 * @param e the e
+	 */
 	private void handleContextMenu(ActionEvent e) {
 		System.out.println(e);
 		if (((MenuItem) e.getSource()).getParentMenu() == partialFill) {// tileM.getTileAt(globalx, globaly);
@@ -40,16 +65,16 @@ public class SelectTool extends Rectangle {
 				Boolean[] matrix = pfd.getMatrix();
 				System.out.println(Arrays.toString(matrix));
 				int matrixIdx = 0;
-				for (int i = 0; i < getHeight(); i += gp.BgY) for (int j = 0; j < getWidth(); j += gp.BgX, matrixIdx++)
-					if (matrix[matrixIdx]) gp.getTileM().getTileAt(x + j, y + i)
+				for (int i = 0; i < getHeight(); i += gp.getBlockSizeY()) for (int j = 0; j < getWidth(); j += gp.getBlockSizeX(), matrixIdx++)
+					if (matrix[matrixIdx]) gp.getTileManager().getTileAt(x + j, y + i)
 					.setTile(((MenuItemWTile) e.getSource()).getTile());
 			}
-		} else if (((MenuItem) e.getSource()).getParentMenu() == fill) for (int i = 0; i < getWidth(); i += gp.BgX)
-			for (int j = 0; j < getHeight(); j += gp.BgY) gp.getTileM().getTileAt(x + i,
+		} else if ( ((MenuItem) e.getSource()).getParentMenu() == fill) for (int i = 0; i < getWidth(); i += gp.getBlockSizeX())
+			for (int j = 0; j < getHeight(); j += gp.getBlockSizeY()) gp.getTileManager().getTileAt(x + i,
 					y + j)
 			.setTile(((MenuItemWTile) e.getSource()).getTile());
 		else if (e.getSource()==saveAsMap) {
-			List<List<TextureHolder>> map = gp.getTileM().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			List<List<TextureHolder>>	map	= gp.getTileManager().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
 			FileChooser fc = new FileChooser();
 			fc.setInitialDirectory(new File("./res/maps"));
 			fc.getExtensionFilters().add(new ExtensionFilter("A file containing a Map", "*.json"));
@@ -64,9 +89,9 @@ public class SelectTool extends Rectangle {
 				file.put("map", mapO);
 				JsonArray startingPosition = new JsonArray(Arrays.asList(48, 48));
 				mapO.put("startingPosition", startingPosition);
-				mapO.put("dir", gp.getTileM().getDir());
-				if (gp.getTileM().getBackgroundPath() != null)
-					mapO.put("background", gp.getTileM().getBackgroundPath());
+				mapO.put("dir", gp.getTileManager().getDir());
+				if (gp.getTileManager().getBackgroundPath() != null)
+					mapO.put("background", gp.getTileManager().getBackgroundPath());
 				JsonArray textures = new JsonArray();
 				mapO.put("textures", textures);
 				JsonArray matrix = new JsonArray();
@@ -91,11 +116,15 @@ public class SelectTool extends Rectangle {
 				}
 			}
 		} else if (e.getSource()==copy) {
-			List<List<TextureHolder>> map = gp.getTileM().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			List<List<TextureHolder>> map = gp.getTileManager().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			System.out.println(map);
 		}
 		//TODO add copy
 	}
 
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 		setStroke(Color.color(1, 1, 1, .75));
 		setFill(Color.TRANSPARENT);
@@ -112,9 +141,14 @@ public class SelectTool extends Rectangle {
 		select.getItems().addAll(fill, partialFill);
 	}
 
+	/**
+	 * Do drag.
+	 *
+	 * @param me the me
+	 */
 	public void doDrag(MouseEvent me) {
 		if (dragging) {
-			Node node = gp.getTileM().getTileAt(me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
+			Node node = gp.getTileManager().getTileAt(me.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
 					me.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY());
 			if (node instanceof TextureHolder t) {
 				setWidth(t.getLayoutX() + t.getWidth() - getLayoutX());
@@ -124,29 +158,37 @@ public class SelectTool extends Rectangle {
 		}
 	}
 
+	/**
+	 * Draw outlines.
+	 *
+	 * @param me the me
+	 */
 	public void drawOutlines(MouseEvent me) {
-		setWidth(gp.BgX);
-		setHeight(gp.BgY);
-		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().getScreenX()) / gp.BgX,
-				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().getScreenY()) / gp.BgY;
+		setWidth(gp.getBlockSizeX());
+		setHeight(gp.getBlockSizeY());
+		double xPos = (me.getSceneX() + gp.getPlayer().getX() - gp.getPlayer().getScreenX()) / gp.getBlockSizeX(),
+				yPos = (me.getSceneY() + gp.getPlayer().getY() - gp.getPlayer().getScreenY()) / gp.getBlockSizeY();
 		if (xPos < 0) xPos -= 1;
 		if (yPos < 0) yPos -= 1;
-		x = (int) xPos * gp.BgX;
-		y = (int) yPos * gp.BgY;
+		x	= (int) xPos * gp.getBlockSizeX();
+		y	= (int) yPos * gp.getBlockSizeY();
 		setVisible(true);
 	}
 
+	/**
+	 * End drag.
+	 */
 	public void endDrag() {
 		dragging = false;
-		if (getWidth()<=gp.BgX && getHeight()<=gp.BgY) return;//Make dragging not drag if only short drag
-		ContextMenu cm = gp.getTileM().getCM();
+		if (getWidth() <= gp.getBlockSizeX() && getHeight() <= gp.getBlockSizeY()) return;// Make dragging not drag if only short drag
+		ContextMenu cm = gp.getTileManager().getCM();
 		cm.getItems().clear();
 		cm.getItems().add(select);
 		cm.getItems().add(copy);
 		cm.getItems().add(saveAsMap);
 		fill.getItems().clear();
 		partialFill.getItems().clear();
-		for (Tile t: gp.getTileM().getTiles()) {
+		for (Tile t : gp.getTileManager().getTiles()) {
 			MenuItemWTile menuitem = new MenuItemWTile(t.name,
 					new ImageView(ImgUtil.resizeImage(t.images.get(0),
 							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
@@ -166,33 +208,49 @@ public class SelectTool extends Rectangle {
 
 	}
 
+	/**
+	 * Checks if is dragging.
+	 *
+	 * @return true, if is dragging
+	 */
 	public boolean isDragging() { return dragging; }
 
+	/**
+	 * Start drag.
+	 *
+	 * @param me the me
+	 */
 	public void startDrag(MouseEvent me) {
 		dragging = true;
 		drawOutlines(me);
 	}
 
+	/**
+	 * Undraw outlines.
+	 */
 	public void undrawOutlines() {
-		if (!gp.getTileM().getCM().isShowing()
-				|| gp.getTileM().getCM().getAnchorX() != getLayoutX() + getScene().getWindow().getX()
-				|| gp.getTileM().getCM().getAnchorY() != getLayoutY() + getScene().getWindow().getY())
+		if (!gp.getTileManager().getCM().isShowing()
+				|| gp.getTileManager().getCM().getAnchorX() != getLayoutX() + getScene().getWindow().getX()
+				|| gp.getTileManager().getCM().getAnchorY() != getLayoutY() + getScene().getWindow().getY())
 			setVisible(false);
 	}
 
+	/**
+	 * Update.
+	 */
 	public void update() {
 		boolean moveCm = false;
-		if (gp.getTileM().getCM().isShowing()
-				&& gp.getTileM().getCM().getAnchorX() == getLayoutX() + getScene().getWindow().getX()
-				&& gp.getTileM().getCM().getAnchorY() == getLayoutY() + getScene().getWindow().getY())
+		if (gp.getTileManager().getCM().isShowing()
+				&& gp.getTileManager().getCM().getAnchorX() == getLayoutX() + getScene().getWindow().getX()
+				&& gp.getTileManager().getCM().getAnchorY() == getLayoutY() + getScene().getWindow().getY())
 			moveCm = true;
 		double screenX = x - gp.getPlayer().getX() + gp.getPlayer().getScreenX();
 		double screenY = y - gp.getPlayer().getY() + gp.getPlayer().getScreenY();
 		setLayoutX(screenX);
 		setLayoutY(screenY);
 		if (moveCm) {
-			gp.getTileM().getCM().setAnchorX(screenX + getScene().getWindow().getX());
-			gp.getTileM().getCM().setAnchorY(screenY + getScene().getWindow().getY());
+			gp.getTileManager().getCM().setAnchorX(screenX + getScene().getWindow().getX());
+			gp.getTileManager().getCM().setAnchorY(screenY + getScene().getWindow().getY());
 		}
 	}
 }

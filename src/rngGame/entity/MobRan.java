@@ -12,9 +12,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
-import rngGame.main.GamePanel;
 import rngGame.stats.*;
 import rngGame.tile.TextureHolder;
+import rngGame.visual.GamePanel;
 
 
 // TODO: Auto-generated Javadoc
@@ -115,7 +115,7 @@ public class MobRan extends NPC {
 			Demon demonMob = MobGen();
 			System.out.println(demonMob);
 			if (demonMob != null) {
-				gpt.getMobRans().remove(MobRan.this);
+				gpt.getLgp().getMobRans().remove(MobRan.this);
 				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
 			}
 		});
@@ -214,11 +214,12 @@ public class MobRan extends NPC {
 			originalSize.add(new DoubleValue(img.getHeight()));
 			joB.put("originalSize", originalSize);
 
-			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileM().getNPCSFromMap(), gamepanel.getTileM().getCM(), gamepanel.getTileM().getRequestorN());
+			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
+					gamepanel.getTileManager().getRequestorN());
 			mnpc.setFixToScreen(true);
-			mnpc.setLayoutX(gamepanel.SpielLaenge/4);
-			mnpc.setLayoutY(gamepanel.SpielHoehe/4);
-			gamepanel.getNpcs().add(mnpc);
+			mnpc.setLayoutX(gamepanel.getGameWidth() / 4);
+			mnpc.setLayoutY(gamepanel.getGameHeight() / 4);
+			gamepanel.getLgp().getNpcs().add(mnpc);
 
 			return new Demon(wahl, mobName, mnpc);
 		} catch (FileNotFoundException e) {
@@ -258,10 +259,10 @@ public class MobRan extends NPC {
 		Player	p	= sp.getPlayer();
 		double	x	= p.getX() + p.getColliBoxX(), y = p.getY() + p.getColliBoxY() / 2;
 
-		int	tileX	= (int) Math.round(x / sp.BgX);
-		int	tileY	= (int) Math.round(y / sp.BgY);
+		int	tileX	= (int) Math.round(x / sp.getBlockSizeX());
+		int	tileY	= (int) Math.round(y / sp.getBlockSizeY());
 
-		List<List<TextureHolder>> map = sp.getTileM().getMap();
+		List<List<TextureHolder>> map = sp.getTileManager().getMap();
 		if (map.size() > 0) {
 
 			Stream<PathElement> stream = Stream.of(new PathElement(tileX, tileY, 0));
@@ -316,8 +317,8 @@ public class MobRan extends NPC {
 
 			// System.out.println(pels);
 
-			int mobX = (int) Math.round(MobRan.this.x / sp.BgX),
-					mobY = (int) Math.round(MobRan.this.y / sp.BgY);
+			int mobX = (int) Math.round(MobRan.this.x / sp.getBlockSizeX()),
+					mobY = (int) Math.round(MobRan.this.y / sp.getBlockSizeY());
 
 			// System.out.println(mobX + " " + mobY + " "
 			// + mobX * sp.BgX + " " + mobY * sp.BgY);
@@ -327,7 +328,9 @@ public class MobRan extends NPC {
 			// System.out.println(pel);
 			if (pel.size() > 0) {
 				PathElement pe = pel.get(0);
-				return new Double[] {(double) pe.x() * sp.BgX, (double) pe.y() * sp.BgY};
+				return new Double[] {
+						(double) pe.x() * sp.getBlockSizeX(), (double) pe.y() * sp.getBlockSizeY()
+				};
 			}
 		}
 		return null;

@@ -22,6 +22,7 @@ import rngGame.buildings.*;
 import rngGame.entity.*;
 import rngGame.main.*;
 import rngGame.main.UndoRedo.UndoRedoActionBase;
+import rngGame.visual.GamePanel;
 
 
 // TODO: Auto-generated Javadoc
@@ -49,8 +50,8 @@ public class TileManager extends Pane {
 				}
 
 			}, null, x, y, null, null, 0, 0);
-			setWidth(gp.BgX);
-			setHeight(gp.BgY);
+			setWidth(gp.getBlockSizeX());
+			setHeight(gp.getBlockSizeY());
 
 		}
 
@@ -182,7 +183,7 @@ public class TileManager extends Pane {
 		mextra		= new Menu("Extras");
 		mmobs		= new Menu("Mob Test");
 		MenuItem save = new MenuItem("save");
-		save.setOnAction(ae -> gp.saveMap());
+		save.setOnAction(ae -> gp.getLgp().saveMap());
 		mextra.getItems().add(save);
 
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
@@ -208,7 +209,7 @@ public class TileManager extends Pane {
 				requester.set(new FakeTextureHolder(e.getSceneX() - gp.getPlayer().getScreenX() + gp.getPlayer().getX(),
 						e.getSceneY() - gp.getPlayer().getScreenY() + gp.getPlayer().getY()));
 				cm.getItems().clear();
-				cm.getItems().addAll(gp.getTileM().getMenus());
+				cm.getItems().addAll(gp.getTileManager().getMenus());
 				cm.show(this, e.getScreenX(), e.getScreenY());
 			}
 		});
@@ -239,7 +240,7 @@ public class TileManager extends Pane {
 
 		List<TextureHolder>	ths	= new ArrayList<>();
 
-		int x = (int) collidable.getX() / gp.BgX, y = (int) collidable.getY() / gp.BgY;
+		int x = (int) collidable.getX() / gp.getBlockSizeX(), y = (int) collidable.getY() / gp.getBlockSizeY();
 
 		for (int i = -2; i < 3; i++) for (int j = -2; j < 3; j++)
 			if (x + i >= 0 && y + j >= 0 && y + j < map.size() && x + i < map.get(y + j).size()) ths.add(map.get(y + j).get(x + i));
@@ -582,25 +583,25 @@ public class TileManager extends Pane {
 		for (File f : new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
-			map.setOnAction(ae -> gp.setMap("./res/maps/" + map.getText() + ".json"));
+			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/" + map.getText() + ".json"));
 			maps.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_k").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
-			map.setOnAction(ae -> gp.setMap("./res/maps/insel_k/" + map.getText() + ".json"));
+			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_k/" + map.getText() + ".json"));
 			insel_k.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_m").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
-			map.setOnAction(ae -> gp.setMap("./res/maps/insel_m/" + map.getText() + ".json"));
+			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_m/" + map.getText() + ".json"));
 			insel_m.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_g").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
-			map.setOnAction(ae -> gp.setMap("./res/maps/insel_g/" + map.getText() + ".json"));
+			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_g/" + map.getText() + ".json"));
 			insel_g.getItems().add(map);
 		}
 		return new Menu[] {
@@ -660,10 +661,10 @@ public class TileManager extends Pane {
 	 */
 	public List<List<TextureHolder>> getPartOfMap(double x, double y, double width, double height) {
 		int lx, ly, w, h;
-		lx	= (int) Math.floor( (x - gp.getPlayer().getScreenX() + gp.getPlayer().getX()) / gp.BgX);
-		ly	= (int) Math.floor( (y - gp.getPlayer().getScreenY() + gp.getPlayer().getY()) / gp.BgY);
-		w	= (int) Math.floor(width / gp.BgX);
-		h	= (int) Math.floor(height / gp.BgY);
+		lx	= (int) Math.floor( (x - gp.getPlayer().getScreenX() + gp.getPlayer().getX()) / gp.getBlockSizeX());
+		ly	= (int) Math.floor( (y - gp.getPlayer().getScreenY() + gp.getPlayer().getY()) / gp.getBlockSizeY());
+		w	= (int) Math.floor(width / gp.getBlockSizeX());
+		h	= (int) Math.floor(height / gp.getBlockSizeY());
 
 		List<List<TextureHolder>> li = new ArrayList<>();
 
@@ -726,15 +727,15 @@ public class TileManager extends Pane {
 	 * @return the tile at x and y
 	 */
 	public TextureHolder getTileAt(double x, double y) {
-		int	tx	= (int) Math.floor(x / gp.BgX);
-		int	ty	= (int) Math.floor(y / gp.BgY);
+		int	tx	= (int) Math.floor(x / gp.getBlockSizeX());
+		int	ty	= (int) Math.floor(y / gp.getBlockSizeY());
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
 			return map.get(ty).get(tx);
 		} catch (IndexOutOfBoundsException e) {
-			return new FakeTextureHolder(tx * gp.BgX - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
-					ty * gp.BgY - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
+			return new FakeTextureHolder(tx * gp.getBlockSizeX() - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
+					ty * gp.getBlockSizeY() - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
 		}
 
 	}
@@ -912,7 +913,8 @@ public class TileManager extends Pane {
 				DungeonGen d = new DungeonGen(gp, voidImg, mainmap, ja_maps,endmap,
 						((JsonArray) jo.get("connectors")).stream().map(jOb -> (JsonObject) jOb).toList(),
 						((JsonArray) jo.get("connections")).stream().map(jOb -> (JsonObject) jOb).toList(),
-						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), (JsonObject) jo.get("additionalData"), gp.getDifficulty());
+						((JsonArray) jo.get("replacments")).stream().map(jOb -> (JsonObject) jOb).toList(), (JsonObject) jo.get("additionalData"),
+						gp.getLgp().getDifficulty());
 
 				d.findFreeConnectors();
 
@@ -1019,8 +1021,8 @@ public class TileManager extends Pane {
 			}
 			for (Object npc : npcs) {
 				Entity n = switch ( ((StringValue) ((JsonObject) npc).get("type")).getValue()) {
-									case "MonsterNPC", "monsternpc", "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm,
-											requestorN);
+					case "MonsterNPC", "monsternpc", "Demon", "demon" -> new MonsterNPC((JsonObject) npc, gp, this.npcs, cm,
+							requestorN);
 					case "MobRan", "mobran" -> new MobRan((JsonObject) npc, gp, mobs, cm, requestorM);
 					default -> new NPC((JsonObject) npc, gp, this.npcs, cm, requestorN);
 				};
@@ -1081,10 +1083,11 @@ public class TileManager extends Pane {
 			int	worldX	= (int) (exitPosition[0] * gp.getScalingFactorX());
 			int	worldY	= (int) (exitPosition[1] * gp.getScalingFactorY());
 
-			if (worldX + gp.BgX / 2 - p.getX() < 105 * gp.getScalingFactorX()
-					&& worldX + gp.BgX / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
-					worldY + gp.BgY / 2 - p.getY() < 25 * gp.getScalingFactorY() && worldY + gp.BgY / 2 - p.getY() > 0)
-				gp.setMap("./res/maps/" + exitMap, exitStartingPosition);
+			if (worldX + gp.getBlockSizeX() / 2 - p.getX() < 105 * gp.getScalingFactorX()
+					&& worldX + gp.getBlockSizeX() / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
+					worldY + gp.getBlockSizeY() / 2 - p.getY() < 25 * gp.getScalingFactorY()
+					&& worldY + gp.getBlockSizeY() / 2 - p.getY() > 0)
+				gp.getLgp().setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
 		int	worldCol	= 0;
@@ -1093,18 +1096,18 @@ public class TileManager extends Pane {
 		while (worldRow < mapTileNum.size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
-			int		worldX	= worldCol * gp.BgX;
-			int		worldY	= worldRow * gp.BgY;
+			int		worldX	= worldCol * gp.getBlockSizeX();
+			int		worldY	= worldRow * gp.getBlockSizeY();
 			double	screenX	= worldX - p.getX() + p.getScreenX();
 			double	screenY	= worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldRow)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.BgX -
+			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.getBlockSizeX() -
 					p.getSize() * 1.5 < p.getX() + p.getScreenX()
-					&& worldY + gp.BgY + p.getSize() > p.getY() - p.getScreenY()
-					&& worldY - gp.BgY - p.getSize() < p.getY() + p.getScreenY()) {
+					&& worldY + gp.getBlockSizeY() + p.getSize() > p.getY() - p.getScreenY()
+					&& worldY - gp.getBlockSizeY() - p.getSize() < p.getY() + p.getScreenY()) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

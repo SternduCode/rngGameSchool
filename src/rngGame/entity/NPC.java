@@ -1,19 +1,18 @@
 package rngGame.entity;
 
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import java.io.*;
 
 import com.sterndu.json.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.image.*;
 import rngGame.main.*;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -116,39 +115,40 @@ public class NPC extends Entity implements JsonValue {
 		getMiscBoxHandler().put("talk", (gpt,self)->{
 			gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
 				try {
-                    gp2.setBlockUserInputs(true);
-                	Image img = new Image(new FileInputStream(new File("./res/gui/bubble/SpeakBubble2.png")));
-                    gamepanel.getBubble().getChildren().add(new ImageView(img));
-                    Random r = new Random();
-                    BufferedReader flr = new BufferedReader(new FileReader(new File("./res/texts/Guenther.txt")));
-                                       
-                    String line = "";
-                    int uff = r.nextInt(5)+1;
-                    try {
-                        switch (uff) {
-                            case 5:
-                                flr.readLine();
-                            case 4:
-                                flr.readLine();
-                            case 3:
-                                flr.readLine();
-                            case 2:
-                                flr.readLine();
-                            case 1:
-                                line=flr.readLine();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                	}
-                    gp2.getBubbleText().setImage(Text.getInstance().convertText(line));
-                    gp2.getBubbleText().setLayoutX((gp2.SpielLaenge/10));
-                    gp2.getBubbleText().setLayoutY((gp2.SpielHoehe/1.4)-(gp2.getBubbleText().getImage().getHeight()/2.0));
-                    System.out.println(gp2.getBubbleText().getImage().getWidth());
-                    System.out.println(line);
-                    System.out.println(uff);                    
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+					gp2.setBlockUserInputs(true);
+					Image img = new Image(new FileInputStream(new File("./res/gui/bubble/SpeakBubble2.png")));
+					gamepanel.getLgp().getBubble().getChildren().add(new ImageView(img));
+					Random r = new Random();
+					BufferedReader flr = new BufferedReader(new FileReader(new File("./res/texts/Guenther.txt")));
+
+					String line = "";
+					int uff = r.nextInt(5)+1;
+					try {
+						switch (uff) {
+							case 5:
+								flr.readLine();
+							case 4:
+								flr.readLine();
+							case 3:
+								flr.readLine();
+							case 2:
+								flr.readLine();
+							case 1:
+								line=flr.readLine();
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					gp2.getBubbleText().setImage(Text.getInstance().convertText(line));
+					gp2.getBubbleText().setLayoutX(gp2.getGameWidth() / 10);
+					gp2.getBubbleText()
+							.setLayoutY(gp2.getGameHeight() / 1.4 - gp2.getBubbleText().getImage().getHeight() / 2.0);
+					System.out.println(gp2.getBubbleText().getImage().getWidth());
+					System.out.println(line);
+					System.out.println(uff);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			});
 		});
 

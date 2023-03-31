@@ -1,6 +1,7 @@
 package rngGame.tile;
 
 import java.util.*;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -8,28 +9,54 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import rngGame.main.GamePanel;
+import rngGame.visual.GamePanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TextureHolder.
+ */
 public class TextureHolder extends Pane {
 
+	/** The tile. */
 	private Tile tile;
 
+	/** The gp. */
 	@SuppressWarnings("unused")
 	private GamePanel gp;
 
+	/** The iv. */
 	private final ImageView iv;
+
+	/** The poly. */
 	private final Polygon poly;
 
+	/** The fps. */
 	private double fps = 7.5;
 
+	/** The y. */
 	private double x, y;
 
+	/** The menu. */
 	private final Menu menu;
 
+	/** The fps I. */
 	private final MenuItem position, fpsI;
 
+	/** The hc. */
 	private int hc;
 
+	/**
+	 * Instantiates a new texture holder.
+	 *
+	 * @param tile the tile
+	 * @param gp the gp
+	 * @param layoutX the layout X
+	 * @param layoutY the layout Y
+	 * @param cm the cm
+	 * @param requestor the requestor
+	 * @param x the x
+	 * @param y the y
+	 */
 	public TextureHolder(Tile tile, GamePanel gp, double layoutX, double layoutY, ContextMenu cm,
 			ObjectProperty<TextureHolder> requestor, double x, double y) {
 		menu = new Menu("Texture Holder");
@@ -38,12 +65,12 @@ public class TextureHolder extends Pane {
 		fpsI.setOnAction(this::setFPS);
 		menu.getItems().addAll(position,fpsI);
 		setOnContextMenuRequested(e -> {
-			if (System.getProperty("edit").equals("true")) {
+			if ("true".equals(System.getProperty("edit"))) {
 				requestor.set(TextureHolder.this);
 				position.setText("Position: "+x+" "+y);
 				fpsI.setText("FPS: "+fps);
 				cm.getItems().clear();
-				cm.getItems().addAll(gp.getTileM().getMenus());
+				cm.getItems().addAll(gp.getTileManager().getMenus());
 				cm.getItems().add(menu);
 				cm.show(TextureHolder.this, e.getScreenX(), e.getScreenY());
 			}
@@ -70,6 +97,11 @@ public class TextureHolder extends Pane {
 		// TODO lighing iv.setOpacity(0.5);
 	}
 
+	/**
+	 * Sets the fps.
+	 *
+	 * @param e the new fps
+	 */
 	private void setFPS(ActionEvent e) {
 		TextInputDialog dialog = new TextInputDialog("" + fps);
 		dialog.setTitle("FPS");
@@ -84,20 +116,45 @@ public class TextureHolder extends Pane {
 		}
 	}
 
+	/**
+	 * Gets the poly.
+	 *
+	 * @return the poly
+	 */
 	public Polygon getPoly() {
 		return poly;
 	}
 
+	/**
+	 * Gets the tile.
+	 *
+	 * @return the tile
+	 */
 	public Tile getTile() {
 		return tile;
 	}
 
 
 
+	/**
+	 * Gets the x.
+	 *
+	 * @return the x
+	 */
 	public double getX() { return x; }
 
+	/**
+	 * Gets the y.
+	 *
+	 * @return the y
+	 */
 	public double getY() { return y; }
 
+	/**
+	 * Sets the tile.
+	 *
+	 * @param tile the new tile
+	 */
 	public void setTile(Tile tile) {
 		this.tile=tile;
 		poly.getPoints().clear();
@@ -106,11 +163,19 @@ public class TextureHolder extends Pane {
 		iv.setImage(tile.images.get(0));
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return "TextureHolder [tile=" + tile.name + "]";
 	}
 
+	/**
+	 * Update.
+	 */
 	public void update() {
 
 		tile.update();
@@ -124,7 +189,7 @@ public class TextureHolder extends Pane {
 
 		iv.setImage(tile.images.get(tile.spriteNum));
 
-		if (System.getProperty("coll").equals("true") && poly.getPoints().size() > 0)
+		if ("true".equals(System.getProperty("coll")) && poly.getPoints().size() > 0)
 			poly.setVisible(true);
 		else
 			poly.setVisible(false);

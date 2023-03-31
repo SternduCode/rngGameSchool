@@ -13,7 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.*;
 import javafx.scene.shape.*;
 import rngGame.buildings.*;
-import rngGame.main.GamePanel;
+import rngGame.visual.GamePanel;
 
 
 // TODO: Auto-generated Javadoc
@@ -58,7 +58,7 @@ public class DungeonGen {
 	private final JsonObject mainMap,endMap;
 
 	/** The maps. */
-	
+
 	private final List<Entry<JsonObject, Size>> maps;
 
 	/** The map tiles. */
@@ -139,13 +139,13 @@ public class DungeonGen {
 		}
 		System.out.println(difficulty);
 
-		gp.getTileM().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
-		mainMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
-		gp.getTileM().mapTileNum	= new ArrayList<>();
+		gp.getTileManager().loadMap((JsonArray) ((JsonObject) mainmap.get("map")).get("matrix"));// load mainmap matrix
+		mainMapTileNum				= gp.getTileManager().mapTileNum;	// save loaded mainmap matrix
+		gp.getTileManager().mapTileNum	= new ArrayList<>();
 
-		gp.getTileM().loadMap((JsonArray) ((JsonObject) endMap.get("map")).get("matrix"));// load mainmap matrix
-		endMapTileNum				= gp.getTileM().mapTileNum;	// save loaded mainmap matrix
-		gp.getTileM().mapTileNum	= new ArrayList<>();
+		gp.getTileManager().loadMap((JsonArray) ((JsonObject) endMap.get("map")).get("matrix"));// load mainmap matrix
+		endMapTileNum				= gp.getTileManager().mapTileNum;	// save loaded mainmap matrix
+		gp.getTileManager().mapTileNum	= new ArrayList<>();
 
 
 		String dir = ((StringValue) ((JsonObject) mainmap.get("map")).get("dir")).getValue();
@@ -216,9 +216,9 @@ public class DungeonGen {
 
 
 		for (int i = 0; i < this.maps.size(); i++) {// TODO check for validity
-			gp.getTileM().loadMap((JsonArray) ((JsonObject) this.maps.get(i).getKey().get("map")).get("matrix"));
-			mapsTileNum[i]				= gp.getTileM().mapTileNum;
-			gp.getTileM().mapTileNum	= new ArrayList<>();
+			gp.getTileManager().loadMap((JsonArray) ((JsonObject) this.maps.get(i).getKey().get("map")).get("matrix"));
+			mapsTileNum[i]				= gp.getTileManager().mapTileNum;
+			gp.getTileManager().mapTileNum	= new ArrayList<>();
 			dir							= ((StringValue) ((JsonObject) this.maps.get(i).getKey().get("map")).get("dir")).getValue();
 			mapsTiles[i]				= new ArrayList<>();
 			for (Object texture : (JsonArray) ((JsonObject) this.maps.get(i).getKey().get("map")).get("textures")) try {
@@ -246,8 +246,8 @@ public class DungeonGen {
 			}
 			for (List<Integer> xCol : mapsTileNum[i]) for (Integer v : xCol) if (mapsTiles[i].get(v).name.equals(voidImg)) mapsVoidNum[i] = v;
 		}
-		gp.getTileM().mapTileNum = new ArrayList<>();
-		gp.getTileM().getTiles().clear();
+		gp.getTileManager().mapTileNum = new ArrayList<>();
+		gp.getTileManager().getTiles().clear();
 		this.connectors		= connectors;
 		this.connections	= connections;
 		this.replacements	= replacements;
@@ -273,8 +273,8 @@ public class DungeonGen {
 
 		JsonArray	cornerPieces	= (JsonArray) additionalData.get("cornerPieces");
 		List<Integer>	corners			= cornerPieces.parallelStream().map(o -> ((StringValue) o).getValue())
-				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
-				.map(t -> gp.getTileM().getTiles().indexOf(t))
+				.map(str -> gp.getTileManager().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.map(t -> gp.getTileManager().getTiles().indexOf(t))
 				.collect(Collectors.toList());
 		System.out.println(corners);
 
@@ -290,8 +290,8 @@ public class DungeonGen {
 
 		JsonArray	randomPieces	= (JsonArray) additionalData.get("randomPieces");
 		List<Integer>	randoms			= randomPieces.parallelStream().map(o -> ((StringValue) o).getValue())
-				.map(str -> gp.getTileM().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
-				.map(t -> gp.getTileM().getTiles().indexOf(t))
+				.map(str -> gp.getTileManager().getTiles().parallelStream().filter(t -> t.name.equals(str)).findAny().orElse(null)).filter(v -> v != null)
+				.map(t -> gp.getTileManager().getTiles().indexOf(t))
 				.collect(Collectors.toList());
 		System.out.println(randoms);
 
@@ -310,8 +310,8 @@ public class DungeonGen {
 
 		List<Entry<Integer, Integer>> availChestSpots = new ArrayList<>();
 
-		for (int i = 0; i < gp.getTileM().mapTileNum.size(); i++) for (int j = 0; j < gp.getTileM().mapTileNum.get(i).size(); j++) {
-			Integer th = gp.getTileM().mapTileNum.get(i).get(j);
+		for (int i = 0; i < gp.getTileManager().mapTileNum.size(); i++) for (int j = 0; j < gp.getTileManager().mapTileNum.get(i).size(); j++) {
+			Integer th = gp.getTileManager().mapTileNum.get(i).get(j);
 
 			if (corners.contains(th)) {
 				// TODO spawn faggel
@@ -332,17 +332,19 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+								j * (gp.getBlockSizeX() / gp.getScalingFactorX())
+								+ ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 						position.add(new DoubleValue(
-								i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+								i * (gp.getBlockSizeY() / gp.getScalingFactorY())
+								+ ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 						joB.put("position", position);
 						JsonArray originalSize = new JsonArray();
 						originalSize.add(new DoubleValue(img.getHeight()));
 						originalSize.add(new DoubleValue(img.getHeight()));
 						joB.put("originalSize", originalSize);
 
-						gp.getBuildings().add(
-								new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB()));
+						gp.getLgp().getBuildings().add(
+								new Building(joB, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(), gp.getTileManager().getRequesterB()));
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -366,9 +368,11 @@ public class DungeonGen {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							j * (gp.BgX / gp.getScalingFactorX()) + ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
+							j * (gp.getBlockSizeX() / gp.getScalingFactorX())
+							+ ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 					position.add(new DoubleValue(
-							i * (gp.BgY / gp.getScalingFactorY()) + ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
+							i * (gp.getBlockSizeY() / gp.getScalingFactorY())
+							+ ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
 					JsonArray	background		= new JsonArray();
@@ -378,8 +382,8 @@ public class DungeonGen {
 					originalSize.add(new DoubleValue(img.getHeight()));
 					joB.put("originalSize", originalSize);
 
-					gp.getBuildings().add(
-							new Building(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB()));
+					gp.getLgp().getBuildings().add(
+							new Building(joB, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(), gp.getTileManager().getRequesterB()));
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -407,9 +411,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * (gp.BgX / gp.getScalingFactorX())));
+								en.getKey() * (gp.getBlockSizeX() / gp.getScalingFactorX())));
 						position.add(new DoubleValue(
-								en.getValue() * (gp.BgY / gp.getScalingFactorY())));
+								en.getValue() * (gp.getBlockSizeY() / gp.getScalingFactorY())));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -418,9 +422,9 @@ public class DungeonGen {
 						originalSize.add(new DoubleValue(img.getWidth()));
 						originalSize.add(new DoubleValue(img.getHeight()));
 						joB.put("originalSize", originalSize);
-						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
-								gp.getTileM().getRequesterB());
-						gp.getBuildings().add(tc);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(),
+								gp.getTileManager().getRequesterB());
+						gp.getLgp().getBuildings().add(tc);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -448,9 +452,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * gp.BgX));
+								en.getKey() * gp.getBlockSizeX()));
 						position.add(new DoubleValue(
-								en.getValue() * gp.BgY));
+								en.getValue() * gp.getBlockSizeY()));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -459,9 +463,9 @@ public class DungeonGen {
 						originalSize.add(new DoubleValue(img.getWidth()));
 						originalSize.add(new DoubleValue(img.getHeight()));
 						joB.put("originalSize", originalSize);
-						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
-								gp.getTileM().getRequesterB());
-						gp.getBuildings().add(tc);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(),
+								gp.getTileManager().getRequesterB());
+						gp.getLgp().getBuildings().add(tc);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -489,9 +493,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * gp.BgX));
+								en.getKey() * gp.getBlockSizeX()));
 						position.add(new DoubleValue(
-								en.getValue() * gp.BgY));
+								en.getValue() * gp.getBlockSizeY()));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -500,9 +504,9 @@ public class DungeonGen {
 						originalSize.add(new DoubleValue(img.getWidth()));
 						originalSize.add(new DoubleValue(img.getHeight()));
 						joB.put("originalSize", originalSize);
-						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
-								gp.getTileM().getRequesterB());
-						gp.getBuildings().add(tc);
+						TreasureChest tc = new TreasureChest(joB, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(),
+								gp.getTileManager().getRequesterB());
+						gp.getLgp().getBuildings().add(tc);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -942,21 +946,21 @@ public class DungeonGen {
 			Point2D p = mapPositions.get(en.getKey());
 			for (Object building : en.getValue()) {
 				JsonArray position = (JsonArray) ((JsonObject) building).get("position");
-				position.set(0, new DoubleValue((((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*gp.BgX)));
-				position.set(1, new DoubleValue((((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*gp.BgY)));
+				position.set(0, new DoubleValue(((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*gp.getBlockSizeX()));
+				position.set(1, new DoubleValue(((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*gp.getBlockSizeY()));
 			}
 		});
 		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
 		for (JsonObject building : builds) {
 			Building b = switch ( ((StringValue) building.get("type")).getValue()) {
-				case "House" -> new House(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
-				case "ContractsTable" -> new ContractsTable(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
-						gp.getTileM().getRequesterB());
-				case "TreasureChest" -> new TreasureChest(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(),
-						gp.getTileM().getRequesterB());
-				default -> new Building(building, gp, gp.getTileM().getBuildingsFromMap(), gp.getTileM().getCM(), gp.getTileM().getRequesterB());
+				case "House" -> new House(building, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(), gp.getTileManager().getRequesterB());
+				case "ContractsTable" -> new ContractsTable(building, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(),
+						gp.getTileManager().getRequesterB());
+				case "TreasureChest" -> new TreasureChest(building, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(),
+						gp.getTileManager().getRequesterB());
+				default -> new Building(building, gp, gp.getTileManager().getBuildingsFromMap(), gp.getTileManager().getCM(), gp.getTileManager().getRequesterB());
 			};
-			gp.getBuildings().add(b);
+			gp.getLgp().getBuildings().add(b);
 			ImageView	lIV = new ImageView();
 			try {
 				if (b.isGif(b.getCurrentKey())) {
@@ -973,7 +977,7 @@ public class DungeonGen {
 				System.out.println(b.getTextureFiles());
 				e.printStackTrace();
 			}
-			gp.getTileM().getMbuildings().getItems().add(new MenuItemWBuilding(
+			gp.getTileManager().getMbuildings().getItems().add(new MenuItemWBuilding(
 					((StringValue) ((JsonObject) building.get("textures")).values().stream()
 							.findFirst().get()).getValue(),
 					lIV,
@@ -1002,25 +1006,25 @@ public class DungeonGen {
 							.get((int) (_i - en.getValue().getY())).get((int) (_j - en.getValue().getX())))
 									: null))
 					.filter(Objects::nonNull).collect(Collectors.toList());
-			if (gp.getTileM().mapTileNum.size() <= i) gp.getTileM().mapTileNum.add(new ArrayList<>());
+			if (gp.getTileManager().mapTileNum.size() <= i) gp.getTileManager().mapTileNum.add(new ArrayList<>());
 			if (tile.size() > 0) try {
-				Tile t = gp.getTileM().getTiles().parallelStream()
+				Tile t = gp.getTileManager().getTiles().parallelStream()
 						.filter(ti -> ti.name.equals(
 								(switch(tile.get(0).getKey()) { case -2 -> endMapTiles; case -1 -> mainMapTiles; default -> mapsTiles[tile.get(0).getKey()]; }).get(tile.get(0).getValue()).name))
 						.findFirst().get();
-				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().indexOf(t));
+				gp.getTileManager().mapTileNum.get(i).add(gp.getTileManager().getTiles().indexOf(t));
 			} catch (NoSuchElementException e) {
-				gp.getTileM().getTiles()
+				gp.getTileManager().getTiles()
 				.add( (switch(tile.get(0).getKey()) { case -2 -> endMapTiles; case -1 -> mainMapTiles; default -> mapsTiles[tile.get(0).getKey()]; }).get(tile.get(0).getValue()));
-				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().size() - 1);
+				gp.getTileManager().mapTileNum.get(i).add(gp.getTileManager().getTiles().size() - 1);
 			}
 			else try {
-				Tile t = gp.getTileM().getTiles().parallelStream().filter(ti -> ti.name.equals(mainMapTiles.get(mainMapVoidNum).name)).findFirst()
+				Tile t = gp.getTileManager().getTiles().parallelStream().filter(ti -> ti.name.equals(mainMapTiles.get(mainMapVoidNum).name)).findFirst()
 						.get();
-				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().indexOf(t));
+				gp.getTileManager().mapTileNum.get(i).add(gp.getTileManager().getTiles().indexOf(t));
 			} catch (NoSuchElementException e) {
-				gp.getTileM().getTiles().add(mainMapTiles.get(mainMapVoidNum));
-				gp.getTileM().mapTileNum.get(i).add(gp.getTileM().getTiles().size() - 1);
+				gp.getTileManager().getTiles().add(mainMapTiles.get(mainMapVoidNum));
+				gp.getTileManager().mapTileNum.get(i).add(gp.getTileManager().getTiles().size() - 1);
 			}
 		}
 
@@ -1028,17 +1032,17 @@ public class DungeonGen {
 
 			if (Math.abs(bridge.getKey().getX() - bridge.getValue().getX()) > 0)
 				for (int i = 1; i < Math.abs(bridge.getKey().getX() - bridge.getValue().getX()); i++)
-					gp.getTileM().mapTileNum.get((int) bridge.getKey().getY() - yOffset)
-					.set((int) (Math.min(bridge.getKey().getX(), bridge.getValue().getX()) + i) - xOffset, gp.getTileM().getTiles().size());
+					gp.getTileManager().mapTileNum.get((int) bridge.getKey().getY() - yOffset)
+					.set((int) (Math.min(bridge.getKey().getX(), bridge.getValue().getX()) + i) - xOffset, gp.getTileManager().getTiles().size());
 			else for (int i = 1; i < Math.abs(bridge.getKey().getY() - bridge.getValue().getY()); i++)
-				gp.getTileM().mapTileNum.get((int) (Math.min(bridge.getKey().getY(), bridge.getValue().getY()) + i) - yOffset)
-				.set((int) bridge.getKey().getX() - xOffset, gp.getTileM().getTiles().size() + 1);
+				gp.getTileManager().mapTileNum.get((int) (Math.min(bridge.getKey().getY(), bridge.getValue().getY()) + i) - yOffset)
+				.set((int) bridge.getKey().getX() - xOffset, gp.getTileManager().getTiles().size() + 1);
 		});
 
 		try {
-			gp.getTileM().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(),
+			gp.getTileManager().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(),
 					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue()), gp));
-			gp.getTileM().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(),
+			gp.getTileManager().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(),
 					new FileInputStream("./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue()), gp));
 			String[] sp = ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue().split("[.]");
 			if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
@@ -1049,10 +1053,10 @@ public class DungeonGen {
 							+ ".collisionbox"), "rws");
 					raf.seek(0l);
 					int length = raf.readInt();
-					gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 2).poly = new ArrayList<>();
+					gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 2).poly = new ArrayList<>();
 					boolean s = false;
 					for (int ij = 0; ij < length; ij++)
-						gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 2).poly
+						gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 2).poly
 						.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -1066,10 +1070,10 @@ public class DungeonGen {
 							+ ".collisionbox"), "rws");
 					raf.seek(0l);
 					int length = raf.readInt();
-					gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 1).poly = new ArrayList<>();
+					gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 1).poly = new ArrayList<>();
 					boolean s = false;
 					for (int ij = 0; ij < length; ij++)
-						gp.getTileM().getTiles().get(gp.getTileM().getTiles().size() - 1).poly
+						gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 1).poly
 						.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -1078,7 +1082,7 @@ public class DungeonGen {
 			e.printStackTrace();
 		}
 
-		gp.getTileM().setStartingPosition(new double[] {
+		gp.getTileManager().setStartingPosition(new double[] {
 				(x - xOffset + .5) * 48, (y - yOffset + .5) * 48
 		});
 
@@ -1092,7 +1096,7 @@ public class DungeonGen {
 				Tile tile = new Tile( ((StringValue) tileName).getValue(), new FileInputStream("./res/insel/" + ((StringValue) tileName).getValue()),
 						gp);
 				tiles.add(tile);
-				gp.getTileM().getTiles().add(tile);
+				gp.getTileManager().getTiles().add(tile);
 				String[] sp = ((StringValue) tileName).getValue().split("[.]");
 				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
@@ -1117,7 +1121,7 @@ public class DungeonGen {
 				Tile tile = new Tile( ((StringValue) tileName).getValue(), new FileInputStream("./res/insel/" + ((StringValue) tileName).getValue()),
 						gp);
 				plus.add(tile);
-				gp.getTileM().getTiles().add(tile);
+				gp.getTileManager().getTiles().add(tile);
 				String[] sp = ((StringValue) tileName).getValue().split("[.]");
 				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
@@ -1146,12 +1150,12 @@ public class DungeonGen {
 			Tile					replacementTile	= tiles.get(random.nextInt(tiles.size()));
 			Entry<Point2D, Integer>	key				= en.getKey();
 			Point2D					correctedPoint	= new Point2D(key.getKey().getY(), key.getKey().getX()).add(mapPositions.get(key.getValue()));
-			gp.getTileM().mapTileNum.get((int) correctedPoint.getY()).set((int) correctedPoint.getX(),
-					gp.getTileM().getTiles().indexOf(replacementTile));
+			gp.getTileManager().mapTileNum.get((int) correctedPoint.getY()).set((int) correctedPoint.getX(),
+					gp.getTileManager().getTiles().indexOf(replacementTile));
 			if (Direction.DOWN == dir) {
 				replacementTile = plus.get(random.nextInt(plus.size()));
-				gp.getTileM().mapTileNum.get((int) correctedPoint.getY() + 1).set((int) correctedPoint.getX(),
-						gp.getTileM().getTiles().indexOf(replacementTile));
+				gp.getTileManager().mapTileNum.get((int) correctedPoint.getY() + 1).set((int) correctedPoint.getX(),
+						gp.getTileManager().getTiles().indexOf(replacementTile));
 			}
 		}
 

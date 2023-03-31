@@ -23,6 +23,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.entity.Player;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.*;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -306,8 +307,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 						case "rectangle":
 						{
 							long x, y, width, height;
-							x = (long) (((NumberValue) joBox.get("x")).getValue().longValue() * gp.getScalingFactorX());
-							y = (long) (((NumberValue) joBox.get("y")).getValue().longValue() * gp.getScalingFactorY());
+							x		= (long) ( ((NumberValue) joBox.get("x")).getValue().longValue() * gp.getScalingFactorX());
+							y		= (long) ( ((NumberValue) joBox.get("y")).getValue().longValue() * gp.getScalingFactorY());
 							width = (long) (((NumberValue) joBox.get("width")).getValue().longValue()
 									* gp.getScalingFactorX());
 							height = (long) (((NumberValue) joBox.get("height")).getValue().longValue()
@@ -324,8 +325,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 						case "circle":
 						{
 							long x, y, radiusX, radiusY, innerRadiusX = 0, innerRadiusY = 0;
-							x = (long) (((NumberValue) joBox.get("x")).getValue().longValue() * gp.getScalingFactorX());
-							y = (long) (((NumberValue) joBox.get("y")).getValue().longValue() * gp.getScalingFactorY());
+							x		= (long) ( ((NumberValue) joBox.get("x")).getValue().longValue() * gp.getScalingFactorX());
+							y		= (long) ( ((NumberValue) joBox.get("y")).getValue().longValue() * gp.getScalingFactorY());
 							radiusX = (long) (((NumberValue) joBox.get("radius")).getValue().longValue()
 									* gp.getScalingFactorX());
 							radiusY = (long) (((NumberValue) joBox.get("radius")).getValue().longValue()
@@ -826,7 +827,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					int length = raf.readInt();
 					boolean s = false;
 					for (int i = 0; i < length; i++) collisionBox.getPoints()
-					.add((double)(long)(raf.readDouble() * ((s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
+					.add((double) (long) (raf.readDouble()
+									* ( (s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -1238,7 +1240,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				jBox.put("type", "circle");
 				jBox.put("x", (long) circ.getCenterX() / gamepanel.getScalingFactorX());
 				jBox.put("y", (long) circ.getCenterY() / gamepanel.getScalingFactorY());
-				jBox.put("radius", (long) ((circ.getRadiusX() / gamepanel.getScalingFactorX()
+				jBox.put("radius", (long) ( (circ.getRadiusX() / gamepanel.getScalingFactorX()
 						+ circ.getRadiusY() / gamepanel.getScalingFactorY()) / 2.0));
 			} else if (box.getValue() instanceof Rectangle rect) {
 				jBox.put("type", "rectangle");

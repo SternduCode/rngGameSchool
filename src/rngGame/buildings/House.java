@@ -3,23 +3,44 @@ package rngGame.buildings;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+
 import com.sterndu.json.*;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import rngGame.main.*;
+import rngGame.main.GameObject;
+import rngGame.visual.GamePanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class House.
+ */
 public class House extends Building {
 
+	/** The map. */
 	protected String map;
+
+	/** The house. */
 	private final Menu house;
 
+	/** The map I. */
 	private final MenuItem mapI;
+
+	/** The entrance height. */
 	private double openX, openY, openWidth, openHeight, entranceX, entranceY, entranceWidth, entranceHeight;
 
+	/**
+	 * Instantiates a new house.
+	 *
+	 * @param building the building
+	 * @param buildings the buildings
+	 * @param cm the cm
+	 * @param requestorB the requestor B
+	 */
 	public House(House building, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, buildings, cm, requestorB);
@@ -32,6 +53,15 @@ public class House extends Building {
 
 	}
 
+	/**
+	 * Instantiates a new house.
+	 *
+	 * @param building the building
+	 * @param gp the gp
+	 * @param buildings the buildings
+	 * @param cm the cm
+	 * @param requestorB the requestor B
+	 */
 	public House(JsonObject building, GamePanel gp, List<Building> buildings, ContextMenu cm,
 			ObjectProperty<Building> requestorB) {
 		super(building, gp, buildings, cm, requestorB);
@@ -64,13 +94,18 @@ public class House extends Building {
 			entrance.getPoints().addAll(entranceX, entranceY, entranceX, entranceY + entranceHeight,
 					entranceX + entranceWidth, entranceY + entranceHeight, entranceX + entranceWidth, entranceY);
 			addMiscBox("entrance", entrance, (gpt, self) -> {
-				if (((House) self).getMap() != null) gpt.setMap("./res/maps/" + ((House) self).getMap());
+				if ( ((House) self).getMap() != null) gpt.getLgp().setMap("./res/maps/" + ((House) self).getMap());
 			});
 		} else getMiscBoxHandler().put("entrance", (gpt, self) -> {
-			if (((House) self).getMap() != null) gpt.setMap("./res/maps/" + ((House) self).getMap());
+			if ( ((House) self).getMap() != null) gpt.getLgp().setMap("./res/maps/" + ((House) self).getMap());
 		});
 	}
 
+	/**
+	 * Handle context menu.
+	 *
+	 * @param e the e
+	 */
 	private void handleContextMenu(ActionEvent e) {
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(new File("./res/maps"));
@@ -90,15 +125,14 @@ public class House extends Building {
 				ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 				alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
 				Optional<ButtonType> res = alert.showAndWait();
-				if (res.isPresent()) {
-					if (res.get() == okButton) try {
-						Files.copy(f.toPath(), to, StandardCopyOption.COPY_ATTRIBUTES,
-								StandardCopyOption.REPLACE_EXISTING);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					else if (res.get() == cancelButton) return;
-				} else return;
+				if (!res.isPresent()) return;
+				if (res.get() == okButton) try {
+					Files.copy(f.toPath(), to, StandardCopyOption.COPY_ATTRIBUTES,
+							StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				else if (res.get() == cancelButton) return;
 
 			} else try {
 				Files.copy(f.toPath(), to, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
@@ -111,13 +145,28 @@ public class House extends Building {
 		}
 	}
 
+	/**
+	 * Sets the map.
+	 *
+	 * @param map the new map
+	 */
 	protected void setMap(String map) {
 		this.map = map;
 		if (slaves != null) for (GameObject slave:slaves) ((House) slave).setMap(map);
 	}
 
+	/**
+	 * Gets the map.
+	 *
+	 * @return the map
+	 */
 	public String getMap() { return map; }
 
+	/**
+	 * Gets the menus.
+	 *
+	 * @return the menus
+	 */
 	@Override
 	public List<Menu> getMenus() {
 		List<Menu> li = super.getMenus();
@@ -126,6 +175,11 @@ public class House extends Building {
 		return li;
 	}
 
+	/**
+	 * To json value.
+	 *
+	 * @return the json value
+	 */
 	@Override
 	public JsonValue toJsonValue() {
 		JsonObject jo = (JsonObject) super.toJsonValue();
@@ -134,6 +188,11 @@ public class House extends Building {
 
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param milis the milis
+	 */
 	@Override
 	public void update(long milis) {
 

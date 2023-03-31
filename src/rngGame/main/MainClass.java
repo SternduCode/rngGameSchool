@@ -18,6 +18,9 @@ public class MainClass extends Application {
 	/** The stopping. */
 	private static boolean stopping = false;
 
+	/** The ii. */
+	int ii = 0;
+
 	/**
 	 * Checks if is stopping.
 	 *
@@ -69,13 +72,12 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
-
 		GamePanel gamePanel = new GamePanel();
-		input.setGamePanel(gamePanel); // pass instance of GamePanel to the Instance of Input
-		Scene gameScene = new Scene(gamePanel);
+		input.setGamePanel(gamePanel.getVgp()); // pass instance of GamePanel to the Instance of Input
+		Scene gameScene = new Scene(gamePanel.getVgp());
 		primaryStage.setScene(gameScene);
 
-		gamePanel.SST();
+		gamePanel.getVgp().startLogicThread();
 
 		primaryStage.show();
 

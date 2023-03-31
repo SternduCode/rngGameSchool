@@ -7,8 +7,9 @@ import javafx.animation.FadeTransition;
 import javafx.scene.image.*;
 import javafx.util.Duration;
 import rngGame.buildings.ContractsTable;
-import rngGame.main.*;
+import rngGame.main.Text;
 import rngGame.tile.*;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -81,12 +82,13 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		difficul = new ImageView(difE);
 		difficul.setVisible(false);
 
-		vlvl = new ImageView(ImgUtil.resizeImage(lvls[lvlneu/5], (int)lvls[lvlneu/5].getWidth(), (int) lvls[lvlneu/5].getHeight(), (int)(48 * gamepanel.getScalingFactorX()), (int)(48 * gamepanel.getScalingFactorY())));
+		vlvl = new ImageView(ImgUtil.resizeImage(lvls[lvlneu / 5], (int) lvls[lvlneu / 5].getWidth(), (int) lvls[lvlneu / 5].getHeight(),
+				(int) (48 * gamepanel.getScalingFactorX()), (int) (48 * gamepanel.getScalingFactorY())));
 		vlvl.setVisible(false);
-		vlvl.setLayoutX(24*gamepanel.getScalingFactorX());
-		vlvl.setLayoutY(30*gamepanel.getScalingFactorY());
+		vlvl.setLayoutX(24 * gamepanel.getScalingFactorX());
+		vlvl.setLayoutY(30 * gamepanel.getScalingFactorY());
 
-		picture = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/"+pic+".png",64,64));
+		picture = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/" + pic + ".png", 64, 64));
 		picture.setDisable(true);
 
 		floor1 = new ImageView();
@@ -107,7 +109,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		startButton.setOnMouseReleased(me -> {
 			startButton.setImage(sButton);
 			ct.setMs(new MonsterSelction(gamepanel, ct));// TODO add needed parameters
-			
+
 		});
 
 		background.setOnMouseReleased(me -> {
@@ -129,7 +131,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 			if(dif == Difficulty.HARD) difficul.setImage(difH);
 			if(dif == Difficulty.EASY) difficul.setImage(difE);
 
-			gamepanel.setDifficulty(dif);
+			gamepanel.getLgp().setDifficulty(dif);
 			difficul.setVisible(true);
 
 		});
@@ -138,13 +140,13 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		getChildren().addAll(startButton, floor1, picture);
 
-		floor1.setLayoutX(5*gamepanel.getScalingFactorX());
-		floor1.setLayoutY(5*gamepanel.getScalingFactorY());
-		picture.setLayoutX(7*gamepanel.getScalingFactorX());
-		picture.setLayoutY(7*gamepanel.getScalingFactorY());
-		
-		difficul.setLayoutX(360*gamepanel.getScalingFactorX());
-		difficul.setLayoutY(65*gamepanel.getScalingFactorY());
+		floor1.setLayoutX(5 * gamepanel.getScalingFactorX());
+		floor1.setLayoutY(5 * gamepanel.getScalingFactorY());
+		picture.setLayoutX(7 * gamepanel.getScalingFactorX());
+		picture.setLayoutY(7 * gamepanel.getScalingFactorY());
+
+		difficul.setLayoutX(360 * gamepanel.getScalingFactorX());
+		difficul.setLayoutY(65 * gamepanel.getScalingFactorY());
 	}
 
 	/**

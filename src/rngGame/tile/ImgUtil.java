@@ -11,7 +11,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.w3c.dom.Node;
 
 import javafx.scene.image.*;
-import rngGame.main.GamePanel;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -47,6 +47,17 @@ public class ImgUtil {
 	 */
 	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
 		return getScaledImages(gamepanel, path, width, height)[0];
+	}
+
+	/**
+	 * Gets the scaled image.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param path the path
+	 * @return the scaled image
+	 */
+	public static Image getScaledImage(rngGame.main.GamePanel gamepanel, String path) {
+		return getScaledImage(gamepanel.getVgp(), path);
 	}
 
 	/**

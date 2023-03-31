@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import rngGame.main.*;
 import rngGame.tile.*;
 import rngGame.ui.*;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -222,11 +223,11 @@ public class ContractsTable extends Building {
 			TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackground);
 
 			// tt.setFromX(gamepanel.SpielLaenge*-index);
-			tt.setToX(-gamepanel.SpielLaenge - gamepanel.SpielLaenge * index);
+			tt.setToX(-gamepanel.getGameWidth() - gamepanel.getGameWidth() * index);
 
 			// tth.setFromX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge
-					+ gamepanel.getScalingFactorX() * 24);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index + 1) + gamepanel.getGameWidth()
+			+ gamepanel.getScalingFactorX() * 24);
 
 			new Thread(() -> {
 				try {
@@ -294,10 +295,10 @@ public class ContractsTable extends Building {
 			TranslateTransition tth = new TranslateTransition(Duration.millis(1000), contractBackground);
 
 			// tt.setFromX(gamepanel.SpielLaenge*-index);
-			tt.setToX(gamepanel.SpielLaenge + gamepanel.SpielLaenge * -index);
+			tt.setToX(gamepanel.getGameWidth() + gamepanel.getGameWidth() * -index);
 
 			// tth.setFromX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index - 1) + gamepanel.SpielLaenge);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index - 1) + gamepanel.getGameWidth());
 
 			new Thread(() -> {
 				try {
@@ -364,8 +365,8 @@ public class ContractsTable extends Building {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
-			tt.setToX(-gamepanel.SpielLaenge / 4 - gamepanel.SpielLaenge * index);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge / 1.5
+			tt.setToX(-gamepanel.getGameWidth() / 4 - gamepanel.getGameWidth() * index);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index + 1) + gamepanel.getGameWidth() / 1.5
 					+ gamepanel.getScalingFactorX() * 24);
 
 			ugSachen1.setBackgroundImageToDefaullt();
@@ -403,8 +404,8 @@ public class ContractsTable extends Building {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
-			tt.setToX(-gamepanel.SpielLaenge / 4 - gamepanel.SpielLaenge * index);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge / 1.5
+			tt.setToX(-gamepanel.getGameWidth() / 4 - gamepanel.getGameWidth() * index);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index + 1) + gamepanel.getGameWidth() / 1.5
 					+ gamepanel.getScalingFactorX() * 24);
 
 			FadeTransition ft5 = new FadeTransition(Duration.millis(350), allPanes);
@@ -424,8 +425,8 @@ public class ContractsTable extends Building {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
-			tt.setToX(-gamepanel.SpielLaenge / 4 - gamepanel.SpielLaenge * index);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge / 1.5
+			tt.setToX(-gamepanel.getGameWidth() / 4 - gamepanel.getGameWidth() * index);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index + 1) + gamepanel.getGameWidth() / 1.5
 					+ gamepanel.getScalingFactorX() * 24);
 
 			FadeTransition ft5 = new FadeTransition(Duration.millis(350), allPanes);
@@ -446,8 +447,8 @@ public class ContractsTable extends Building {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
-			tt.setToX(-gamepanel.SpielLaenge / 4 - gamepanel.SpielLaenge * index);
-			tth.setToX(gamepanel.SpielLaenge / 2 * -(index + 1) + gamepanel.SpielLaenge / 1.5
+			tt.setToX(-gamepanel.getGameWidth() / 4 - gamepanel.getGameWidth() * index);
+			tth.setToX(gamepanel.getGameWidth() / 2 * - (index + 1) + gamepanel.getGameWidth() / 1.5
 					+ gamepanel.getScalingFactorX() * 24);
 
 			FadeTransition ft5 = new FadeTransition(Duration.millis(350), allPanes);
@@ -478,8 +479,8 @@ public class ContractsTable extends Building {
 			TranslateTransition tt = new TranslateTransition(Duration.millis(750), p1);
 			TranslateTransition tth = new TranslateTransition(Duration.millis(750), contractBackground);
 
-			tt.setToX(gamepanel.SpielLaenge + gamepanel.SpielLaenge * (-index - 1));
-			tth.setToX(gamepanel.SpielLaenge / 2 * -index + gamepanel.SpielLaenge);
+			tt.setToX(gamepanel.getGameWidth() + gamepanel.getGameWidth() * (-index - 1));
+			tth.setToX(gamepanel.getGameWidth() / 2 * -index + gamepanel.getGameWidth());
 
 			FadeTransition UG = new FadeTransition(Duration.millis(200), allPanes);
 			UG.setFromValue(1);
@@ -568,20 +569,20 @@ public class ContractsTable extends Building {
 		// contractNebel.setY(gamepanel.getPlayer().getScreenY() -
 		// contractNebel.getImage().getHeight() / 2 + 32);
 
-		contractNebel.setLayoutX(gamepanel.SpielLaenge);
-		contractGalactus.setLayoutX(gamepanel.SpielLaenge * 2);
-		contractNova.setLayoutX(gamepanel.SpielLaenge * 3);
+		contractNebel.setLayoutX(gamepanel.getGameWidth());
+		contractGalactus.setLayoutX(gamepanel.getGameWidth() * 2);
+		contractNova.setLayoutX(gamepanel.getGameWidth() * 3);
 
-		titlebanner2.setLayoutX(gamepanel.SpielLaenge);
-		titlebanner3.setLayoutX(gamepanel.SpielLaenge * 2);
-		titlebanner4.setLayoutX(gamepanel.SpielLaenge * 3);
+		titlebanner2.setLayoutX(gamepanel.getGameWidth());
+		titlebanner3.setLayoutX(gamepanel.getGameWidth() * 2);
+		titlebanner4.setLayoutX(gamepanel.getGameWidth() * 3);
 
 		hud.setLayoutX(hud.getImage().getWidth() / 2 * gamepanel.getScalingFactorX() - hud.getImage().getWidth() / 2);
-		hud2.setLayoutX(gamepanel.SpielLaenge + hud2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud2.setLayoutX(gamepanel.getGameWidth() + hud2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud2.getImage().getWidth() / 2);
-		hud3.setLayoutX(gamepanel.SpielLaenge * 2 + hud3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud3.setLayoutX(gamepanel.getGameWidth() * 2 + hud3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud3.getImage().getWidth() / 2);
-		hud4.setLayoutX(gamepanel.SpielLaenge * 3 + hud4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
+		hud4.setLayoutX(gamepanel.getGameWidth() * 3 + hud4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
 				- hud4.getImage().getWidth() / 2);
 		hud.setLayoutY(hud.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud.getImage().getHeight() / 2);
 		hud2.setLayoutY(
@@ -596,8 +597,8 @@ public class ContractsTable extends Building {
 		p1.getChildren().addAll(contractSaturn, contractNebel, contractGalactus, contractNova, hud, hud2, hud3, hud4,
 				titlebanner, titlebanner2, titlebanner3, titlebanner4, text);
 
-		text.setX(gamepanel.SpielLaenge / 2 - 164 * gamepanel.getScalingFactorX());
-		text.setY(gamepanel.SpielHoehe / 4 + gamepanel.SpielHoehe / 2 + 20 * gamepanel.getScalingFactorY());
+		text.setX(gamepanel.getGameWidth() / 2 - 164 * gamepanel.getScalingFactorX());
+		text.setY(gamepanel.getGameHeight() / 4 + gamepanel.getGameHeight() / 2 + 20 * gamepanel.getScalingFactorY());
 
 		text.setVisible(false);
 
@@ -609,7 +610,7 @@ public class ContractsTable extends Building {
 		p2.getChildren().addAll(ugSachen1,ugSachen2,ugSachen3,ugSachen4,ugSachen5);
 
 		// Infos
-		infos.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
+		infos.setLayoutX(gamepanel.getGameWidth() / 2 + 11 * gamepanel.getScalingFactorX());
 		infos.getChildren().add(lvlBorder);
 		infos.getChildren().add(ugSachen1.getVlvl());
 		infos.getChildren().add(ugSachen2.getVlvl());
@@ -628,7 +629,7 @@ public class ContractsTable extends Building {
 		Input.getInstance().setKeyHandler("contractBackground", mod -> {
 
 			if (inkreis) if (iftest = !iftest) {
-				contractBackground.setTranslateX(gamepanel.SpielLaenge);
+				contractBackground.setTranslateX(gamepanel.getGameWidth());
 				gamepanel.setBlockUserInputs(true);
 				contractBackground.setVisible(true);
 				p1.setVisible(true);
@@ -670,13 +671,13 @@ public class ContractsTable extends Building {
 				gamepanel.setBlockUserInputs(false);
 				index = 0;
 				p1.setTranslateX(0);
-				contractBackground.setTranslateX(gamepanel.SpielLaenge);
+				contractBackground.setTranslateX(gamepanel.getGameWidth());
 			}
 		}, KeyCode.ENTER, false);
 
 		getMiscBoxHandler().put("table", (gpt, self) -> {
 			inkreis = true;
-			gamepanel.getBuildings().parallelStream().filter(b -> b.getTextureFiles().containsValue("CTischCircle.png"))
+			gamepanel.getLgp().getBuildings().parallelStream().filter(b -> b.getTextureFiles().containsValue("CTischCircle.png"))
 			.forEach(b -> {
 				b.setCurrentKey("open");
 			});
@@ -752,7 +753,7 @@ public class ContractsTable extends Building {
 		super.update(milis);
 		if (!inkreis) {
 			iftest = false;
-			gamepanel.getBuildings().parallelStream().filter(b -> b.getTextureFiles().containsValue("CTischCircle.png"))
+			gamepanel.getLgp().getBuildings().parallelStream().filter(b -> b.getTextureFiles().containsValue("CTischCircle.png"))
 			.forEach(b -> {
 				b.setCurrentKey("default");
 			});
@@ -769,7 +770,7 @@ public class ContractsTable extends Building {
 			if (!gamepanel.getChildren().contains(contractBackground))
 				gamepanel.getChildren().add(contractBackground);
 
-			p1.setLayoutX(gamepanel.getPlayer().getScreenX() - gamepanel.SpielLaenge / 2
+			p1.setLayoutX(gamepanel.getPlayer().getScreenX() - gamepanel.getGameWidth() / 2
 					+ gamepanel.getPlayer().getWidth() / 2);
 			//			p1.setLayoutY(
 			//					gamepanel.getPlayer().getScreenY() - p1.getHeight() / 2 + gamepanel.getPlayer().getHeight() / 2);
@@ -779,16 +780,16 @@ public class ContractsTable extends Building {
 			if (!gamepanel.getChildren().contains(allPanes))
 				gamepanel.getChildren().add(allPanes);
 
-			p2.setLayoutX(gamepanel.SpielLaenge / 2 + 11 * gamepanel.getScalingFactorX());
+			p2.setLayoutX(gamepanel.getGameWidth() / 2 + 11 * gamepanel.getScalingFactorX());
 			p2.setLayoutY(108 * gamepanel.getScalingFactorY());
 
-			ugSachen2.setLayoutY(82*gamepanel.getScalingFactorY());
-			ugSachen3.setLayoutY(82*2*gamepanel.getScalingFactorY());
-			ugSachen4.setLayoutY(82*3*gamepanel.getScalingFactorY());
-			ugSachen5.setLayoutY(82*4*gamepanel.getScalingFactorY());
+			ugSachen2.setLayoutY(82 * gamepanel.getScalingFactorY());
+			ugSachen3.setLayoutY(82 * 2 * gamepanel.getScalingFactorY());
+			ugSachen4.setLayoutY(82 * 3 * gamepanel.getScalingFactorY());
+			ugSachen5.setLayoutY(82 * 4 * gamepanel.getScalingFactorY());
 
 			//////////////////////////////////////////////
-			button_R.setLayoutX(gamepanel.SpielLaenge - button_R.getImage().getWidth());
+			button_R.setLayoutX(gamepanel.getGameWidth() - button_R.getImage().getWidth());
 			button_R.setLayoutY(gamepanel.getPlayer().getScreenY() - button_R.getImage().getHeight() / 2
 					+ gamepanel.getPlayer().getHeight() / 2);
 			if (!gamepanel.getChildren().contains(button_R))

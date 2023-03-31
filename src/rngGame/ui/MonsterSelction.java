@@ -4,24 +4,25 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import rngGame.buildings.ContractsTable;
-import rngGame.main.*;
+import rngGame.main.Input;
 import rngGame.tile.ImgUtil;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class MonsterSelction.
  */
 public class MonsterSelction extends Pane {
-	
+
 	/** The Monster background. */
 	private final ImageView MonsterBackground;
-	
+
 	/** The aus xb. */
 	private final Button ausXb;
-	
+
 	/** The start. */
 	private final Button start;
-	
+
 	/** The back. */
 	private final Button back;
 
@@ -51,11 +52,11 @@ public class MonsterSelction extends Pane {
 
 		start = new Button(startB);
 		start.setX(32);
-		start.setY(gamepanel.SpielHoehe / 2 + gamepanel.SpielHoehe / 8);
+		start.setY(gamepanel.getGameHeight() / 2 + gamepanel.getGameHeight() / 8);
 
 		back = new Button(BackB);
 		back.setX(32);
-		back.setY(gamepanel.SpielHoehe / 2 + gamepanel.SpielHoehe / 4 + 10);
+		back.setY(gamepanel.getGameHeight() / 2 + gamepanel.getGameHeight() / 4 + 10);
 
 		getChildren().add(MonsterBackground);
 		getChildren().add(ausXb);
@@ -79,7 +80,7 @@ public class MonsterSelction extends Pane {
 		start.setOnMouseReleased(me -> {
 			start.setImage(startB);
 			Input.getInstance().keyPressed(new KeyEvent(null, "", "", KeyCode.ENTER, false, false, false, false));
-			gamepanel.setMap("./res/maps/Dungeon.json");
+			gamepanel.getLgp().setMap("./res/maps/Dungeon.json");
 			ct.setMs(null);
 			ct.removeEnterAbbility();
 		});

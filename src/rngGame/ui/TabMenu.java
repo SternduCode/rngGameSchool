@@ -155,7 +155,7 @@ public class TabMenu extends Pane {
 
 
 				if (!ab.getAndSet(!ab.get())) {
-					gamepanel.setBlockUserInputs(true);
+					gamepanel.getVgp().setBlockUserInputs(true);
 					setDisable(false);
 					gamemenu.setVisible(true);
 					buttongroup.setVisible(true);
@@ -208,8 +208,8 @@ public class TabMenu extends Pane {
 					});
 
 
-					ft.setFromY(gamepanel.SpielHoehe/2);
-					ib1.setFromY(gamepanel.SpielHoehe/2);
+					ft.setFromY(gamepanel.getVgp().getGameHeight() / 2);
+					ib1.setFromY(gamepanel.getVgp().getGameHeight() / 2);
 					ft.setToY(0);
 					ib1.setToY(0);
 					ft.play();
@@ -217,8 +217,8 @@ public class TabMenu extends Pane {
 
 
 				} else {
-					ft.setToY(gamepanel.SpielHoehe/2);
-					ib1.setToY(gamepanel.SpielHoehe/2);
+					ft.setToY(gamepanel.getVgp().getGameHeight() / 2);
+					ib1.setToY(gamepanel.getVgp().getGameHeight() / 2);
 					ft.play();
 					ib1.play();
 					closeTabm(false);
@@ -236,7 +236,7 @@ public class TabMenu extends Pane {
 	 */
 	public void closeTabm(boolean toggleState) {
 		if(toggleState) ab.getAndSet(!ab.get());
-		gamepanel.setBlockUserInputs(false);
+		gamepanel.getVgp().setBlockUserInputs(false);
 
 		inventory.setDisable(true);
 

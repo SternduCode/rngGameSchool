@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import rngGame.tile.ImgUtil;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -68,13 +69,16 @@ public class AktionButton extends Pane {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		nichts = ImgUtil.resizeImage(nichts, (int)nichts.getWidth(), (int)nichts.getHeight(), (int)(150* gamepanel.getScalingFactorX()), (int)(150*gamepanel.getScalingFactorY()));
-		kann = ImgUtil.resizeImage(kann, (int)kann.getWidth(), (int)kann.getHeight(), (int)(150* gamepanel.getScalingFactorX()), (int)(150*gamepanel.getScalingFactorY()));
-		druck = ImgUtil.resizeImage(druck, (int)druck.getWidth(), (int)druck.getHeight(), (int)(150* gamepanel.getScalingFactorX()), (int)(150*gamepanel.getScalingFactorY()));
+		nichts	= ImgUtil.resizeImage(nichts, (int) nichts.getWidth(), (int) nichts.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
+				(int) (150 * gamepanel.getScalingFactorY()));
+		kann	= ImgUtil.resizeImage(kann, (int) kann.getWidth(), (int) kann.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
+				(int) (150 * gamepanel.getScalingFactorY()));
+		druck	= ImgUtil.resizeImage(druck, (int) druck.getWidth(), (int) druck.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
+				(int) (150 * gamepanel.getScalingFactorY()));
 		aktionbutton.setImage(nichts);
 
-		setLayoutX(gamepanel.SpielLaenge - 220 * gamepanel.getScalingFactorX());
-		setLayoutY(gamepanel.SpielHoehe - 220 * gamepanel.getScalingFactorY());
+		setLayoutX(gamepanel.getGameWidth() - 220 * gamepanel.getScalingFactorX());
+		setLayoutY(gamepanel.getGameHeight() - 220 * gamepanel.getScalingFactorY());
 
 	}
 

@@ -8,8 +8,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Ellipse;
-import rngGame.main.*;
+import rngGame.main.Input;
 import rngGame.stats.*;
+import rngGame.visual.GamePanel;
 
 
 // TODO: Auto-generated Javadoc
@@ -44,7 +45,7 @@ public class TreasureChest extends Building {
 
 	/**
 	 * Instantiates a new treasure chest.
-	 * 
+	 *
 	 * @param building   the building
 	 * @param gp         the gp
 	 * @param buildings  the buildings
@@ -131,8 +132,10 @@ public class TreasureChest extends Building {
 	 * Inits the.
 	 */
 	public void init() {
-		if (!getMiscBoxHandler().containsKey("action")) addMiscBox("action", new Ellipse(getReqWidth() * gamepanel.getScalingFactorX() / 2, getReqHeight() * gamepanel.getScalingFactorY() / 2,
-				gamepanel.BgX / 2, gamepanel.BgY / 2), (gpt, self) -> {
+		if (!getMiscBoxHandler().containsKey("action")) addMiscBox("action",
+				new Ellipse(getReqWidth() * gamepanel.getScalingFactorX() / 2, getReqHeight() * gamepanel.getScalingFactorY() / 2,
+						gamepanel.getBlockSizeX() / 2, gamepanel.getBlockSizeY() / 2),
+				(gpt, self) -> {
 					if (!isOpen)
 						gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
 							isOpen = true;

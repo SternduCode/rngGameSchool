@@ -7,8 +7,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import rngGame.main.*;
+import rngGame.main.Input;
 import rngGame.tile.TileManager;
+import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,14 +55,12 @@ public class Player extends Entity {
 	/**
 	 * Player is not defined in map file but some attributes of it are.
 	 *
-	 * @param gp        A reference to the {@link GamePanel}
-	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu}
-	 *                  via {@link GamePanel#getTileM()}.
-	 * @param requestor Is used to know on what the {@link TileManager#getCM()
-	 *                  ContextMenu} was triggered
+	 * @param gamePanel A reference to the {@link GamePanel}
+	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu} via {@link GamePanel#getTileM()}.
+	 * @param requestor Is used to know on what the {@link TileManager#getCM() ContextMenu} was triggered
 	 */
-	public Player(GamePanel gp, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
-		super(null, 3 * 60, gp, "player", null, cm, requestor);
+	public Player(GamePanel gamePanel, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
+		super(null, 3 * 60, gamePanel, "player", null, cm, requestor);
 		setCurrentKey("down");
 
 		fps = 10.5;
@@ -69,10 +68,10 @@ public class Player extends Entity {
 		reqWidth = (int) ((reqHeight = getSize()) * 1.5); // Set reqHeight to 64 and reqWidth to 96; Player size is
 		// rectangular in this case
 
-		gamepanel = gp;
+		gamepanel = gamePanel;
 
-		screenX = gp.SpielLaenge / 2 - getSize() / 2; // Place the player in the middle of the screen
-		screenY = gp.SpielHoehe / 2 - getSize() / 2;
+		screenX	= gamePanel.getGameWidth() / 2 - getSize() / 2;	// Place the player in the middle of the screen
+		screenY	= gamePanel.getGameHeight() / 2 - getSize() / 2;
 
 		setPosition(0, 0); // Put player on upper left corner of the map; can be overridden in map file
 
@@ -127,10 +126,13 @@ public class Player extends Entity {
 		collisionBoxes.forEach((key, poly) -> {
 			poly.getPoints().clear();
 			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(colliBoxX * gamepanel.getScalingFactorX()-0.5, colliBoxY * gamepanel.getScalingFactorY()-0.5, colliBoxX * gamepanel.getScalingFactorX()-0.5,
-					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY()+0.5, (colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX()+0.5,
-					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY()+0.5, (colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX()+0.5,
-					colliBoxY * gamepanel.getScalingFactorY()-0.5);
+			poly.getPoints().addAll(colliBoxX * gamepanel.getScalingFactorX() - 0.5,
+					colliBoxY * gamepanel.getScalingFactorY() - 0.5, colliBoxX * gamepanel.getScalingFactorX() - 0.5,
+					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY() + 0.5,
+					(colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX() + 0.5,
+					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY() + 0.5,
+					(colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX() + 0.5,
+					colliBoxY * gamepanel.getScalingFactorY() - 0.5);
 		});
 	}
 
@@ -334,21 +336,21 @@ public class Player extends Entity {
 
 		if (isVisible() && p.get()) setVisible(false);
 
-		gamepanel.getBuildings().forEach(b -> {
+		gamepanel.getLgp().getBuildings().forEach(b -> {
 			if (b.collides(this)) {
 				x = oldX;
 				y = oldY;
 			}
 		});
 
-		gamepanel.getNpcs().forEach(b -> {
+		gamepanel.getLgp().getNpcs().forEach(b -> {
 			if (b.collides(this)) {
 				x = oldX;
 				y = oldY;
 			}
 		});
 
-		if (gamepanel.getTileM().collides(this)) {
+		if (gamepanel.getTileManager().collides(this)) {
 			x = oldX;
 			y = oldY;
 		}
@@ -356,8 +358,8 @@ public class Player extends Entity {
 		oldX = x;
 		oldY = y;
 
-		screenX = (int) (gamepanel.SpielLaenge / 2 - iv.getImage().getWidth() / 2);
-		screenY = (int) (gamepanel.SpielHoehe / 2 - iv.getImage().getHeight() / 2);
+		screenX	= (int) (gamepanel.getGameWidth() / 2 - iv.getImage().getWidth() / 2);
+		screenY	= (int) (gamepanel.getGameHeight() / 2 - iv.getImage().getHeight() / 2);
 
 	}
 }

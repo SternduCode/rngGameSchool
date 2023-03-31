@@ -1,28 +1,55 @@
 package rngGame.ui;
 
 import java.util.*;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import rngGame.tile.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PartialFillDialog.
+ */
 public class PartialFillDialog extends Dialog<Boolean> {
 
+	/** The grid. */
 	private final GridPane grid = new GridPane();
+
+	/** The rerandomize. */
 	private Button rerandomize;
+
+	/** The slider. */
 	private Slider slider;
+
+	/** The name. */
 	private Label name;
+
+	/** The space. */
 	private final Label space = new Label("");
+
+	/** The select tool. */
 	private SelectTool selectTool;
+
+	/** The tile. */
 	private Tile tile;
+
+	/** The matrix. */
 	private Boolean[] matrix;
 
+	/**
+	 * Instantiates a new partial fill dialog.
+	 *
+	 * @param selectTool the select tool
+	 * @param tile the tile
+	 */
 	public PartialFillDialog(SelectTool selectTool, Tile tile) {
 		final DialogPane dialogPane = getDialogPane();
 
@@ -63,11 +90,16 @@ public class PartialFillDialog extends Dialog<Boolean> {
 
 		setResultConverter(dialogButton -> {
 			ButtonData data = dialogButton == null ? null : dialogButton.getButtonData();
-			return data == ButtonData.OK_DONE ? true
-					: false;
+			return (data == ButtonData.OK_DONE) == true;
 		});
 	}
 
+	/**
+	 * Make view.
+	 *
+	 * @param img the img
+	 * @return the image
+	 */
 	private Image makeView(Image img) {
 		Pane pane = new Pane();
 		pane.setPrefSize(selectTool.getWidth(), selectTool.getHeight());
@@ -90,6 +122,11 @@ public class PartialFillDialog extends Dialog<Boolean> {
 		return wi;
 	}
 
+	/**
+	 * Randomize.
+	 *
+	 * @param percentage the percentage
+	 */
 	private void randomize(Double percentage) {
 		Image img = tile.images.get(0);
 		matrix = new Random()
@@ -98,6 +135,9 @@ public class PartialFillDialog extends Dialog<Boolean> {
 		selectTool.setFill(new ImagePattern(makeView(img)));
 	}
 
+	/**
+	 * Update grid.
+	 */
 	private void updateGrid() {
 		grid.getChildren().clear();
 
@@ -110,6 +150,11 @@ public class PartialFillDialog extends Dialog<Boolean> {
 		Platform.runLater(() -> slider.requestFocus());
 	}
 
+	/**
+	 * Gets the matrix.
+	 *
+	 * @return the matrix
+	 */
 	public Boolean[] getMatrix() { return matrix; }
 
 }

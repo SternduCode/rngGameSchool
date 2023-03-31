@@ -3,35 +3,57 @@ package rngGame.main;
 import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
+
 import javafx.scene.Node;
 import javafx.scene.input.*;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import rngGame.buildings.Building;
 import rngGame.tile.TextureHolder;
+import rngGame.visual.GamePanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Input.
+ */
 public class Input {
 
+	/**
+	 * The  KeyHandlerKeyCodePair.
+	 */
 	private record KeyHandlerKeyCodePair(Consumer<ModKeysState> handler, KeyCode keyCode, boolean up) {}
 
+	/**
+	 * The  ModKeysState.
+	 */
 	public record ModKeysState(boolean isControlPressed, boolean isShiftPressed, boolean isCapsPressed,
 			boolean isSuperPressed, boolean isAltPressed, boolean isAltgrPressed) {}
 
+	/** The Constant INSTANCE. */
 	private static final Input INSTANCE = new Input();
 
+	/** The key up handlers. */
 	private final Map<KeyCode, List<Consumer<ModKeysState>>> keyDownHandlers = new HashMap<>(),
 			keyUpHandlers = new HashMap<>();
 
+	/** The key handlers. */
 	private final Map<String, KeyHandlerKeyCodePair> keyHandlers = new HashMap<>();
 
+	/** The s. */
 	private boolean n, s;
 
+	/** The altgr state. */
 	private boolean ctrlState, shiftState, altState, superState, capsState, altgrState;
 
+	/** The resize. */
 	private GameObject move, resize;
 
+	/** The gamepanel. */
 	private GamePanel gamepanel;
 
+	/**
+	 * Instantiates a new input.
+	 */
 	private Input() {
 		setKeyHandler("ControlDown", mod -> {
 			ctrlState = true;
@@ -77,7 +99,7 @@ public class Input {
 			// TODO tbd
 		}, KeyCode.CONTEXT_MENU, false);
 		setKeyHandler("AlternateTickUpdate", mod -> {
-			if (System.getProperty("alternateUpdate").equals("true")) System.setProperty("alternateUpdate", "false");
+			if ("true".equals(System.getProperty("alternateUpdate"))) System.setProperty("alternateUpdate", "false");
 			else System.setProperty("alternateUpdate", "true");
 		}, KeyCode.M, false);
 		setKeyHandler("Reload", mod -> {
@@ -88,19 +110,35 @@ public class Input {
 			gamepanel.toggleFpsLabelVisible();
 		}, KeyCode.F, false);
 		setKeyHandler("Teleport", mod -> {
-			if (System.getProperty("teleport").equals("true")) System.setProperty("teleport", "false");
+			if ("true".equals(System.getProperty("teleport"))) System.setProperty("teleport", "false");
 			else System.setProperty("teleport", "true");
 		}, KeyCode.T, false);
 	}
 
+	/**
+	 * Gets the single instance of Input.
+	 *
+	 * @return single instance of Input
+	 */
 	public static Input getInstance() { return INSTANCE; }
 
+	/**
+	 * New C.
+	 *
+	 * @param p the p
+	 */
 	private void newC(Polygon p) {
 		p.getPoints().clear();
 		p.setVisible(false);
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
 	}
 
+	/**
+	 * Save.
+	 *
+	 * @param t the t
+	 * @param path the path
+	 */
 	private void save(Polygon t, String path) {
 		File f = new File("./res/collisions/" + path);
 		if (!f.exists()) try {
@@ -114,7 +152,7 @@ public class Input {
 			raf.writeInt(t.getPoints().size());
 			boolean s = false;
 			for (Double element: t.getPoints())
-				raf.writeDouble((long) (element / ((s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
+				raf.writeDouble((long) (element / ( (s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
 			raf.setLength(4l + t.getPoints().size() * 8l);
 			raf.close();
 
@@ -126,24 +164,69 @@ public class Input {
 	}
 
 
+	/**
+	 * Sets the game panel.
+	 *
+	 * @param gp the new game panel
+	 */
 	protected void setGamePanel(GamePanel gp) {
 		gamepanel=gp;
 	}
 
+	/**
+	 * Drag detected.
+	 *
+	 * @param me the me
+	 */
 	public void dragDetected(MouseEvent me) {}
 
+	/**
+	 * Checks if is altgr pressed.
+	 *
+	 * @return true, if is altgr pressed
+	 */
 	public boolean isAltgrPressed() { return altgrState; }
 
+	/**
+	 * Checks if is alt pressed.
+	 *
+	 * @return true, if is alt pressed
+	 */
 	public boolean isAltPressed() { return altState; }
 
+	/**
+	 * Checks if is caps pressed.
+	 *
+	 * @return true, if is caps pressed
+	 */
 	public boolean isCapsPressed() { return capsState; }
 
+	/**
+	 * Checks if is ctrl pressed.
+	 *
+	 * @return true, if is ctrl pressed
+	 */
 	public boolean isCtrlPressed() { return ctrlState; }
 
+	/**
+	 * Checks if is shift pressed.
+	 *
+	 * @return true, if is shift pressed
+	 */
 	public boolean isShiftPressed() { return shiftState; }
 
+	/**
+	 * Checks if is super pressed.
+	 *
+	 * @return true, if is super pressed
+	 */
 	public boolean isSuperPressed() { return superState; }
 
+	/**
+	 * Key pressed.
+	 *
+	 * @param e the e
+	 */
 	public void keyPressed(KeyEvent e) {
 		if (!gamepanel.isInLoadingScreen()) {
 			KeyCode code = e.getCode();
@@ -160,6 +243,11 @@ public class Input {
 
 	}
 
+	/**
+	 * Key released.
+	 *
+	 * @param e the e
+	 */
 	public void keyReleased(KeyEvent e) {
 		if (!gamepanel.isInLoadingScreen()) {
 
@@ -170,12 +258,12 @@ public class Input {
 
 			if (keyUpHandlers.containsKey(code)) keyUpHandlers.get(code).forEach(con -> con.accept(modKeysState));
 
-			if (e.getText().equalsIgnoreCase("ö")) saveMap();
+			if ("ö".equalsIgnoreCase(e.getText())) saveMap();
 
-			if (code == KeyCode.E) if (System.getProperty("edit").equals("true")) System.setProperty("edit", "false");
+			if (code == KeyCode.E) if ("true".equals(System.getProperty("edit"))) System.setProperty("edit", "false");
 			else System.setProperty("edit", "true");
 
-			if (code == KeyCode.C) if (System.getProperty("coll").equals("true")) System.setProperty("coll", "false");
+			if (code == KeyCode.C) if ("true".equals(System.getProperty("coll"))) System.setProperty("coll", "false");
 			else System.setProperty("coll", "true");
 
 			if (code == KeyCode.N) n = false;
@@ -184,8 +272,18 @@ public class Input {
 		}
 	}
 
+	/**
+	 * Key typed.
+	 *
+	 * @param e the e
+	 */
 	public void keyTyped(KeyEvent e) {}
 
+	/**
+	 * Mouse dragged.
+	 *
+	 * @param me the me
+	 */
 	public void mouseDragged(MouseEvent me) {
 		System.out.println("Dragged " + me);
 		if (gamepanel != null && !gamepanel.isInLoadingScreen()) if (move != null) {
@@ -198,7 +296,7 @@ public class Input {
 					(int) (me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY() - resize.getY()));
 			resize.reloadTextures();
 		} else {
-			Node target = gamepanel.getTileM().getObjectAt(me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX(),
+			Node target = gamepanel.getTileManager().getObjectAt(me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX(),
 					me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY());
 			if (!gamepanel.getSelectTool().isDragging() && target instanceof TextureHolder)
 				gamepanel.getSelectTool().startDrag(me);
@@ -211,25 +309,35 @@ public class Input {
 		}
 	}
 
+	/**
+	 * Mouse moved.
+	 *
+	 * @param me the me
+	 */
 	public void mouseMoved(MouseEvent me) {
-		if (gamepanel != null) if (!gamepanel.getSelectTool().isDragging() && !gamepanel.getTileM().getCM().isShowing())
-			if (System.getProperty("edit").equals("true")) gamepanel.getSelectTool().drawOutlines(me);
+		if (gamepanel != null) if (!gamepanel.getSelectTool().isDragging() && !gamepanel.getTileManager().getCM().isShowing())
+			if ("true".equals(System.getProperty("edit"))) gamepanel.getSelectTool().drawOutlines(me);
 			else gamepanel.getSelectTool().undrawOutlines();
 	}
 
+	/**
+	 * Mouse released.
+	 *
+	 * @param me the me
+	 */
 	public void mouseReleased(MouseEvent me) {
 		System.out.println("Released " + me);
 		if (gamepanel != null) {
-			Node target = gamepanel.getTileM().getObjectAt(me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX(),
+			Node target = gamepanel.getTileManager().getObjectAt(me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX(),
 					me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY());
-			if (System.getProperty("teleport").equals("true")) gamepanel.getPlayer().setPosition(
+			if ("true".equals(System.getProperty("teleport"))) gamepanel.getPlayer().setPosition(
 					me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX()-gamepanel.getPlayer().getColliBoxX(),
 					me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY()-gamepanel.getPlayer().getColliBoxY());
 			else if (target instanceof TextureHolder t) {
 
 				if (gamepanel.getSelectTool().isDragging()) gamepanel.getSelectTool().endDrag();
 				else
-					if (System.getProperty("coll").equals("true")) if ((!ctrlState || !s) && (!ctrlState || !n)) {
+					if ("true".equals(System.getProperty("coll"))) if (!ctrlState || !s && !n) {
 						t.getPoly().getPoints().addAll(me.getX() - t.getLayoutX(), me.getY() - t.getLayoutY());
 						if (t.getTile().poly == null) t.getTile().poly = new ArrayList<>();
 						t.getTile().poly.add(me.getX() - t.getLayoutX());
@@ -237,13 +345,13 @@ public class Input {
 					} else if (ctrlState && s) {
 						String[] sp = t.getTile().name.split("[.]");
 						save(t.getPoly(),
-								gamepanel.getTileM().getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+								gamepanel.getTileManager().getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 								+ ".collisionbox");
 					} else if (ctrlState && n) newC(t.getPoly());
 			} else
 				if (target instanceof Building b
-						&& System.getProperty("coll").equals("true"))
-					if ((!ctrlState || !s) && (!ctrlState || !n))
+						&& "true".equals(System.getProperty("coll")))
+					if (!ctrlState || !s && !n)
 						b.getCollisionBox().getPoints().addAll((double) Math.round(me.getX() - b.getLayoutX()),
 								(double) Math.round(me.getY() - b.getLayoutY()));
 					else if (ctrlState && s) {
@@ -255,10 +363,20 @@ public class Input {
 		}
 	}
 
+	/**
+	 * Move game object.
+	 *
+	 * @param go the go
+	 */
 	public void moveGameObject(GameObject go) {
 		move = go;
 	}
 
+	/**
+	 * Removes the key handler.
+	 *
+	 * @param name the name
+	 */
 	public void removeKeyHandler(String name) {
 		try {
 			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
@@ -270,15 +388,31 @@ public class Input {
 		}
 	}
 
+	/**
+	 * Resize game object.
+	 *
+	 * @param go the go
+	 */
 	public void resizeGameObject(GameObject go) {
 		resize = go;
 	}
 
+	/**
+	 * Save map.
+	 */
 	public void saveMap() {
 		if (gamepanel != null)
-			gamepanel.saveMap();
+			gamepanel.getLgp().saveMap();
 	}
 
+	/**
+	 * Sets the key handler.
+	 *
+	 * @param name the name
+	 * @param handler the handler
+	 * @param keyCode the key code
+	 * @param keyUp the key up
+	 */
 	public void setKeyHandler(String name, Consumer<ModKeysState> handler, KeyCode keyCode, boolean keyUp) {
 		try {
 			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
@@ -306,14 +440,27 @@ public class Input {
 		}
 	}
 
+	/**
+	 * Stop moveing game object.
+	 *
+	 * @param go the go
+	 */
 	public void stopMoveingGameObject(GameObject go) {
 		move = null;
 	}
 
+	/**
+	 * Stop resizeing game object.
+	 *
+	 * @param go the go
+	 */
 	public void stopResizeingGameObject(GameObject go) {
 		resize = null;
 	}
 
+	/**
+	 * Toggle full screen.
+	 */
 	public void toggleFullScreen() {
 		double scaleFactorX, scaleFactorY;
 		scaleFactorX = gamepanel.getScene().getWidth();
@@ -326,14 +473,24 @@ public class Input {
 		if (gamepanel.getScalingFactorY() > 1) scaleFactorY = 1;
 		else scaleFactorY = gamepanel.getScene().getHeight() / scaleFactorY;
 		System.out.println(scaleFactorX + " " + scaleFactorY);
-		gamepanel.scaleTextures(scaleFactorX, scaleFactorY);
+		gamepanel.changeScalingFactor(scaleFactorX, scaleFactorY);
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return "Input [s=" + s + ", ctrlState=" + ctrlState + ", n=" + n + "]";
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param ms the ms
+	 */
 	public void update(long ms) {
 
 	}
