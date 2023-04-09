@@ -47,8 +47,27 @@ public class Text {
 		 * @param lastFrameTime the last frame time
 		 */
 		public void update(long lastFrameTime) {
-
+			
 		}
+		
+		/**
+		 * Methode gibt dir die RGB werte von deinem HEX code wieder um den dann als Farbe (für Schrift) benutzen zu können
+		 * wennde aufrufst einfach ein hex code übergeben, ganzer hex auch mit dem # | BSP: #4f9abd
+		 * 
+		 * @param hexc  the given hexcode
+		 * @param valr 	red   value
+		 * @param valg 	green value
+		 * @param valb 	blue  value
+		**/
+		public int getRGBFromHex(String hexc) {
+			String rr, gg, bb;
+			rr=hexc.substring(1,3); gg=hexc.substring(3,5); bb=hexc.substring(5,7);
+			int valr=Integer.parseInt(rr, 16); int valg=Integer.parseInt(gg, 16); int valb=Integer.parseInt(bb, 16);
+			return valr + valg + valb;
+		}	
+//		public void setTextColorRGB(Text HierBraucheHilfe) {
+//			HierBraucheHilfe.setFill(Color.rgb(0, 0, 0));
+//		}
 
 	}
 
