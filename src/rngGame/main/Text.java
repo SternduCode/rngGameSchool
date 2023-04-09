@@ -19,6 +19,18 @@ public class Text {
 	 */
 	public class AnimatedText extends Pane {
 
+		/** The text. */
+		private String text;
+
+		/** The font height. */
+		private int fontHeight;
+
+		/** The text color. */
+		private Color textColor;
+
+		/** The show one by one. */
+		private boolean showOneByOne;
+
 		/**
 		 * Instantiates a new animated text.
 		 *
