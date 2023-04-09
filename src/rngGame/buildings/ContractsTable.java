@@ -23,6 +23,12 @@ import rngGame.visual.GamePanel;
  */
 public class ContractsTable extends Building {
 
+	/** The animation counter pin. */
+	private long animationCounterPin = 0;
+
+	/** The animation num pin. */
+	private int animationNumPin = 0;
+
 	/** The p 1. */
 	private final Pane p1 = new Pane();
 
@@ -47,8 +53,11 @@ public class ContractsTable extends Building {
 	/** The contract nova. */
 	private Button contractSaturn,contractNebel,contractGalactus,contractNova;
 
+	/** The hudp. */
+	private Image[] hudp;
+
 	/** The hud 4. */
-	private ImageView hud , hud2 , hud3 , hud4;
+	private ImageView hud, hud2, hud3, hud4;
 
 	/** The titlebanner 4. */
 	private ImageView titlebanner,titlebanner2,titlebanner3,titlebanner4;
@@ -135,7 +144,7 @@ public class ContractsTable extends Building {
 		Image galactus = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Galactus.png");
 		Image nova = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/nova.png");
 
-		Image hudp = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Ping.gif");
+		hudp = ImgUtil.getScaledImages(gamepanel, "./res/Contractstuff/Ping.gif");
 		Image titlep = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/title.png");
 		Image ka = Text.getInstance().convertText("Underwater Caverns", 48);
 		ka = ImgUtil.resizeImage(
@@ -174,16 +183,16 @@ public class ContractsTable extends Building {
 
 		text = new ImageView(ka);
 
-		hud = new ImageView(hudp);
+		hud = new ImageView(hudp[0]);
 		hud.setOpacity(0);
 
-		hud2 = new ImageView(hudp);
+		hud2 = new ImageView(hudp[0]);
 		hud2.setOpacity(0);
 
-		hud3 = new ImageView(hudp);
+		hud3 = new ImageView(hudp[0]);
 		hud3.setOpacity(0);
 
-		hud4 = new ImageView(hudp);
+		hud4 = new ImageView(hudp[0]);
 		hud4.setOpacity(0);
 
 		titlebanner = new ImageView(titlep);
@@ -577,20 +586,9 @@ public class ContractsTable extends Building {
 		titlebanner3.setLayoutX(gamepanel.getGameWidth() * 2);
 		titlebanner4.setLayoutX(gamepanel.getGameWidth() * 3);
 
-		hud.setLayoutX(hud.getImage().getWidth() / 2 * gamepanel.getScalingFactorX() - hud.getImage().getWidth() / 2);
-		hud2.setLayoutX(gamepanel.getGameWidth() + hud2.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
-				- hud2.getImage().getWidth() / 2);
-		hud3.setLayoutX(gamepanel.getGameWidth() * 2 + hud3.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
-				- hud3.getImage().getWidth() / 2);
-		hud4.setLayoutX(gamepanel.getGameWidth() * 3 + hud4.getImage().getWidth() / 2 * gamepanel.getScalingFactorX()
-				- hud4.getImage().getWidth() / 2);
-		hud.setLayoutY(hud.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud.getImage().getHeight() / 2);
-		hud2.setLayoutY(
-				hud2.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud2.getImage().getHeight() / 2);
-		hud3.setLayoutY(
-				hud3.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud3.getImage().getHeight() / 2);
-		hud4.setLayoutY(
-				hud4.getImage().getHeight() / 2 * gamepanel.getScalingFactorY() - hud4.getImage().getHeight() / 2);
+		hud2.setLayoutX(gamepanel.getGameWidth());
+		hud3.setLayoutX(gamepanel.getGameWidth() * 2);
+		hud4.setLayoutX(gamepanel.getGameWidth() * 3);
 
 		// add
 		p1.setVisible(false);
@@ -799,6 +797,22 @@ public class ContractsTable extends Building {
 					+ gamepanel.getPlayer().getHeight() / 2);
 			if (!gamepanel.getChildren().contains(button_L))
 				gamepanel.getChildren().add(button_L);
+		}
+		if (System.currentTimeMillis() > animationCounterPin + 1000 / 10) {
+			animationCounterPin = System.currentTimeMillis();
+			animationNumPin++;
+
+			if (animationNumPin >= hudp.length) animationNumPin = 0;
+
+			ImageView iv = switch (index) {
+				case 0 -> hud;
+				case 1 -> hud2;
+				case 2 -> hud3;
+				case 3 -> hud4;
+				default -> hud;
+			};
+
+			iv.setImage(hudp[animationNumPin]);
 		}
 		if (ms != null) ms.update(milis);
 	}

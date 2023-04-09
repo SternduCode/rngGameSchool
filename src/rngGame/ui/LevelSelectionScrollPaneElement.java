@@ -24,9 +24,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 			.map(t -> {
 				try {
 					return new FileInputStream(t);
-				} catch (
-						/** The e. */
-						FileNotFoundException e) {
+				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
 				return null;
@@ -140,7 +138,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		getChildren().addAll(startButton, floor1, picture);
 
-		floor1.setLayoutX(5 * gamepanel.getScalingFactorX());
+		floor1.setLayoutX(54 * gamepanel.getScalingFactorX());
 		floor1.setLayoutY(5 * gamepanel.getScalingFactorY());
 		picture.setLayoutX(7 * gamepanel.getScalingFactorX());
 		picture.setLayoutY(7 * gamepanel.getScalingFactorY());

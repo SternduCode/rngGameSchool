@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 
 import javafx.scene.image.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import rngGame.tile.ImgUtil;
 
 // TODO: Auto-generated Javadoc
@@ -12,11 +14,40 @@ import rngGame.tile.ImgUtil;
  */
 public class Text {
 
+	/**
+	 * The Class AnimatedText.
+	 */
+	public class AnimatedText extends Pane {
+
+		/**
+		 * Instantiates a new animated text.
+		 *
+		 * @param text         the text
+		 * @param fontHeight the font height
+		 * @param showOneByOne the show one by one
+		 * @param textColor    the text color
+		 */
+		public AnimatedText(String text, int fontHeight, boolean showOneByOne, Color textColor) {}
+
+		/**
+		 * Update.
+		 *
+		 * @param lastFrameTime the last frame time
+		 */
+		public void update(long lastFrameTime) {
+
+		}
+
+	}
+
 	/** The Constant INSTANCE. */
 	private static final Text INSTANCE = new Text();
 
 	/** The charmap. */
 	private final Map<Character, Image> charmap;
+
+	/** The animated texts. */
+	private final List<AnimatedText> animatedTexts = new ArrayList<>();
 
 	/**
 	 * Instantiates a new text.
@@ -38,6 +69,19 @@ public class Text {
 	public static Text getInstance() { return INSTANCE; }
 
 	/**
+	 * Gets the width for string.
+	 *
+	 * @param text the text
+	 * @param fontHeight the font height
+	 * @return the width for string
+	 */
+	private int getWidthForString(String text, int fontHeight) {
+		if (fontHeight == -1) return (int) text.chars().mapToObj(c->(char)c).map(charmap::get).mapToDouble(Image::getWidth).sum();
+		return (int) text.chars().mapToObj(c -> (char) c).map(charmap::get).mapToDouble(Image::getWidth).map(d -> d / 32 * fontHeight)
+				.map(Math::floor).sum();
+	}
+
+	/**
 	 * Convert text.
 	 *
 	 * @param text the text
@@ -45,17 +89,16 @@ public class Text {
 	 */
 	public Image convertText(String text) {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
-		int length = 0;
-		for (String line: text.split("\n")) length = Math.max(length, line.length());
-		WritableImage	im		= new WritableImage(length * 12, lines * 32);
+		String	longestLine	= "";
+		for (String line : text.split("\n")) longestLine = longestLine.length() > line.length() ? longestLine : line;
+		WritableImage	im		= new WritableImage(getWidthForString(longestLine, -1), lines * 32);
 		PixelWriter pw = im.getPixelWriter();
 		char[] chars = text.toCharArray();
 		int x = 0, y = 0;
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x += 12;
-		else {
+		} else {
 			pw.setPixels(x, y * 32, (int) charmap.get(c).getWidth(), 32, charmap.get(c).getPixelReader(), 0, 0);
 			x += charmap.get(c).getWidth();
 		}
@@ -65,29 +108,42 @@ public class Text {
 	/**
 	 * Convert text.
 	 *
-	 * @param text the text
-	 * @param fontSize the font size
+	 * @param text       the text
+	 * @param fontHeight the font height
+	 *
 	 * @return the image
 	 */
-	public Image convertText(String text, int fontSize) {
+	public Image convertText(String text, int fontHeight) {
 		int lines = text.replaceAll("[^\n]", "").length() + 1;
-		int length = 0;
-		for (String line: text.split("\n")) length = Math.max(length, line.length());
-		WritableImage	im		= new WritableImage(length * (int) (12 / 32.0 * fontSize), lines * fontSize);
+		String	longestLine	= "";
+		for (String line : text.split("\n")) longestLine = longestLine.length() > line.length() ? longestLine : line;
+		WritableImage	im		= new WritableImage(getWidthForString(longestLine, fontHeight), lines * fontHeight);
 		PixelWriter pw = im.getPixelWriter();
 		char[] chars = text.toCharArray();
 		int x = 0, y = 0;
 		for (char c: chars) if (c == '\n') {
 			x = 0;
 			y++;
-		} else if (c == ' ') x += (int) (12 / 32.0 * fontSize);
-		else {
+		} else {
 			Image wi = ImgUtil.resizeImage(charmap.get(c), (int) charmap.get(c).getWidth(), 32,
-					(int) (charmap.get(c).getWidth() / 32.0 * fontSize), fontSize);
-			pw.setPixels(x, y * fontSize, (int) wi.getWidth(), fontSize, wi.getPixelReader(), 0, 0);
+					(int) (charmap.get(c).getWidth() / 32.0 * fontHeight), fontHeight);
+			pw.setPixels(x, y * fontHeight, (int) wi.getWidth(), fontHeight, wi.getPixelReader(), 0, 0);
 			x += wi.getWidth();
 		}
 		return im;
+	}
+
+	/**
+	 * Convert text.
+	 *
+	 * @param text         the text
+	 * @param fontHeight the font height
+	 * @param showOneByOne the show one by one
+	 * @param textColor    the text color
+	 * @return the animated text
+	 */
+	public AnimatedText convertText(String text, int fontHeight, boolean showOneByOne, Color textColor) {
+		return new AnimatedText(text, fontHeight, showOneByOne, textColor);
 	}
 
 	/**
@@ -144,6 +200,15 @@ public class Text {
 				pw.setPixels(0, 0, 12, 32, numbersPR, x * 32 + 10, y * 32);
 				charmap.put(numbersC[y][x], cha);
 			}
+
+		charmap.put(' ', new WritableImage(12, 32));
 	}
+
+	/**
+	 * Update.
+	 *
+	 * @param lastFrameTime the last frame time
+	 */
+	public void update(long lastFrameTime) { animatedTexts.forEach(t -> t.update(lastFrameTime)); }
 
 }

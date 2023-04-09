@@ -700,6 +700,8 @@ public class GamePanel extends Pane {
 		fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
 		while (frameTimes.size() > Math.pow(fps * 12, 1.2)) frameTimes.remove(0);
 
+		Text.getInstance().update(lastFrameTime);
+
 	}
 
 }
