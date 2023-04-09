@@ -20,16 +20,22 @@ public class Text {
 	public class AnimatedText extends Pane {
 
 		/** The text. */
-		private String text;
+		private final String text;
 
 		/** The font height. */
-		private int fontHeight;
+		private final int fontHeight;
 
 		/** The text color. */
-		private Color textColor;
+		private final Color textColor;
 
 		/** The show one by one. */
-		private boolean showOneByOne;
+		private final boolean showOneByOne;
+
+		/** The img. */
+		private final WritableImage img;
+
+		/** The iv. */
+		private ImageView iv;
 
 		/**
 		 * Instantiates a new animated text.
@@ -39,7 +45,46 @@ public class Text {
 		 * @param showOneByOne the show one by one
 		 * @param textColor    the text color
 		 */
-		public AnimatedText(String text, int fontHeight, boolean showOneByOne, Color textColor) {}
+		public AnimatedText(String text, int fontHeight, boolean showOneByOne, Color textColor) {
+			this.text			= text;
+			this.fontHeight		= fontHeight;
+			this.showOneByOne	= showOneByOne;
+			this.textColor		= textColor;
+
+			img = (WritableImage) convertText(text, fontHeight);
+
+			if (textColor != Color.WHITE) {
+				PixelReader pr = img.getPixelReader();
+
+				PixelWriter pw = img.getPixelWriter();
+
+				for (int i = 0; i < img.getWidth(); i++) for (int j = 0; j < img.getHeight(); j++) {
+					int val = pr.getArgb(i, j);
+					val = (int) ( (Math.round((byte) (val >> 24) * textColor.getOpacity()) << 24)
+							+ (Math.round((byte) (val >> 16) * textColor.getRed()) << 16)
+							+ (Math.round((byte) (val >> 8) * textColor.getGreen()) << 8) + Math.round((byte) val * textColor.getBlue()));
+					pw.setArgb(i, j, val);
+				}
+			}
+
+		}
+
+		/**
+		 * Methode gibt dir die RGB werte von deinem HEX code wieder um den dann als Farbe (für Schrift) benutzen zu können
+		 * wennde aufrufst einfach ein hex code übergeben, ganzer hex auch mit dem # | BSP: #4f9abd.
+		 *
+		 * @param hexc  the given hexcode
+		 * @return the RGB from hex
+		 */
+		public int getRGBFromHex(String hexc) {
+			String rr, gg, bb;
+			rr=hexc.substring(1,3); gg=hexc.substring(3,5); bb=hexc.substring(5,7);
+			int valr=Integer.parseInt(rr, 16); int valg=Integer.parseInt(gg, 16); int valb=Integer.parseInt(bb, 16);
+			return valr + valg + valb;
+		}
+		//		public void setTextColorRGB(Text HierBraucheHilfe) {
+		//			HierBraucheHilfe.setFill(Color.rgb(0, 0, 0));
+		//		}
 
 		/**
 		 * Update.
@@ -47,27 +92,13 @@ public class Text {
 		 * @param lastFrameTime the last frame time
 		 */
 		public void update(long lastFrameTime) {
-			
+			if (iv == null) {
+				iv = new ImageView();
+				getChildren().add(iv);
+			}
+
+			iv.setImage(img);
 		}
-		
-		/**
-		 * Methode gibt dir die RGB werte von deinem HEX code wieder um den dann als Farbe (für Schrift) benutzen zu können
-		 * wennde aufrufst einfach ein hex code übergeben, ganzer hex auch mit dem # | BSP: #4f9abd
-		 * 
-		 * @param hexc  the given hexcode
-		 * @param valr 	red   value
-		 * @param valg 	green value
-		 * @param valb 	blue  value
-		**/
-		public int getRGBFromHex(String hexc) {
-			String rr, gg, bb;
-			rr=hexc.substring(1,3); gg=hexc.substring(3,5); bb=hexc.substring(5,7);
-			int valr=Integer.parseInt(rr, 16); int valg=Integer.parseInt(gg, 16); int valb=Integer.parseInt(bb, 16);
-			return valr + valg + valb;
-		}	
-//		public void setTextColorRGB(Text HierBraucheHilfe) {
-//			HierBraucheHilfe.setFill(Color.rgb(0, 0, 0));
-//		}
 
 	}
 
