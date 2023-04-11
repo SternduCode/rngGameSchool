@@ -2,6 +2,7 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
@@ -50,6 +51,8 @@ public class Text {
 			this.fontHeight		= fontHeight;
 			this.showOneByOne	= showOneByOne;
 			this.textColor		= textColor;
+
+			animatedTexts.add(this);
 
 			img = (WritableImage) convertText(text, fontHeight);
 
@@ -138,7 +141,8 @@ public class Text {
 	 * @return the width for string
 	 */
 	private int getWidthForString(String text, int fontHeight) {
-		if (fontHeight == -1) return (int) text.chars().mapToObj(c->(char)c).map(charmap::get).mapToDouble(Image::getWidth).sum();
+		if (fontHeight == -1) return (int) Stream.of(text.split("\n")).map(String::chars)
+				.mapToDouble(stream -> stream.mapToObj(c -> (char) c).map(charmap::get).mapToDouble(Image::getWidth).sum()).max().orElse(0.0);
 		return (int) text.chars().mapToObj(c -> (char) c).map(charmap::get).mapToDouble(Image::getWidth).map(d -> d / 32 * fontHeight)
 				.map(Math::floor).sum();
 	}

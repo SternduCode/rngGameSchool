@@ -125,7 +125,7 @@ public class GamePanel extends Pane {
 	private final ImageView overlay;
 
 	/** The bubble text. */
-	private final ImageView bubbleText;
+	private final Pane bubbleText;
 
 	/** The layer group. */
 	private final GroupGroup layerGroup;
@@ -201,7 +201,7 @@ public class GamePanel extends Pane {
 
 		this.lgp	= lgp;
 
-		bubbleText = new ImageView();
+		bubbleText = new Pane();
 
 		overlay = new ImageView();
 
@@ -293,7 +293,7 @@ public class GamePanel extends Pane {
 	 *
 	 * @return the bubble text
 	 */
-	public ImageView getBubbleText() {
+	public Pane getBubbleText() {
 		return bubbleText;
 	}
 

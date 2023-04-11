@@ -12,6 +12,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import rngGame.main.*;
+import rngGame.main.Text.AnimatedText;
 import rngGame.tile.ImgUtil;
 import rngGame.visual.GamePanel;
 
@@ -140,11 +141,13 @@ public class NPC extends Entity implements JsonValue {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					gp2.getBubbleText().setImage(Text.getInstance().convertText(line.replace("<<", "\n"),64));
-					gp2.getBubbleText().setLayoutX(gp2.getGameWidth()/2-gp2.getBubbleText().getImage().getWidth()/2);
-					gp2.getBubbleText().setLayoutY(gp2.getGameHeight()/1.4-gp2.getBubbleText().getImage().getHeight()/2.0);
+					AnimatedText at = Text.getInstance().convertText(line.replace("<<", "\n"), 64, false, Color.YELLOWGREEN);
+					// gp2.getBubbleText().setImage(Text.getInstance().convertText(line.replace("<<", "\n"),64));
+					gp2.getBubbleText().getChildren().add(at);
+					gp2.getBubbleText().setLayoutX(gp2.getGameWidth() / 2 - at.getWidth() / 2);
+					gp2.getBubbleText().setLayoutY(gp2.getGameHeight() / 1.4 - at.getHeight() / 2.0);
 
-					System.out.println(gp2.getBubbleText().getImage().getWidth());
+					System.out.println(at.getWidth());
 					System.out.println(line);
 					System.out.println(uff);
 				} catch (FileNotFoundException e) {
