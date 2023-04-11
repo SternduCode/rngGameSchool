@@ -57,15 +57,36 @@ public class Text {
 			img = (WritableImage) convertText(text, fontHeight);
 
 			if (textColor != Color.WHITE) {
+				System.out.println(textColor.getBlue() + " " + textColor.getRed() + " " + textColor.getGreen());
+
 				PixelReader pr = img.getPixelReader();
+
+				int val = 0;
+
+				int ii = 0, jj = 0;
+
+				while (val == 0 || val == -16777216) {
+					val = pr.getArgb(ii, jj);
+					ii++;
+					if (ii >= img.getWidth()) {
+						jj++;
+						ii = 0;
+					}
+				}
+
+				System.out.println((byte) (val >> 16));
+				System.out.println((byte) (val >> 8));
+				System.out.println((byte) val);
+				System.out.println(val);
 
 				PixelWriter pw = img.getPixelWriter();
 
 				for (int i = 0; i < img.getWidth(); i++) for (int j = 0; j < img.getHeight(); j++) {
-					int val = pr.getArgb(i, j);
-					val = (int) ( (Math.round((byte) (val >> 24) * textColor.getOpacity()) << 24)
-							+ (Math.round((byte) (val >> 16) * textColor.getRed()) << 16)
-							+ (Math.round((byte) (val >> 8) * textColor.getGreen()) << 8) + Math.round((byte) val * textColor.getBlue()));
+					val	= pr.getArgb(i, j);
+					val	= (int) ( (Math.round(Byte.toUnsignedInt((byte) (val >> 24)) * textColor.getOpacity()) << 24)
+							+ (Math.round(Byte.toUnsignedInt((byte) (val >> 16)) * textColor.getRed()) << 16)
+							+ (Math.round(Byte.toUnsignedInt((byte) (val >> 8)) * textColor.getGreen()) << 8)
+							+ Math.round(Byte.toUnsignedInt((byte) val) * textColor.getBlue()));
 					pw.setArgb(i, j, val);
 				}
 			}
