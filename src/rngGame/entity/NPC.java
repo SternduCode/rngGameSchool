@@ -141,7 +141,7 @@ public class NPC extends Entity implements JsonValue {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					AnimatedText at = Text.getInstance().convertText(line.replace("<<", "\n"), 64, false, Color.YELLOWGREEN);
+					AnimatedText at = Text.getInstance().convertText(line.replace("<<", "\n"), 64, false, Color.BLUEVIOLET);
 					// gp2.getBubbleText().setImage(Text.getInstance().convertText(line.replace("<<", "\n"),64));
 					gp2.getBubbleText().getChildren().add(at);
 					gp2.getBubbleText().setLayoutX(gp2.getGameWidth() / 2 - at.getWidth() / 2);
