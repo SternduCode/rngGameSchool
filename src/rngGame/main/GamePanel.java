@@ -278,6 +278,12 @@ public class GamePanel extends Pane {
 		else Platform.runLater(r);
 
 	}
+	
+	public void makeSound(String soundname){
+		MediaPlayer mp = new MediaPlayer(new Media(new File("./res/" + soundname).toURI().toString()));
+		mp.setAutoPlay(true);
+		mp.setVolume(.2);
+	}
 
 	/**
 	 * To string.
