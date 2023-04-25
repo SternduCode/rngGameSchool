@@ -1,0 +1,92 @@
+{
+	"npcs" : [
+		{
+			"requestedSize" : [
+				192,
+				192
+			],
+			"textures" : {
+				"default" : "Seraph.gif"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				10.0000
+			],
+			"position" : [
+				1730.00,
+				1113.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Water",
+			"layer" : [
+				0
+			]
+		}
+	],
+	"buildings" : [
+		
+	],
+	"map" : {
+		"playerLayer" : 0,
+		"textures" : [
+			"EckeLinksOben.png",
+			"SeiteOben2.png",
+			"SeiteObenBS.png",
+			"SeiteOben3.png",
+			"EckeRechtsOben.png",
+			"Void.png",
+			"SeiteLinks2.png",
+			"WasserEckeLinksO.png",
+			"WasserSeiteOben.png",
+			"WasserEckeRechtsO.png",
+			"SeiteRechts2.png",
+			"SeiteLinksBS.png",
+			"WasserSeiteLinks.png",
+			"FackelSpot.png",
+			"WasserSeiteRechts.png",
+			"LochMiniEckeLinkU.png",
+			"WasserEckeLinksU.png",
+			"WasserMiniEcke2.png",
+			"WasserMiniRechts.png",
+			"WasserMiniLinks.png",
+			"EckeLinksUnten.png",
+			"SeiteUnten2.png",
+			"WasserStrom.png",
+			"LochMiniEckeRechts.png",
+			"SeiteRechtsBS.png",
+			"Gehaenge.png",
+			"WasserFall.png",
+			"WasserSeiteUnten.png",
+			"WasserEckeRechtsU.png",
+			"SeiteUntenBS.png",
+			"EckeRechtsUnten.png"
+		],
+		"background" : "backgrounds/dungeonhintergrund1.png",
+		"startingPosition" : [
+			48.0000,
+			48.0000
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 1 2 3 4 5 5 5",
+			"6 7 8 9 10 5 5 5",
+			"11 12 13 14 15 3 3 4",
+			"6 16 17 18 19 8 9 10",
+			"20 21 22 23 12 13 14 24",
+			"25 25 26 6 16 27 28 10",
+			"5 5 5 20 21 29 21 30",
+			"5 5 5 25 25 5 25 25"
+		]
+	}
+}

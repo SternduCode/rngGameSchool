@@ -182,11 +182,18 @@ public class TileManager extends Pane {
 		mbuildings	= new Menu("Buildings");
 		mextra		= new Menu("Extras");
 		mmobs		= new Menu("Mob Test");
+		mtiles.setStyle("-fx-font-size: 20;");
+		mnpcs.setStyle("-fx-font-size: 20;");
+		mbuildings.setStyle("-fx-font-size: 20;");
+		mextra.setStyle("-fx-font-size: 20;");
+		mmobs.setStyle("-fx-font-size: 20;");
 		MenuItem save = new MenuItem("save");
+		save.setStyle("-fx-font-size: 20;");
 		save.setOnAction(ae -> gp.getLgp().saveMap());
 		mextra.getItems().add(save);
 
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
+		backToSpawn.setStyle("-fx-font-size: 20;");
 		backToSpawn.setOnAction(ae -> {
 			double[] posi = getStartingPosition();
 			gp.getPlayer()
@@ -200,6 +207,10 @@ public class TileManager extends Pane {
 		insel_k	= new Menu("Insel_K");
 		insel_m	= new Menu("Insel_M");
 		insel_g	= new Menu("Insel_G");
+		maps.setStyle("-fx-font-size: 20;");
+		insel_k.setStyle("-fx-font-size: 20;");
+		insel_m.setStyle("-fx-font-size: 20;");
+		insel_g.setStyle("-fx-font-size: 20;");
 		mextra.getItems().addAll(maps, insel_k, insel_m, insel_g);
 
 		setOnContextMenuRequested(e -> {
@@ -583,24 +594,28 @@ public class TileManager extends Pane {
 		for (File f : new File("./res/maps").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setStyle("-fx-font-size: 20;");
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/" + map.getText() + ".json"));
 			maps.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_k").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setStyle("-fx-font-size: 20;");
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_k/" + map.getText() + ".json"));
 			insel_k.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_m").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setStyle("-fx-font-size: 20;");
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_m/" + map.getText() + ".json"));
 			insel_m.getItems().add(map);
 		}
 		for (File f : new File("./res/maps/insel_g").listFiles((dir, f) -> f.endsWith(".json"))) {
 			String[]	sp	= f.getName().split("[.]");
 			MenuItem	map	= new MenuItem(String.join(".", Arrays.copyOf(sp, sp.length - 1)));
+			map.setStyle("-fx-font-size: 20;");
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_g/" + map.getText() + ".json"));
 			insel_g.getItems().add(map);
 		}
@@ -962,7 +977,7 @@ public class TileManager extends Pane {
 				mtiles.getItems()
 				.add(new MenuItemWTile( ((StringValue) texture).getValue(),
 						new ImageView(ImgUtil.resizeImage(t.images.get(0),
-								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
+								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
 				if (new File("./res/collisions/" + getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
@@ -1013,7 +1028,7 @@ public class TileManager extends Pane {
 					lIV.setFitHeight(16);
 				} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 						(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
-						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 16, 16));
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 48, 48));
 				getMbuildings().getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
@@ -1034,7 +1049,7 @@ public class TileManager extends Pane {
 					lIV.setFitHeight(16);
 				} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 						(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-						(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 16, 16));
+						(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48));
 				if (n instanceof MobRan mr)
 					mmobs.getItems()
 					.add(new MenuItemWMOB(
@@ -1054,7 +1069,11 @@ public class TileManager extends Pane {
 			mtiles.getItems().add(new MenuItem("add Texture"));
 			mnpcs.getItems().add(new MenuItem("add Texture"));
 			mmobs.getItems().add(new MenuItem("add Texture"));
+			mtiles.getItems().get(mtiles.getItems().size() - 1).setStyle("-fx-font-size: 20;");
+			mnpcs.getItems().get(mnpcs.getItems().size() - 1).setStyle("-fx-font-size: 20;");
+			mmobs.getItems().get(mmobs.getItems().size() - 1).setStyle("-fx-font-size: 20;");
 			getMbuildings().getItems().add(new MenuItem("add Texture"));
+			getMbuildings().getItems().get(getMbuildings().getItems().size() - 1).setStyle("-fx-font-size: 20;");
 			for (MenuItem mi : mtiles.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi : mnpcs.getItems()) mi.setOnAction(this::contextMenu);
 			for (MenuItem mi : getMbuildings().getItems()) mi.setOnAction(this::contextMenu);

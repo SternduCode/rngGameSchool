@@ -9,7 +9,7 @@ import rngGame.entity.MobRan;
  * The Class MenuItemWMOB.
  */
 public class MenuItemWMOB extends MenuItem {
-	
+
 	/** The mob. */
 	private final MobRan mob;
 
@@ -23,6 +23,7 @@ public class MenuItemWMOB extends MenuItem {
 	public MenuItemWMOB(String text, Node graphic, MobRan mob) {
 		super(text, graphic);
 		this.mob = mob;
+		setStyle("-fx-font-size: 20;");
 	}
 
 	/**

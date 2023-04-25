@@ -62,6 +62,9 @@ public class TextureHolder extends Pane {
 		menu = new Menu("Texture Holder");
 		position = new MenuItem();
 		fpsI = new MenuItem();
+		menu.setStyle("-fx-font-size: 20;");
+		position.setStyle("-fx-font-size: 20;");
+		fpsI.setStyle("-fx-font-size: 20;");
 		fpsI.setOnAction(this::setFPS);
 		menu.getItems().addAll(position,fpsI);
 		setOnContextMenuRequested(e -> {
