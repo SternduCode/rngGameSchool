@@ -132,12 +132,17 @@ public class SelectTool extends Rectangle {
 		setDisable(true);
 		setVisible(false);
 		copy = new MenuItem("Copy");
+		copy.setStyle("-fx-font-size: 20;");
 		copy.setOnAction(this::handleContextMenu);
 		saveAsMap = new MenuItem("Save as Map");
+		saveAsMap.setStyle("-fx-font-size: 20;");
 		saveAsMap.setOnAction(this::handleContextMenu);
 		select = new Menu("Select");
+		select.setStyle("-fx-font-size: 20;");
 		fill = new Menu("Fill");
+		fill.setStyle("-fx-font-size: 20;");
 		partialFill = new Menu("Partial Fill");
+		partialFill.setStyle("-fx-font-size: 20;");
 		select.getItems().addAll(fill, partialFill);
 	}
 
