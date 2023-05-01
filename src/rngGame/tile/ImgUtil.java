@@ -164,17 +164,19 @@ public class ImgUtil {
 				for (int i = 0; i < out.length; i++) out[i] = ImgUtil.resizeImage(
 						awtToFx[i], (int) awtToFx[i].getWidth(), (int) awtToFx[i].getHeight(),
 						(int) (width * gamepanel.getScalingFactorX()),
-						(int) (height * gamepanel.getScalingFactorY()));
+						(int) (height * gamepanel.getScalingFactorY()), flip);
 
 				return out;
 			}
 			Image wi = new Image(new FileInputStream(path));
-			return new Image[] {
-					ImgUtil.resizeImage(
-							wi, (int) wi.getWidth(), (int) wi.getHeight(),
+			Image[] imgs = new Image[((int) wi.getWidth()) / ((int) wi.getHeight())];
+			for (int k = 0; k < imgs.length; k++) {
+				imgs[k] = ImgUtil.resizeImage(
+							wi, (int) wi.getHeight(), (int) wi.getHeight(),
 							(int) (width * gamepanel.getScalingFactorX()),
-							(int) (height * gamepanel.getScalingFactorY()))
-			};
+							(int) (height * gamepanel.getScalingFactorY()));
+			}
+			return imgs;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
