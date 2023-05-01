@@ -807,7 +807,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		List<Image> li = new ArrayList<>();
 		try {
 			isGif.put(key, false);
-			Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight, flip));
+			Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight, flipTextures));
 			
 			if (path.toLowerCase().endsWith("gif")) {
 				fps = 10;

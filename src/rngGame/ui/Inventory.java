@@ -1089,6 +1089,10 @@ public class Inventory extends Pane {
 		return a;
 	}
 	
+	public Demon[] getDemons() {
+		return currentDemonArray;
+	}	
+	
 	public void statsImages() {
 		Image hpText1 = Text.getInstance().convertText("HP:" + getCurrentDemon().getHp(), 48);
 		hpText1 = ImgUtil.resizeImage(
