@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
+import rngGame.ui.HealthBar;
 import rngGame.visual.GamePanel;
 
 
@@ -116,6 +117,7 @@ public class MobRan extends NPC {
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 			Demon eigenMob;
 			Demon demonMob = MobGen();
+			HealthBar h, hh;
 			System.out.println(demonMob);
 			if (demonMob != null) {
 				
@@ -136,8 +138,14 @@ public class MobRan extends NPC {
 				eigenMob.getDemon().setLayoutY(gpt.getHeight()/6.4);
 				eigenMob.getDemon().flipTextures();
 				eigenMob.getDemon().reloadTextures();
+				h = new HealthBar(gpt);
+				hh = new HealthBar(gpt);
+				h.setLayoutX(gpt.getWidth()/2);
+				hh.setLayoutX(gpt.getWidth()/4);
+				h.update();
+				hh.update();
 				
-				gpt.getChildren().addAll(bbgv, demonMob.getDemon(), eigenMob.getDemon());
+				gpt.getChildren().addAll(bbgv, demonMob.getDemon(), eigenMob.getDemon(), h, hh);
 				
 				
 			}
