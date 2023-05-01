@@ -271,7 +271,10 @@ public class ImgUtil {
 		for (int i = 0; i < h2; i++) for (int j = 0; j < w2; j++) {
 			px = (int) Math.floor(j * x_ratio);
 			py = (int) Math.floor(i * y_ratio);
-			writer.setArgb(w2 - 1 - j, i, reader.getArgb(px, py));
+			if (flip)
+				writer.setArgb(w2 - 1 - j, i, reader.getArgb(px, py));
+			else
+				writer.setArgb(j, i, reader.getArgb(px, py));
 		}
 		return wi;
 	}
