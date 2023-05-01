@@ -46,7 +46,9 @@ public class House extends Building {
 		super(building, buildings, cm, requestorB);
 		setCurrentKey("closed");
 		house = new Menu("House");
+		house.setStyle("-fx-font-size: 20;");
 		mapI = new MenuItem();
+		mapI.setStyle("-fx-font-size: 20;");
 		mapI.setOnAction(this::handleContextMenu);
 		map = building.map;
 		house.getItems().add(mapI);
@@ -68,7 +70,9 @@ public class House extends Building {
 		if (building.containsKey("map")) setMap(((StringValue) building.get("map")).getValue());
 		setCurrentKey("closed");
 		house = new Menu("House");
+		house.setStyle("-fx-font-size: 20;");
 		mapI = new MenuItem();
+		mapI.setStyle("-fx-font-size: 20;");
 		mapI.setOnAction(this::handleContextMenu);
 		house.getItems().add(mapI);
 		if (!getMiscBoxes().containsKey("open")) {

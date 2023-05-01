@@ -39,7 +39,9 @@ public class MonsterNPC extends NPC {
 		super(npc, gp, "demons/" + ((StringValue) npc.get("dir")).getValue(),npcs, cm, requestorN);
 		dir = ((StringValue) npc.get("dir")).getValue();
 		demon = new Menu("Demon");
+		demon.setStyle("-fx-font-size: 20;");
 		dirI=new MenuItem();
+		dirI.setStyle("-fx-font-size: 20;");
 		dirI.setOnAction(this::handleContextMenu);
 		demon.getItems().add(dirI);
 	}
@@ -57,7 +59,9 @@ public class MonsterNPC extends NPC {
 		super(npc, npcs, cm, requestorN);
 		dir = npc.dir;
 		demon = new Menu("Demon");
+		demon.setStyle("-fx-font-size: 20;");
 		dirI = new MenuItem();
+		dirI.setStyle("-fx-font-size: 20;");
 		dirI.setOnAction(this::handleContextMenu);
 		demon.getItems().add(dirI);
 	}

@@ -196,7 +196,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		extraData = gameObject.extraData;
 
 		menu = new Menu("GameObject");
+		menu.setStyle("-fx-font-size: 20;");
 		imagesM = new Menu("Images");
+		imagesM.setStyle("-fx-font-size: 20;");
 		position = new MenuItem();
 		fpsI = new MenuItem();
 		currentKeyI = new MenuItem();
@@ -206,7 +208,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		backgroundI = new MenuItem();
 		layerI = new MenuItem();
 		reloadTextures = new MenuItem("Reload Textures");
+		reloadTextures.setStyle("-fx-font-size: 20;");
 		remove = new MenuItem("Remove");
+		remove.setStyle("-fx-font-size: 20;");
 		position.setOnAction(this::handleContextMenu);
 		fpsI.setOnAction(this::handleContextMenu);
 		currentKeyI.setOnAction(this::handleContextMenu);
@@ -520,7 +524,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		}
 
 		menu = new Menu("GameObject");
+		menu.setStyle("-fx-font-size: 20;");
 		imagesM = new Menu("Images");
+		imagesM.setStyle("-fx-font-size: 20;");
 		position = new MenuItem();
 		fpsI = new MenuItem();
 		currentKeyI = new MenuItem();
@@ -530,7 +536,9 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		backgroundI = new MenuItem();
 		layerI = new MenuItem();
 		reloadTextures = new MenuItem("Reload Textures");
+		reloadTextures.setStyle("-fx-font-size: 20;");
 		remove = new MenuItem("Remove");
+		remove.setStyle("-fx-font-size: 20;");
 		position.setOnAction(this::handleContextMenu);
 		fpsI.setOnAction(this::handleContextMenu);
 		currentKeyI.setOnAction(this::handleContextMenu);
@@ -828,7 +836,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					boolean s = false;
 					for (int i = 0; i < length; i++) collisionBox.getPoints()
 					.add((double) (long) (raf.readDouble()
-									* ( (s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
+							* ( (s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -940,13 +948,21 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	 */
 	public List<Menu> getMenus() {
 		position.setText("Position: " + x + " " + y);
+		position.setStyle("-fx-font-size: 20;");
 		fpsI.setText("FPS: " + fps);
+		fpsI.setStyle("-fx-font-size: 20;");
 		currentKeyI.setText("Current Key: " + currentKey);
+		currentKeyI.setStyle("-fx-font-size: 20;");
 		directoryI.setText("Directory: " + directory);
+		directoryI.setStyle("-fx-font-size: 20;");
 		origDim.setText("Original Dimensions: " + origWidth + " " + origHeight);
+		origDim.setStyle("-fx-font-size: 20;");
 		reqDim.setText("Requested Dimensions: " + reqWidth + " " + reqHeight);
+		reqDim.setStyle("-fx-font-size: 20;");
 		backgroundI.setText("Background: " + background);
+		backgroundI.setStyle("-fx-font-size: 20;");
 		layerI.setText("Layer: " + layer);
+		layerI.setStyle("-fx-font-size: 20;");
 		imagesM.getItems().clear();
 		for (Entry<String, String> en: textureFiles.entrySet()) {
 			ImageView lIV;
@@ -954,17 +970,19 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 				lIV = new ImageView(images.get(getCurrentKey()).get(0));
 				//								lIV.setScaleX(16.0 / lIV.getImage().getWidth());
 				//								lIV.setScaleY(16.0 / lIV.getImage().getHeight());
-				lIV.setFitWidth(16);
-				lIV.setFitHeight(16);
+				lIV.setFitWidth(48);
+				lIV.setFitHeight(48);
 			} else lIV = new ImageView(ImgUtil.resizeImage(images.get(en.getKey()).get(0),
 					(int) images.get(en.getKey()).get(0).getWidth(),
-					(int) images.get(en.getKey()).get(0).getHeight(), 16, 16));
+					(int) images.get(en.getKey()).get(0).getHeight(), 48, 48));
 			MenuItem img = new MenuItem(en.getKey() + " : " + en.getValue(),
 					lIV);
+			img.setStyle("-fx-font-size: 20;");
 			img.setOnAction(this::handleContextMenu);
 			imagesM.getItems().add(img);
 		}
 		MenuItem img = new MenuItem("add Texture");
+		img.setStyle("-fx-font-size: 20;");
 		img.setOnAction(this::handleContextMenu);
 		imagesM.getItems().add(img);
 		List<Menu> li = new ArrayList<>();
