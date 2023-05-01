@@ -805,11 +805,22 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	protected List<Image> getAnimatedImages(String key, String path) throws FileNotFoundException {
 		List<Image> li = new ArrayList<>();
 		try {
-			isGif.put(key, false);
-			Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight, flip));
-			
+			Image img = new Image(new FileInputStream("./res/" + directory + "/" + path));
+
 			if (path.toLowerCase().endsWith("gif")) {
+				isGif.put(key, false);
+				Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight, flipTextures));
+
 				fps = 10;
+				// li.add(img);
+			} else {
+				isGif.put(key, false);
+				for (int i = 0; i < img.getWidth(); i += origWidth) {
+					WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
+					li.add(ImgUtil.resizeImage(wi,
+							(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
+							(int) (reqHeight * gamepanel.getScalingFactorY()), flipTextures));
+				}
 			}
 			String[] sp = path.split("[.]");
 			Polygon collisionBox = collisionBoxes.get(key);
