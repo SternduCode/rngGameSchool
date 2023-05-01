@@ -77,7 +77,7 @@ public class Inventory extends Pane {
 	private final GamePanel gamepanel;
 
 	/** The inv backround. */
-	private ImageView invBackround,ctov;
+	private ImageView invBackround,ctov,ctcomp;
 
 	/** The aus xb. */
 	private Button ausXb;
@@ -424,8 +424,13 @@ public class Inventory extends Pane {
 		Image	idkButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
 		idkbutton = new Button(idkButton2);
 		
-		
-		
+		Image stage1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov1.png");
+		Image stage2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov2.png");
+		Image stage3 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov3.png");
+		Image stage4 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov4.png");
+		Image stage5 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov5.png");
+		Image stage6 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov6.png");
+		ctcomp = new ImageView(stage1);
 		
 		Pane	p			= new Pane();
 		Pane	p2			= new Pane();
@@ -778,7 +783,7 @@ public class Inventory extends Pane {
 		// TODO fix f11
 
 		getChildren().addAll(potionbutton, armorbutton, usebutton, keybutton, idkbutton);
-		getChildren().addAll(ctb1,ctb2,ctb3,ctb4,ctb5,ctb6,ctov);
+		getChildren().addAll(ctcomp,ctb1,ctb2,ctb3,ctb4,ctb5,ctb6,ctov);
 		ctov.setLayoutX(768);
 		ctov.setLayoutY(283);
 		ctb1.setLayoutX(768);
@@ -881,6 +886,7 @@ public class Inventory extends Pane {
 		ctb1.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb1.getLayoutX());
 			ctov.setLayoutY(ctb1.getLayoutY());
+			ctcomp.setImage(stage1);
 			getChildren().remove(getCurrentDemon().getDemon());
 			currentDemonIndex = 0;
 			statsImages();
@@ -889,6 +895,7 @@ public class Inventory extends Pane {
 		ctb2.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb2.getLayoutX());
 			ctov.setLayoutY(ctb2.getLayoutY());
+			ctcomp.setImage(stage2);
 			getChildren().remove(getCurrentDemon().getDemon());
 			currentDemonIndex = 1;
 			statsImages();
@@ -897,6 +904,7 @@ public class Inventory extends Pane {
 		ctb3.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb3.getLayoutX());
 			ctov.setLayoutY(ctb3.getLayoutY());
+			ctcomp.setImage(stage3);
 			getChildren().remove(getCurrentDemon().getDemon());
 			currentDemonIndex = 2;
 			statsImages();
@@ -905,6 +913,7 @@ public class Inventory extends Pane {
 		ctb4.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb4.getLayoutX());
 			ctov.setLayoutY(ctb4.getLayoutY());
+			ctcomp.setImage(stage4);
 			getChildren().remove(getCurrentDemon().getDemon());
 			currentDemonIndex = 3;
 			statsImages();
@@ -913,6 +922,7 @@ public class Inventory extends Pane {
 		ctb5.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb5.getLayoutX());
 			ctov.setLayoutY(ctb5.getLayoutY());
+			ctcomp.setImage(stage5);
 			getChildren().remove(getCurrentDemon().getDemon());
 			currentDemonIndex = 4;
 			statsImages();
@@ -921,6 +931,7 @@ public class Inventory extends Pane {
 		ctb6.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb6.getLayoutX());
 			ctov.setLayoutY(ctb6.getLayoutY());
+			ctcomp.setImage(stage6);
 			getChildren().remove(getCurrentDemon().getDemon());	
 			currentDemonIndex = 5;
 			statsImages();
@@ -1137,6 +1148,14 @@ public class Inventory extends Pane {
 				(int) (lvlText1.getWidth() * gamepanel.getVgp().getScalingFactorX()),
 				(int) (lvlText1.getHeight() * gamepanel.getVgp().getScalingFactorY()));
 
+		getChildren().add(getCurrentDemon().getDemon());
+		getCurrentDemon().getDemon().setFixToScreen(true);
+		getCurrentDemon().getDemon().setReqHeight(192);
+		getCurrentDemon().getDemon().setReqWidth(192);
+		getCurrentDemon().getDemon().reloadTextures();
+		getCurrentDemon().getDemon().setLayoutX(180 * gamepanel.getVgp().getScalingFactorX());
+		getCurrentDemon().getDemon().setLayoutY(50 * gamepanel.getVgp().getScalingFactorX());
+		
 		hpView.setImage(hpText1);
 		atkView.setImage(atkText1);
 		resView.setImage(resText1);
@@ -1147,15 +1166,5 @@ public class Inventory extends Pane {
 		expBar.setImage(showXPbr());
 		elementView.setImage(showElementbr(getCurrentDemon().getElement()));
 		eIconView.setImage(showElementIcon(getCurrentDemon().getElement()));
-		
-		getChildren().add(getCurrentDemon().getDemon());
-		getCurrentDemon().getDemon().setFixToScreen(true);
-		getCurrentDemon().getDemon().setReqHeight(192);
-		getCurrentDemon().getDemon().setReqWidth(192);
-		getCurrentDemon().getDemon().reloadTextures();
-		getCurrentDemon().getDemon().setLayoutX(180 * gamepanel.getVgp().getScalingFactorX());
-		getCurrentDemon().getDemon().setLayoutY(50 * gamepanel.getVgp().getScalingFactorX());
-
-		
 	}
 }
