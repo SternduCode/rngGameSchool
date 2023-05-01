@@ -80,7 +80,7 @@ public class TabMenu extends Pane {
 	private Image sureN2;
 
 	/** The inventory. */
-	private final Inventory inventory;
+	private final Inventory Inventory;
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -144,9 +144,9 @@ public class TabMenu extends Pane {
 		setDisable(true);
 		this.gamepanel = gamepanel;
 
-		inventory = new Inventory(gamepanel, this);
-		getChildren().add(inventory);
-		inventory.setDisable(true);
+		Inventory = new Inventory(gamepanel, this);
+		getChildren().add(Inventory);
+		Inventory.setDisable(true);
 
 		Input.getInstance().setKeyHandler("inv", mod -> {
 			if(!noInput.get()) {
@@ -166,7 +166,7 @@ public class TabMenu extends Pane {
 					});
 					invB.setOnMouseReleased(me -> {
 						invB.setImage(invB1);
-						inventory.show();
+						Inventory.show();
 					});
 
 					queB.setOnMousePressed(me -> {
@@ -222,7 +222,7 @@ public class TabMenu extends Pane {
 					ft.play();
 					ib1.play();
 					closeTabm(false);
-					inventory.endShow();
+					Inventory.endShow();
 				}
 			}
 		}, KeyCode.TAB, false);
@@ -238,7 +238,7 @@ public class TabMenu extends Pane {
 		if(toggleState) ab.getAndSet(!ab.get());
 		gamepanel.getVgp().setBlockUserInputs(false);
 
-		inventory.setDisable(true);
+		Inventory.setDisable(true);
 
 		new Thread(()->{
 			try {
@@ -281,7 +281,7 @@ public class TabMenu extends Pane {
 		sureN2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN2.png");
 		sureN.setImage(sureN1);
 
-		inventory.scaleF11();
+		Inventory.scaleF11();
 	}
 
 	/**
@@ -289,5 +289,5 @@ public class TabMenu extends Pane {
 	 *
 	 * @return the inventory
 	 */
-	public Inventory getInventory() { return inventory; }
+	public Inventory getInventory() { return Inventory; }
 }
