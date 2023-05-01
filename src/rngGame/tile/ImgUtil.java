@@ -169,10 +169,10 @@ public class ImgUtil {
 				return out;
 			}
 			Image wi = new Image(new FileInputStream(path));
-			Image[] imgs = new Image[((int) wi.getWidth()) / ((int) wi.getHeight())];
+			Image[] imgs = new Image[1];
 			for (int k = 0; k < imgs.length; k++) {
 				imgs[k] = ImgUtil.resizeImage(
-							wi, (int) wi.getHeight(), (int) wi.getHeight(),
+							wi, (int) wi.getWidth(), (int) wi.getHeight(),
 							(int) (width * gamepanel.getScalingFactorX()),
 							(int) (height * gamepanel.getScalingFactorY()), flip);
 			}
