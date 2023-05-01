@@ -45,7 +45,6 @@ public class MonsterNPC extends NPC {
 		dirI.setOnAction(this::handleContextMenu);
 		demon.getItems().add(dirI);
 	}
-
 	/**
 	 * Instantiates a new monster NPC.
 	 *
@@ -112,5 +111,7 @@ public class MonsterNPC extends NPC {
 		jo.put("dir", dir);
 		return jo;
 	}
+
+	
 
 }

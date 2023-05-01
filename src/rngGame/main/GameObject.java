@@ -109,6 +109,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	/** The fix to screen. */
 	protected boolean fixToScreen;
 
+	protected boolean flipTextures = false;
 
 	/** The remove. */
 	private final MenuItem position, fpsI, currentKeyI, directoryI, origDim, reqDim, backgroundI, layerI,
@@ -809,7 +810,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 
 			if (path.toLowerCase().endsWith("gif")) {
 				isGif.put(key, false);
-				Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight));
+				Collections.addAll(li, ImgUtil.getScaledImages(gamepanel, "./res/" + directory + "/" + path, reqWidth, reqHeight, flipTextures));
 
 				fps = 10;
 				// li.add(img);
@@ -819,7 +820,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 					WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, origWidth, origHeight);
 					li.add(ImgUtil.resizeImage(wi,
 							(int) wi.getWidth(), (int) wi.getHeight(), (int) (reqWidth * gamepanel.getScalingFactorX()),
-							(int) (reqHeight * gamepanel.getScalingFactorY())));
+							(int) (reqHeight * gamepanel.getScalingFactorY()), flipTextures));
 				}
 			}
 			String[] sp = path.split("[.]");
@@ -913,6 +914,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 		return collisionBoxes.get(currentKey);
 	}
 
+	
+	public void flipTextures() {
+		flipTextures = !flipTextures;
+		reloadTextures();
+	}
 	/**
 	 * Gets the current key.
 	 *

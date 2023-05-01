@@ -35,6 +35,16 @@ public class ImgUtil {
 			return null;
 		}
 	}
+	
+	public static Image getScaledImage(GamePanel gamepanel, String path, boolean flip) {
+		try {
+			Image wi = new Image(new FileInputStream(path));
+			return getScaledImage(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	 * Gets the scaled image.
@@ -48,6 +58,10 @@ public class ImgUtil {
 	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
 		return getScaledImages(gamepanel, path, width, height)[0];
 	}
+	
+	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height, boolean flip) {
+		return getScaledImages(gamepanel, path, width, height, flip)[0];
+	}
 
 	/**
 	 * Gets the scaled image.
@@ -58,6 +72,10 @@ public class ImgUtil {
 	 */
 	public static Image getScaledImage(rngGame.main.GamePanel gamepanel, String path) {
 		return getScaledImage(gamepanel.getVgp(), path);
+	}
+	
+	public static Image getScaledImage(rngGame.main.GamePanel gamepanel, String path, boolean flip) {
+		return getScaledImage(gamepanel.getVgp(), path, flip);
 	}
 
 	/**
@@ -76,6 +94,20 @@ public class ImgUtil {
 			return null;
 		}
 	}
+	
+	public static Image[] getScaledImages(GamePanel gamepanel, String path, boolean flip) {
+		try {
+			Image wi = new Image(new FileInputStream(path));
+			return getScaledImages(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height) {
+		return getScaledImages(gamepanel, path, width, height, false);
+	}
 
 	/**
 	 * For gifs put {@code 			iv.setScaleX(gamepanel.getScalingFactorX());
@@ -87,7 +119,7 @@ public class ImgUtil {
 	 * @param height the height
 	 * @return the scaled image
 	 */
-	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height) {
+	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height, boolean flip) {
 		String[] sp = path.split("[.]");
 		try {
 			if ("gif".equals(sp[sp.length - 1])) {
@@ -132,17 +164,19 @@ public class ImgUtil {
 				for (int i = 0; i < out.length; i++) out[i] = ImgUtil.resizeImage(
 						awtToFx[i], (int) awtToFx[i].getWidth(), (int) awtToFx[i].getHeight(),
 						(int) (width * gamepanel.getScalingFactorX()),
-						(int) (height * gamepanel.getScalingFactorY()));
+						(int) (height * gamepanel.getScalingFactorY()), flip);
 
 				return out;
 			}
 			Image wi = new Image(new FileInputStream(path));
-			return new Image[] {
-					ImgUtil.resizeImage(
+			Image[] imgs = new Image[1];
+			for (int k = 0; k < imgs.length; k++) {
+				imgs[k] = ImgUtil.resizeImage(
 							wi, (int) wi.getWidth(), (int) wi.getHeight(),
 							(int) (width * gamepanel.getScalingFactorX()),
-							(int) (height * gamepanel.getScalingFactorY()))
-			};
+							(int) (height * gamepanel.getScalingFactorY()), flip);
+			}
+			return imgs;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -214,6 +248,10 @@ public class ImgUtil {
 		}
 		return bi;
 	}
+	
+	public static Image resizeImage(Image input, int w1, int h1, int w2, int h2) {
+		return resizeImage(input, w1, h1, w2, h2, false);
+	}
 
 	/**
 	 * Resize image.
@@ -225,7 +263,7 @@ public class ImgUtil {
 	 * @param h2 the h 2
 	 * @return the image
 	 */
-	public static Image resizeImage(Image input, int w1, int h1, int w2, int h2) {
+	public static Image resizeImage(Image input, int w1, int h1, int w2, int h2, boolean flip) {
 		WritableImage wi = new WritableImage(w2, h2);
 		PixelReader reader = input.getPixelReader();
 		PixelWriter writer = wi.getPixelWriter();
@@ -235,7 +273,10 @@ public class ImgUtil {
 		for (int i = 0; i < h2; i++) for (int j = 0; j < w2; j++) {
 			px = (int) Math.floor(j * x_ratio);
 			py = (int) Math.floor(i * y_ratio);
-			writer.setArgb(j, i, reader.getArgb(px, py));
+			if (flip)
+				writer.setArgb(w2 - 1 - j, i, reader.getArgb(px, py));
+			else
+				writer.setArgb(j, i, reader.getArgb(px, py));
 		}
 		return wi;
 	}
