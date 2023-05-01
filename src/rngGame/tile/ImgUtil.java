@@ -174,7 +174,7 @@ public class ImgUtil {
 				imgs[k] = ImgUtil.resizeImage(
 							wi, (int) wi.getHeight(), (int) wi.getHeight(),
 							(int) (width * gamepanel.getScalingFactorX()),
-							(int) (height * gamepanel.getScalingFactorY()));
+							(int) (height * gamepanel.getScalingFactorY()), flip);
 			}
 			return imgs;
 		} catch (IOException e) {
