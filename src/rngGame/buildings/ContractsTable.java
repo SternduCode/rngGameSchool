@@ -220,11 +220,11 @@ public class ContractsTable extends Building {
 
 
 
-		ugSachen1 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Eingang", index * 25 + 0,"Icon_Eingang", Difficulty.EASY);
-		ugSachen2 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Passage", index * 25 + 5,"Icon_Passage", Difficulty.EASY);
-		ugSachen3 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Kreuzung", index * 25 + 10,"Icon_Kreuzung", Difficulty.MIDDLE);
-		ugSachen4 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Untergrund", index * 25 + 15,"Icon_Untergrund", Difficulty.MIDDLE);
-		ugSachen5 = new LevelSelectionScrollPaneElement(gamepanel, this,"  Zentrum", index * 25 + 20,"Icon_Zentrum", Difficulty.HARD);
+		ugSachen1	= new LevelSelectionScrollPaneElement(gamepanel, this, " Eingang", index * 25 + 0, "Icon_Eingang", Difficulty.EASY);
+		ugSachen2	= new LevelSelectionScrollPaneElement(gamepanel, this, " Passage", index * 25 + 5, "Icon_Passage", Difficulty.EASY);
+		ugSachen3	= new LevelSelectionScrollPaneElement(gamepanel, this, " Kreuzung", index * 25 + 10, "Icon_Kreuzung", Difficulty.MIDDLE);
+		ugSachen4	= new LevelSelectionScrollPaneElement(gamepanel, this, " Untergrund", index * 25 + 15, "Icon_Untergrund", Difficulty.MIDDLE);
+		ugSachen5	= new LevelSelectionScrollPaneElement(gamepanel, this, " Zentrum", index * 25 + 20, "Icon_Zentrum", Difficulty.HARD);
 
 		button_R.setOnAction(me -> {
 			button_R.setImage(brl);

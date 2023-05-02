@@ -184,7 +184,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 * @param floor the floor
 	 */
 	public void setFloor(GamePanel gamepanel,String floor) {
-		Image floor1 = Text.getInstance().convertText(floor, 32);
+		Image floor1 = Text.getInstance().convertText(floor, 64);
 		floor1 = ImgUtil.resizeImage(
 				floor1, (int) floor1.getWidth(), (int) floor1.getHeight(),
 				(int) (floor1.getWidth() * gamepanel.getScalingFactorX()),
