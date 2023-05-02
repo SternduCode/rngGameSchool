@@ -94,6 +94,22 @@ public class Text {
 		}
 
 		/**
+		 * Gets the img height.
+		 *
+		 * @return the img height
+		 */
+		public double getImgHeight() { return img.getHeight(); }
+
+		/**
+		 * Gets the img width.
+		 *
+		 * @return the img width
+		 */
+		public double getImgWidth() {
+			return img.getWidth();
+		}
+
+		/**
 		 * Methode gibt dir die RGB werte von deinem HEX code wieder um den dann als Farbe (für Schrift) benutzen zu können
 		 * wennde aufrufst einfach ein hex code übergeben, ganzer hex auch mit dem # | BSP: #4f9abd.
 		 *
