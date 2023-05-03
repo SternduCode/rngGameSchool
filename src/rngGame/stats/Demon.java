@@ -30,7 +30,9 @@ public class Demon {
 	private double res;
 
 	/** The hp. */
-	private int hp;
+	private int maxhp;
+	
+	private int currenthp;
 
 	/** The dgc. */
 	private double dgc;
@@ -51,6 +53,8 @@ public class Demon {
 
 
 
+	
+
 	/**
 	 * Instantiates a new demon.
 	 *
@@ -64,9 +68,11 @@ public class Demon {
 		this.mobName = mobName;
 		atk = element.getAtk()+gen.nextInt(6);
 		res = element.getRes();
-		hp = element.getHp()+ gen.nextInt(11);
+		maxhp = element.getHp()+ gen.nextInt(11);
 		dgc = element.getDgc();
 		lvl = element.getLvl();
+		
+		
 
 	}
 
@@ -152,7 +158,15 @@ public class Demon {
 	 * @return the hp
 	 */
 	public int getHp() {
-		return hp+getHpList();
+		return maxhp+getHpList();
+	}
+	
+	public int getCurrenthp() {
+		return currenthp;
+	}
+
+	public void setCurrenthp(int currenthp) {
+		this.currenthp = currenthp;
 	}
 
 	/**
@@ -259,7 +273,7 @@ public class Demon {
 	 * @param hp the new hp
 	 */
 	public void setHp(int hp) {
-		this.hp = element.getHp() + hp;
+		this.maxhp = element.getHp() + hp;
 	}
 
 
@@ -297,7 +311,7 @@ public class Demon {
 	 */
 	@Override
 	public String toString() {
-		return "Demon [Element=" + element + ", mobName=" + mobName + ", atk=" + atk + ", res=" + res + ", hp=" + hp + ", dgc="
+		return "Demon [Element=" + element + ", mobName=" + mobName + ", atk=" + atk + ", res=" + res + ", hp=" + maxhp + ", dgc="
 				+ dgc + ", lvl=" + lvl + "]";
 	}
 
