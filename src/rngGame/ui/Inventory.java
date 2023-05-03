@@ -695,7 +695,7 @@ public class Inventory extends Pane {
 							});
 							ctbi2.setOnMouseReleased(mee -> {
 								getChildren().remove(getCurrentDemon().getDemon());	
-								changeDemon(d,0,_j,_i);
+								changeDemon(d,1,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
 								itemSureBackroundm1.setVisible(false);
@@ -709,7 +709,7 @@ public class Inventory extends Pane {
 							});
 							ctbi3.setOnMouseReleased(mee -> {
 								getChildren().remove(getCurrentDemon().getDemon());	
-								changeDemon(d,0,_j,_i);
+								changeDemon(d,2,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
 								itemSureBackroundm1.setVisible(false);
@@ -723,7 +723,7 @@ public class Inventory extends Pane {
 							});
 							ctbi4.setOnMouseReleased(mee -> {
 								getChildren().remove(getCurrentDemon().getDemon());	
-								changeDemon(d,0,_j,_i);
+								changeDemon(d,3,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
 								itemSureBackroundm1.setVisible(false);
@@ -737,7 +737,7 @@ public class Inventory extends Pane {
 							});
 							ctbi5.setOnMouseReleased(mee -> {
 								getChildren().remove(getCurrentDemon().getDemon());	
-								changeDemon(d,0,_j,_i);
+								changeDemon(d,4,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
 								itemSureBackroundm1.setVisible(false);
@@ -751,7 +751,7 @@ public class Inventory extends Pane {
 							});
 							ctbi6.setOnMouseReleased(mee -> {
 								getChildren().remove(getCurrentDemon().getDemon());	
-								changeDemon(d,0,_j,_i);
+								changeDemon(d,5,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
 								itemSureBackroundm1.setVisible(false);
