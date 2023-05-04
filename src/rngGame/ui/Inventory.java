@@ -188,26 +188,26 @@ public class Inventory extends Pane {
 	 */
 	public Demon getCurrentDemon() { return currentDemonArray[currentDemonIndex]; }
 	
-	public void addDemon2current(Demon m1) { 
+	public int addDemon2current(Demon m1) { 
 		int i = findFirstNull(currentDemonArray);
 		if(i!=-1) {
 			currentDemonArray[i] = m1;
-			System.out.println("penis");
 			switch (i) {
-			case 0 -> ctb1.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			case 1 -> ctb2.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			case 2 -> ctb3.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			case 3 -> ctb4.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			case 4 -> ctb5.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			case 5 -> ctb6.setImage(getIconM(m1.getMobName(), m1.getElement()));
-			default ->
-			throw new IllegalArgumentException("Unexpected value: " + i);
+				case 0 -> ctb1.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				case 1 -> ctb2.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				case 2 -> ctb3.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				case 3 -> ctb4.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				case 4 -> ctb5.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				case 5 -> ctb6.setImage(getIconM(m1.getMobName(), m1.getElement()));
+				default ->
+					throw new IllegalArgumentException("Unexpected value: " + i);
 			}
 		} else {
 			int j = findFirstNull(demonArray);
 			demonArray[j] = m1;
-			System.out.println("behindert weil behindert");
+			i = -j;
 		}
+		return i;
 	}
 
 	/**
@@ -679,8 +679,7 @@ public class Inventory extends Pane {
 							getChildren().addAll(ctbi1,ctbi2,ctbi3,ctbi4,ctbi5,ctbi6);
 				
 							
-							ctbi1.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
+							ctbi1.setOnMouseReleased(mee -> {	
 								changeDemon(d,0,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -691,10 +690,10 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 							});
-							ctbi2.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
+							ctbi2.setOnMouseReleased(mee -> {	
 								changeDemon(d,1,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -705,10 +704,10 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 							});
 							ctbi3.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
 								changeDemon(d,2,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -719,10 +718,10 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 							});
-							ctbi4.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
+							ctbi4.setOnMouseReleased(mee -> {	
 								changeDemon(d,3,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -733,10 +732,10 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 							});
-							ctbi5.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
+							ctbi5.setOnMouseReleased(mee -> {	
 								changeDemon(d,4,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -747,10 +746,10 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 							});
 							ctbi6.setOnMouseReleased(mee -> {
-								getChildren().remove(getCurrentDemon().getDemon());	
 								changeDemon(d,5,_j,_i);
 								transp.setVisible(false);
 								itemSureBackround.setVisible(false);
@@ -761,7 +760,8 @@ public class Inventory extends Pane {
 								ctbi4.setVisible(false);
 								ctbi5.setVisible(false);
 								ctbi6.setVisible(false);
-								statsImages();
+								itemStuff.setVisible(false);
+								statsImages(currentDemonIndex);
 								
 							});
 							applyButton.setVisible(false);
@@ -900,7 +900,7 @@ public class Inventory extends Pane {
 						gearArray[z] = getCurrentDemon().getItem4List()[_i];
 						getCurrentDemon().getItem4List()[_i] = null;
 						moveFromArrayToView();
-						statsImages();
+						statsImages(currentDemonIndex);
 					}
 					transp.setVisible(false);
 					itemSureBackround.setVisible(false);
@@ -949,7 +949,7 @@ public class Inventory extends Pane {
 		expText	= new ImageView();
 		expBar	= new ImageView();
 		
-		statsImages();
+		statsImages(0);
 
 		expBar.setLayoutX(-30 * gamepanel.getVgp().getScalingFactorX());
 		// expBar.setLayoutY(5*gamepanel.getVgp().getScalingFactorY());
@@ -1084,54 +1084,42 @@ public class Inventory extends Pane {
 			ctov.setLayoutX(ctb1.getLayoutX());
 			ctov.setLayoutY(ctb1.getLayoutY());
 			ctcomp.setImage(stage1);
-			getChildren().remove(getCurrentDemon().getDemon());
-			currentDemonIndex = 0;
-			statsImages();
+			statsImages(0);
 		});
 		
 		ctb2.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb2.getLayoutX());
 			ctov.setLayoutY(ctb2.getLayoutY());
 			ctcomp.setImage(stage2);
-			getChildren().remove(getCurrentDemon().getDemon());
-			currentDemonIndex = 1;
-			statsImages();
+			statsImages(1);
 		});
 		
 		ctb3.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb3.getLayoutX());
 			ctov.setLayoutY(ctb3.getLayoutY());
 			ctcomp.setImage(stage3);
-			getChildren().remove(getCurrentDemon().getDemon());
-			currentDemonIndex = 2;
-			statsImages();
+			statsImages(2);
 		});
 		
 		ctb4.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb4.getLayoutX());
 			ctov.setLayoutY(ctb4.getLayoutY());
 			ctcomp.setImage(stage4);
-			getChildren().remove(getCurrentDemon().getDemon());
-			currentDemonIndex = 3;
-			statsImages();
+			statsImages(3);
 		});
 		
 		ctb5.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb5.getLayoutX());
 			ctov.setLayoutY(ctb5.getLayoutY());
 			ctcomp.setImage(stage5);
-			getChildren().remove(getCurrentDemon().getDemon());
-			currentDemonIndex = 4;
-			statsImages();
+			statsImages(4);
 		});
 		
 		ctb6.setOnMouseReleased(me -> {
 			ctov.setLayoutX(ctb6.getLayoutX());
 			ctov.setLayoutY(ctb6.getLayoutY());
 			ctcomp.setImage(stage6);
-			getChildren().remove(getCurrentDemon().getDemon());	
-			currentDemonIndex = 5;
-			statsImages();
+			statsImages(5);
 		});
 
 	}
@@ -1300,7 +1288,7 @@ public class Inventory extends Pane {
 		return currentDemonArray;
 	}	
 	
-	public void statsImages() {
+	public void statsImages(int demonIndex) {
 		Image hpText1 = Text.getInstance().convertText("HP:" + getCurrentDemon().getHp(), 48);
 		hpText1 = ImgUtil.resizeImage(
 				hpText1, (int) hpText1.getWidth(), (int) hpText1.getHeight(),
@@ -1348,8 +1336,16 @@ public class Inventory extends Pane {
 				(int) (lvlText1.getWidth() * gamepanel.getVgp().getScalingFactorX()),
 				(int) (lvlText1.getHeight() * gamepanel.getVgp().getScalingFactorY()));
 
-		getChildren().add(getCurrentDemon().getDemon());
-		getCurrentDemon().getDemon().setFixToScreen(true);
+		int idx = getChildren().indexOf(getCurrentDemon().getDemon());
+
+		currentDemonIndex = demonIndex;
+		
+		if (idx == -1) {
+			getChildren().add(getCurrentDemon().getDemon());
+		} else {
+			getChildren().set(idx, getCurrentDemon().getDemon());
+		}
+
 		getCurrentDemon().getDemon().setReqHeight(192);
 		getCurrentDemon().getDemon().setReqWidth(192);
 		getCurrentDemon().getDemon().reloadTextures();
@@ -1372,16 +1368,16 @@ public class Inventory extends Pane {
 		Demon d2 = currentDemonArray[i];
 		currentDemonArray[i] = d;
 		demonArray[_j / 62 * 10 + _i / 62] = null;
-		addDemon2current(d2);
+		int idx = addDemon2current(d2);
 		switch (i) {
-		case 0 -> ctb1.setImage(getIconM(d.getMobName(), d.getElement()));
-		case 1 -> ctb2.setImage(getIconM(d.getMobName(), d.getElement()));
-		case 2 -> ctb3.setImage(getIconM(d.getMobName(), d.getElement()));
-		case 3 -> ctb4.setImage(getIconM(d.getMobName(), d.getElement()));
-		case 4 -> ctb5.setImage(getIconM(d.getMobName(), d.getElement()));
-		case 5 -> ctb6.setImage(getIconM(d.getMobName(), d.getElement()));
-		default ->
-		throw new IllegalArgumentException("Unexpected value: " + i);
+			case 0 -> ctb1.setImage(getIconM(d.getMobName(), d.getElement()));
+			case 1 -> ctb2.setImage(getIconM(d.getMobName(), d.getElement()));
+			case 2 -> ctb3.setImage(getIconM(d.getMobName(), d.getElement()));
+			case 3 -> ctb4.setImage(getIconM(d.getMobName(), d.getElement()));
+			case 4 -> ctb5.setImage(getIconM(d.getMobName(), d.getElement()));
+			case 5 -> ctb6.setImage(getIconM(d.getMobName(), d.getElement()));
+			default ->
+				throw new IllegalArgumentException("Unexpected value: " + i);
 		}
 		moveFromArrayToView();
 	}

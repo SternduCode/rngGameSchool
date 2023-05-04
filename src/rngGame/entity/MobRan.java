@@ -246,9 +246,8 @@ public class MobRan extends NPC {
 
 			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
 					gamepanel.getTileManager().getRequestorN());
+			gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
 			mnpc.setFixToScreen(true);
-			mnpc.setLayoutX(gamepanel.getGameWidth() / 4);
-			mnpc.setLayoutY(gamepanel.getGameHeight() / 4);
 			gamepanel.getLgp().getNpcs().add(mnpc);
 
 			return new Demon(wahl, mobName, mnpc);
