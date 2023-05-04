@@ -6,6 +6,7 @@ import java.util.Arrays;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import rngGame.entity.MonsterNPC;
 import rngGame.main.*;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
@@ -77,7 +78,7 @@ public class Inventory extends Pane {
 	private final GamePanel gamepanel;
 
 	/** The inv backround. */
-	private ImageView invBackround,ctov,ctcomp;
+	private ImageView invBackround,ctov,ctcomp,comingView;
 
 	/** The aus xb. */
 	private Button ausXb;
@@ -315,6 +316,7 @@ public class Inventory extends Pane {
 		transp				= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
 		itemSureBackround	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/itemSureBackround.png"));
 		itemSureBackroundm1	= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/itemSureBackroundm1.png"));
+		comingView 			= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvComingsoon.png"));
 
 		/////////////
 
@@ -511,6 +513,9 @@ public class Inventory extends Pane {
 						rarityView2.setLayoutY(16 * gamepanel.getVgp().getScalingFactorY());
 
 						itemStuff.getChildren().addAll(hpView2, rarityView2);
+						
+						applyButton.setVisible(true);
+						backButton.setVisible(true);
 
 					} else if (itemTestArray[_j / 62 * 10 + _i / 62] instanceof Gear g) {
 						ImageView hpView2, atkView2, resView2, dgcView2, rarityView2;
@@ -576,6 +581,9 @@ public class Inventory extends Pane {
 						dgcView2.setLayoutY( (16 + 192) * gamepanel.getVgp().getScalingFactorY());
 
 						itemStuff.getChildren().addAll(hpView2, atkView2, resView2, dgcView2, rarityView2);
+						
+						applyButton.setVisible(true);
+						backButton.setVisible(true);
 						
 					} else if (itemTestArray[_j / 62 * 10 + _i / 62] instanceof Demon d){
 						
@@ -877,7 +885,9 @@ public class Inventory extends Pane {
 
 				itemStuff.getChildren().addAll(hpView2, atkView2, resView2, dgcView2, rarityView2);
 
-
+				backButton.setVisible(true);
+				removeButton.setVisible(true);
+				
 				backButton.setOnMousePressed(me2 -> {
 					backButton.setImage(back2);
 				});
@@ -977,7 +987,8 @@ public class Inventory extends Pane {
 
 		// TODO fix f11
 
-		getChildren().addAll(potionbutton, armorbutton, usebutton, keybutton, idkbutton);
+		getChildren().addAll(potionbutton, armorbutton, usebutton, keybutton, idkbutton, comingView);
+		comingView.setVisible(false);
 		getChildren().addAll(ctcomp,ctb1,ctb2,ctb3,ctb4,ctb5,ctb6,ctov);
 		
 		ctov.setLayoutX(768);
@@ -1036,6 +1047,7 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			comingView.setVisible(false);
 			currentTab = Tab.POTION;
 			moveFromArrayToView();
 		});
@@ -1046,6 +1058,7 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			comingView.setVisible(false);
 			currentTab = Tab.ARMOR;
 			moveFromArrayToView();
 		});
@@ -1056,6 +1069,7 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton1);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton2);
+			comingView.setVisible(true);
 			currentTab = Tab.USE;
 			moveFromArrayToView();
 		});
@@ -1066,6 +1080,7 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton1);
 			idkbutton.setImage(idkButton2);
+			comingView.setVisible(true);
 			currentTab = Tab.KEY;
 			moveFromArrayToView();
 		});
@@ -1076,6 +1091,7 @@ public class Inventory extends Pane {
 			usebutton.setImage(useButton2);
 			keybutton.setImage(keyButton2);
 			idkbutton.setImage(idkButton1);
+			comingView.setVisible(false);
 			currentTab = Tab.MONSTER;
 			moveFromArrayToView();
 		});
@@ -1341,7 +1357,13 @@ public class Inventory extends Pane {
 		currentDemonIndex = demonIndex;
 		
 		if (idx == -1) {
-			getChildren().add(getCurrentDemon().getDemon());
+			idx = getChildren().indexOf(getChildren().stream().filter(e -> e instanceof MonsterNPC).findFirst().orElseGet(()->null));
+			if(idx != -1) {
+				getChildren().set(idx, getCurrentDemon().getDemon());
+			} else {
+				getChildren().add(getCurrentDemon().getDemon());
+			}
+			
 		} else {
 			getChildren().set(idx, getCurrentDemon().getDemon());
 		}
@@ -1351,6 +1373,8 @@ public class Inventory extends Pane {
 		getCurrentDemon().getDemon().reloadTextures();
 		getCurrentDemon().getDemon().setLayoutX(180 * gamepanel.getVgp().getScalingFactorX());
 		getCurrentDemon().getDemon().setLayoutY(50 * gamepanel.getVgp().getScalingFactorX());
+		
+		moveFromArrayToView();
 		
 		hpView.setImage(hpText1);
 		atkView.setImage(atkText1);
