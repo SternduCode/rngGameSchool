@@ -290,7 +290,6 @@ public class Inventory extends Pane {
 
 		/////////////
 
-		gamepanel.getMobRans().get(0);
 		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp() - 1);
