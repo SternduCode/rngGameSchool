@@ -184,7 +184,8 @@ public class Inventory extends Pane {
 			}
 		} else {
 			int j = findFirstNull(demonArray);
-			demonArray[j] = m1;
+			if (j != -1)
+				demonArray[j] = m1;
 			i = -j;
 		}
 		return i;
