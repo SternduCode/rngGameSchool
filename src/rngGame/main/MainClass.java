@@ -54,6 +54,8 @@ public class MainClass extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		TitleScreen ts = new TitleScreen();
+		
 		primaryStage.setFullScreen(false);
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("Demon Universe");
@@ -72,12 +74,10 @@ public class MainClass extends Application {
 		primaryStage.addEventHandler(MouseEvent.MOUSE_MOVED, input::mouseMoved);
 		primaryStage.addEventHandler(MouseEvent.MOUSE_DRAGGED, input::mouseDragged);
 
-		GamePanel gamePanel = new GamePanel();
-		input.setGamePanel(gamePanel.getVgp()); // pass instance of GamePanel to the Instance of Input
-		Scene gameScene = new Scene(gamePanel.getVgp());
+		Scene gameScene = new Scene(ts);
 		primaryStage.setScene(gameScene);
-
-		gamePanel.getVgp().startLogicThread();
+		
+		ts.scaleF11();
 
 		primaryStage.show();
 
