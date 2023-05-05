@@ -3,7 +3,9 @@ package rngGame.tile;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.*;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.sterndu.json.*;
 
@@ -15,7 +17,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import rngGame.buildings.*;
@@ -153,7 +155,7 @@ public class TileManager extends Pane {
 	};
 
 	/** The exit position, the starting position and the position one starts at when using the exit. */
-	private double[] startingPosition, exitStartingPosition, exitPosition;
+	private double[] startingPosition, exitStartingPosition, exitPosition, origStartingPosition;
 
 	/** The player layer. */
 	private int playerLayer;
@@ -257,7 +259,7 @@ public class TileManager extends Pane {
 			if (x + i >= 0 && y + j >= 0 && y + j < map.size() && x + i < map.get(y + j).size()) ths.add(map.get(y + j).get(x + i));
 
 		for (TextureHolder th : ths)
-			if ( th.getPoly().getPoints().size() > 0) {
+			if (th != null && th.getPoly().getPoints().size() > 0) {
 				Shape intersect = Shape.intersect(collidable.getCollisionBox(), th.getPoly());
 				if (!intersect.getBoundsInLocal().isEmpty()) return true;
 			}
@@ -273,9 +275,67 @@ public class TileManager extends Pane {
 	 */
 	public void contextMenu(ActionEvent e) {
 		try {
-			if (requester.get() instanceof FakeTextureHolder fth) {
-				fth.setLayoutX(fth.getLayoutX() + gp.getPlayer().getScreenX() - gp.getPlayer().getX());
-				fth.setLayoutY(fth.getLayoutY() + gp.getPlayer().getScreenY() - gp.getPlayer().getY());
+			if (requester.get() instanceof FakeTextureHolder fth && e.getSource() instanceof MenuItemWTile miw) {
+				int blockPosX = (int) fth.getLayoutX() / gp.getBlockSizeX() - (fth.getLayoutX() < 0 ? 1 : 0);
+				int	blockPosY	= (int) fth.getLayoutY() / gp.getBlockSizeY() - (fth.getLayoutY() < 0 ? 1 : 0);
+				System.out.println(blockPosY);
+				if (blockPosY < 0) for (int j = blockPosY; j < 0; j++) {
+					mapTileNum.add(0, new ArrayList<>());
+					List<Integer> li = mapTileNum.get(0);
+					for (int i = 0; i < mapTileNum.get(1).size(); i++) li.add(0);
+
+					map.add(0, new ArrayList<>());
+
+					for (Building b : buildings) b.setY(b.getY() + gp.getBlockSizeY());
+
+					for (NPC b : npcs) b.setY(b.getY() + gp.getBlockSizeY());
+
+					for (MobRan b : mobs) b.setY(b.getY() + gp.getBlockSizeY());
+
+					gp.getPlayer().setPosition(gp.getPlayer().getX(), gp.getPlayer().getY() + gp.getBlockSizeY());
+
+					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutY(en.getValue().getLayoutY() + gp.getBlockSizeY());
+
+					startingPosition[1] = startingPosition[1] + gp.getBlockSize();
+				}
+				if (blockPosX < 0) for (int i = blockPosX; i < 0; i++) {
+					for (List<Integer> row : mapTileNum) row.add(0, 0);
+
+					for (List<TextureHolder> row : map) row.add(0, null);
+
+					for (Building b : buildings) b.setX(b.getX() + gp.getBlockSizeX());
+
+					for (NPC b : npcs) b.setX(b.getX() + gp.getBlockSizeX());
+
+					for (MobRan b : mobs) b.setX(b.getX() + gp.getBlockSizeX());
+
+					gp.getPlayer().setPosition(gp.getPlayer().getX() + gp.getBlockSizeX(), gp.getPlayer().getY());
+
+					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutX(en.getValue().getLayoutX() + gp.getBlockSizeX());
+
+					startingPosition[0] = startingPosition[0] + gp.getBlockSize();// TODO place tiles and add expansion for down and right
+				}
+				if (blockPosY >= mapTileNum.size()) for(int j = blockPosY - mapTileNum.size(); j >= 0; j--) {
+
+					List<Integer> li = new ArrayList<>();
+
+					for (int i = 0; i < mapTileNum.get(mapTileNum.size() - 1).size(); i++) li.add(0);
+
+					mapTileNum.add(li);
+
+					map.add(new ArrayList<>());
+				}
+				if (blockPosY < 0) blockPosY = 0;
+				if (blockPosX < 0) blockPosX = 0;
+				if (blockPosX >= mapTileNum.get(blockPosY).size()) for (int i = blockPosX - mapTileNum.get(blockPosY).size(); i >= 0; i--) {
+					for (List<Integer> row : mapTileNum) row.add(0, 0);
+
+					for (List<TextureHolder> row : map) row.add(0, null);
+				}
+
+				mapTileNum.get(blockPosY).set(blockPosX, tiles.indexOf(miw.getTile()));
+
+				System.out.println("Yo " + blockPosX + " " + blockPosY);
 			}
 			if (e.getSource() instanceof MenuItemWTile miwt) {
 				Tile			t	= requester.get().getTile();
@@ -467,7 +527,7 @@ public class TileManager extends Pane {
 					.add(new MenuItemWMOB(f.getName(),
 							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-											(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48)),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48)),
 							n));
 					mmobs.getItems().get(mmobs.getItems().size() - 1).setOnAction(this::contextMenu);
 					mmobs.getItems().add(mi);
@@ -494,7 +554,7 @@ public class TileManager extends Pane {
 					mtiles.getItems().remove(mi);
 					mtiles.getItems()
 					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images.get(0),
-									(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)), t));
+							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)), t));
 					mtiles.getItems().get(mtiles.getItems().size() - 1).setOnAction(this::contextMenu);
 					mtiles.getItems().add(mi);
 				} catch (Exception e2) {
@@ -857,8 +917,19 @@ public class TileManager extends Pane {
 				bw.write(jsonOut);
 				bw.flush();
 				bw.close();
-			} else {
 
+				double[] offset = { this.startingPosition[0] - origStartingPosition[0], this.startingPosition[1] - origStartingPosition[1] };
+				for (Building b : this.buildings) if (b instanceof House h) {
+					JsonObject joH = (JsonObject) JsonParser
+							.parse(new FileInputStream("./res/maps/" + h.getMap()));
+					JsonArray	exitSpawn	= (JsonArray) ((JsonObject) joH.get("exit")).get("spawnPosition");
+					exitSpawn.set(0, ((NumberValue) exitSpawn.get(0)).getValue().doubleValue() + offset[0]);
+					exitSpawn.set(1, ((NumberValue) exitSpawn.get(1)).getValue().doubleValue() + offset[1]);
+					bw = new BufferedWriter(new FileWriter(new File("./res/maps/" + h.getMap())));
+					bw.write(joH.toJson());
+					bw.flush();
+					bw.close();
+				}
 			}
 		} catch (JsonParseException | IOException e) {
 			e.printStackTrace();
@@ -880,6 +951,9 @@ public class TileManager extends Pane {
 			exitStartingPosition	= null;
 			exitMap					= null;
 			startingPosition		= new double[] {
+					0d, 0d
+			};
+			origStartingPosition	= new double[] {
 					0d, 0d
 			};
 
@@ -1001,6 +1075,9 @@ public class TileManager extends Pane {
 				.printStackTrace();
 			}
 			this.startingPosition = new double[] {
+					((NumberValue) startingPosition.get(0)).getValue().doubleValue(), ((NumberValue) startingPosition.get(1)).getValue().doubleValue()
+			};
+			origStartingPosition	= new double[] {
 					((NumberValue) startingPosition.get(0)).getValue().doubleValue(), ((NumberValue) startingPosition.get(1)).getValue().doubleValue()
 			};
 			if (map.containsKey("playerLayer"))
@@ -1135,7 +1212,10 @@ public class TileManager extends Pane {
 					th = new TextureHolder(tiles.get(tileNum < tiles.size() ? tileNum : 0), gp, screenX, screenY,
 							cm, requester, worldX, worldY);
 					group.getChildren().add(th);
-					map.get(worldRow).add(th);
+					if (worldCol < map.get(worldRow).size())
+						map.get(worldRow).set(worldCol, th);
+					else
+						map.get(worldRow).add(th);
 				} else {
 					th.setLayoutX(screenX);
 					th.setLayoutY(screenY);
@@ -1154,7 +1234,10 @@ public class TileManager extends Pane {
 							requester, worldX, worldY);
 					th.setVisible(false);
 					group.getChildren().add(th);
-					map.get(worldRow).add(th);
+					if (worldCol < map.get(worldRow).size())
+						map.get(worldRow).set(worldCol, th);
+					else
+						map.get(worldRow).add(th);
 				}
 			}
 

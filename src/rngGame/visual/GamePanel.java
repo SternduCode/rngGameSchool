@@ -226,6 +226,7 @@ public class GamePanel extends Pane {
 		selectTool = new SelectTool(this);
 
 		tileManager = new TileManager(this);
+		tileManager.setPrefSize(gameWidth, gameHeight);
 
 		player = new Player(this, tileManager.getCM(), tileManager.getRequestorN());
 

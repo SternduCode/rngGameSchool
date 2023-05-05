@@ -896,7 +896,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	 * @return true, if successful
 	 */
 	public boolean collides(Collidable collidable) {
-		if (getCollisionBox().getPoints().size() > 0 && !collidable.getCollisionBox().getLayoutBounds().isEmpty()) {
+		if (getCollisionBox() != null && getCollisionBox().getPoints().size() > 0 && !collidable.getCollisionBox().getLayoutBounds().isEmpty()) {
 			Shape intersect = Shape.intersect(collidable.getCollisionBox(), getCollisionBox());
 			return !intersect.getBoundsInLocal().isEmpty();
 		}
@@ -1352,7 +1352,8 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			iv.setImage(images.get(currentKey).get(animationNum));
 			lastKey = currentKey;
 			collisionBoxViewGroup.getChildren().clear();
-			collisionBoxViewGroup.getChildren().add(getCollisionBox());
+			if (getCollisionBox() != null)
+				collisionBoxViewGroup.getChildren().add(getCollisionBox());
 		}
 		if (System.currentTimeMillis() > animationCounter + 1000 / fps) {
 			animationCounter = System.currentTimeMillis();
