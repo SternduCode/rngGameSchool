@@ -380,7 +380,11 @@ public class Inventory extends Pane {
 		Harnish g2 = new Harnish(Rarity.VOID);
 		Pants g3 = new Pants(Rarity.VOID);
 		Helmet g4 = new Helmet(Rarity.VOID);
-		Potion p1 = new Potion(Rarity.VOID);
+		
+		//for(int i = 1;i<100;i++) {
+			Potion p1 = new Potion(Rarity.VOID);
+			itemToInventory(p1);
+		//}
 		// giveItem2Monster(g1);
 		// giveItem2Monster(g2);
 		// giveItem2Monster(g3);
@@ -389,7 +393,7 @@ public class Inventory extends Pane {
 		itemToInventory(g2);
 		itemToInventory(g3);
 		itemToInventory(g4);
-		itemToInventory(p1);
+		
 
 		/////////////
 

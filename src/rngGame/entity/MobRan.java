@@ -105,7 +105,7 @@ public class MobRan extends NPC {
 		String[] mobs = {
 
 
-				"May", "Booky", "Mello", "Naberius", "NaberiusDev", "Slyzer", "Howl", "Cultist", "CultistKing", "Vardum", "Endor", "Seraph", "Malag", "Spye"
+				"May", "Booky", "Mello", "Nobarius", "Naberius", "Slyzer", "Howl", "Cultist", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Legion"
 
 		};
 
@@ -129,6 +129,7 @@ public class MobRan extends NPC {
 			}
 		}
 
+		
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 		else
