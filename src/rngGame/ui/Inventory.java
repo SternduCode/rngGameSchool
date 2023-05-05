@@ -6,6 +6,7 @@ import java.util.Arrays;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import rngGame.entity.MobRan;
 import rngGame.main.*;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
@@ -289,7 +290,8 @@ public class Inventory extends Pane {
 
 		/////////////
 
-		Demon m1 = gamepanel.getMobRans().get(0).MobGen();
+		gamepanel.getMobRans().get(0);
+		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
 		m1.setLvl(140);
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		currentDemonArray[currentDemonIndex] = m1;

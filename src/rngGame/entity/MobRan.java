@@ -53,9 +53,6 @@ public class MobRan extends NPC {
 	/** The steps. */
 	private final int steps = 40;
 
-	/** The gen. */
-	Random gen = new Random();
-
 	/**
 	 * Instantiates a new mob ran.
 	 *
@@ -86,58 +83,13 @@ public class MobRan extends NPC {
 	}
 
 	/**
-	 * Checks if is shit.
-	 *
-	 * @param pe the pe
-	 * @param mobX the mob X
-	 * @param mobY the mob Y
-	 * @return true, if is shit
-	 */
-	private boolean isShit(PathElement pe, int mobX, int mobY) {
-		int diffX = Math.abs(pe.x() - mobX);
-		int diffY = Math.abs(pe.y() - mobY);
-		//		System.out.println(pe);
-		//		System.out.println("diffX: "+diffX + " diffY: "+ diffY);
-		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
-	}
-
-	/**
-	 * Inits the.
-	 */
-	@Override
-	public void init() {
-		if (!getMiscBoxes().containsKey("fight"))
-			getMiscBoxes().put("fight", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
-		if (!getMiscBoxes().containsKey("visible"))
-			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
-		super.init();
-		getMiscBoxHandler().put("fight", (gpt,self)->{
-			Demon demonMob = MobGen();
-			System.out.println(demonMob);
-			if (demonMob != null) {
-				gpt.getLgp().getMobRans().remove(MobRan.this);
-				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
-			}
-		});
-		getMiscBoxHandler().put("visible", (gpt,self)->{
-			if (step == 0) {
-				Double[] pos = pathfinding(gpt);
-				if (pos != null) {
-					diff[0]	= pos[0] - x;
-					diff[1]	= pos[1] - y;
-					//					x	= pos[0];
-					//					y	= pos[1];
-				}
-			}
-		});
-	}
-
-	/**
 	 * Macht dir ein Mob vallah.
 	 *
+	 * @param gamepanel the gamepanel
 	 * @return the demon
 	 */
-	public Demon MobGen() {
+	public static Demon MobGen(GamePanel gamepanel) {
+		Random gen = new Random();
 		String pnG, mobName;
 		Element wahl;
 
@@ -225,6 +177,53 @@ public class MobRan extends NPC {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Checks if is shit.
+	 *
+	 * @param pe the pe
+	 * @param mobX the mob X
+	 * @param mobY the mob Y
+	 * @return true, if is shit
+	 */
+	private boolean isShit(PathElement pe, int mobX, int mobY) {
+		int diffX = Math.abs(pe.x() - mobX);
+		int diffY = Math.abs(pe.y() - mobY);
+		//		System.out.println(pe);
+		//		System.out.println("diffX: "+diffX + " diffY: "+ diffY);
+		return (diffX == 1 || diffY == 1) && diffX != diffY && diffX <= 1 && diffY <= 1;
+	}
+
+	/**
+	 * Inits the.
+	 */
+	@Override
+	public void init() {
+		if (!getMiscBoxes().containsKey("fight"))
+			getMiscBoxes().put("fight", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
+		if (!getMiscBoxes().containsKey("visible"))
+			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
+		super.init();
+		getMiscBoxHandler().put("fight", (gpt,self)->{
+			Demon demonMob = MobGen(gpt);
+			System.out.println(demonMob);
+			if (demonMob != null) {
+				gpt.getLgp().getMobRans().remove(MobRan.this);
+				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
+			}
+		});
+		getMiscBoxHandler().put("visible", (gpt,self)->{
+			if (step == 0) {
+				Double[] pos = pathfinding(gpt);
+				if (pos != null) {
+					diff[0]	= pos[0] - x;
+					diff[1]	= pos[1] - y;
+					//					x	= pos[0];
+					//					y	= pos[1];
+				}
+			}
+		});
 	}
 
 	//Durchlaufen lassen bis void LOL OMG 360
