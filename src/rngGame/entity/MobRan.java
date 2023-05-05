@@ -10,10 +10,11 @@ import com.sterndu.json.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 import javafx.scene.shape.Circle;
 import rngGame.stats.*;
-import rngGame.tile.TextureHolder;
+import rngGame.tile.*;
+import rngGame.ui.HealthBar;
 import rngGame.visual.GamePanel;
 
 
@@ -167,9 +168,8 @@ public class MobRan extends NPC {
 
 			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
 					gamepanel.getTileManager().getRequestorN());
+			gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
 			mnpc.setFixToScreen(true);
-			mnpc.setLayoutX(gamepanel.getGameWidth() / 4);
-			mnpc.setLayoutY(gamepanel.getGameHeight() / 4);
 			gamepanel.getLgp().getNpcs().add(mnpc);
 
 			return new Demon(wahl, mobName, mnpc);
@@ -206,13 +206,41 @@ public class MobRan extends NPC {
 			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
-			Demon demonMob = MobGen(gpt);
+			Demon eigenMob;
+			Demon demonMob = MobGen(gamepanel);
+			HealthBar h, hh;
 			System.out.println(demonMob);
 			if (demonMob != null) {
+				
 				gpt.getLgp().getMobRans().remove(MobRan.this);
 				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
+				Image bbg = ImgUtil.getScaledImage(gpt, "./res/fight/Fight.png", gpt.getGameWidth(), gpt.getGameHeight());
+				ImageView bbgv = new ImageView(bbg);
+				demonMob.getDemon().setReqWidth(256);
+				demonMob.getDemon().setReqHeight(256);
+				demonMob.getDemon().setLayoutX(gpt.getWidth()/1.5);
+				demonMob.getDemon().setLayoutY(gpt.getHeight()/6.4);
+				demonMob.getDemon().reloadTextures();
+				Demon[] demonArray = gpt.getGamemenu().getInventory().getDemons();
+				eigenMob = demonArray[0];
+				eigenMob.getDemon().setReqWidth(256);
+				eigenMob.getDemon().setReqHeight(256);
+				eigenMob.getDemon().setLayoutX(gpt.getWidth()/13);
+				eigenMob.getDemon().setLayoutY(gpt.getHeight()/6.4);
+				eigenMob.getDemon().flipTextures();
+				eigenMob.getDemon().reloadTextures();
+				h = new HealthBar(gpt);
+				hh = new HealthBar(gpt);
+				h.setLayoutX(gpt.getWidth()/2);
+				hh.setLayoutX(gpt.getWidth()/4);
+				h.update();
+				hh.update();
+				
+				gpt.getChildren().addAll(bbgv, demonMob.getDemon(), eigenMob.getDemon(), h, hh);
+				
+				
 			}
-		});
+		}); 
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
 				Double[] pos = pathfinding(gpt);
