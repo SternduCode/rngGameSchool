@@ -31,3 +31,5 @@ jobs:
         architecture: x64
     - name: Build with Javac
       run: cd src && javac --module-path ../lib/lib -d ../bin module-info.java rngGame/main/* rngGame/ui/* rngGame/tile/* rngGame/buildings/* rngGame/entity/* rngGame/stats/* rngGame/visual/*
+    - name: Run
+      run: cd bin && java --module-path ../lib/lib;. -m rngGame/rngGame.main.MainClass
