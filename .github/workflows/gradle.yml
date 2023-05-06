@@ -32,4 +32,4 @@ jobs:
     - name: Build with Javac
       run: cd src && javac --module-path ../lib/lib -d ../bin module-info.java rngGame/main/* rngGame/ui/* rngGame/tile/* rngGame/buildings/* rngGame/entity/* rngGame/stats/* rngGame/visual/*
     - name: Run
-      run: java --module-path lib/lib;bin -m rngGame/rngGame.main.MainClass
+      run: cd bin && java --module-path ../lib/lib;. -m rngGame/rngGame.main.MainClass
