@@ -679,6 +679,13 @@ public class TileManager extends Pane {
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_g/" + map.getText() + ".json"));
 			insel_g.getItems().add(map);
 		}
+		mtiles.getItems().sort((item1, item2) -> {
+			if (item1 instanceof MenuItemWTile mi1) {
+				if (item2 instanceof MenuItemWTile mi2) return mi1.getText().compareTo(mi2.getText());
+				return -1;
+			}
+			return 1;
+		});
 		return new Menu[] {
 				mtiles, mnpcs, getMbuildings(), mmobs, mextra
 		};
