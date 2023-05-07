@@ -464,9 +464,30 @@ public class GamePanel extends Pane {
 			getOverlay().setImage(ImgUtil.getScaledImage(this, "./res/gui/" + getTileManager().getOverlay()));
 		else getOverlay().setImage(null);
 
+		tileManager.reload();
+		tileManager.update();
+		aktionbutton.f11Scale();
+		if (tileManager.getBackgroundPath() != null) try {
+			setBackground(new Background(
+					new BackgroundImage(new Image(new FileInputStream("./res/" + tileManager.getBackgroundPath())),
+							BackgroundRepeat.NO_REPEAT,
+							BackgroundRepeat.NO_REPEAT, null,
+							new BackgroundSize(getGameWidth(), getGameHeight() + getScalingFactorY(), false, false, false, false))));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+
+		player.setLayer(tileManager.getPlayerLayer());
+
+		getLgp().setBuildings(tileManager.getBuildingsFromMap());
+		getLgp().setNpcs(tileManager.getNPCSFromMap());
+		getLgp().setTest(tileManager.getMobsFromMap());
+
 		Circle spawn = new Circle(getTileManager().getSpawnPoint().getX() * getScalingFactorX(),
 				getTileManager().getSpawnPoint().getY() * getScalingFactorY(), 15,
 				Color.color(0, 1, 0, .75));
+		lgp.getPoints().put(tileManager.getSpawnPoint(), spawn);
 		getPointGroup().getChildren().add(spawn);
 
 		getLgp().getBuildings().forEach(b -> {
@@ -483,6 +504,7 @@ public class GamePanel extends Pane {
 							Circle		respawn			= new Circle(p.getX() * getScalingFactorX(), p.getY() * getScalingFactorY(),
 									15,
 									Color.color(0, 1, 0, .75));
+							lgp.getPoints().put(p, respawn);
 							getPointGroup().getChildren().add(respawn);
 						}
 					}
@@ -492,58 +514,10 @@ public class GamePanel extends Pane {
 			}
 		});
 
-		tileManager.reload();
-		aktionbutton.f11Scale();
-		if (tileManager.getBackgroundPath() != null) try {
-			setBackground(new Background(
-					new BackgroundImage(new Image(new FileInputStream("./res/" + tileManager.getBackgroundPath())),
-							BackgroundRepeat.NO_REPEAT,
-							BackgroundRepeat.NO_REPEAT, null,
-							new BackgroundSize(getGameWidth(), getGameHeight() + getScalingFactorY(), false, false, false, false))));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		player.setLayer(tileManager.getPlayerLayer());
-		getLgp().setBuildings(tileManager.getBuildingsFromMap());
-
-		getLgp().getPoints().put(tileManager.getSpawnPoint(), spawn);
-
-		getLgp().getBuildings().forEach(b -> {
-			if (b instanceof House h) {
-				String map = h.getMap();
-				try {
-					JsonObject jo = (JsonObject) JsonParser.parse(new File("./res/maps/" + map));
-					if (jo.containsKey("exit")) {
-						JsonObject exit = (JsonObject) jo.get("exit");
-						if (tileManager.getPath().endsWith( ((StringValue) exit.get("map")).getValue())) {
-							JsonArray	spawnPosition	= (JsonArray) exit.get("spawnPosition");
-							Point2D		p				= new Point2D( ((NumberValue) spawnPosition.get(0)).getValue().longValue(),
-									((NumberValue) spawnPosition.get(1)).getValue().longValue());
-							Circle		respawn			= new Circle(p.getX() * getScalingFactorX(), p.getY() * getScalingFactorY(),
-									15,
-									Color.color(0, 1, 0, .75));
-							lgp.getPoints().put(p, respawn);
-						}
-					}
-				} catch (JsonParseException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		getLgp().setNpcs(tileManager.getNPCSFromMap());
-		getLgp().setTest(tileManager.getMobsFromMap());
 		gamemenu.f11Scale();
 		if (gamemenu != null && gamemenu.getInventory().getCurrentDemon() != null && gamemenu.getInventory().getCurrentDemon().getDemon() != null)
 			getLgp().getNpcs().add(gamemenu.getInventory().getCurrentDemon().getDemon());
 
-		// ImageView iv = new ImageView(Text.getInstance()
-		// .convertText("ABCDEFGH\nIJKLMNOP\nQRSTUVWX\nYZabcdef\nghijklmn\nopqrstuv\nwxyz1234\n567890?!\n%\"# #",
-		// 48));
-		// ImageView iv = new ImageView(Text.getInstance()
-		// .convertText("Programmieren ist LW"));
-		// getChildren().add(iv);
-		// TODO rem
 	}
 
 	/**

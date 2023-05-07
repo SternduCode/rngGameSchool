@@ -62,15 +62,8 @@ public class TileManager extends Pane {
 		 *
 		 * @param tile the new tile
 		 */
-		@SuppressWarnings("unused")
 		@Override
-		public void setTile(Tile tile) {
-			// TODO add row/column
-			for (List<TextureHolder> x : map) {
-
-			}
-
-		}
+		public void setTile(Tile tile) {}
 
 	}
 
@@ -313,7 +306,7 @@ public class TileManager extends Pane {
 
 					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutX(en.getValue().getLayoutX() + gp.getBlockSizeX());
 
-					startingPosition[0] = startingPosition[0] + gp.getBlockSize();// TODO place tiles and add expansion for down and right
+					startingPosition[0] = startingPosition[0] + gp.getBlockSize();
 				}
 				if (blockPosY >= mapTileNum.size()) for(int j = blockPosY - mapTileNum.size(); j >= 0; j--) {
 
