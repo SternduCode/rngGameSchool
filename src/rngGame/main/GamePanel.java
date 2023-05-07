@@ -2,6 +2,7 @@ package rngGame.main;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.sterndu.multicore.Updater;
@@ -16,7 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import rngGame.buildings.Building;
 import rngGame.entity.*;
-import rngGame.tile.Difficulty;
+import rngGame.tile.*;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -63,6 +64,9 @@ public class GamePanel extends Pane {
 	/** The last frame. */
 	private Long lastFrame;
 
+	/** The clipboard. */
+	private List<List<TextureHolder>> clipboard;
+
 	/**
 	 * Instantiates a new game panel.
 	 *
@@ -81,7 +85,10 @@ public class GamePanel extends Pane {
 
 		points = new HashMap<>();
 
+		clipboard = new ArrayList<>();
+
 		setVgp(new rngGame.visual.GamePanel(this));
+
 	}
 
 	/**
@@ -99,6 +106,13 @@ public class GamePanel extends Pane {
 	 * @return the buildings
 	 */
 	public List<Building> getBuildings() { return buildings; }
+
+	/**
+	 * Gets the clipboard.
+	 *
+	 * @return the clipboard
+	 */
+	public List<List<TextureHolder>> getClipboard() { return clipboard; }
 
 	/**
 	 * Gets the difficulty.
@@ -145,6 +159,17 @@ public class GamePanel extends Pane {
 	public rngGame.visual.GamePanel getVgp() { return vgp; }
 
 	/**
+	 * Make sound.
+	 *
+	 * @param soundname the soundname
+	 */
+	public void makeSound(String soundname){
+		MediaPlayer mp = new MediaPlayer(new Media(new File("./res/" + soundname).toURI().toString()));
+		mp.setAutoPlay(true);
+		mp.setVolume(.2);
+	}
+
+	/**
 	 * Reload.
 	 */
 	public void reload() {
@@ -167,6 +192,15 @@ public class GamePanel extends Pane {
 	 * @param buildings the new buildings
 	 */
 	public void setBuildings(List<Building> buildings) { this.buildings = buildings; }
+
+	/**
+	 * Sets the clipboard.
+	 *
+	 * @param clipboard the new clipboard
+	 */
+	public void setClipboard(List<List<TextureHolder>> clipboard) {
+		this.clipboard = clipboard;
+	}
 
 	/**
 	 * Sets the difficulty.
@@ -278,12 +312,6 @@ public class GamePanel extends Pane {
 		else Platform.runLater(r);
 
 	}
-	
-	public void makeSound(String soundname){
-		MediaPlayer mp = new MediaPlayer(new Media(new File("./res/" + soundname).toURI().toString()));
-		mp.setAutoPlay(true);
-		mp.setVolume(.2);
-	}
 
 	/**
 	 * To string.
@@ -308,15 +336,14 @@ public class GamePanel extends Pane {
 		input.update(lastFrameTime);
 
 		try {
-			for (Building b: buildings) b.update(lastFrameTime);
-			for (Entity n: npcs) n.update(lastFrameTime);
-			for (Entity n: test) n.update(lastFrameTime);
-		} catch (ConcurrentModificationException e) {
-		}
+			for (Building b : buildings) b.update(lastFrameTime);
+			for (Entity n : npcs) n.update(lastFrameTime);
+			for (Entity n : test) n.update(lastFrameTime);
+		} catch (ConcurrentModificationException e) {}
 
 		for (Node layer : getVgp().getLayerGroup().getChildren()) {
-			Group view = (Group) layer;
-			List<Node> nodes = new ArrayList<>(view.getChildren());
+			Group		view	= (Group) layer;
+			List<Node>	nodes	= new ArrayList<>(view.getChildren());
 
 			nodes.sort((n1, n2) -> {
 				if (n1 instanceof GameObject b1) if (n2 instanceof GameObject b2)

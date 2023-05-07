@@ -117,6 +117,7 @@ public class SelectTool extends Rectangle {
 			}
 		} else if (e.getSource()==copy) {
 			List<List<TextureHolder>> map = gp.getTileManager().getPartOfMap(getLayoutX(), getLayoutY(), getWidth(), getHeight());
+			gp.getLgp().setClipboard(map);
 			System.out.println(map);
 		}
 		//TODO add copy
@@ -196,17 +197,31 @@ public class SelectTool extends Rectangle {
 		for (Tile t : gp.getTileManager().getTiles()) {
 			MenuItemWTile menuitem = new MenuItemWTile(t.name,
 					new ImageView(ImgUtil.resizeImage(t.images.get(0),
-							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
+							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
 					t);
 			menuitem.setOnAction(this::handleContextMenu);
 			fill.getItems().add(menuitem);
 			menuitem = new MenuItemWTile(t.name,
 					new ImageView(ImgUtil.resizeImage(t.images.get(0),
-							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 16, 16)),
+							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
 					t);
 			menuitem.setOnAction(this::handleContextMenu);
 			partialFill.getItems().add(menuitem);
 		}
+		fill.getItems().sort((item1, item2) -> {
+			if (item1 instanceof MenuItemWTile mi1) {
+				if (item2 instanceof MenuItemWTile mi2) return mi1.getText().compareTo(mi2.getText());
+				return -1;
+			}
+			return 1;
+		});
+		partialFill.getItems().sort((item1, item2) -> {
+			if (item1 instanceof MenuItemWTile mi1) {
+				if (item2 instanceof MenuItemWTile mi2) return mi1.getText().compareTo(mi2.getText());
+				return -1;
+			}
+			return 1;
+		});
 		if (!gp.isBlockUserInputs())
 			cm.show(this, getLayoutX() + getScene().getWindow().getX(),
 					getLayoutY() + +getScene().getWindow().getY());
