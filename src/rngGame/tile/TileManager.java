@@ -1097,7 +1097,6 @@ public class TileManager extends Pane {
 					case "TreasureChest" -> new TreasureChest((JsonObject) building, gp, this.buildings, cm, requesterB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requesterB);
 				};
-				System.err.println(building + " " + b.getCurrentKey() + " " + b.getImages());
 				ImageView	lIV;
 				if (b.isGif(b.getCurrentKey())) {
 					lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
