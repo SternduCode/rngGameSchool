@@ -31,7 +31,8 @@ public class Demon {
 
 	/** The hp. */
 	private int maxhp;
-	
+
+	/** The currenthp. */
 	private int currenthp;
 
 	/** The dgc. */
@@ -53,7 +54,7 @@ public class Demon {
 
 
 
-	
+
 
 	/**
 	 * Instantiates a new demon.
@@ -72,9 +73,20 @@ public class Demon {
 		dgc = element.getDgc();
 		lvl = element.getLvl();
 		currenthp = getMaxHp();
-		
-		
 
+
+
+	}
+
+	/**
+	 * Change currenthp.
+	 *
+	 * @param currenthp the currenthp
+	 */
+	public void changeCurrenthp(int currenthp) {
+		currenthp = Math.min(this.currenthp+currenthp, maxhp);
+		currenthp = Math.max(currenthp, 0);
+		this.currenthp = currenthp;
 	}
 
 	/**
@@ -107,6 +119,15 @@ public class Demon {
 	}
 
 	/**
+	 * Gets the currenthp.
+	 *
+	 * @return the currenthp
+	 */
+	public int getCurrenthp() {
+		return currenthp;
+	}
+
+	/**
 	 * Gets the demon.
 	 *
 	 * @return the demon
@@ -130,7 +151,7 @@ public class Demon {
 	 * @return the dgc
 	 */
 	public double getDgc() {
-		return (dgc+getDgcList())*100;
+		return dgc + getDgcList();
 	}
 
 	/**
@@ -151,25 +172,6 @@ public class Demon {
 	 */
 	public Element getElement() {
 		return element;
-	}
-
-	/**
-	 * Gets the hp.
-	 *
-	 * @return the hp
-	 */
-	public int getMaxHp() {
-		return maxhp+getHpList();
-	}
-	
-	public int getCurrenthp() {
-		return currenthp;
-	}
-
-	public void changeCurrenthp(int currenthp) {
-		currenthp = Math.min(this.currenthp+currenthp, maxhp);
-		currenthp = Math.max(currenthp, 0);
-			this.currenthp = currenthp;
 	}
 
 	/**
@@ -212,6 +214,15 @@ public class Demon {
 	}
 
 	/**
+	 * Gets the hp.
+	 *
+	 * @return the hp
+	 */
+	public int getMaxHp() {
+		return maxhp+getHpList();
+	}
+
+	/**
 	 * Gets the mob name.
 	 *
 	 * @return the mob name
@@ -226,7 +237,7 @@ public class Demon {
 	 * @return the res
 	 */
 	public double getRes() {
-		return res+getResList()* 100;
+		return res + getResList();
 	}
 
 	/**
@@ -271,16 +282,6 @@ public class Demon {
 
 
 	/**
-	 * Sets the hp.
-	 *
-	 * @param hp the new hp
-	 */
-	public void setMaxHp(int hp) {
-		this.maxhp = element.getHp() + hp;
-	}
-
-
-	/**
 	 * Sets the item 4 list.
 	 *
 	 * @param item4List the new item 4 list
@@ -289,6 +290,7 @@ public class Demon {
 		Item4List = item4List;
 	}
 
+
 	/**
 	 * Sets the lvl.
 	 *
@@ -296,6 +298,15 @@ public class Demon {
 	 */
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
+	}
+
+	/**
+	 * Sets the hp.
+	 *
+	 * @param hp the new hp
+	 */
+	public void setMaxHp(int hp) {
+		maxhp = element.getHp() + hp;
 	}
 
 	/**
