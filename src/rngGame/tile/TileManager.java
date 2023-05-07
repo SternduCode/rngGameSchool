@@ -187,6 +187,11 @@ public class TileManager extends Pane {
 		save.setOnAction(ae -> gp.getLgp().saveMap());
 		mextra.getItems().add(save);
 
+		MenuItem paste = new MenuItem("paste");
+		paste.setStyle("-fx-font-size: 20;");
+		paste.setOnAction(this::paste);
+		mextra.getItems().add(paste);
+
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
 		backToSpawn.setStyle("-fx-font-size: 20;");
 		backToSpawn.setOnAction(ae -> {
@@ -862,6 +867,22 @@ public class TileManager extends Pane {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Paste.
+	 *
+	 * @param ae the ae
+	 */
+	public void paste(ActionEvent ae) {
+		TextureHolder th = requester.getValue();
+		if (gp.getLgp().getClipboard().size() > 0) {
+			List<List<TextureHolder>> partOfMap = getPartOfMap(th.getLayoutX(), th.getLayoutY(),
+					gp.getLgp().getClipboard().get(0).size() * gp.getBlockSizeX(), gp.getLgp().getClipboard().size() * gp.getBlockSizeY());
+			System.out.println(partOfMap);
+			for (int i = 0; i < partOfMap.size(); i++)
+				for (int j = 0; j < partOfMap.get(i).size(); j++) partOfMap.get(i).get(j).setTile(gp.getLgp().getClipboard().get(i).get(j).getTile());
+		}
 	}
 
 	/**

@@ -120,7 +120,6 @@ public class SelectTool extends Rectangle {
 			gp.getLgp().setClipboard(map);
 			System.out.println(map);
 		}
-		//TODO add copy
 	}
 
 	/**
