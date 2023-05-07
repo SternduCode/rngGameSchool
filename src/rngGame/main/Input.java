@@ -285,7 +285,6 @@ public class Input {
 	 * @param me the me
 	 */
 	public void mouseDragged(MouseEvent me) {
-		System.out.println("Dragged " + me);
 		if (gamepanel != null && !gamepanel.isInLoadingScreen()) if (move != null) {
 			move.setX((long) (me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX() - move.getWidth() / 2));
 			move.setY((long) (me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY() - move.getHeight() / 2));
@@ -326,7 +325,8 @@ public class Input {
 	 * @param me the me
 	 */
 	public void mouseReleased(MouseEvent me) {
-		System.out.println("Released " + me);
+		if ("true".equals(System.getProperty("debug")))
+			System.out.println("Released " + me);
 		if (gamepanel != null) {
 			Node target = gamepanel.getTileManager().getObjectAt(me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX(),
 					me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY());
