@@ -10,7 +10,10 @@ public class Potion extends Item{
 
 	/** The hp. */
 	private final int hp;
+	
 
+
+	
 
 	/**
 	 * Instantiates a new potion.
@@ -19,7 +22,6 @@ public class Potion extends Item{
 	 */
 	public Potion(Rarity ty) {
 		super("Potions", ty.getTextureName(), ty);
-
 		Random gen = new Random();
 		hp = switch(rarity) {
 			case COMMON -> 8 + gen.nextInt(5); //10

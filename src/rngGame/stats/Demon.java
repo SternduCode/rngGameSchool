@@ -71,6 +71,7 @@ public class Demon {
 		maxhp = element.getHp()+ gen.nextInt(11);
 		dgc = element.getDgc();
 		lvl = element.getLvl();
+		currenthp = getMaxHp();
 		
 		
 
@@ -157,7 +158,7 @@ public class Demon {
 	 *
 	 * @return the hp
 	 */
-	public int getHp() {
+	public int getMaxHp() {
 		return maxhp+getHpList();
 	}
 	
@@ -165,8 +166,10 @@ public class Demon {
 		return currenthp;
 	}
 
-	public void setCurrenthp(int currenthp) {
-		this.currenthp = currenthp;
+	public void changeCurrenthp(int currenthp) {
+		currenthp = Math.min(this.currenthp+currenthp, maxhp);
+		currenthp = Math.max(currenthp, 0);
+			this.currenthp = currenthp;
 	}
 
 	/**
@@ -272,7 +275,7 @@ public class Demon {
 	 *
 	 * @param hp the new hp
 	 */
-	public void setHp(int hp) {
+	public void setMaxHp(int hp) {
 		this.maxhp = element.getHp() + hp;
 	}
 

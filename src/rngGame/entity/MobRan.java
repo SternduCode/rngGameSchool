@@ -111,8 +111,7 @@ public class MobRan extends NPC {
 
 		String[] mobs = {
 
-
-				"May", "Booky", "Mello", "Naberius", "Slyzer", "Howl", "Cultist", "Vardum", "Endor", "Seraph", "Malag", "Spye"
+				"May", "Booky", "Mello", "Nobarius", "Slyzer", "Howl", "Cultist", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Legion"
 
 		};
 
@@ -121,10 +120,9 @@ public class MobRan extends NPC {
 		//		mobName = "May";
 		//		wahl = Element.Void;
 		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
-		if("Naberius".equals(mobName)||"NaberiusDev".equals(mobName)) {
+		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
-			if(r == 5) mobName = "NaberiusDev";
-			else mobName = "Naberius";
+			if (r == 5) mobName = "Naberius";
 		}else if ("CultistKing".equals(mobName)||"Cultist".equals(mobName)) {
 			mobName = "Cultist";
 			if (wahl==Element.Void) {
@@ -135,6 +133,7 @@ public class MobRan extends NPC {
 				else mobName = "Cultist";
 			}
 		}
+
 
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
