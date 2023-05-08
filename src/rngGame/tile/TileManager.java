@@ -62,15 +62,8 @@ public class TileManager extends Pane {
 		 *
 		 * @param tile the new tile
 		 */
-		@SuppressWarnings("unused")
 		@Override
-		public void setTile(Tile tile) {
-			// TODO add row/column
-			for (List<TextureHolder> x : map) {
-
-			}
-
-		}
+		public void setTile(Tile tile) {}
 
 	}
 
@@ -194,6 +187,11 @@ public class TileManager extends Pane {
 		save.setOnAction(ae -> gp.getLgp().saveMap());
 		mextra.getItems().add(save);
 
+		MenuItem paste = new MenuItem("paste");
+		paste.setStyle("-fx-font-size: 20;");
+		paste.setOnAction(this::paste);
+		mextra.getItems().add(paste);
+
 		MenuItem backToSpawn = new MenuItem("Go back to Spawn");
 		backToSpawn.setStyle("-fx-font-size: 20;");
 		backToSpawn.setOnAction(ae -> {
@@ -313,7 +311,7 @@ public class TileManager extends Pane {
 
 					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutX(en.getValue().getLayoutX() + gp.getBlockSizeX());
 
-					startingPosition[0] = startingPosition[0] + gp.getBlockSize();// TODO place tiles and add expansion for down and right
+					startingPosition[0] = startingPosition[0] + gp.getBlockSize();
 				}
 				if (blockPosY >= mapTileNum.size()) for(int j = blockPosY - mapTileNum.size(); j >= 0; j--) {
 
@@ -679,6 +677,13 @@ public class TileManager extends Pane {
 			map.setOnAction(ae -> gp.getLgp().setMap("./res/maps/insel_g/" + map.getText() + ".json"));
 			insel_g.getItems().add(map);
 		}
+		mtiles.getItems().sort((item1, item2) -> {
+			if (item1 instanceof MenuItemWTile mi1) {
+				if (item2 instanceof MenuItemWTile mi2) return mi1.getText().compareTo(mi2.getText());
+				return -1;
+			}
+			return 1;
+		});
 		return new Menu[] {
 				mtiles, mnpcs, getMbuildings(), mmobs, mextra
 		};
@@ -862,6 +867,22 @@ public class TileManager extends Pane {
 			new Exception(row + 1 + " " + (col + 1), e).printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Paste.
+	 *
+	 * @param ae the ae
+	 */
+	public void paste(ActionEvent ae) {
+		TextureHolder th = requester.getValue();
+		if (gp.getLgp().getClipboard().size() > 0) {
+			List<List<TextureHolder>> partOfMap = getPartOfMap(th.getLayoutX(), th.getLayoutY(),
+					gp.getLgp().getClipboard().get(0).size() * gp.getBlockSizeX(), gp.getLgp().getClipboard().size() * gp.getBlockSizeY());
+			System.out.println(partOfMap);
+			for (int i = 0; i < partOfMap.size(); i++)
+				for (int j = 0; j < partOfMap.get(i).size(); j++) partOfMap.get(i).get(j).setTile(gp.getLgp().getClipboard().get(i).get(j).getTile());
+		}
 	}
 
 	/**
@@ -1097,7 +1118,6 @@ public class TileManager extends Pane {
 					case "TreasureChest" -> new TreasureChest((JsonObject) building, gp, this.buildings, cm, requesterB);
 					default -> new Building((JsonObject) building, gp, this.buildings, cm, requesterB);
 				};
-				System.err.println(building + " " + b.getCurrentKey() + " " + b.getImages());
 				ImageView	lIV;
 				if (b.isGif(b.getCurrentKey())) {
 					lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));

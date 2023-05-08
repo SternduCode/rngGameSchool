@@ -3,6 +3,7 @@ package rngGame.entity;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.*;
 
@@ -44,6 +45,12 @@ public class MobRan extends NPC {
 		}
 
 	}
+
+	/** The voidi. */
+	private static int fire = 0, water = 0, plant = 0, light = 0, shadow = 0, voidi = 0, dimensionMaster = 0;
+
+	/** The demons. */
+	private static Map<String, Integer> demons = new HashMap<>();
 
 	/** The diff. */
 	private final double[] diff = new double[2];
@@ -104,8 +111,7 @@ public class MobRan extends NPC {
 
 		String[] mobs = {
 
-
-				"May", "Booky", "Mello", "Nobarius", "Naberius", "Slyzer", "Howl", "Cultist", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Legion"
+				"May", "Booky", "Mello", "Nobarius", "Slyzer", "Howl", "Cultist", "Vardum", "Endor", "Seraph", "Malag", "Spye", "Legion"
 
 		};
 
@@ -114,10 +120,9 @@ public class MobRan extends NPC {
 		//		mobName = "May";
 		//		wahl = Element.Void;
 		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
-		if("Naberius".equals(mobName)||"NaberiusDev".equals(mobName)) {
+		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
-			if(r == 5) mobName = "NaberiusDev";
-			else mobName = "Naberius";
+			if (r == 5) mobName = "Naberius";
 		}else if ("CultistKing".equals(mobName)||"Cultist".equals(mobName)) {
 			mobName = "Cultist";
 			if (wahl==Element.Void) {
@@ -129,14 +134,40 @@ public class MobRan extends NPC {
 			}
 		}
 
-		
+
 		if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
 			pnG = "./res/demons/"+wahl+"/"+mobName+".png";
 		else
 			pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 
+		switch (wahl) {
+			case Fire -> fire++;
+			case Water -> water++;
+			case Plant -> plant++;
+			case Light -> light++;
+			case Shadow -> shadow++;
+			case Void -> voidi++;
+			case DimensionMaster -> dimensionMaster++;
+			default -> throw new IllegalArgumentException("Unexpected value: " + wahl);
+		}
 
+		if (demons.containsKey(mobName)) demons.put(mobName, demons.get(mobName) + 1);
+		else demons.put(mobName, 1);
 
+		double sum = (fire + water + plant + light + shadow + voidi + dimensionMaster) / 100.0;
+		System.out.printf("Fire %.2f%% Water %.2f%% Plant %.2f%% Light %.2f%% Shadow %.2f%% Void %.2f%% DimensionMaster %.2f%% Items %d\n",
+				fire / sum, water / sum, plant / sum, light / sum, shadow / sum, voidi / sum, dimensionMaster / sum, (long) (sum * 100));
+
+		sum = demons.values().stream().mapToInt(i -> i).sum() / 100.0;
+
+		double _sum = sum;
+
+		Object[] data = demons.values().stream().map(i -> i / _sum).toList().toArray(new Object[demons.size() + 1]);
+
+		data[data.length - 1] = (long) (sum * 100);
+
+		System.out.printf(demons.keySet().stream().collect(Collectors.joining(" %.2f%% ")) + " %.2f%% Items %d\n",
+				data);
 
 		try {
 			Path p2	= new File(pnG).toPath();
@@ -212,7 +243,7 @@ public class MobRan extends NPC {
 			HealthBar h, hh;
 			System.out.println(demonMob);
 			if (demonMob != null) {
-				
+
 				gpt.getLgp().getMobRans().remove(MobRan.this);
 				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
 				Image bbg = ImgUtil.getScaledImage(gpt, "./res/fight/Fight.png", gpt.getGameWidth(), gpt.getGameHeight());
@@ -236,12 +267,12 @@ public class MobRan extends NPC {
 				hh.setLayoutX(gpt.getWidth()/4);
 				h.update();
 				hh.update();
-				
+
 				gpt.getChildren().addAll(bbgv, demonMob.getDemon(), eigenMob.getDemon(), h, hh);
-				
-				
+
+
 			}
-		}); 
+		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
 				Double[] pos = pathfinding(gpt);

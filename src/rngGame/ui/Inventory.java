@@ -184,7 +184,8 @@ public class Inventory extends Pane {
 			}
 		} else {
 			int j = findFirstNull(demonArray);
-			demonArray[j] = m1;
+			if (j != -1)
+				demonArray[j] = m1;
 			i = -j;
 		}
 		return i;
@@ -380,10 +381,10 @@ public class Inventory extends Pane {
 		Harnish g2 = new Harnish(Rarity.VOID);
 		Pants g3 = new Pants(Rarity.VOID);
 		Helmet g4 = new Helmet(Rarity.VOID);
-		
+
 		//for(int i = 1;i<100;i++) {
-			Potion p1 = new Potion(Rarity.VOID);
-			itemToInventory(p1);
+		Potion p1 = new Potion(Rarity.VOID);
+		itemToInventory(p1);
 		//}
 		// giveItem2Monster(g1);
 		// giveItem2Monster(g2);
@@ -393,7 +394,7 @@ public class Inventory extends Pane {
 		itemToInventory(g2);
 		itemToInventory(g3);
 		itemToInventory(g4);
-		
+
 
 		/////////////
 
@@ -560,7 +561,7 @@ public class Inventory extends Pane {
 						hpView2 = new ImageView(itemhpText);
 
 						rarityView2 = new ImageView(itemRarityText);
-						
+
 						applyButton.setOnMouseReleased(me2 -> {
 							applyButton.setImage(apply1);
 							hpView2.setVisible(false);
@@ -627,7 +628,7 @@ public class Inventory extends Pane {
 								ctbi6.setVisible(false);
 								itemStuff.setVisible(false);
 								statsImages(currentDemonIndex);
-								
+
 							});
 							ctbi3.setOnMouseReleased(mee -> {
 								transp.setVisible(false);
@@ -699,7 +700,7 @@ public class Inventory extends Pane {
 							itemSureBackroundm2.setVisible(true);
 						});
 
-						
+
 
 						hpView2.setLayoutX(25 * gamepanel.getVgp().getScalingFactorX());
 						hpView2.setLayoutY( (16 + 48) * gamepanel.getVgp().getScalingFactorY());
@@ -828,7 +829,7 @@ public class Inventory extends Pane {
 
 						nameView.setLayoutX(25 * gamepanel.getVgp().getScalingFactorX());
 						nameView.setLayoutY(20 * gamepanel.getVgp().getScalingFactorY());
-						
+
 						elementView3.setLayoutX(25 * gamepanel.getVgp().getScalingFactorX());
 						elementView3.setLayoutY(20+32 * gamepanel.getVgp().getScalingFactorY());
 

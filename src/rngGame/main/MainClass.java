@@ -35,6 +35,8 @@ public class MainClass extends Application {
 	 */
 	public static void main(String[] args) {
 
+		System.setProperty("debug", "false"); // more debug messages
+
 		System.setProperty("edit", "false"); // set edit mode to disabled
 		System.setProperty("coll", "false"); // set collisions mode to disabled
 		System.setProperty("alternateUpdate", "false"); // reverse Vsync more or less
@@ -55,7 +57,7 @@ public class MainClass extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		TitleScreen ts = new TitleScreen();
-		
+
 		primaryStage.setFullScreen(false);
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("Demon Universe");
@@ -76,7 +78,7 @@ public class MainClass extends Application {
 
 		Scene gameScene = new Scene(ts);
 		primaryStage.setScene(gameScene);
-		
+
 		ts.scaleF11();
 
 		primaryStage.show();
