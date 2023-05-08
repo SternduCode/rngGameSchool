@@ -62,9 +62,6 @@ public class ContractsTable extends Building {
 	/** The titlebanner 4. */
 	private ImageView titlebanner,titlebanner2,titlebanner3,titlebanner4;
 
-	/** The ms. */
-	private MonsterSelction ms;
-
 	/** The text. */
 	private ImageView text;
 
@@ -176,10 +173,10 @@ public class ContractsTable extends Building {
 		contractBackground.setTranslateY(-1);
 		// contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
-		contractSaturn = new Button(saturn);
-		contractNebel = new Button(nebel);
-		contractGalactus = new Button(galactus);
-		contractNova = new Button(nova);
+		contractSaturn = new Button(saturn,gamepanel.getLgp());
+		contractNebel = new Button(nebel,gamepanel.getLgp());
+		contractGalactus = new Button(galactus,gamepanel.getLgp());
+		contractNova = new Button(nova,gamepanel.getLgp());
 
 		text = new ImageView(ka);
 
@@ -207,10 +204,10 @@ public class ContractsTable extends Building {
 		ausBackground = new ImageView(ausbc);
 		lvlBorder = new ImageView(lvlb);
 
-		ausXb = new Button(ausX);
+		ausXb = new Button(ausX,gamepanel.getLgp());
 
-		button_R = new Button(buttonR);
-		button_L = new Button(buttonL);
+		button_R = new Button(buttonR,gamepanel.getLgp());
+		button_L = new Button(buttonL,gamepanel.getLgp());
 		Image x1 = ausX;
 		Image x2 = ausX2;
 		Image brl = buttonRL;
@@ -665,7 +662,6 @@ public class ContractsTable extends Building {
 				button_R.setVisible(false);
 				button_L.setVisible(false);
 				allPanes.setVisible(false);
-				setMs(null);
 				gamepanel.setBlockUserInputs(false);
 				index = 0;
 				p1.setTranslateX(0);
@@ -694,7 +690,7 @@ public class ContractsTable extends Building {
 	 *
 	 * @return the ms
 	 */
-	public MonsterSelction getMs() { return ms; }
+
 
 	/**
 	 * Reload U gtexture.
@@ -731,12 +727,7 @@ public class ContractsTable extends Building {
 	 *
 	 * @param ms the new ms
 	 */
-	public void setMs(MonsterSelction ms) {
-		if (ms != null)
-			allPanes.getChildren().add(ms);
-		else allPanes.getChildren().remove(this.ms);
-		this.ms = ms;
-	}
+
 
 
 
@@ -814,7 +805,6 @@ public class ContractsTable extends Building {
 
 			iv.setImage(hudp[animationNumPin]);
 		}
-		if (ms != null) ms.update(milis);
 	}
 
 }

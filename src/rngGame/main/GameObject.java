@@ -684,7 +684,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			System.out.println(background);
 		} else if (source == layerI) {
 			int origLayer = layer;
-			LayerInputDialog lid = new LayerInputDialog(this::getLayer, this::setLayer);
+			LayerInputDialog lid = new LayerInputDialog(this::getLayer, this::setLayer, gamepanel.getLgp());
 
 			lid.setTitle("Layer");
 			Optional<Boolean> result = lid.showAndWait();

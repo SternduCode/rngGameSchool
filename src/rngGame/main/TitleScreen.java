@@ -27,7 +27,7 @@ public class TitleScreen extends Pane{
 			e.printStackTrace();
 		}
 		iv = new ImageView();
-		ploy = new Button(ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy.png"));
+		ploy = new Button(ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy.png"),gp);
 		Image ploy1 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy.png");
 		Image ploy2 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy2.png");
 		ploy.setOnMousePressed(e -> ploy.setImage(ploy2));
@@ -66,8 +66,8 @@ public class TitleScreen extends Pane{
 		Image settins2 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Settins2.png");
 		Image pfail1 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Pfail.png");
 		Image pfail2 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Pfail2.png");
-		settins = new Button(settins1);
-		pfail = new Button(pfail1);
+		settins = new Button(settins1,gp);
+		pfail = new Button(pfail1,gp);
 		pfail.setVisible(false);
 		settins.setOnMousePressed(e->{
 			settins.setImage(settins2);
@@ -96,7 +96,7 @@ public class TitleScreen extends Pane{
 		
 		Image clous1 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Clous.png");
 		Image clous2 = ImgUtil.getScaledImage(gp, "./res/backgrounds/Clous2.png");
-		clous = new Button(clous1);
+		clous = new Button(clous1,gp);
 		clous.setOnMousePressed(e -> clous.setImage(clous2));
 		clous.setOnMouseReleased(e->{
 			clous.setImage(clous1);

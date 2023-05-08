@@ -7,6 +7,7 @@ import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
+import rngGame.main.GamePanel;
 
 public class LayerInputDialog extends Dialog<Boolean> {
 
@@ -14,10 +15,12 @@ public class LayerInputDialog extends Dialog<Boolean> {
 	private Button up, down;
 	private TextField textField;
 	private final Label space = new Label(""), space2 = new Label("");
+	private GamePanel gp;
 
-	public LayerInputDialog(Supplier<Integer> supplier, Consumer<Integer> consumer) {
+	public LayerInputDialog(Supplier<Integer> supplier, Consumer<Integer> consumer, GamePanel gp) {
 		final DialogPane dialogPane = getDialogPane();
 
+		this.gp = gp;
 		textField = new TextField(supplier.get() + "");
 		textField.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(textField, Priority.ALWAYS);
@@ -33,7 +36,7 @@ public class LayerInputDialog extends Dialog<Boolean> {
 					}
 				});
 
-		up = new Button((char) 708 + "");
+		up = new Button((char) 708 + "",gp);
 		GridPane.setHalignment(up, HPos.CENTER);
 		GridPane.setValignment(up, VPos.CENTER);
 		up.setOnAction(event -> {
@@ -43,7 +46,7 @@ public class LayerInputDialog extends Dialog<Boolean> {
 			}
 		});
 
-		down = new Button((char) 709 + "");
+		down = new Button((char) 709 + "",gp);
 		GridPane.setHalignment(down, HPos.CENTER);
 		GridPane.setValignment(down, VPos.CENTER);
 		down.setOnAction(event -> {

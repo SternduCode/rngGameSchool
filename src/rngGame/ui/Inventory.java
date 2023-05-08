@@ -399,12 +399,12 @@ public class Inventory extends Pane {
 		/////////////
 
 		Image	ctt	= ImgUtil.getScaledImage(gamepanel, "./res/gui/Temp.png");
-		ctb1 = new Button(ctt);
-		ctb2 = new Button(ctt);
-		ctb3 = new Button(ctt);
-		ctb4 = new Button(ctt);
-		ctb5 = new Button(ctt);
-		ctb6 = new Button(ctt);
+		ctb1 = new Button(ctt,gamepanel);
+		ctb2 = new Button(ctt,gamepanel);
+		ctb3 = new Button(ctt,gamepanel);
+		ctb4 = new Button(ctt,gamepanel);
+		ctb5 = new Button(ctt,gamepanel);
+		ctb6 = new Button(ctt,gamepanel);
 		ctov = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/tempOV.png"));
 
 		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
@@ -449,7 +449,7 @@ public class Inventory extends Pane {
 		// Xbutton
 		Image	ausX	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
 		Image	ausX2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
-		ausXb = new Button(ausX);
+		ausXb = new Button(ausX,gamepanel);
 
 		// backbutton
 		Image	back1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
@@ -468,27 +468,27 @@ public class Inventory extends Pane {
 		// PotionButtonFeld
 		Image	potionButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
 		Image	potionButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
-		potionbutton = new Button(potionButton1);
+		potionbutton = new Button(potionButton1,gamepanel);
 
 		// ArmorButtonFeld
 		Image	armorButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
 		Image	armorButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
-		armorbutton = new Button(armorButton2);
+		armorbutton = new Button(armorButton2,gamepanel);
 
 		// UseButtonFeld
 		Image	useButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
 		Image	useButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
-		usebutton = new Button(useButton2);
+		usebutton = new Button(useButton2,gamepanel);
 
 		// KeyButtonFeld
 		Image	keyButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
 		Image	keyButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
-		keybutton = new Button(keyButton2);
+		keybutton = new Button(keyButton2,gamepanel);
 
 		// IdkButtonFeld
 		Image	idkButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
 		Image	idkButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
-		idkbutton = new Button(idkButton2);
+		idkbutton = new Button(idkButton2,gamepanel);
 
 		Image stage1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov1.png");
 		Image stage2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov2.png");
@@ -569,12 +569,12 @@ public class Inventory extends Pane {
 							//TODO
 							Button ctbi1,ctbi2,ctbi3,ctbi4,ctbi5,ctbi6;
 
-							ctbi1 = new Button(ctt);
-							ctbi2 = new Button(ctt);
-							ctbi3 = new Button(ctt);
-							ctbi4 = new Button(ctt);
-							ctbi5 = new Button(ctt);
-							ctbi6 = new Button(ctt);
+							ctbi1 = new Button(ctt,gamepanel);
+							ctbi2 = new Button(ctt,gamepanel);
+							ctbi3 = new Button(ctt,gamepanel);
+							ctbi4 = new Button(ctt,gamepanel);
+							ctbi5 = new Button(ctt,gamepanel);
+							ctbi6 = new Button(ctt,gamepanel);
 							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
 							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
 							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));
@@ -861,12 +861,12 @@ public class Inventory extends Pane {
 
 							Button ctbi1,ctbi2,ctbi3,ctbi4,ctbi5,ctbi6;
 
-							ctbi1 = new Button(ctt);
-							ctbi2 = new Button(ctt);
-							ctbi3 = new Button(ctt);
-							ctbi4 = new Button(ctt);
-							ctbi5 = new Button(ctt);
-							ctbi6 = new Button(ctt);
+							ctbi1 = new Button(ctt,gamepanel);
+							ctbi2 = new Button(ctt,gamepanel);
+							ctbi3 = new Button(ctt,gamepanel);
+							ctbi4 = new Button(ctt,gamepanel);
+							ctbi5 = new Button(ctt,gamepanel);
+							ctbi6 = new Button(ctt,gamepanel);
 							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
 							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
 							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));

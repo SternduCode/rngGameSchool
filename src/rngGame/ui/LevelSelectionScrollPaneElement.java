@@ -98,7 +98,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		// Start Button
 		Image sButton = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton.png");
 		Image sButton2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton2.png");
-		startButton = new Button(sButton);
+		startButton = new Button(sButton,gamepanel.getLgp());
 		startButton.setLayoutX(383 * gamepanel.getScalingFactorX());
 		startButton.setLayoutY(4 * gamepanel.getScalingFactorY());
 		startButton.setOnMousePressed(me -> {
@@ -106,8 +106,6 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		});
 		startButton.setOnMouseReleased(me -> {
 			startButton.setImage(sButton);
-			ct.setMs(new MonsterSelction(gamepanel, ct));// TODO add needed parameters
-
 		});
 
 		background.setOnMouseReleased(me -> {
