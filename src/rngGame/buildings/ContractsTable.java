@@ -51,7 +51,7 @@ public class ContractsTable extends Building {
 	private ImageView contractBackground;
 
 	/** The contract nova. */
-	private Button contractSaturn,contractNebel,contractGalactus,contractNova;
+	private Button contractSaturn, contractNebel, contractGalactus, contractNova;
 
 	/** The hudp. */
 	private Image[] hudp;
@@ -66,7 +66,7 @@ public class ContractsTable extends Building {
 	private ImageView text;
 
 	/** The button L. */
-	private Button button_R,button_L;
+	private Button button_R, button_L;
 
 	/** The aus background. */
 	private ImageView ausBackground;
@@ -173,10 +173,10 @@ public class ContractsTable extends Building {
 		contractBackground.setTranslateY(-1);
 		// contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
-		contractSaturn = new Button(saturn,gamepanel.getLgp());
-		contractNebel = new Button(nebel,gamepanel.getLgp());
-		contractGalactus = new Button(galactus,gamepanel.getLgp());
-		contractNova = new Button(nova,gamepanel.getLgp());
+		contractSaturn		= new Button(saturn, gamepanel.getLgp());
+		contractNebel		= new Button(nebel, gamepanel.getLgp());
+		contractGalactus	= new Button(galactus, gamepanel.getLgp());
+		contractNova		= new Button(nova, gamepanel.getLgp());
 
 		text = new ImageView(ka);
 
@@ -204,10 +204,10 @@ public class ContractsTable extends Building {
 		ausBackground = new ImageView(ausbc);
 		lvlBorder = new ImageView(lvlb);
 
-		ausXb = new Button(ausX,gamepanel.getLgp());
+		ausXb = new Button(ausX, gamepanel.getLgp());
 
-		button_R = new Button(buttonR,gamepanel.getLgp());
-		button_L = new Button(buttonL,gamepanel.getLgp());
+		button_R	= new Button(buttonR, gamepanel.getLgp());
+		button_L	= new Button(buttonL, gamepanel.getLgp());
 		Image x1 = ausX;
 		Image x2 = ausX2;
 		Image brl = buttonRL;
@@ -725,7 +725,7 @@ public class ContractsTable extends Building {
 	/**
 	 * Sets the ms.
 	 *
-	 * @param ms the new ms
+	 * @param milis the milis
 	 */
 
 

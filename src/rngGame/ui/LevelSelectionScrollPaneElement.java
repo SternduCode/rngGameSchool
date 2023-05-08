@@ -98,17 +98,17 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		// Start Button
 		Image sButton = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton.png");
 		Image sButton2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton2.png");
-		startButton = new Button(sButton,gamepanel.getLgp());
+		startButton = new Button(sButton, gamepanel.getLgp());
 		startButton.setLayoutX(383 * gamepanel.getScalingFactorX());
 		startButton.setLayoutY(4 * gamepanel.getScalingFactorY());
-		startButton.setOnMousePressed(me -> {
+		startButton.setOnPressed(me -> {
 			startButton.setImage(sButton2);
 		});
-		startButton.setOnMouseReleased(me -> {
+		startButton.setOnReleased(me -> {
 			startButton.setImage(sButton);
 		});
 
-		background.setOnMouseReleased(me -> {
+		background.setOnReleased(me -> {
 			ct.reloadUGtexture();
 			vlvl.setVisible(true);
 			background.setImage(UGbc2);

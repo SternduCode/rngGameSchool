@@ -7,31 +7,70 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import rngGame.main.GamePanel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Button.
+ */
 public class Button extends ImageView {
+
+	/** The gp. */
 	GamePanel gp;
+
+	/**
+	 * Instantiates a new button.
+	 */
 	public Button() {}
 
+	/**
+	 * Instantiates a new button.
+	 *
+	 * @param image the image
+	 * @param gpNeu the gp neu
+	 */
 	public Button(Image image, GamePanel gpNeu) {
 		super(image);
-		this.gp = gpNeu;
+		gp = gpNeu;
 	}
 
+	/**
+	 * Instantiates a new button.
+	 *
+	 * @param url the url
+	 * @param gpNeu the gp neu
+	 */
 	public Button(String url, GamePanel gpNeu) {
 		super(url);
-		this.gp = gpNeu;
+		gp = gpNeu;
 	}
-	
 
+
+	/**
+	 * Sets the on action.
+	 *
+	 * @param ev the new on action
+	 */
 	public void setOnAction(EventHandler<ActionEvent> ev) {
-		setOnMouseReleased(me -> ev.handle(new ActionEvent(me.getSource(), me.getTarget())));
-		setOnTouchReleased(te -> ev.handle(new ActionEvent(te.getSource(), te.getTarget())));
+		setOnReleased(me -> ev.handle(new ActionEvent(me.getSource(), me.getTarget())));
 	}
-	
 
+
+	/**
+	 * Sets the on pressed.
+	 *
+	 * @param mv the new on pressed
+	 */
+	public void setOnPressed(EventHandler<MouseEvent> mv) {
+		setOnMousePressed(mv);
+	}
+
+	/**
+	 * Sets the on released.
+	 *
+	 * @param mv the new on released
+	 */
 	public void setOnReleased(EventHandler<MouseEvent> mv) {
-		
-		setOnMouseReleased(i ->((Consumer<MouseEvent>) e->gp.makeSound("click")).andThen(e -> mv.handle(e)));
-		
+		setOnMouseReleased(i -> ((Consumer<MouseEvent>) e -> gp.makeSound("click.wav")).andThen(e -> mv.handle(e)).accept(i));
+
 	}
 
 }
