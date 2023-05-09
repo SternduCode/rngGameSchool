@@ -166,7 +166,7 @@ public class GamePanel extends Pane {
 	public void makeSound(String soundname){
 		MediaPlayer mp = new MediaPlayer(new Media(new File("./res/music/" + soundname).toURI().toString()));
 		mp.setAutoPlay(true);
-		mp.setVolume(1);
+		mp.setVolume(.2);
 	}
 
 	/**

@@ -1579,5 +1579,16 @@ public class Inventory extends Pane {
 		expBar.setImage(showXPbr());
 		elementView.setImage(showElementbr(getCurrentDemon().getElement()));
 		eIconView.setImage(showElementIcon(getCurrentDemon().getElement()));
+
+		if (!gamepanel.getNpcs().contains(getCurrentDemon().getDemon()))
+			gamepanel.getNpcs().add(getCurrentDemon().getDemon());
+
+		Button[] ctbs = {
+				ctb1, ctb2, ctb3, ctb4, ctb5, ctb6
+		};
+
+		for (int i = 0; i < ctbs.length; i++)
+			ctbs[i].setImage(getIconM(currentDemonArray[i].getMobName(), currentDemonArray[i].getElement()));
+
 	}
 }
