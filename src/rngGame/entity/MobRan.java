@@ -123,14 +123,10 @@ public class MobRan extends NPC {
 		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
 			if (r == 5) mobName = "Naberius";
-		}else if ("CultistKing".equals(mobName)||"Cultist".equals(mobName)) {
-			mobName = "Cultist";
+		}else if ("Cultist".equals(mobName)) {
 			if (wahl==Element.Void) {
 				r = gen.nextInt(200)+1;
-				//			r = 13;
-				if(r == 13) { mobName = "CultistKing"; wahl = Element.DimensionMaster; }
-
-				else mobName = "Cultist";
+				if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster; 
 			}
 		}
 
