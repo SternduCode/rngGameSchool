@@ -18,8 +18,10 @@ public class Button extends ImageView {
 
 	/**
 	 * Instantiates a new button.
+	 *
+	 * @param gpNeu the gp neu
 	 */
-	public Button() {}
+	public Button(GamePanel gpNeu) { gp = gpNeu; }
 
 	/**
 	 * Instantiates a new button.
