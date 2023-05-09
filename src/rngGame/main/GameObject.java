@@ -109,6 +109,7 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	/** The fix to screen. */
 	protected boolean fixToScreen;
 
+	/** The flip textures. */
 	protected boolean flipTextures = false;
 
 	/** The remove. */
@@ -905,6 +906,15 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	}
 
 	/**
+	 * Flip textures.
+	 */
+	public void flipTextures() {
+		flipTextures = !flipTextures;
+		reloadTextures();
+	}
+
+
+	/**
 	 * Gets the collision box.
 	 *
 	 * @return the collision box
@@ -912,12 +922,6 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 	@Override
 	public Polygon getCollisionBox() {
 		return collisionBoxes.get(currentKey);
-	}
-
-	
-	public void flipTextures() {
-		flipTextures = !flipTextures;
-		reloadTextures();
 	}
 	/**
 	 * Gets the current key.
@@ -1366,6 +1370,11 @@ public class GameObject extends Pane implements JsonValue, Collidable {
 			animationNum++;
 
 			try {
+				if (images.get(currentKey) == null) {
+					System.err.println(this);
+					System.err.println("No images here");
+					return;
+				}
 				if (animationNum >= images.get(currentKey).size()) animationNum = 0;
 			} catch (Exception e) {
 				System.out.println(currentKey);

@@ -302,56 +302,7 @@ public class Inventory extends Pane {
 
 		moveFromArrayToView();
 
-		Image hpText = Text.getInstance().convertText("HP:" + getCurrentDemon().getMaxHp(), 48);
-		hpText = ImgUtil.resizeImage(
-				hpText, (int) hpText.getWidth(), (int) hpText.getHeight(),
-				(int) (hpText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (hpText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image atkText = Text.getInstance().convertText("ATK:" + getCurrentDemon().getAtk(), 48);
-		atkText = ImgUtil.resizeImage(
-				atkText, (int) atkText.getWidth(), (int) atkText.getHeight(),
-				(int) (atkText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (atkText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image resText = Text.getInstance().convertText(String.format("RES:%.2f%%", getCurrentDemon().getRes()), 48);
-		resText = ImgUtil.resizeImage(
-				resText, (int) resText.getWidth(), (int) resText.getHeight(),
-				(int) (resText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (resText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image dgcText = Text.getInstance().convertText(String.format("DGC:%.2f%%", getCurrentDemon().getDgc()), 48);
-		dgcText = ImgUtil.resizeImage(
-				dgcText, (int) dgcText.getWidth(), (int) dgcText.getHeight(),
-				(int) (dgcText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (dgcText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image nameText = Text.getInstance().convertText("" + getCurrentDemon().getMobName(), 48);
-		nameText = ImgUtil.resizeImage(
-				nameText, (int) nameText.getWidth(), (int) nameText.getHeight(),
-				(int) (nameText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (nameText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image expMaxText = Text.getInstance()
-				.convertText(getCurrentDemon().getCurrentExp() + ":" + getCurrentDemon().getMaxExp(), 32);
-		expMaxText = ImgUtil.resizeImage(
-				expMaxText, (int) expMaxText.getWidth(), (int) expMaxText.getHeight(),
-				(int) (expMaxText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (expMaxText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		Image lvlText = Text.getInstance().convertText("lvl:" + getCurrentDemon().getLvl(), 48);
-		lvlText = ImgUtil.resizeImage(
-				lvlText, (int) lvlText.getWidth(), (int) lvlText.getHeight(),
-				(int) (lvlText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
-				(int) (lvlText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
-
-		hpView.setImage(hpText);
-		atkView.setImage(atkText);
-		resView.setImage(resText);
-		dgcView.setImage(dgcText);
-		nameView.setImage(nameText);
-		expText.setImage(expMaxText);
-		lvlView.setImage(lvlText);
+		statsImages(currentDemonIndex);
 
 	}
 
