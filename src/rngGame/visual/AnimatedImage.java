@@ -113,9 +113,9 @@ public class AnimatedImage extends ImageView {
 	 */
 	public void scaleF11() {
 		frames = ImgUtil.getScaledImages(gamepanel, path);
-		setImage(frames[frameIndex]);
 		if (frameIndex >= frames.length)
 			frameIndex = 0;
+		setImage(frames[frameIndex]);
 	}
 
 	/**
