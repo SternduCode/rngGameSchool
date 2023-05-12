@@ -3,7 +3,6 @@ package rngGame.entity;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.*;
 
@@ -11,13 +10,11 @@ import com.sterndu.json.*;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
 import rngGame.stats.*;
-import rngGame.tile.*;
-import rngGame.ui.HealthBar;
-import rngGame.visual.Fight;
-import rngGame.visual.GamePanel;
+import rngGame.tile.TextureHolder;
+import rngGame.visual.*;
 
 
 // TODO: Auto-generated Javadoc
@@ -61,7 +58,8 @@ public class MobRan extends NPC {
 
 	/** The steps. */
 	private final int steps = 40;
-	
+
+	/** The f. */
 	private Fight f;
 
 	/**
@@ -126,11 +124,9 @@ public class MobRan extends NPC {
 		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
 			if (r == 5) mobName = "Naberius";
-		}else if ("Cultist".equals(mobName)) {
-			if (wahl==Element.Void) {
-				r = gen.nextInt(200)+1;
-				if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster; 
-			}
+		} else if ("Cultist".equals(mobName) && wahl==Element.Void) {
+			r = gen.nextInt(200)+1;
+			if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster;
 		}
 
 
@@ -238,11 +234,14 @@ public class MobRan extends NPC {
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
 			gpt.setBlockUserInputs(true);
-			gpt.getLgp().getMobRans().remove(MobRan.this);
-			gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
-			f = new Fight(gpt);
-			gpt.getChildren().add(f);
-			
+			MobRan.this.setFixToScreen(true);
+			MobRan.this.setLayoutX(0);
+			MobRan.this.setLayoutY(0);
+			MobRan.this.setLayer(gamepanel.getViewGroups().size());
+			gamepanel.getAktionbutton().setVisible(false);
+			f = new Fight(gpt, MobRan.this);
+			getChildren().add(f);
+
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
@@ -374,17 +373,19 @@ public class MobRan extends NPC {
 	public void update(long milis) {
 		super.update(milis);// TODO make speed like with player
 		if(f!=null) f.update();
-		if (diff[0] > 0 || diff[1] > 0)
-			step++;
-		x	+= diff[0] / steps;
-		y	+= diff[1] / steps;
-		// System.out.println(step);
-		if (step <= steps) {
-			//			System.out.println(Arrays.toString(diff));
-			//			System.out.println("Finish: " + step);
-			step	= 0;
-			diff[0]	= 0;
-			diff[1]	= 0;
+		else {
+			if (diff[0] > 0 || diff[1] > 0)
+				step++;
+			x	+= diff[0] / steps;
+			y	+= diff[1] / steps;
+			// System.out.println(step);
+			if (step <= steps) {
+				//			System.out.println(Arrays.toString(diff));
+				//			System.out.println("Finish: " + step);
+				step	= 0;
+				diff[0]	= 0;
+				diff[1]	= 0;
+			}
 		}
 	}
 
