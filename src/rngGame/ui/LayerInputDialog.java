@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import rngGame.main.GamePanel;
@@ -92,7 +93,7 @@ public class LayerInputDialog extends Dialog<Boolean> {
 
 		setResultConverter(dialogButton -> {
 			ButtonData data = dialogButton == null ? null : dialogButton.getButtonData();
-			return (data == ButtonData.OK_DONE) == true;
+			return (data == ButtonData.OK_DONE);
 		});
 	}
 

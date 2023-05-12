@@ -66,7 +66,7 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 * @param dif the dif
 	 */
 	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct, String floor, int lvlneu, String pic, Difficulty dif) {
-		super(new Button(gamepanel.getLgp()));
+		super(new Button(gamepanel));
 		background = getBackgroundElement();
 		UGbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground.png");
 		Image UGbc2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground2.png");
@@ -97,17 +97,17 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 
 		// Start Button
-		Image sButton = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton.png");
-		Image sButton2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Startbutton2.png");
+		String	sButton		= "./res/Contractstuff/Startbutton.png";
+		String	sButton2	= "./res/Contractstuff/Startbutton2.png";
 		System.out.println(gamepanel + " " + gamepanel.getLgp());
-		startButton = new Button(sButton, gamepanel.getLgp());
+		startButton = new Button(sButton, gamepanel);
 		startButton.setLayoutX(383 * gamepanel.getScalingFactorX());
 		startButton.setLayoutY(4 * gamepanel.getScalingFactorY());
 		startButton.setOnPressed(me -> {
-			startButton.setImage(sButton2);
+			startButton.init(sButton2);
 		});
 		startButton.setOnReleased(me -> {
-			startButton.setImage(sButton);
+			startButton.init(sButton);
 			Input.getInstance().keyPressed(new KeyEvent(null, "", "", KeyCode.ENTER, false, false, false, false));
 			gamepanel.getLgp().setMap("./res/maps/Dungeon.json");
 			ct.removeEnterAbbility();

@@ -63,7 +63,8 @@ public class Inventory extends Pane {
 	private Pane namePane;
 
 	/** The element view. */
-	private ImageView nameView, textBackroundCT, elementView, eIconView, itemOverlay, transp, itemSureBackround, itemSureBackroundm1, itemSureBackroundm2, backButton, applyButton, removeButton;
+	private ImageView nameView, textBackroundCT, elementView, eIconView, itemOverlay, transp, itemSureBackround, itemSureBackroundm1,
+	itemSureBackroundm2;
 
 	/** The status. */
 	private Pane status;
@@ -81,7 +82,7 @@ public class Inventory extends Pane {
 	private ImageView invBackround,ctov,ctcomp,comingView;
 
 	/** The aus xb. */
-	private Button ausXb;
+	private Button ausXb, backButton, applyButton, removeButton;
 
 	/** The inv slots. */
 	private final ImageView[][] invSlots = new ImageView[10][4];
@@ -349,13 +350,19 @@ public class Inventory extends Pane {
 
 		/////////////
 
-		Image	ctt	= ImgUtil.getScaledImage(gamepanel, "./res/gui/Temp.png");
-		ctb1	= new Button(ctt, gamepanel);
-		ctb2	= new Button(ctt, gamepanel);
-		ctb3	= new Button(ctt, gamepanel);
-		ctb4	= new Button(ctt, gamepanel);
-		ctb5	= new Button(ctt, gamepanel);
-		ctb6	= new Button(ctt, gamepanel);
+		String ctt = "./res/gui/Temp.png";
+		ctb1	= new Button(gamepanel.getVgp());
+		ctb2	= new Button(gamepanel.getVgp());
+		ctb3	= new Button(gamepanel.getVgp());
+		ctb4	= new Button(gamepanel.getVgp());
+		ctb5	= new Button(gamepanel.getVgp());
+		ctb6	= new Button(gamepanel.getVgp());
+		ctb1.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
+		ctb2.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
+		ctb3.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
+		ctb4.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
+		ctb5.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
+		ctb6.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
 		ctov = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/tempOV.png"));
 
 		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
@@ -398,48 +405,48 @@ public class Inventory extends Pane {
 
 
 		// Xbutton
-		Image	ausX	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
-		Image	ausX2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
-		ausXb = new Button(ausX, gamepanel);
+		String	ausX	= "./res/Contractstuff/Xbutton.png";
+		String	ausX2	= "./res/Contractstuff/XbuttonC.png";
+		ausXb = new Button(ausX, gamepanel.getVgp());
 
 		// backbutton
-		Image	back1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbutton.png");
-		Image	back2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/MonsterBackbuttonC.png");
-		backButton = new ImageView(back1);
+		String	back1	= "./res/Contractstuff/MonsterBackbutton.png";
+		String	back2	= "./res/Contractstuff/MonsterBackbuttonC.png";
+		backButton = new Button(back1, gamepanel.getVgp());
 
-		Image	remove1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Removeb1.png");
-		Image	remove2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Removeb2.png");
-		removeButton = new ImageView(remove1);
+		String	remove1	= "./res/Contractstuff/Removeb1.png";
+		String	remove2	= "./res/Contractstuff/Removeb2.png";
+		removeButton = new Button(remove1, gamepanel.getVgp());
 
 		// backbutton
-		Image	apply1	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton1.png");
-		Image	apply2	= ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/ApplyButton2.png");
-		applyButton = new ImageView(apply1);
+		String	apply1	= "./res/Contractstuff/ApplyButton1.png";
+		String	apply2	= "./res/Contractstuff/ApplyButton2.png";
+		applyButton = new Button(apply1, gamepanel.getVgp());
 
 		// PotionButtonFeld
-		Image	potionButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonClosed.png");
-		Image	potionButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/PotionButtonOpen.png");
-		potionbutton = new Button(potionButton1, gamepanel);
+		String	potionButton2	= "./res/gui/InvButtonFolder/PotionButtonClosed.png";
+		String	potionButton1	= "./res/gui/InvButtonFolder/PotionButtonOpen.png";
+		potionbutton = new Button(potionButton1, gamepanel.getVgp());
 
 		// ArmorButtonFeld
-		Image	armorButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonClosed.png");
-		Image	armorButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/ArmorButtonOpen.png");
-		armorbutton = new Button(armorButton2, gamepanel);
+		String	armorButton2	= "./res/gui/InvButtonFolder/ArmorButtonClosed.png";
+		String	armorButton1	= "./res/gui/InvButtonFolder/ArmorButtonOpen.png";
+		armorbutton = new Button(armorButton2, gamepanel.getVgp());
 
 		// UseButtonFeld
-		Image	useButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonClosed.png");
-		Image	useButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/UseButtonOpen.png");
-		usebutton = new Button(useButton2, gamepanel);
+		String	useButton2	= "./res/gui/InvButtonFolder/UseButtonClosed.png";
+		String	useButton1	= "./res/gui/InvButtonFolder/UseButtonOpen.png";
+		usebutton = new Button(useButton2, gamepanel.getVgp());
 
 		// KeyButtonFeld
-		Image	keyButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonClosed.png");
-		Image	keyButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/KeyButtonOpen.png");
-		keybutton = new Button(keyButton2, gamepanel);
+		String	keyButton2	= "./res/gui/InvButtonFolder/KeyButtonClosed.png";
+		String	keyButton1	= "./res/gui/InvButtonFolder/KeyButtonOpen.png";
+		keybutton = new Button(keyButton2, gamepanel.getVgp());
 
 		// IdkButtonFeld
-		Image	idkButton2	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonClosed.png");
-		Image	idkButton1	= ImgUtil.getScaledImage(gamepanel, "./res/gui/InvButtonFolder/IdkButtonOpen.png");
-		idkbutton = new Button(idkButton2, gamepanel);
+		String	idkButton2	= "./res/gui/InvButtonFolder/IdkButtonClosed.png";
+		String	idkButton1	= "./res/gui/InvButtonFolder/IdkButtonOpen.png";
+		idkbutton = new Button(idkButton2, gamepanel.getVgp());
 
 		Image stage1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov1.png");
 		Image stage2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/lineaov2.png");
@@ -514,18 +521,18 @@ public class Inventory extends Pane {
 						rarityView2 = new ImageView(itemRarityText);
 
 						applyButton.setOnMouseReleased(me2 -> {
-							applyButton.setImage(apply1);
+							applyButton.init(apply1);
 							hpView2.setVisible(false);
 							rarityView2.setVisible(false);
 							//TODO
 							Button ctbi1, ctbi2, ctbi3, ctbi4, ctbi5, ctbi6;
 
-							ctbi1 = new Button(ctt, gamepanel);
-							ctbi2 = new Button(ctt, gamepanel);
-							ctbi3 = new Button(ctt, gamepanel);
-							ctbi4 = new Button(ctt, gamepanel);
-							ctbi5 = new Button(ctt, gamepanel);
-							ctbi6 = new Button(ctt, gamepanel);
+							ctbi1 = new Button(ctt, gamepanel.getVgp());
+							ctbi2 = new Button(ctt, gamepanel.getVgp());
+							ctbi3 = new Button(ctt, gamepanel.getVgp());
+							ctbi4 = new Button(ctt, gamepanel.getVgp());
+							ctbi5 = new Button(ctt, gamepanel.getVgp());
+							ctbi6 = new Button(ctt, gamepanel.getVgp());
 							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
 							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
 							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));
@@ -698,7 +705,7 @@ public class Inventory extends Pane {
 								(int) (itemRarityText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
 
 						applyButton.setOnMouseReleased(me2 -> {
-							applyButton.setImage(apply1);
+							applyButton.init(apply1);
 							giveItem2Monster(_j / 62 * 10 + _i / 62);
 							transp.setVisible(false);
 							itemSureBackround.setVisible(false);
@@ -802,7 +809,7 @@ public class Inventory extends Pane {
 						backButton.setVisible(true);
 
 						applyButton.setOnMouseReleased(me2 -> {
-							applyButton.setImage(apply1);
+							applyButton.init(apply1);
 
 							elementView3.setVisible(false);
 							atkView3.setVisible(false);
@@ -812,12 +819,12 @@ public class Inventory extends Pane {
 
 							Button ctbi1, ctbi2, ctbi3, ctbi4, ctbi5, ctbi6;
 
-							ctbi1 = new Button(ctt, gamepanel);
-							ctbi2 = new Button(ctt, gamepanel);
-							ctbi3 = new Button(ctt, gamepanel);
-							ctbi4 = new Button(ctt, gamepanel);
-							ctbi5 = new Button(ctt, gamepanel);
-							ctbi6 = new Button(ctt, gamepanel);
+							ctbi1 = new Button(ctt, gamepanel.getVgp());
+							ctbi2 = new Button(ctt, gamepanel.getVgp());
+							ctbi3 = new Button(ctt, gamepanel.getVgp());
+							ctbi4 = new Button(ctt, gamepanel.getVgp());
+							ctbi5 = new Button(ctt, gamepanel.getVgp());
+							ctbi6 = new Button(ctt, gamepanel.getVgp());
 							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
 							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
 							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));
@@ -933,18 +940,18 @@ public class Inventory extends Pane {
 					}
 
 					backButton.setOnMousePressed(me2 -> {
-						backButton.setImage(back2);
+						backButton.init(back2);
 					});
 
 					backButton.setOnMouseReleased(me2 -> {
-						backButton.setImage(back1);
+						backButton.init(back1);
 						transp.setVisible(false);
 						itemSureBackround.setVisible(false);
 						itemStuff.setVisible(false);
 					});
 
 					applyButton.setOnMousePressed(me2 -> {
-						applyButton.setImage(apply2);
+						applyButton.init(apply2);
 					});
 				});
 				p.getChildren().add(iv);
@@ -1042,22 +1049,22 @@ public class Inventory extends Pane {
 				removeButton.setVisible(true);
 
 				backButton.setOnMousePressed(me2 -> {
-					backButton.setImage(back2);
+					backButton.init(back2);
 				});
 
 				backButton.setOnMouseReleased(me2 -> {
-					backButton.setImage(back1);
+					backButton.init(back1);
 					transp.setVisible(false);
 					itemSureBackround.setVisible(false);
 					itemStuff.setVisible(false);
 				});
 
 				removeButton.setOnMousePressed(me2 -> {
-					removeButton.setImage(remove2);
+					removeButton.init(remove2);
 				});
 
 				removeButton.setOnMouseReleased(me2 -> {
-					removeButton.setImage(remove1);
+					removeButton.init(remove1);
 					int z = findFirstNull(gearArray);
 					if(z != -1) {
 						gearArray[z] = getCurrentDemon().getItem4List()[_i];
@@ -1177,11 +1184,11 @@ public class Inventory extends Pane {
 		setVisible(false);
 
 		ausXb.setOnPressed(me -> {
-			ausXb.setImage(ausX2);
+			ausXb.init(ausX2);
 		});
 
 		ausXb.setOnReleased(me -> {
-			ausXb.setImage(ausX);
+			ausXb.init(ausX);
 			tabm.closeTabm(true);
 			new Thread(() -> {
 				try {
@@ -1196,55 +1203,55 @@ public class Inventory extends Pane {
 		});
 
 		potionbutton.setOnReleased(me -> {
-			potionbutton.setImage(potionButton1);
-			armorbutton.setImage(armorButton2);
-			usebutton.setImage(useButton2);
-			keybutton.setImage(keyButton2);
-			idkbutton.setImage(idkButton2);
+			potionbutton.init(potionButton1);
+			armorbutton.init(armorButton2);
+			usebutton.init(useButton2);
+			keybutton.init(keyButton2);
+			idkbutton.init(idkButton2);
 			comingView.setVisible(false);
 			currentTab = Tab.POTION;
 			moveFromArrayToView();
 		});
 
 		armorbutton.setOnReleased(me -> {
-			potionbutton.setImage(potionButton2);
-			armorbutton.setImage(armorButton1);
-			usebutton.setImage(useButton2);
-			keybutton.setImage(keyButton2);
-			idkbutton.setImage(idkButton2);
+			potionbutton.init(potionButton2);
+			armorbutton.init(armorButton1);
+			usebutton.init(useButton2);
+			keybutton.init(keyButton2);
+			idkbutton.init(idkButton2);
 			comingView.setVisible(false);
 			currentTab = Tab.ARMOR;
 			moveFromArrayToView();
 		});
 
 		usebutton.setOnReleased(me -> {
-			potionbutton.setImage(potionButton2);
-			armorbutton.setImage(armorButton2);
-			usebutton.setImage(useButton1);
-			keybutton.setImage(keyButton2);
-			idkbutton.setImage(idkButton2);
+			potionbutton.init(potionButton2);
+			armorbutton.init(armorButton2);
+			usebutton.init(useButton1);
+			keybutton.init(keyButton2);
+			idkbutton.init(idkButton2);
 			comingView.setVisible(true);
 			currentTab = Tab.USE;
 			moveFromArrayToView();
 		});
 
 		keybutton.setOnReleased(me -> {
-			potionbutton.setImage(potionButton2);
-			armorbutton.setImage(armorButton2);
-			usebutton.setImage(useButton2);
-			keybutton.setImage(keyButton1);
-			idkbutton.setImage(idkButton2);
+			potionbutton.init(potionButton2);
+			armorbutton.init(armorButton2);
+			usebutton.init(useButton2);
+			keybutton.init(keyButton1);
+			idkbutton.init(idkButton2);
 			comingView.setVisible(true);
 			currentTab = Tab.KEY;
 			moveFromArrayToView();
 		});
 
 		idkbutton.setOnReleased(me -> {
-			potionbutton.setImage(potionButton2);
-			armorbutton.setImage(armorButton2);
-			usebutton.setImage(useButton2);
-			keybutton.setImage(keyButton2);
-			idkbutton.setImage(idkButton1);
+			potionbutton.init(potionButton2);
+			armorbutton.init(armorButton2);
+			usebutton.init(useButton2);
+			keybutton.init(keyButton2);
+			idkbutton.init(idkButton1);
 			comingView.setVisible(false);
 			currentTab = Tab.MONSTER;
 			moveFromArrayToView();

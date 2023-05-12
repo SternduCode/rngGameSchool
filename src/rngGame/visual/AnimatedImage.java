@@ -11,13 +11,13 @@ import rngGame.tile.ImgUtil;
 public class AnimatedImage extends ImageView {
 
 	/** The gamepanel. */
-	private final GamePanel gamepanel;
+	protected final GamePanel gamepanel;
 
 	/** The fps. */
-	private final int fps;
+	private int fps;
 
 	/** The path. */
-	private final String path;
+	private String path;
 
 	/** The last frame time. */
 	private long lastFrameTime = 0l;
@@ -31,6 +31,17 @@ public class AnimatedImage extends ImageView {
 	/**
 	 * Instantiates a new animated image.
 	 *
+	 * @param gamepanel the gamepanel
+	 */
+	public AnimatedImage(GamePanel gamepanel) {
+		this.gamepanel = gamepanel;
+		fps = 7;
+		gamepanel.addAnimatedImage(this);
+	}
+
+	/**
+	 * Instantiates a new animated image.
+	 *
 	 * @param path      the path
 	 * @param gamepanel the gamepanel
 	 */
@@ -39,6 +50,7 @@ public class AnimatedImage extends ImageView {
 		this.gamepanel	= gamepanel;
 		fps				= 7;
 		gamepanel.addAnimatedImage(this);
+		scaleF11();
 		update();
 	}
 
@@ -54,6 +66,52 @@ public class AnimatedImage extends ImageView {
 		this.gamepanel	= gamepanel;
 		this.fps		= fps;
 		gamepanel.addAnimatedImage(this);
+		scaleF11();
+		update();
+	}
+
+	/**
+	 * Gets the fps.
+	 *
+	 * @return the fps
+	 */
+	int getFps() { return fps; }
+
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
+	String getPath() { return path; }
+
+	/**
+	 * Sets the fps.
+	 *
+	 * @param fps the new fps
+	 */
+	void setFps(int fps) { this.fps = fps; }
+
+	/**
+	 * Inits the.
+	 *
+	 * @param path the path
+	 */
+	public void init(String path) {
+		this.path		= path;
+		scaleF11();
+		update();
+	}
+
+	/**
+	 * Inits the.
+	 *
+	 * @param path the path
+	 * @param fps the fps
+	 */
+	public void init(String path, int fps) {
+		this.path		= path;
+		this.fps		= fps;
+		scaleF11();
 		update();
 	}
 
@@ -66,10 +124,17 @@ public class AnimatedImage extends ImageView {
 	}
 
 	/**
+	 * Uninit.
+	 */
+	public void uninit() {
+		frames = null;
+	}
+
+	/**
 	 * Update.
 	 */
 	public void update() {
-		if (System.currentTimeMillis() >= lastFrameTime + 1000.0 / fps) {
+		if (frames != null && System.currentTimeMillis() >= lastFrameTime + 1000.0 / fps) {
 			frameIndex++;
 			if (frameIndex >= frames.length) frameIndex = 0;
 			lastFrameTime = 0l;

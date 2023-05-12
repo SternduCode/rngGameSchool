@@ -3,47 +3,29 @@ package rngGame.ui;
 import java.util.function.Consumer;
 
 import javafx.event.*;
-import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
-import rngGame.main.GamePanel;
+import rngGame.visual.*;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Button.
  */
-public class Button extends ImageView {
-
-	/** The gp. */
-	GamePanel gp;
+public class Button extends AnimatedImage {
 
 	/**
 	 * Instantiates a new button.
 	 *
-	 * @param gpNeu the gp neu
+	 * @param gp the gp
 	 */
-	public Button(GamePanel gpNeu) { gp = gpNeu; }
+	public Button(GamePanel gp) { super(gp); }
 
 	/**
 	 * Instantiates a new button.
 	 *
-	 * @param image the image
-	 * @param gpNeu the gp neu
+	 * @param path the path
+	 * @param gp   the gp
 	 */
-	public Button(Image image, GamePanel gpNeu) {
-		super(image);
-		gp = gpNeu;
-	}
-
-	/**
-	 * Instantiates a new button.
-	 *
-	 * @param url the url
-	 * @param gpNeu the gp neu
-	 */
-	public Button(String url, GamePanel gpNeu) {
-		super(url);
-		gp = gpNeu;
-	}
+	public Button(String path, GamePanel gp) { super(path, gp); }
 
 
 	/**
@@ -71,7 +53,7 @@ public class Button extends ImageView {
 	 * @param mv the new on released
 	 */
 	public void setOnReleased(EventHandler<MouseEvent> mv) {
-		setOnMouseReleased(i -> ((Consumer<MouseEvent>) e -> gp.makeSound("click.wav")).andThen(e -> mv.handle(e)).accept(i));
+		setOnMouseReleased(i -> ((Consumer<MouseEvent>) e -> gamepanel.getLgp().makeSound("click.wav")).andThen(e -> mv.handle(e)).accept(i));
 
 	}
 
