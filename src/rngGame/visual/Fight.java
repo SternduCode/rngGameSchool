@@ -55,11 +55,11 @@ public class Fight extends Pane{
 		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
 			gamepanel.goIntoLoadingScreen();
-			gamepanel.getAktionbutton().setVisible(true);
-			removeMobRan();
 			new Thread(() -> {
 				try {
 					Thread.sleep(2000);
+					gamepanel.getAktionbutton().setVisible(true);
+					removeMobRan();
 					gamepanel.setBlockUserInputs(false);
 					FadeTransition ft = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 					ft.setFromValue(1);
