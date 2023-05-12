@@ -1,38 +1,63 @@
 package rngGame.visual;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.entity.MobRan;
 import rngGame.stats.Demon;
 import rngGame.tile.ImgUtil;
-import rngGame.ui.Button;
-import rngGame.ui.HealthBar;
+import rngGame.ui.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Fight.
+ */
 public class Fight extends Pane{
 
-	private ImageView fight, battlebackgroundvisual;
-	private GamePanel gamepanel;
-	private Demon eigenMob, demonMob;
+	/** The battlebackgroundvisual. */
+	private final ImageView fight, battlebackgroundvisual;
+
+	/** The gamepanel. */
+	private final GamePanel gamepanel;
+
+	/** The demon mob. */
+	private Demon eigenMob;
+
+	/** The demon mob. */
+	private final Demon demonMob;
+
+	/** The hh. */
 	private HealthBar h, hh;
-	private Button leaf, majyc, stych;
-	
-	public Fight(GamePanel gamepanel) {
-		fight = new ImageView();
-		this.gamepanel = gamepanel;
-		demonMob = MobRan.MobGen(gamepanel);
-		battlebackgroundvisual = new ImageView();
-		leaf = new Button(gamepanel);
-		majyc = new Button(gamepanel);
-		stych = new Button(gamepanel);
-		
-		leaf.setOnPressed(e->leaf.init("./res/fight/Leaf2.png"));
-		leaf.setOnReleased(e->{
+
+	/** The stych. */
+	private final Button leaf, majyc, stych;
+
+	/** The mob. */
+	private final MobRan mob;
+
+	/**
+	 * Instantiates a new fight.
+	 *
+	 * @param gamepanel the gamepanel
+	 * @param mob       the mob
+	 */
+	public Fight(GamePanel gamepanel, MobRan mob) {
+		this.mob				= mob;
+		fight					= new ImageView();
+		this.gamepanel			= gamepanel;
+		demonMob				= MobRan.MobGen(gamepanel);
+		battlebackgroundvisual	= new ImageView();
+		leaf					= new Button(gamepanel);
+		majyc					= new Button(gamepanel);
+		stych					= new Button(gamepanel);
+
+		leaf.setOnPressed(e -> leaf.init("./res/fight/Leaf2.png"));
+		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
 			gamepanel.goIntoLoadingScreen();
-			new Thread(()->{
+			gamepanel.getAktionbutton().setVisible(true);
+			removeMobRan();
+			new Thread(() -> {
 				try {
 					Thread.sleep(2000);
 					gamepanel.setBlockUserInputs(false);
@@ -40,26 +65,37 @@ public class Fight extends Pane{
 					ft.setFromValue(1);
 					ft.setToValue(0);
 					ft.play();
-					Platform.runLater(()->gamepanel.getChildren().remove(this));
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
 			}).start();
 		});
-		
-		stych.setOnPressed(e->stych.init("./res/fight/Stych2.png"));
-		stych.setOnReleased(e->{
+
+		stych.setOnPressed(e -> stych.init("./res/fight/Stych2.png"));
+		stych.setOnReleased(e -> {
 			stych.init("./res/fight/Stych.gif");
-			demonMob.changeCurrenthp(-eigenMob.getAtk()); 
-			
+			demonMob.changeCurrenthp(-eigenMob.getAtk());
+
 		});
-		
-		
-		
+
+
+
 		getChildren().addAll(battlebackgroundvisual, fight, leaf, majyc, stych);
 		scaleF11();
+
 	}
-	
+
+	/**
+	 * Removes the mob ran.
+	 */
+	public void removeMobRan() {
+		gamepanel.getLgp().getMobRans().remove(mob);
+		gamepanel.getViewGroups().get(mob.getLayer()).getChildren().remove(mob);
+	}
+
+	/**
+	 * Scale F 11.
+	 */
 	public void scaleF11() {
 		fight.setImage(ImgUtil.getScaledImage(gamepanel, "./res/fight/Auswahl.png"));
 		battlebackgroundvisual.setImage(ImgUtil.getScaledImage(gamepanel, "./res/fight/Fight.png", gamepanel.getGameWidth(), gamepanel.getGameHeight()));
@@ -81,15 +117,18 @@ public class Fight extends Pane{
 		h.setLayoutX(gamepanel.getWidth()/2);
 		hh.setLayoutX(gamepanel.getWidth()/4);
 		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh);
-		
+
 		leaf.init("./res/fight/Leaf.gif", 10);
 		majyc.init("./res/fight/Majyc.gif", 10);
 		stych.init("./res/fight/Stych.gif", 10);
 	}
-	
+
+	/**
+	 * Update.
+	 */
 	public void update() {
 		h.update();
 		hh.update();
 	}
-	
+
 }
