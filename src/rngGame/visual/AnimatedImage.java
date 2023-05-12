@@ -75,21 +75,14 @@ public class AnimatedImage extends ImageView {
 	 *
 	 * @return the fps
 	 */
-	int getFps() { return fps; }
+	public int getFps() { return fps; }
 
 	/**
 	 * Gets the path.
 	 *
 	 * @return the path
 	 */
-	String getPath() { return path; }
-
-	/**
-	 * Sets the fps.
-	 *
-	 * @param fps the new fps
-	 */
-	void setFps(int fps) { this.fps = fps; }
+	public String getPath() { return path; }
 
 	/**
 	 * Inits the.
@@ -121,13 +114,23 @@ public class AnimatedImage extends ImageView {
 	public void scaleF11() {
 		frames = ImgUtil.getScaledImages(gamepanel, path);
 		setImage(frames[frameIndex]);
+		if (frameIndex >= frames.length)
+			frameIndex = 0;
 	}
+
+	/**
+	 * Sets the fps.
+	 *
+	 * @param fps the new fps
+	 */
+	public void setFps(int fps) { this.fps = fps; }
 
 	/**
 	 * Uninit.
 	 */
 	public void uninit() {
 		frames = null;
+		frameIndex	= 0;
 	}
 
 	/**
