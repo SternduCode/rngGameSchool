@@ -134,7 +134,7 @@ public class AnimatedImage extends ImageView {
 	 * Update.
 	 */
 	public void update() {
-		if (frames != null && System.currentTimeMillis() >= lastFrameTime + 1000.0 / fps) {
+		if (frames != null && System.currentTimeMillis() - lastFrameTime >= +1000.0 / fps) {
 			frameIndex++;
 			if (frameIndex >= frames.length) frameIndex = 0;
 			lastFrameTime = 0l;

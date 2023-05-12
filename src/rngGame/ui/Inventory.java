@@ -527,12 +527,12 @@ public class Inventory extends Pane {
 							//TODO
 							Button ctbi1, ctbi2, ctbi3, ctbi4, ctbi5, ctbi6;
 
-							ctbi1 = new Button(ctt, gamepanel.getVgp());
-							ctbi2 = new Button(ctt, gamepanel.getVgp());
-							ctbi3 = new Button(ctt, gamepanel.getVgp());
-							ctbi4 = new Button(ctt, gamepanel.getVgp());
-							ctbi5 = new Button(ctt, gamepanel.getVgp());
-							ctbi6 = new Button(ctt, gamepanel.getVgp());
+							ctbi1 = new Button(gamepanel.getVgp());
+							ctbi2 = new Button(gamepanel.getVgp());
+							ctbi3 = new Button(gamepanel.getVgp());
+							ctbi4 = new Button(gamepanel.getVgp());
+							ctbi5 = new Button(gamepanel.getVgp());
+							ctbi6 = new Button(gamepanel.getVgp());
 							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
 							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
 							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));
