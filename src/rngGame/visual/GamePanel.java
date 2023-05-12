@@ -187,6 +187,9 @@ public class GamePanel extends Pane {
 	/** The lgp. */
 	private final rngGame.main.GamePanel lgp;
 
+	/** The animated images. */
+	private final List<AnimatedImage> animatedImages;
+
 	/**
 	 * Instantiates a new game panel.
 	 *
@@ -196,6 +199,8 @@ public class GamePanel extends Pane {
 	public GamePanel(rngGame.main.GamePanel lgp)
 			throws FileNotFoundException {
 		setPrefSize(gameWidth, gameHeight);
+
+		animatedImages = new ArrayList<>();
 
 		lgp.setVgp(this);
 
@@ -238,6 +243,15 @@ public class GamePanel extends Pane {
 		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
 				gamemenu, fpsLabel,
 				getLoadingScreen());
+	}
+
+	/**
+	 * Adds the animated image.
+	 *
+	 * @param animatedImage the animated image
+	 */
+	public void addAnimatedImage(AnimatedImage animatedImage) {
+		animatedImages.add(animatedImage);
 	}
 
 	/**
@@ -676,6 +690,8 @@ public class GamePanel extends Pane {
 		while (frameTimes.size() > Math.pow(fps * 12, 1.2)) frameTimes.remove(0);
 
 		Text.getInstance().update(lastFrameTime);
+
+		animatedImages.forEach(AnimatedImage::update);
 
 	}
 

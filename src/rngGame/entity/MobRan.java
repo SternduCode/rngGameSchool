@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import rngGame.stats.*;
 import rngGame.tile.*;
 import rngGame.ui.HealthBar;
+import rngGame.visual.Fight;
 import rngGame.visual.GamePanel;
 
 
@@ -60,6 +61,8 @@ public class MobRan extends NPC {
 
 	/** The steps. */
 	private final int steps = 40;
+	
+	private Fight f;
 
 	/**
 	 * Instantiates a new mob ran.
@@ -123,14 +126,10 @@ public class MobRan extends NPC {
 		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
 			if (r == 5) mobName = "Naberius";
-		}else if ("CultistKing".equals(mobName)||"Cultist".equals(mobName)) {
-			mobName = "Cultist";
+		}else if ("Cultist".equals(mobName)) {
 			if (wahl==Element.Void) {
 				r = gen.nextInt(200)+1;
-				//			r = 13;
-				if(r == 13) { mobName = "CultistKing"; wahl = Element.DimensionMaster; }
-
-				else mobName = "Cultist";
+				if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster; 
 			}
 		}
 
@@ -238,40 +237,12 @@ public class MobRan extends NPC {
 			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
-			Demon eigenMob;
-			Demon demonMob = MobGen(gamepanel);
-			HealthBar h, hh;
-			System.out.println(demonMob);
-			if (demonMob != null) {
-
-				gpt.getLgp().getMobRans().remove(MobRan.this);
-				gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
-				Image bbg = ImgUtil.getScaledImage(gpt, "./res/fight/Fight.png", gpt.getGameWidth(), gpt.getGameHeight());
-				ImageView bbgv = new ImageView(bbg);
-				demonMob.getDemon().setReqWidth(256);
-				demonMob.getDemon().setReqHeight(256);
-				demonMob.getDemon().setLayoutX(gpt.getWidth()/1.5);
-				demonMob.getDemon().setLayoutY(gpt.getHeight()/6.4);
-				demonMob.getDemon().reloadTextures();
-				Demon[] demonArray = gpt.getGamemenu().getInventory().getDemons();
-				eigenMob = demonArray[0];
-				eigenMob.getDemon().setReqWidth(256);
-				eigenMob.getDemon().setReqHeight(256);
-				eigenMob.getDemon().setLayoutX(gpt.getWidth()/13);
-				eigenMob.getDemon().setLayoutY(gpt.getHeight()/6.4);
-				eigenMob.getDemon().flipTextures();
-				eigenMob.getDemon().reloadTextures();
-				h = new HealthBar(gpt);
-				hh = new HealthBar(gpt);
-				h.setLayoutX(gpt.getWidth()/2);
-				hh.setLayoutX(gpt.getWidth()/4);
-				h.update();
-				hh.update();
-
-				gpt.getChildren().addAll(bbgv, demonMob.getDemon(), eigenMob.getDemon(), h, hh);
-
-
-			}
+			gpt.setBlockUserInputs(true);
+			gpt.getLgp().getMobRans().remove(MobRan.this);
+			gpt.getViewGroups().get(layer).getChildren().remove(MobRan.this);
+			f = new Fight(gpt);
+			gpt.getChildren().add(f);
+			
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
 			if (step == 0) {
@@ -402,7 +373,7 @@ public class MobRan extends NPC {
 	@Override
 	public void update(long milis) {
 		super.update(milis);// TODO make speed like with player
-
+		if(f!=null) f.update();
 		if (diff[0] > 0 || diff[1] > 0)
 			step++;
 		x	+= diff[0] / steps;

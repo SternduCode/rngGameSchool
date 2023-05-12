@@ -32,7 +32,7 @@ public class TitleScreen extends Pane{
 	private int currFrame = 0;
 
 	/** The pfail. */
-	private Button ploy, settins, clous, pfail;
+	private Button ploy = null, settins = null, clous = null, pfail = null;
 
 	/**
 	 * Instantiates a new title screen.
@@ -46,19 +46,15 @@ public class TitleScreen extends Pane{
 		}
 		iv = new ImageView();
 
-		Image	clous1	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Clous.png");
-		Image	clous2	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Clous2.png");
-		clous = new Button(clous1, gp);
-		clous.setOnPressed(e -> clous.setImage(clous2));
+		clous = new Button("./res/backgrounds/Clous.png", gp.getVgp());
+		clous.setOnPressed(e -> clous.init("./res/backgrounds/Clous2.png"));
 		clous.setOnReleased(e -> {
-			clous.setImage(clous1);
+			clous.init("./res/backgrounds/Clous.png");
 			System.exit(0);
 		});
 
-		ploy = new Button(ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy.png"), gp);
-		Image	ploy1	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy.png");
-		Image	ploy2	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Ploy2.png");
-		ploy.setOnMousePressed(e -> ploy.setImage(ploy2));
+		ploy = new Button("./res/backgrounds/Ploy.png", gp.getVgp());
+		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
 			gp.getVgp().goIntoLoadingScreen();
 			new Thread(() -> {
@@ -69,7 +65,7 @@ public class TitleScreen extends Pane{
 				}
 
 				Platform.runLater(() -> {
-					ploy.setImage(ploy1);
+					ploy.init("./res/backgrounds/Ploy.png");
 					iv.setVisible(false);
 					ploy.setVisible(false);
 					settins.setVisible(false);
@@ -90,32 +86,28 @@ public class TitleScreen extends Pane{
 
 		});
 
-		Image	settins1	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Settins.png");
-		Image	settins2	= ImgUtil.getScaledImage(gp, "./res/backgrounds/Settins2.png");
-		Image	pfail1		= ImgUtil.getScaledImage(gp, "./res/backgrounds/Pfail.png");
-		Image	pfail2		= ImgUtil.getScaledImage(gp, "./res/backgrounds/Pfail2.png");
-		settins	= new Button(settins1, gp);
-		pfail	= new Button(pfail1, gp);
+		settins	= new Button("./res/backgrounds/Settins.png", gp.getVgp());
+		pfail	= new Button("./res/backgrounds/Pfail.png", gp.getVgp());
 		pfail.setVisible(false);
 		settins.setOnPressed(e -> {
-			settins.setImage(settins2);
+			settins.init("./res/backgrounds/Settins2.png");
 		});
 		settins.setOnReleased(e -> {
-			settins.setImage(settins1);
+			settins.init("./res/backgrounds/Settins.png");
 			ploy.setVisible(false);
 			clous.setVisible(false);
 			settins.setVisible(false);
 			pfail.setVisible(true);
 			pfail.setOnPressed(_e -> {
-				pfail.setImage(pfail2);
+				pfail.init("./res/backgrounds/Pfail2.png");
 			});
 			pfail.setOnReleased(__e -> {
-				pfail.setImage(pfail1);
+				pfail.init("./res/backgrounds/Pfail.png");
 				pfail.setVisible(false);
 				ploy.setVisible(true);
 				clous.setVisible(true);
 				settins.setVisible(true);
-				settins.setImage(settins1);
+				settins.init("./res/backgrounds/Settins.png");
 			});
 
 		});

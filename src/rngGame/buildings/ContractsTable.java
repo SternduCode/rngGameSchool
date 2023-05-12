@@ -136,10 +136,6 @@ public class ContractsTable extends Building {
 	 */
 	private void init() {
 		Image wi = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Mainbackground.png");
-		Image saturn = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Saturn.png");
-		Image nebel = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Nebel.png");
-		Image galactus = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Galactus.png");
-		Image nova = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/nova.png");
 
 		hudp = ImgUtil.getScaledImages(gamepanel, "./res/Contractstuff/Ping.gif");
 		Image titlep = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/title.png");
@@ -157,11 +153,6 @@ public class ContractsTable extends Building {
 				(int) (96 * gamepanel.getScalingFactorX()),
 				(int) (96 * gamepanel.getScalingFactorY()));
 
-		Image ausX = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/Xbutton.png");
-		Image ausX2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/XbuttonC.png");
-
-		Image buttonR = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilR.png");
-		Image buttonL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilL.png");
 		Image buttonRL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilRLeu.png");
 		Image buttonLL = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/pfeilLLeu.png");
 
@@ -173,10 +164,10 @@ public class ContractsTable extends Building {
 		contractBackground.setTranslateY(-1);
 		// contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
-		contractSaturn		= new Button(saturn, gamepanel.getLgp());
-		contractNebel		= new Button(nebel, gamepanel.getLgp());
-		contractGalactus	= new Button(galactus, gamepanel.getLgp());
-		contractNova		= new Button(nova, gamepanel.getLgp());
+		contractSaturn		= new Button("./res/Contractstuff/Saturn.png", gamepanel);
+		contractNebel		= new Button("./res/Contractstuff/Nebel.png", gamepanel);
+		contractGalactus	= new Button("./res/Contractstuff/Galactus.png", gamepanel);
+		contractNova		= new Button("./res/Contractstuff/nova.png", gamepanel);
 
 		text = new ImageView(ka);
 
@@ -204,16 +195,13 @@ public class ContractsTable extends Building {
 		ausBackground = new ImageView(ausbc);
 		lvlBorder = new ImageView(lvlb);
 
-		ausXb = new Button(ausX, gamepanel.getLgp());
+		ausXb = new Button("./res/Contractstuff/Xbutton.png", gamepanel);
 
-		button_R	= new Button(buttonR, gamepanel.getLgp());
-		button_L	= new Button(buttonL, gamepanel.getLgp());
-		Image x1 = ausX;
-		Image x2 = ausX2;
+		button_R	= new Button("./res/Contractstuff/pfeilR.png", gamepanel);
+		button_L	= new Button("./res/Contractstuff/pfeilL.png", gamepanel);
+
 		Image brl = buttonRL;
 		Image bll = buttonLL;
-		Image br = buttonR;
-		Image bl = buttonL;
 
 
 
@@ -241,7 +229,7 @@ public class ContractsTable extends Building {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				button_R.setImage(br);
+				button_R.init("./res/Contractstuff/pfeilR.png");
 			}).start();
 			tt.play();
 			tth.play();
@@ -312,7 +300,7 @@ public class ContractsTable extends Building {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				button_L.setImage(bl);
+				button_L.init("./res/Contractstuff/pfeilL.png");
 			}).start();
 			tt.play();
 			tth.play();
@@ -471,7 +459,7 @@ public class ContractsTable extends Building {
 		});
 		///////////////////////
 		ausXb.setOnMousePressed(me -> {
-			ausXb.setImage(x2);
+			ausXb.init("./res/Contractstuff/XbuttonC.png");
 		});
 
 
@@ -500,7 +488,7 @@ public class ContractsTable extends Building {
 					e.printStackTrace();
 				}
 				allPanes.setVisible(false);
-				ausXb.setImage(x1);
+				ausXb.init("./res/Contractstuff/Xbutton.png");
 			}).start();
 
 			if (index < 4)

@@ -963,6 +963,11 @@ public class DungeonGen {
 			gp.getLgp().getBuildings().add(b);
 			ImageView	lIV = new ImageView();
 			try {
+				if (b.getImages()==null) {
+					System.err.println(b);
+					System.err.println("No Images");
+					continue;
+				}
 				if (b.isGif(b.getCurrentKey())) {
 					lIV = new ImageView(b.getImages().get(b.getCurrentKey()).get(0));
 					lIV.setFitWidth(16);
