@@ -47,7 +47,7 @@ public class GamePanel extends Pane {
 	private final Map<Point2D, Circle> points;
 
 	/** The fps. */
-	private final int FPS = 20;
+	private final int FPS = 80;
 
 	/** The bubble. */
 	private final Pane bubble;
