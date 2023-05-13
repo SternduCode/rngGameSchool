@@ -1,5 +1,6 @@
 package rngGame.visual;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -57,9 +58,11 @@ public class Fight extends Pane{
 			gamepanel.goIntoLoadingScreen();
 			new Thread(() -> {
 				try {
-					Thread.sleep(2000);
 					gamepanel.getAktionbutton().setVisible(true);
-					removeMobRan();
+					Platform.runLater(() -> {
+						removeMobRan();
+					});
+					Thread.sleep(2000);
 					gamepanel.setBlockUserInputs(false);
 					FadeTransition ft = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 					ft.setFromValue(1);

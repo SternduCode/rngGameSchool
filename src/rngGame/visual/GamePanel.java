@@ -152,7 +152,7 @@ public class GamePanel extends Pane {
 	private final TabMenu gamemenu;
 
 	/** The target FPS. */
-	private final int targetFPS = 80;
+	private final int targetFPS = 20;
 
 	/** The scaling factor Y. */
 	private double scalingFactorX = 1, scalingFactorY = 1;
