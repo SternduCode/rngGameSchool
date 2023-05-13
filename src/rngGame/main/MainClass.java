@@ -18,9 +18,6 @@ public class MainClass extends Application {
 	/** The stopping. */
 	private static boolean stopping = false;
 
-	/** The ii. */
-	int ii = 0;
-
 	/**
 	 * Checks if is stopping.
 	 *
