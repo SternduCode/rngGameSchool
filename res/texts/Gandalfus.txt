@@ -1,6 +1,6 @@
-"watch out, in these Dungeons are dangerous Demons"
-"im a wizard!"
-"i like watching birds, and then turning them into evil Demons"
-"have you seen my stick? ... oh i see"
-"my cat is always sleeping, advance your Demons to wake her up"
-"go inside for contracts"
+watch out, in these Dungeons <<are dangerous Demons
+im a wizard!
+i like watching birds, <<and then turning them into evil Demons
+have you seen my stick? ... <<oh i see
+my cat is always sleeping, <<advance your Demons to wake her up
+go inside for contracts

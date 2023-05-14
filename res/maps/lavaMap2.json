@@ -29,6 +29,13 @@
 				64
 			],
 			"miscBoxes" : [
+				{
+					"name" : "talk",
+					"x" : 140.0000,
+					"y" : 65.0000,
+					"type" : "circle",
+					"radius" : 46
+				}
 				
 			],
 			"layer" : [
@@ -64,6 +71,13 @@
 				64
 			],
 			"miscBoxes" : [
+				{
+					"name" : "talk",
+					"x" : 27.0000,
+					"y" : 70.0000,
+					"type" : "circle",
+					"radius" : 32
+				}
 				
 			],
 			"layer" : [
