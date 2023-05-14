@@ -477,7 +477,7 @@
 	"map" : {
 		"playerLayer" : 0,
 		"textures" : [
-			"Wasser.png",
+			"Wasser.gif",
 			"SteinWandWasserEckeF.png",
 			"SteinWandWasserEckeRG.png",
 			"SteinWandWasserEckeLU.png",

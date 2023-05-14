@@ -40,8 +40,10 @@ public class Tile {
 	public Tile(String name, String path, GamePanel gp) {
 
 		this.name = name;
+		if(!path.isEmpty()) {
+			images = ImgUtil.getScaledImages(gp, path,48,48);
+		}
 		
-		images = ImgUtil.getScaledImages(gp, path,48,48);
 
 
 	}
