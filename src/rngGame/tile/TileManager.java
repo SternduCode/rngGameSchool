@@ -45,10 +45,10 @@ public class TileManager extends Pane {
 		 * @param y the y coordinate
 		 */
 		public FakeTextureHolder(double x, double y) {
-			super(new Tile("", new ByteArrayInputStream(new byte[0]), null) {
+			super(new Tile("", "", null) {
 
 				{
-					images.add(new Image(new ByteArrayInputStream(new byte[0])));
+					images = new Image[]{(new Image(new ByteArrayInputStream(new byte[0])))};
 				}
 
 			}, null, x, y, null, null, 0, 0);
@@ -546,13 +546,13 @@ public class TileManager extends Pane {
 					Files.copy(p1, p2, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(p2);
 					Tile t = new Tile(f.getName(),
-							new FileInputStream("./res/" + getDir() + "/" + f.getName()),
+							"./res/" + getDir() + "/" + f.getName(),
 							gp);
 					tiles.add(t);
 					mtiles.getItems().remove(mi);
 					mtiles.getItems()
-					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images.get(0),
-							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)), t));
+					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images[0],
+							(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)), t));
 					mtiles.getItems().get(mtiles.getItems().size() - 1).setOnAction(this::contextMenu);
 					mtiles.getItems().add(mi);
 				} catch (Exception e2) {
@@ -1066,13 +1066,13 @@ public class TileManager extends Pane {
 			}
 			for (Object texture : textures) try {
 				Tile t = new Tile( ((StringValue) texture).getValue(),
-						new FileInputStream("./res/" + getDir() + "/" + ((StringValue) texture).getValue()),
+						"./res/" + getDir() + "/" + ((StringValue) texture).getValue(),
 						gp);
 				tiles.add(t);
 				mtiles.getItems()
 				.add(new MenuItemWTile( ((StringValue) texture).getValue(),
-						new ImageView(ImgUtil.resizeImage(t.images.get(0),
-								(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
+						new ImageView(ImgUtil.resizeImage(t.images[0],
+								(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
 				if (new File("./res/collisions/" + getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))

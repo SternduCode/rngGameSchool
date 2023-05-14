@@ -195,14 +195,14 @@ public class SelectTool extends Rectangle {
 		partialFill.getItems().clear();
 		for (Tile t : gp.getTileManager().getTiles()) {
 			MenuItemWTile menuitem = new MenuItemWTile(t.name,
-					new ImageView(ImgUtil.resizeImage(t.images.get(0),
-							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
+					new ImageView(ImgUtil.resizeImage(t.images[0],
+							(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)),
 					t);
 			menuitem.setOnAction(this::handleContextMenu);
 			fill.getItems().add(menuitem);
 			menuitem = new MenuItemWTile(t.name,
-					new ImageView(ImgUtil.resizeImage(t.images.get(0),
-							(int) t.images.get(0).getWidth(), (int) t.images.get(0).getHeight(), 48, 48)),
+					new ImageView(ImgUtil.resizeImage(t.images[0],
+							(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)),
 					t);
 			menuitem.setOnAction(this::handleContextMenu);
 			partialFill.getItems().add(menuitem);

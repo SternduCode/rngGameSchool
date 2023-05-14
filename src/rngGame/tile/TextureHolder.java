@@ -80,7 +80,7 @@ public class TextureHolder extends Pane {
 		});
 		this.tile = tile;
 		fps = tile.fps;
-		iv = new ImageView(tile.images.get(0));
+		iv = new ImageView(tile.images[0]);
 		// tile.Image.getPixelReader();
 		// new WritableImage(null, layoutX, layoutY)
 		iv.setDisable(true);
@@ -163,7 +163,7 @@ public class TextureHolder extends Pane {
 		poly.getPoints().clear();
 		poly.getPoints()
 		.addAll(tile.poly != null ? tile.poly : new ArrayList<>());
-		iv.setImage(tile.images.get(0));
+		iv.setImage(tile.images[0]);
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class TextureHolder extends Pane {
 		}
 		if (tile.fps != fps) fps = tile.fps;
 
-		iv.setImage(tile.images.get(tile.spriteNum));
+		iv.setImage(tile.images[tile.spriteNum]);
 
 		if ("true".equals(System.getProperty("coll")) && poly.getPoints().size() > 0)
 			poly.setVisible(true);

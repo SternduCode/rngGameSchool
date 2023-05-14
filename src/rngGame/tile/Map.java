@@ -68,11 +68,8 @@ public class Map implements JsonValue {
 			}
 		}
 		tiles = new ArrayList<>();
-		for (Object texture: textures) try {
-			tiles.add(new Tile(((StringValue) texture).getValue(), new FileInputStream(new File("./res/"+textureDirectory+"/"+((StringValue) texture).getValue())), gp));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		for (Object texture: textures)
+			tiles.add(new Tile(((StringValue) texture).getValue(), "./res/"+textureDirectory+"/"+((StringValue) texture).getValue(), gp));
 		this.npcs = npcs.parallelStream().map(jo -> (JsonObject) jo).collect(Collectors.toList());
 		this.buildings = buildings.parallelStream().map(jo -> (JsonObject) jo).collect(Collectors.toList());
 		this.exitMap = exitMap.getValue();

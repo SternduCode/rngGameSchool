@@ -128,7 +128,7 @@ public class PartialFillDialog extends Dialog<Boolean> {
 	 * @param percentage the percentage
 	 */
 	private void randomize(Double percentage) {
-		Image img = tile.images.get(0);
+		Image img = tile.images[0];
 		matrix = new Random()
 				.doubles((long) (selectTool.getWidth() / img.getWidth() * (selectTool.getHeight() / img.getHeight())))
 				.boxed().map(i -> i <= slider.getValue()).toArray(size -> new Boolean[size]);

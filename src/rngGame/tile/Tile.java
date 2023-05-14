@@ -13,7 +13,7 @@ import rngGame.visual.GamePanel;
 public class Tile {
 
 	/** The images. */
-	public List<Image> images;
+	public Image[] images;
 
 	/** The poly. */
 	public List<Double> poly;
@@ -34,23 +34,16 @@ public class Tile {
 	 * Instantiates a new tile.
 	 *
 	 * @param name the name
-	 * @param image the image
+	 * @param path the image
 	 * @param gp the gp
 	 */
-	public Tile(String name, InputStream image, GamePanel gp) {
+	public Tile(String name, String path, GamePanel gp) {
 
 		this.name = name;
+		
+		images = ImgUtil.getScaledImages(gp, path,48,48);
 
-		images = new ArrayList<>();
 
-		Image img = new Image(image);
-
-		for (int i = 0; i < img.getWidth(); i += img.getHeight()) {
-			WritableImage wi = new WritableImage(img.getPixelReader(), i, 0, (int) img.getHeight(),
-					(int) img.getHeight());
-			images.add(ImgUtil.resizeImage(wi,
-					(int) wi.getWidth(), (int) wi.getHeight(), gp.getBlockSizeX(), gp.getBlockSizeY()));
-		}
 	}
 
 	/**
@@ -61,7 +54,7 @@ public class Tile {
 			spriteCounter = System.currentTimeMillis();
 			spriteNum++;
 		}
-		if (spriteNum >= images.size()) spriteNum = 0;
+		if (spriteNum >= images.length) spriteNum = 0;
 	}
 
 }
