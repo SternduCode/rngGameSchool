@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.entity.MobRan;
 import rngGame.stats.Demon;
+import rngGame.stats.Element;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.*;
 
@@ -79,7 +80,18 @@ public class Fight extends Pane{
 		stych.setOnReleased(e -> {
 			stych.init("./res/fight/Stych.gif");
 			demonMob.changeCurrenthp(-eigenMob.getAtk());
-
+			majyc.setDisable(true);
+			leaf.setDisable(true);
+			stych.setDisable(true);
+		});
+		
+		majyc.setOnPressed(e-> majyc.init("./res/fight/Majyc2.png"));
+		majyc.setOnReleased(e->{
+			majyc.init("./res/fight/Majyc.png");
+			majyc.setDisable(true);
+			leaf.setDisable(true);
+			stych.setDisable(true);
+			sheeesh();
 		});
 		
 		tescht.setOnPressed(e -> tescht.init("./res/fight/Stych2.png"));
@@ -98,6 +110,84 @@ public class Fight extends Pane{
 		gamepanel.getLgp().getMobRans().remove(mob);
 		gamepanel.getViewGroups().get(mob.getLayer()).getChildren().remove(mob);
 	}
+	
+	
+	
+	public void sheeesh() {
+		switch (eigenMob.getElement()) {
+		case Fire -> {
+			 if(demonMob.getElement() == Element.Plant) demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+			 else if(demonMob.getElement() == Element.Water || demonMob.getElement() == Element.Void || demonMob.getElement() == Element.DimensionMaster) 
+				 demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk());
+		}
+		case Water -> {
+			 if(demonMob.getElement() == Element.Fire) demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+			 else if(demonMob.getElement() == Element.Plant || demonMob.getElement() == Element.Void || demonMob.getElement() == Element.DimensionMaster) 
+				 demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk());
+		}
+		case Plant -> {
+			 if(demonMob.getElement() == Element.Water) demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+			 else if(demonMob.getElement() == Element.Fire || demonMob.getElement() == Element.Void || demonMob.getElement() == Element.DimensionMaster) 
+				 demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk());
+		}
+		case Light -> {
+			 if(demonMob.getElement() == Element.Fire || demonMob.getElement() == Element.Plant || demonMob.getElement() == Element.Water)
+				 demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+			 else if(demonMob.getElement() == Element.Void || demonMob.getElement() == Element.DimensionMaster) 
+				 demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else if(demonMob.getElement() == Element.Shadow) demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*1.5));
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk());
+		}
+		case Shadow -> {
+			 if(demonMob.getElement() == Element.Fire || demonMob.getElement() == Element.Plant || demonMob.getElement() == Element.Water)
+				 demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+			 else if(demonMob.getElement() == Element.Void || demonMob.getElement() == Element.DimensionMaster) 
+				 demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else if(demonMob.getElement() == Element.Light) demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*1.5));
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk());
+		}
+		case Void -> {
+			 if(demonMob.getElement() == Element.DimensionMaster) demonMob.changeCurrenthp((int) (-eigenMob.getAtk()*0.5));
+			 else if (demonMob.getElement() == Element.Void) demonMob.changeCurrenthp(-eigenMob.getAtk());
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+		}
+		case DimensionMaster -> {
+			 if (demonMob.getElement() == Element.DimensionMaster) demonMob.changeCurrenthp(-eigenMob.getAtk());
+			 else if(demonMob.getElement() == Element.Fire || demonMob.getElement() == Element.Water || demonMob.getElement() == Element.Plant)
+				 demonMob.changeCurrenthp(-eigenMob.getAtk()*3);
+			 else demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
+		}
+		
+		
+			
+			
+	}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Scale F 11.
