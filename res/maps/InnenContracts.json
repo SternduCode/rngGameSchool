@@ -1,8 +1,8 @@
 {
 	"exit" : {
 		"spawnPosition" : [
-			864,
-			446
+			864.000,
+			446.000
 		],
 		"position" : [
 			326,
@@ -31,11 +31,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				247.000,
-				300.000
+				247,
+				300
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -63,11 +63,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				257.000,
-				150.000
+				257,
+				150
 			],
 			"type" : "ContractsTable",
 			"originalSize" : [
@@ -104,11 +104,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				96.0000,
-				200.000
+				96,
+				200
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -136,11 +136,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				96.0000,
-				295.000
+				96,
+				295
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -178,17 +178,17 @@
 				false
 			],
 			"fps" : [
-				7.00000,
-				7.00000
+				7,
+				7
 			],
 			"position" : [
 				[
-					140.000,
-					475.000
+					140,
+					475
 				],
 				[
-					433.000,
-					475.000
+					433,
+					475
 				]
 			],
 			"type" : "Building",
@@ -218,11 +218,11 @@
 				false
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				488.000,
-				360.000
+				488,
+				360
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -250,11 +250,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				405.000,
-				150.000
+				405,
+				150
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -282,11 +282,11 @@
 				false
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				150.000,
-				335.000
+				150,
+				335
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -314,11 +314,11 @@
 				false
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				165.000,
-				215.000
+				165,
+				215
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -346,11 +346,11 @@
 				true
 			],
 			"fps" : [
-				3.00000
+				3
 			],
 			"position" : [
-				480.000,
-				276.000
+				480,
+				276
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -379,11 +379,11 @@
 				true
 			],
 			"fps" : [
-				7.00000
+				7
 			],
 			"position" : [
-				296.000,
-				222.000
+				296,
+				222
 			],
 			"type" : "Building",
 			"originalSize" : [
@@ -418,11 +418,9 @@
 			"Unten.png",
 			"BodenAusgang.png"
 		],
-		"BackgroundMusic" : "music/Gandalfus Hausus.wav",
-		
 		"startingPosition" : [
-			264.000,
-			528.000
+			264,
+			528
 		],
 		"dir" : "buildingInside",
 		"matrix" : [
@@ -439,6 +437,7 @@
 			"0 13 14 10 10 10 10 10 10 10 15 16 0",
 			"0 0 13 17 14 10 10 10 15 17 16 0 0",
 			"0 0 0 0 13 14 18 15 16 0 0 0 0"
-		]
+		],
+		"BackgroundMusic" : "music/Gandalfus Hausus.wav"
 	}
 }
