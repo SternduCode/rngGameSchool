@@ -8,11 +8,14 @@ import java.util.stream.*;
 
 import com.sterndu.json.*;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import rngGame.stats.*;
+import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
 import rngGame.visual.*;
 
@@ -61,6 +64,8 @@ public class MobRan extends NPC {
 
 	/** The f. */
 	private Fight f;
+	
+	private AnimatedImage intro;
 
 	/**
 	 * Instantiates a new mob ran.
@@ -227,6 +232,19 @@ public class MobRan extends NPC {
 	 */
 	@Override
 	public void init() {
+		Thread thread = new Thread(() -> {
+			try {
+				intro.setVisible(true);
+				Thread.sleep(2800);
+				Platform.runLater(() -> getChildren().add(getChildren().size()-1,f));
+				Thread.sleep(800);
+				intro.setVisible(false);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+		
+		
 		if (!getMiscBoxes().containsKey("fight"))
 			getMiscBoxes().put("fight", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
 		if (!getMiscBoxes().containsKey("visible"))
@@ -239,8 +257,13 @@ public class MobRan extends NPC {
 			MobRan.this.setLayoutY(0);
 			MobRan.this.setLayer(gamepanel.getViewGroups().size());
 			gamepanel.getAktionbutton().setVisible(false);
-			f = new Fight(gpt, MobRan.this);
-			getChildren().add(f);
+			gamepanel.getLgp().makeSound("battleintro.wav");
+			intro = new AnimatedImage("./res/gui/BattleIntro.gif",gamepanel,10);
+			f = new Fight(gamepanel, MobRan.this);
+			getChildren().add(intro);
+			thread.start();	
+			
+			
 
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
