@@ -329,26 +329,7 @@ public class Inventory extends Pane {
 
 		/////////////
 
-		Sword g1 = new Sword(Rarity.VOID);
-		Harnish g2 = new Harnish(Rarity.VOID);
-		Pants g3 = new Pants(Rarity.VOID);
-		Helmet g4 = new Helmet(Rarity.VOID);
-
-		//for(int i = 1;i<100;i++) {
-		Potion p1 = new Potion(Rarity.VOID);
-		itemToInventory(p1);
-		//}
-		// giveItem2Monster(g1);
-		// giveItem2Monster(g2);
-		// giveItem2Monster(g3);
-		// giveItem2Monster(g4);
-		itemToInventory(g1);
-		itemToInventory(g2);
-		itemToInventory(g3);
-		itemToInventory(g4);
-
-
-		/////////////
+	
 
 		String ctt = "./res/gui/Temp.png";
 		ctb1	= new Button(gamepanel.getVgp());
@@ -366,43 +347,9 @@ public class Inventory extends Pane {
 		ctov = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/tempOV.png"));
 
 		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
-		m1.setLvl(140);
 		m1.changeCurrenthp(-10);
 		m1.setCurrentExp(m1.getMaxExp() - 1);
 		addDemon2current(m1);
-
-		Demon m2 = MobRan.MobGen(gamepanel.getVgp());
-		m2.setLvl(140);
-		m2.setCurrentExp(m2.getMaxExp() - 1);
-		addDemon2current(m2);
-
-		Demon m3 = MobRan.MobGen(gamepanel.getVgp());
-		m3.setLvl(140);
-		m3.setCurrentExp(m3.getMaxExp() - 1);
-		addDemon2current(m3);
-
-		Demon m4 = MobRan.MobGen(gamepanel.getVgp());
-		m4.setLvl(140);
-		m4.setCurrentExp(m4.getMaxExp() - 1);
-		addDemon2current(m4);
-
-		Demon m5 = MobRan.MobGen(gamepanel.getVgp());
-		m5.setLvl(140);
-		m5.setCurrentExp(m5.getMaxExp() - 1);
-		addDemon2current(m5);
-
-		Demon m6 = MobRan.MobGen(gamepanel.getVgp());
-		m6.setLvl(140);
-		m6.setCurrentExp(m6.getMaxExp() - 1);
-		addDemon2current(m6);
-
-		Demon m7 = MobRan.MobGen(gamepanel.getVgp());
-		m7.setLvl(140);
-		m7.setCurrentExp(m7.getMaxExp() - 1);
-		addDemon2current(m7);
-
-
-
 
 		// Xbutton
 		String	ausX	= "./res/Contractstuff/Xbutton.png";

@@ -45,15 +45,8 @@ public class Demon {
 	/** The currentexp. */
 	private int currentexp = 0;
 
-
-
 	/** The demon. */
 	private final MonsterNPC demon;
-
-
-
-
-
 
 
 	/**
@@ -73,9 +66,6 @@ public class Demon {
 		dgc = element.getDgc();
 		lvl = element.getLvl();
 		currenthp = getMaxHp();
-
-
-
 	}
 
 	/**
@@ -329,14 +319,30 @@ public class Demon {
 				+ dgc + ", lvl=" + lvl + "]";
 	}
 
-
-
-
-
-
-
-
-
-
-
+	public boolean testExp(int c) {
+		if(c == maxExp) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void levelup() {
+		if(testExp(currentexp)) {
+			currentexp = 0;
+			getMaxExp();
+			setLvl(getLvl()+1);
+			       if(getLvl() % 5 == 1) {
+				setAtk(getAtk()+1);
+			} else if(getLvl() % 5 == 2) {
+				setMaxHp(getMaxHp()+1);
+			} else if(getLvl() % 5 == 3) {
+				setRes(getRes()+0.0025);
+			} else if(getLvl() % 5 == 4) {
+				setDgc(getDgc()+0.0015);
+			} else if(getLvl() % 5 == 0) {
+				setMaxHp(getMaxHp()+1);
+			}
+		}
+	}
 }
