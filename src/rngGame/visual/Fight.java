@@ -1,6 +1,10 @@
 package rngGame.visual;
+import java.util.Random;
+
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -36,6 +40,12 @@ public class Fight extends Pane{
 
 	/** The mob. */
 	private final MobRan mob;
+	
+	private final Group buttongroup = new Group();
+	
+	private boolean f = false;
+	
+	
 
 	/**
 	 * Instantiates a new fight.
@@ -53,6 +63,13 @@ public class Fight extends Pane{
 		majyc					= new Button(gamepanel);
 		stych					= new Button(gamepanel);
 		tescht					= new Button(gamepanel);
+		
+		buttongroup.getChildren().addAll(leaf,majyc,stych);
+		Random r = new Random();
+		int gg = 0;
+		TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
+		TranslateTransition ib1 = new TranslateTransition(Duration.millis(150),buttongroup);
+		
 
 		leaf.setOnPressed(e -> leaf.init("./res/fight/Leaf2.png"));
 		leaf.setOnReleased(e -> {
@@ -66,9 +83,9 @@ public class Fight extends Pane{
 					});
 					Thread.sleep(2000);
 					gamepanel.setBlockUserInputs(false);
-					FadeTransition ft = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-					ft.setFromValue(1);
-					ft.setToValue(0);
+					FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
+					ft2.setFromValue(1);
+					ft2.setToValue(0);
 					ft.play();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
@@ -79,10 +96,26 @@ public class Fight extends Pane{
 		stych.setOnPressed(e -> stych.init("./res/fight/Stych2.png"));
 		stych.setOnReleased(e -> {
 			stych.init("./res/fight/Stych.gif");
+			System.out.println(demonMob.getCurrenthp());
 			demonMob.changeCurrenthp(-eigenMob.getAtk());
+			System.out.println(demonMob.getCurrenthp());
 			majyc.setDisable(true);
 			leaf.setDisable(true);
-			stych.setDisable(true);
+		//	stych.setDisable(true);
+			ft.setToY(gamepanel.getGameHeight() / 2);
+		//	ib1.setToY(gamepanel.getGameHeight() / 2);
+			ft.play();
+		//	ib1.play();
+			int rr = r.nextInt(2)+1;
+			new Thread(() -> {
+				try {
+					Thread.sleep(5000);
+					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
+					else {sheeesh(demonMob, eigenMob);}
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}).start();
 		});
 		
 		majyc.setOnPressed(e-> majyc.init("./res/fight/Majyc2.png"));
@@ -91,14 +124,28 @@ public class Fight extends Pane{
 			majyc.setDisable(true);
 			leaf.setDisable(true);
 			stych.setDisable(true);
-			sheeesh();
+			ft.setToY(gamepanel.getGameHeight() / 2);
+			ib1.setToY(gamepanel.getGameHeight() / 2);
+			ft.play();
+			ib1.play();
+			int rr = r.nextInt(2)+1;
+			new Thread(() -> {
+				try {
+					Thread.sleep(5000);
+					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
+					else {sheeesh(demonMob, eigenMob);}
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}).start();
+			sheeesh(eigenMob, demonMob);
 		});
 		
 		tescht.setOnPressed(e -> tescht.init("./res/fight/Stych2.png"));
 		tescht.setOnReleased(e -> tescht.init("./res/npc/rdmDemon.gif"));
 
 
-		getChildren().addAll(battlebackgroundvisual, fight, leaf, majyc, stych, tescht);
+		getChildren().addAll(battlebackgroundvisual, fight, buttongroup, tescht);
 		scaleF11();
 
 	}
@@ -113,7 +160,7 @@ public class Fight extends Pane{
 	
 	
 	
-	public void sheeesh() {
+	public void sheeesh(Demon eigenMob, Demon demonMob) {
 		switch (eigenMob.getElement()) {
 		case Fire -> {
 			 if(demonMob.getElement() == Element.Plant) demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
@@ -164,9 +211,28 @@ public class Fight extends Pane{
 		
 			
 			
+		}
 	}
+	public void demonDead(){
+		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
+		new Thread(() -> {
+			try {
+				TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
+				gamepanel.getAktionbutton().setVisible(true);
+				Platform.runLater(() -> {
+					removeMobRan();
+				});
+				Thread.sleep(2000);
+				gamepanel.setBlockUserInputs(false);
+				FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
+				ft2.setFromValue(1);
+				ft2.setToValue(0);
+				ft.play();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}).start();
 	}
-	
 	
 	
 	
@@ -220,12 +286,25 @@ public class Fight extends Pane{
 		tescht.init("./res/npc/rdmDemon.gif", 20);
 	}
 
+	
+	
 	/**
 	 * Update.
 	 */
 	public void update() {
+		Demon[] demonArray = gamepanel.getGamemenu().getInventory().getDemons();
 		h.update();
 		hh.update();
+		if(demonMob.getCurrenthp() <= 0 && !f) {demonDead(); f = true;}
+		if(eigenMob.getCurrenthp() <= 0) 
+			{	for(int i=0; i<=5;i++) {
+					if(eigenMob.getCurrenthp() != 0) {
+						eigenMob = demonArray[i];
+					}else {
+						
+					}
+				}
+			}
 	}
 
 }
