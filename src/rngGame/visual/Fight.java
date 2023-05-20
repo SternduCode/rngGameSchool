@@ -297,7 +297,7 @@ public class Fight extends Pane{
 		hh.update();
 		if(demonMob.getCurrenthp() <= 0 && !f) {demonDead(); f = true;}
 		if(eigenMob.getCurrenthp() <= 0) 
-			{	for(int i=0; i<=5;i++) {
+			{	for(int i=0; i<=demonArray.length;i++) {
 					if(eigenMob.getCurrenthp() != 0) {
 						eigenMob = demonArray[i];
 					}else {
