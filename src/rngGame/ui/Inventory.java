@@ -1211,39 +1211,50 @@ public class Inventory extends Pane {
 			statsImages(0);
 		});
 
+		
 		ctb2.setOnReleased(me -> {
+			if(currentDemonArray[1]!=null) {
 			ctov.setLayoutX(ctb2.getLayoutX());
 			ctov.setLayoutY(ctb2.getLayoutY());
 			ctcomp.setImage(stage2);
 			statsImages(1);
+			}
 		});
 
 		ctb3.setOnReleased(me -> {
+			if(currentDemonArray[2]!=null) {
 			ctov.setLayoutX(ctb3.getLayoutX());
 			ctov.setLayoutY(ctb3.getLayoutY());
 			ctcomp.setImage(stage3);
 			statsImages(2);
+			}
 		});
 
 		ctb4.setOnReleased(me -> {
+			if(currentDemonArray[3]!=null) {
 			ctov.setLayoutX(ctb4.getLayoutX());
 			ctov.setLayoutY(ctb4.getLayoutY());
 			ctcomp.setImage(stage4);
 			statsImages(3);
+			}
 		});
 
 		ctb5.setOnReleased(me -> {
+			if(currentDemonArray[4]!=null) {
 			ctov.setLayoutX(ctb5.getLayoutX());
 			ctov.setLayoutY(ctb5.getLayoutY());
 			ctcomp.setImage(stage5);
 			statsImages(4);
+			}
 		});
 
 		ctb6.setOnReleased(me -> {
+			if(currentDemonArray[5]!=null) {
 			ctov.setLayoutX(ctb6.getLayoutX());
 			ctov.setLayoutY(ctb6.getLayoutY());
 			ctcomp.setImage(stage6);
 			statsImages(5);
+			}
 		});
 
 	}
@@ -1492,8 +1503,11 @@ public class Inventory extends Pane {
 				ctb1, ctb2, ctb3, ctb4, ctb5, ctb6
 		};
 
-		for (int i = 0; i < ctbs.length; i++)
-			ctbs[i].setImage(getIconM(currentDemonArray[i].getMobName(), currentDemonArray[i].getElement()));
-
+		for (int i = 0; i < ctbs.length; i++) {
+			if(currentDemonArray[i] != null) {
+				ctbs[i].setImage(getIconM(currentDemonArray[i].getMobName(), currentDemonArray[i].getElement()));
+			}
+		}
 	}
 }
+	
