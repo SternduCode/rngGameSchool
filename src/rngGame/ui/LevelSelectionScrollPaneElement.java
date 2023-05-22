@@ -108,9 +108,8 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		});
 		startButton.setOnReleased(me -> {
 			startButton.init(sButton);
-			Input.getInstance().keyPressed(new KeyEvent(null, "", "", KeyCode.ENTER, false, false, false, false));
+			ct.removeStuffs();
 			gamepanel.getLgp().setMap("./res/maps/Dungeon.json");
-			ct.removeEnterAbbility();
 		});
 
 		background.setOnReleased(me -> {

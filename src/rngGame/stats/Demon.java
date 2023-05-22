@@ -74,7 +74,7 @@ public class Demon {
 	 * @param currenthp the currenthp
 	 */
 	public void changeCurrenthp(int currenthp) {
-		currenthp = Math.min(this.currenthp+currenthp, maxhp);
+		currenthp = Math.min(this.currenthp+currenthp, getMaxHp());
 		currenthp = Math.max(currenthp, 0);
 		this.currenthp = currenthp;
 	}

@@ -2,6 +2,7 @@ package rngGame.ui;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Random;
 
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
@@ -274,6 +275,7 @@ public class Inventory extends Pane {
 	 * @param idx the idx
 	 */
 	public void giveItem2Monster(int idx) {
+		int oldhp = getCurrentDemon().getMaxHp();
 		Gear g = gearArray[idx];
 		if (gearArray[idx] instanceof Helmet) {
 			gearArray[idx]											= getCurrentDemon().getItem4List()[0];
@@ -287,6 +289,12 @@ public class Inventory extends Pane {
 		} else if (gearArray[idx] instanceof Sword) {
 			gearArray[idx]											= getCurrentDemon().getItem4List()[3];
 			getCurrentDemon().getItem4List()[3]	= g;
+		}
+		System.out.println(getCurrentDemon().getCurrenthp()+" "+oldhp);
+		if(getCurrentDemon().getCurrenthp() == oldhp) {
+			getCurrentDemon().changeCurrenthp(g.getHp());
+		} else {
+			getCurrentDemon().changeCurrenthp(0);
 		}
 
 		int i = findFirstNull(gearArray);
@@ -328,7 +336,8 @@ public class Inventory extends Pane {
 		comingView 			= new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/InvComingsoon.png"));
 
 		/////////////
-
+		
+		/////////////
 	
 
 		String ctt = "./res/gui/Temp.png";
@@ -346,9 +355,16 @@ public class Inventory extends Pane {
 		ctb6.setImage(ImgUtil.getScaledImage(gamepanel, ctt));
 		ctov = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/tempOV.png"));
 
-		Demon m1 = MobRan.MobGen(gamepanel.getVgp());
-		m1.changeCurrenthp(-10);
-		m1.setCurrentExp(m1.getMaxExp() - 1);
+		
+		Demon m1 = null;
+		Random r = new Random();
+		int zuz = r.nextInt(2)+1;
+		switch (zuz) {
+		case 1: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Fire, "Booky");}
+		case 2: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Water, "Booky");}
+		case 3: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Plant, "Booky");}
+		}
+		
 		addDemon2current(m1);
 
 		// Xbutton
@@ -1016,6 +1032,7 @@ public class Inventory extends Pane {
 					if(z != -1) {
 						gearArray[z] = getCurrentDemon().getItem4List()[_i];
 						getCurrentDemon().getItem4List()[_i] = null;
+						getCurrentDemon().changeCurrenthp(0);
 						moveFromArrayToView();
 						statsImages(currentDemonIndex);
 					}

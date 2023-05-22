@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.Button;
+import rngGame.visual.AnimatedImage;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -21,6 +22,8 @@ public class TitleScreen extends Pane{
 
 	/** The iv. */
 	private final ImageView iv;
+	
+	private AnimatedImage storyView;
 
 	/** The last. */
 	private long last = 0l;
@@ -30,6 +33,8 @@ public class TitleScreen extends Pane{
 
 	/** The curr frame. */
 	private int currFrame = 0;
+	
+	private int index = 0;
 
 	/** The pfail. */
 	private Button ploy = null, settins = null, clous = null, pfail = null;
@@ -46,6 +51,17 @@ public class TitleScreen extends Pane{
 		}
 		iv = new ImageView();
 
+		storyView = new AnimatedImage("./res/story/Story0.gif", gp.getVgp(), 7);
+		
+		storyView.setOnMouseReleased(me -> {
+			if(index < 6) {
+			index++;
+			storyView.init("./res/story/Story"+ index +".gif");
+			} else {
+				storyView.setVisible(false);
+			}
+		});
+		
 		clous = new Button("./res/backgrounds/Clous.png", gp.getVgp());
 		clous.setOnPressed(e -> clous.init("./res/backgrounds/Clous2.png"));
 		clous.setOnReleased(e -> {
@@ -112,10 +128,11 @@ public class TitleScreen extends Pane{
 
 		});
 
-		getChildren().addAll(gp.getVgp(), iv, ploy, settins, clous, pfail);
+		getChildren().addAll(gp.getVgp(), iv, ploy, settins, clous, pfail,storyView);
 		new Thread(()->{
 			while (true) {
 				try {
+					storyView.update();
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
