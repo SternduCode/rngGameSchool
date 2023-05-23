@@ -29,43 +29,13 @@ public class TabMenu extends Pane {
 
 
 	/** The inv B. */
-	private final ImageView invB;
-
-	/** The inv B 1. */
-	private Image invB1;
-
-	/** The inv B 2. */
-	private Image invB2;
-
-	/** The que B. */
-	private final ImageView queB;
-
-	/** The que B 1. */
-	private Image queB1;
-
-	/** The que B 2. */
-	private Image queB2;
-
-	/** The leav B. */
-	private final ImageView leavB;
+	private final Button invB, queB, leavB, sureY, sureN;
 
 	/** The blank. */
 	private final ImageView blank;
 
-	/** The leav B 1. */
-	private Image leavB1;
-
-	/** The leav B 2. */
-	private Image leavB2;
-
 	/** The surebackround. */
 	private final ImageView surebackround;
-
-	/** The sure Y. */
-	private final ImageView sureY;
-
-	/** The sure N. */
-	private final ImageView sureN;
 
 	/** The sure Y 1. */
 	private Image sureY1;
@@ -101,27 +71,18 @@ public class TabMenu extends Pane {
 
 		blank = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
 
-		invB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton1.png");
-		invB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton2.png");
-		invB = new ImageView(invB1);
+		
+		invB = new Button("./res/gui/invAbutton1.png",gamepanel.getVgp());
 
-		queB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/queAbutton1.png");
-		queB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/queAbutton2.png");
-		queB = new ImageView(queB1);
+		queB = new Button("./res/gui/queAbutton1.png",gamepanel.getVgp());
 
-		leavB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/LeavAbutton1.png");
-		leavB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/LeavAbutton2.png");
-		leavB = new ImageView(leavB1);
+		leavB = new Button("./res/gui/LeavAbutton1.png",gamepanel.getVgp());
 
 		surebackround = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/Sure.png"));
 
-		sureY1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureY.png");
-		sureY2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureY2.png");
-		sureY = new ImageView(sureY1);
+		sureY = new Button("./res/gui/SureY.png",gamepanel.getVgp());
 
-		sureN1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN.png");
-		sureN2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN2.png");
-		sureN = new ImageView(sureN1);
+		sureN = new Button("./res/gui/SureN.png",gamepanel.getVgp());
 
 
 		buttongroup.getChildren().addAll(invB,queB,leavB);
@@ -161,49 +122,49 @@ public class TabMenu extends Pane {
 					buttongroup.setVisible(true);
 
 
-					invB.setOnMousePressed(me -> {
-						invB.setImage(invB2);
+					invB.setOnPressed(me -> {
+						invB.init("./res/gui/invAbutton2.png");
 					});
-					invB.setOnMouseReleased(me -> {
-						invB.setImage(invB1);
+					invB.setOnReleased(me -> {
+						invB.init("./res/gui/invAbutton1.png");
 						Inventory.show();
 					});
 
-					queB.setOnMousePressed(me -> {
-						queB.setImage(queB2);
+					queB.setOnPressed(me -> {
+						queB.init("./res/gui/queAbutton2.png");
 					});
-					queB.setOnMouseReleased(me -> {
-						queB.setImage(queB1);
+					queB.setOnReleased(me -> {
+						queB.init("./res/gui/queAbutton1.png");
 					});
 
 
-					leavB.setOnMousePressed(me -> {
-						leavB.setImage(leavB2);
+					leavB.setOnPressed(me -> {
+						leavB.init("./res/gui/leavAbutton2.png");
 					});
-					leavB.setOnMouseReleased(me -> {
+					leavB.setOnReleased(me -> {
 						blank.setVisible(true);
-						leavB.setImage(leavB1);
+						leavB.init("./res/gui/leavAbutton1.png");
 						noInput.set(true);
 						surebackround.setVisible(true);
 						YNbuttongroup.setVisible(true);
 					});
 
-					sureN.setOnMousePressed(me -> {
-						sureN.setImage(sureN2);
+					sureN.setOnPressed(me -> {
+						sureN.init("./res/gui/SureN2.png");
 					});
-					sureN.setOnMouseReleased(me -> {
-						sureN.setImage(sureN1);
+					sureN.setOnReleased(me -> {
+						sureN.init("./res/gui/SureN.png");
 						blank.setVisible(false);
 						noInput.set(false);
 						surebackround.setVisible(false);
 						YNbuttongroup.setVisible(false);
 					});
 
-					sureY.setOnMousePressed(me -> {
-						sureY.setImage(sureY2);
+					sureY.setOnPressed(me -> {
+						sureY.init("./res/gui/SureY2.png");
 					});
-					sureY.setOnMouseReleased(me -> {
-						sureY.setImage(sureY1);
+					sureY.setOnReleased(me -> {
+						sureY.init("./res/gui/SureY.png");
 						System.exit(0);
 					});
 
@@ -260,17 +221,11 @@ public class TabMenu extends Pane {
 		gamemenu.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
 		blank.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
 
-		invB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton1.png");
-		invB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/invAbutton2.png");
-		invB.setImage(invB1);
+		invB.init("./res/gui/invAbutton1.png");
 
-		queB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/queAbutton1.png");
-		queB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/queAbutton2.png");
-		queB.setImage(queB1);
+		queB.init("./res/gui/queAbutton1.png");
 
-		leavB1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/LeavAbutton1.png");
-		leavB2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/LeavAbutton2.png");
-		leavB.setImage(leavB1);
+		leavB.init("./res/gui/LeavAbutton1.png");
 
 		surebackround.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/Sure.png"));
 		sureY1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureY.png");

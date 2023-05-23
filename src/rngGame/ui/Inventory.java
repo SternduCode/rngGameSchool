@@ -358,13 +358,13 @@ public class Inventory extends Pane {
 		
 		Demon m1 = null;
 		Random r = new Random();
-		int zuz = r.nextInt(2)+1;
+		int zuz = r.nextInt(3)+1;
 		switch (zuz) {
-		case 1: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Fire, "Booky");}
-		case 2: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Water, "Booky");}
-		case 3: {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Plant, "Booky");}
+		case 1 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Fire, "Booky");}
+		case 2 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Water, "Booky");}
+		case 3 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Plant, "Booky");}
 		}
-		
+		System.out.println(zuz);
 		addDemon2current(m1);
 
 		// Xbutton

@@ -34,6 +34,8 @@ public class AnimatedImage extends ImageView {
 	 * @param gamepanel the gamepanel
 	 */
 	public AnimatedImage(GamePanel gamepanel) {
+		imgRequestedWidth        = -1;
+        imgRequestedHeight        = -1;
 		this.gamepanel = gamepanel;
 		fps = 7;
 		gamepanel.addAnimatedImage(this);
@@ -46,6 +48,8 @@ public class AnimatedImage extends ImageView {
 	 * @param gamepanel the gamepanel
 	 */
 	public AnimatedImage(String path, GamePanel gamepanel) {
+		imgRequestedWidth        = -1;
+        imgRequestedHeight        = -1;
 		this.path		= path;
 		this.gamepanel	= gamepanel;
 		fps				= 7;
@@ -62,6 +66,8 @@ public class AnimatedImage extends ImageView {
 	 * @param fps       the fps
 	 */
 	public AnimatedImage(String path, GamePanel gamepanel, int fps) {
+		imgRequestedWidth        = -1;
+        imgRequestedHeight        = -1;
 		this.path		= path;
 		this.gamepanel	= gamepanel;
 		this.fps		= fps;
@@ -112,9 +118,21 @@ public class AnimatedImage extends ImageView {
 	 * Scale F 11.
 	 */
 	public void scaleF11() {
-		frames = ImgUtil.getScaledImages(gamepanel, path);
-		if (frameIndex >= frames.length)
-			frameIndex = 0;
+		if (path != null) {
+            if (imgRequestedWidth != -1 && imgRequestedHeight != -1)
+                frames = ImgUtil.getScaledImages(gamepanel, path, imgRequestedWidth, imgRequestedHeight);
+            else frames = ImgUtil.getScaledImages(gamepanel, path);
+            if (frameIndex >= frames.length)
+                frameIndex = 0;
+        } else for (int i = 0; i < frames.length; i++) {
+            Image img = frames[i];
+            if (imgRequestedWidth != -1 && imgRequestedHeight != -1)
+                frames[i] = ImgUtil.resizeImage(img, (int) img.getWidth(), (int) img.getHeight(),
+                        (int) (imgRequestedWidth * gamepanel.getScalingFactorX()), (int) (imgRequestedHeight * gamepanel.getScalingFactorY()));
+            else
+                frames[i] = ImgUtil.resizeImage(img, (int) img.getWidth(), (int) img.getHeight(),
+                        (int) (img.getWidth() * gamepanel.getScalingFactorX()), (int) (img.getHeight() * gamepanel.getScalingFactorY()));
+        }
 		setImage(frames[frameIndex]);
 	}
 
@@ -144,5 +162,32 @@ public class AnimatedImage extends ImageView {
 			setImage(frames[frameIndex]);
 		}
 	}
+	/**
+     * Gets the img requested height.
+     *
+     * @return the img requested height
+     */
+    public int getImgRequestedHeight() { return imgRequestedHeight; }
 
+    /**
+     * Gets the img requested width.
+     *
+     * @return the img requested width
+     */
+    public int getImgRequestedWidth() { return imgRequestedWidth; }
+    /** The img requested height. */
+    private int imgRequestedWidth, imgRequestedHeight;
+    /**
+     * Sets the img requested height.
+     *
+     * @param imgRequestedHeight the new img requested height
+     */
+    public void setImgRequestedHeight(int imgRequestedHeight) { this.imgRequestedHeight = imgRequestedHeight; }
+
+    /**
+     * Sets the img requested width.
+     *
+     * @param imgRequestedWidth the new img requested width
+     */
+    public void setImgRequestedWidth(int imgRequestedWidth) { this.imgRequestedWidth = imgRequestedWidth; }
 }

@@ -2,6 +2,8 @@ package rngGame.main;
 
 import java.io.FileNotFoundException;
 
+import javax.print.attribute.standard.PrinterMakeAndModel;
+
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.image.*;
@@ -54,6 +56,7 @@ public class TitleScreen extends Pane{
 		storyView = new AnimatedImage("./res/story/Story0.gif", gp.getVgp(), 7);
 		
 		storyView.setOnMouseReleased(me -> {
+			gp.makeSound("click.wav");
 			if(index < 6) {
 			index++;
 			storyView.init("./res/story/Story"+ index +".gif");
@@ -72,6 +75,7 @@ public class TitleScreen extends Pane{
 		ploy = new Button("./res/backgrounds/Ploy.png", gp.getVgp());
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
+			gp.makeSound("click.wav");
 			gp.getVgp().goIntoLoadingScreen();
 			new Thread(() -> {
 				try {

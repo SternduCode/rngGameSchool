@@ -1,11 +1,12 @@
 package rngGame.main;
 
-import java.io.*;
+
 import java.util.function.Consumer;
 
-import javafx.scene.image.*;
+
 import javafx.scene.layout.Pane;
-import rngGame.tile.ImgUtil;
+
+import rngGame.ui.Button;
 import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
@@ -18,10 +19,7 @@ public class AktionButton extends Pane {
 	private final GamePanel gamepanel;
 
 	/** The aktionbutton. */
-	private final ImageView aktionbutton;
-
-	/** The druck. */
-	private Image nichts,kann,druck;
+	private final Button aktionbutton;
 
 	/** The ifc. */
 	private boolean ifc = false;
@@ -41,18 +39,19 @@ public class AktionButton extends Pane {
 	 */
 	public AktionButton(GamePanel gamepanel) {
 		this.gamepanel = gamepanel;
-		aktionbutton = new ImageView(nichts);
+		aktionbutton = new Button("./res/gui/always/InteractionNichts.png",gamepanel);
 		f11Scale();
 		getChildren().add(aktionbutton);
-
-		aktionbutton.setOnMousePressed(me -> {
+		aktionbutton.setImgRequestedWidth(150);
+		aktionbutton.setImgRequestedHeight(150);
+		aktionbutton.setOnPressed(me -> {
 			if (ifc) {
-				aktionbutton.setImage(druck);
+				aktionbutton.init("./res/gui/always/InteractionGedrueckt.png");
 				if (handler != null) handler.accept(gamepanel);
 			}
 		});
-		aktionbutton.setOnMouseReleased(me -> {
-			if(ifc) aktionbutton.setImage(kann);
+		aktionbutton.setOnReleased(me -> {
+			if(ifc) aktionbutton.init("./res/gui/always/InteractionMoeglich.png");
 		});
 
 
@@ -62,20 +61,7 @@ public class AktionButton extends Pane {
 	 * F 11 scale.
 	 */
 	public void f11Scale() {
-		try {
-			nichts = new Image(new FileInputStream("./res/gui/always/InteractionNichts.png"));
-			kann = new Image(new FileInputStream("./res/gui/always/InteractionMoeglich.png"));
-			druck = new Image(new FileInputStream("./res/gui/always/InteractionGedrueckt.png"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		nichts	= ImgUtil.resizeImage(nichts, (int) nichts.getWidth(), (int) nichts.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
-				(int) (150 * gamepanel.getScalingFactorY()));
-		kann	= ImgUtil.resizeImage(kann, (int) kann.getWidth(), (int) kann.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
-				(int) (150 * gamepanel.getScalingFactorY()));
-		druck	= ImgUtil.resizeImage(druck, (int) druck.getWidth(), (int) druck.getHeight(), (int) (150 * gamepanel.getScalingFactorX()),
-				(int) (150 * gamepanel.getScalingFactorY()));
-		aktionbutton.setImage(nichts);
+		aktionbutton.init("./res/gui/always/InteractionNichts.png");
 
 		setLayoutX(gamepanel.getGameWidth() - 220 * gamepanel.getScalingFactorX());
 		setLayoutY(gamepanel.getGameHeight() - 220 * gamepanel.getScalingFactorY());
@@ -92,11 +78,11 @@ public class AktionButton extends Pane {
 		this.ifc = ifc;
 		if (ifc) {
 			this.handler = handler;
-			if (aktionbutton.getImage() != druck)
-				aktionbutton.setImage(kann);
+			if (!aktionbutton.getPath().equals("./res/gui/always/InteractionGedrueckt.png"))
+				aktionbutton.init("./res/gui/always/InteractionMoeglich.png");
 			lastSetToTrue = System.currentTimeMillis();
 		} else {
-			aktionbutton.setImage(nichts);
+			aktionbutton.init("./res/gui/always/InteractionNichts.png");
 			this.handler = null;
 		}
 	}
