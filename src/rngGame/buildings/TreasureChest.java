@@ -122,6 +122,10 @@ public class TreasureChest extends Building {
 			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
+
+			gamepanel.setMap("./res/maps/lavaMap2.json", new double[] {
+					1464.0, 372.0
+			});
 		} else {
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
