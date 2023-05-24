@@ -53,7 +53,10 @@ public class Button extends AnimatedImage {
 	 * @param mv the new on released
 	 */
 	public void setOnReleased(EventHandler<MouseEvent> mv) {
-		setOnMouseReleased(i -> ((Consumer<MouseEvent>) e -> gamepanel.getLgp().makeSound("click.wav")).andThen(e -> mv.handle(e)).accept(i));
+		setOnMouseReleased(i -> {
+			gamepanel.getLgp().makeSound("click.wav");
+			mv.handle(i);
+		});
 
 	}
 
