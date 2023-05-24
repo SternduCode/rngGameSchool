@@ -30,9 +30,7 @@ public class HealthBar extends Pane {
 	}
 
 	public void update() {
-		c.getGraphicsContext2D().setFill(Color.TRANSPARENT);
-		c.getGraphicsContext2D().fillRect(44*gp.getScalingFactorX(), 16*gp.getScalingFactorY(), 165*gp.getScalingFactorX(), 14*gp.getScalingFactorY());
-		c.getGraphicsContext2D().fillRect(44*gp.getScalingFactorX() + 165*gp.getScalingFactorX(), 18*gp.getScalingFactorY(), gp.getScalingFactorX(), 10*gp.getScalingFactorY());
+		c.getGraphicsContext2D().clearRect(0, 0, c.getWidth(), c.getHeight());
 		c.getGraphicsContext2D().setFill(Color.LIMEGREEN);
 		if(d.getCurrenthp() > 0) {
 		c.getGraphicsContext2D().fillRect(44*gp.getScalingFactorX(), 16*gp.getScalingFactorY(), 165*gp.getScalingFactorX()*(d.getCurrenthp()/(double)d.getMaxHp()), 14*gp.getScalingFactorY());
