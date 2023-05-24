@@ -260,7 +260,7 @@ public class Demon {
 		if(currentexp < getMaxExp()) {
 		this.currentexp = currentexp;
 		} else {
-			levelup();
+			levelup(currentexp);
 		}
 	}
 
@@ -323,20 +323,20 @@ public class Demon {
 				+ dgc + ", lvl=" + lvl + "]";
 	}
 	
-	public void levelup() {
+	public void levelup(int i) {
 		System.out.println("LEVEL UP!");
-			currentexp = 0;
+			currentexp = i-maxExp;
 			setLvl(getLvl()+1);
 			       if(getLvl() % 5 == 1) {
-				setAtk(getAtk()+1);
+				setAtk(atk+1);
 			} else if(getLvl() % 5 == 2) {
-				setMaxHp(getMaxHp()+1);
+				setMaxHp(maxhp+1);
 			} else if(getLvl() % 5 == 3) {
-				setRes(getRes()+0.0025);
+				setRes(res+0.0025);
 			} else if(getLvl() % 5 == 4) {
-				setDgc(getDgc()+0.0015);
+				setDgc(dgc+0.0015);
 			} else if(getLvl() % 5 == 0) {
-				setMaxHp(getMaxHp()+1);
+				setMaxHp(maxhp+1);
 			}
 			getMaxExp();
 		}

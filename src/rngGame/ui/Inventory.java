@@ -1455,13 +1455,13 @@ public class Inventory extends Pane {
 	public void statsImages(int demonIndex) {
 
 		int idx = getChildren().indexOf(getCurrentDemon().getDemon());
-
+		
 		currentDemonIndex = demonIndex;
 
 		if (idx == -1) {
 			idx = getChildren().indexOf(getChildren().stream().filter(e -> e instanceof MonsterNPC).findFirst().orElseGet(() -> null));
 			if (idx != -1) getChildren().set(idx, getCurrentDemon().getDemon());
-			else getChildren().add(getCurrentDemon().getDemon());
+			else getChildren().add(4,getCurrentDemon().getDemon());
 
 		} else getChildren().set(idx, getCurrentDemon().getDemon());
 
