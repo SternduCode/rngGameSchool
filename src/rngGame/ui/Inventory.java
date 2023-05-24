@@ -365,7 +365,23 @@ public class Inventory extends Pane {
 		case 3 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Plant, "Booky");}
 		}
 		System.out.println(zuz);
+		m1.setCurrentExp(m1.getMaxExp()-1);
 		addDemon2current(m1);
+		
+		Harnish h1 = new Harnish(Rarity.COMMON);
+		Helmet h2 = new Helmet(Rarity.COMMON);
+		Pants h3 = new Pants(Rarity.COMMON);
+		Sword h4 = new Sword(Rarity.COMMON);
+		
+		itemToInventory(h1);
+		itemToInventory(h2);
+		itemToInventory(h3);
+		itemToInventory(h4);
+		
+		for(int i = 0; i < 5; i++) {
+			Potion p1 = new Potion(Rarity.UNCOMMON);
+			itemToInventory(p1);
+		}
 
 		// Xbutton
 		String	ausX	= "./res/Contractstuff/Xbutton.png";
@@ -496,12 +512,13 @@ public class Inventory extends Pane {
 							ctbi4 = new Button(gamepanel.getVgp());
 							ctbi5 = new Button(gamepanel.getVgp());
 							ctbi6 = new Button(gamepanel.getVgp());
-							ctbi1.setImage(getIconM(currentDemonArray[0].getMobName(), currentDemonArray[0].getElement()));
-							ctbi2.setImage(getIconM(currentDemonArray[1].getMobName(), currentDemonArray[1].getElement()));
-							ctbi3.setImage(getIconM(currentDemonArray[2].getMobName(), currentDemonArray[2].getElement()));
-							ctbi4.setImage(getIconM(currentDemonArray[3].getMobName(), currentDemonArray[3].getElement()));
-							ctbi5.setImage(getIconM(currentDemonArray[4].getMobName(), currentDemonArray[4].getElement()));
-							ctbi6.setImage(getIconM(currentDemonArray[5].getMobName(), currentDemonArray[5].getElement()));
+							Button[] barray = new Button[] {ctbi1,ctbi2,ctbi3,ctbi4,ctbi5,ctbi6};
+							for(int y = 0; y < 6 ; y++) {
+								if(currentDemonArray[y] != null) {
+								barray[y].setImage(getIconM(currentDemonArray[y].getMobName(), currentDemonArray[y].getElement()));
+								}
+							}
+						
 							ctbi1.setLayoutX(254);
 							ctbi1.setLayoutY(319);
 							ctbi2.setLayoutX(324);
@@ -1312,6 +1329,7 @@ public class Inventory extends Pane {
 	 * Show.
 	 */
 	public void show() {
+		statsImages(currentDemonIndex);
 		moveFromArrayToView();
 		setVisible(true);
 		setDisable(false);

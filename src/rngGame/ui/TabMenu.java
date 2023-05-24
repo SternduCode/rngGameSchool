@@ -127,6 +127,7 @@ public class TabMenu extends Pane {
 					});
 					invB.setOnReleased(me -> {
 						invB.init("./res/gui/invAbutton1.png");
+						
 						Inventory.show();
 					});
 

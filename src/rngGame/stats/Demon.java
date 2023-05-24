@@ -257,7 +257,11 @@ public class Demon {
 	 * @param currentexp the new current exp
 	 */
 	public void setCurrentExp(int currentexp) {
+		if(currentexp < getMaxExp()) {
 		this.currentexp = currentexp;
+		} else {
+			levelup();
+		}
 	}
 
 
@@ -318,19 +322,10 @@ public class Demon {
 		return "Demon [Element=" + element + ", mobName=" + mobName + ", atk=" + atk + ", res=" + res + ", hp=" + maxhp + ", dgc="
 				+ dgc + ", lvl=" + lvl + "]";
 	}
-
-	public boolean testExp(int c) {
-		if(c == maxExp) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
 	public void levelup() {
-		if(testExp(currentexp)) {
+		System.out.println("LEVEL UP!");
 			currentexp = 0;
-			getMaxExp();
 			setLvl(getLvl()+1);
 			       if(getLvl() % 5 == 1) {
 				setAtk(getAtk()+1);
@@ -343,6 +338,7 @@ public class Demon {
 			} else if(getLvl() % 5 == 0) {
 				setMaxHp(getMaxHp()+1);
 			}
+			getMaxExp();
 		}
 	}
-}
+

@@ -22,6 +22,8 @@ public class Fight extends Pane{
 
 	/** The battlebackgroundvisual. */
 	private final ImageView fight, battlebackgroundvisual;
+	
+	private AnimatedImage hit;
 
 	/** The gamepanel. */
 	private final GamePanel gamepanel;
@@ -45,6 +47,8 @@ public class Fight extends Pane{
 	
 	private boolean f = false;
 	
+	Random r = new Random();
+	
 	
 
 	/**
@@ -56,6 +60,9 @@ public class Fight extends Pane{
 	public Fight(GamePanel gamepanel, MobRan mob) {
 		this.mob				= mob;
 		fight					= new ImageView();
+		hit 					= new AnimatedImage(gamepanel);
+		hit.setLayoutY(-10);
+		hit.setVisible(false);
 		this.gamepanel			= gamepanel;
 		demonMob				= MobRan.MobGen(gamepanel);
 		battlebackgroundvisual	= new ImageView();
@@ -63,6 +70,7 @@ public class Fight extends Pane{
 		majyc					= new Button(gamepanel);
 		stych					= new Button(gamepanel);
 		tescht					= new Button(gamepanel);
+		
 		
 		buttongroup.getChildren().addAll(leaf,majyc,stych);
 		Random r = new Random();
@@ -95,6 +103,8 @@ public class Fight extends Pane{
 
 		stych.setOnPressed(e -> stych.init("./res/fight/Stych2.png"));
 		stych.setOnReleased(e -> {
+			hit.init("./res/fight/stichA.gif");
+			hit.setVisible(true);
 			stych.init("./res/fight/Stych.gif");
 			System.out.println(demonMob.getCurrenthp());
 			demonMob.changeCurrenthp(-eigenMob.getAtk());
@@ -110,8 +120,11 @@ public class Fight extends Pane{
 			new Thread(() -> {
 				try {
 					Thread.sleep(5000);
+					hit.setVisible(false);
+					if(demonMob.getCurrenthp()!=0) {
 					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
 					else {sheeesh(demonMob, eigenMob);}
+					}
 					majyc.setDisable(false);
 					leaf.setDisable(false);
 					stych.setDisable(false);
@@ -127,6 +140,8 @@ public class Fight extends Pane{
 		
 		majyc.setOnPressed(e-> majyc.init("./res/fight/Majyc2.png"));
 		majyc.setOnReleased(e->{
+			hit.init("./res/fight/MagicA.gif");
+			hit.setVisible(true);
 			majyc.init("./res/fight/Majyc.gif");
 			majyc.setDisable(true);
 			leaf.setDisable(true);
@@ -139,8 +154,11 @@ public class Fight extends Pane{
 			new Thread(() -> {
 				try {
 					Thread.sleep(5000);
+					hit.setVisible(false);
+					if(demonMob.getCurrenthp()!=0) {
 					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
 					else {sheeesh(demonMob, eigenMob);}
+					}
 					majyc.setDisable(false);
 					leaf.setDisable(false);
 					stych.setDisable(false);
@@ -227,6 +245,8 @@ public class Fight extends Pane{
 		}
 	}
 	public void demonDead(){
+		int i = r.nextInt(3)+1;
+		eigenMob.setCurrentExp(eigenMob.getCurrentExp()+i);
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
 		new Thread(() -> {
 			try {
@@ -293,7 +313,8 @@ public class Fight extends Pane{
 		hh.setLayoutX(gamepanel.getWidth()/4);
 		getChildren().clear();
 		getChildren().addAll(battlebackgroundvisual, fight, buttongroup, tescht);
-		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh);
+		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh, hit);
+		
 
 		leaf.init("./res/fight/Leaf.gif", 10);
 		majyc.init("./res/fight/Majyc.gif", 10);
@@ -312,8 +333,8 @@ public class Fight extends Pane{
 		hh.update();
 		if(demonMob.getCurrenthp() <= 0 && !f) {demonDead(); f = true;}
 		if(eigenMob.getCurrenthp() <= 0) 
-			{	for(int i=0; i<=demonArray.length;i++) {
-					if(demonArray[i].getCurrenthp() != 0) {
+			{	for(int i=0; i<demonArray.length;i++) {
+					if(demonArray[i] != null &&demonArray[i].getCurrenthp() != 0) {
 						eigenMob = demonArray[i];
 						break;
 					}
