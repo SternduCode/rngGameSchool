@@ -313,29 +313,29 @@ public class Fight extends Pane{
 		if(demonMob.getCurrenthp() <= 0 && !f) {demonDead(); f = true;}
 		if(eigenMob.getCurrenthp() <= 0) 
 			{	for(int i=0; i<=demonArray.length;i++) {
-					if(demonArray[i] != 0) {
+					if(demonArray[i].getCurrenthp() != 0) {
 						eigenMob = demonArray[i];
 						break;
 					}
 				}
 				if (eigenMob.getCurrenthp() ==0) {
-							new Thread(() -> {
-			try {
-				TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
-				gamepanel.getAktionbutton().setVisible(true);
-				Platform.runLater(() -> {
-					removeMobRan();
-				});
-				Thread.sleep(2000);
-				gamepanel.setBlockUserInputs(false);
-				FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-				ft2.setFromValue(1);
-				ft2.setToValue(0);
-				ft.play();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}).start();
+					new Thread(() -> {
+						try {
+							TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
+							gamepanel.getAktionbutton().setVisible(true);
+							Platform.runLater(() -> {
+								removeMobRan();
+							});
+							Thread.sleep(2000);
+							gamepanel.setBlockUserInputs(false);
+							FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
+							ft2.setFromValue(1);
+							ft2.setToValue(0);
+							ft.play();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}).start();
 				}
 			}
 	}
