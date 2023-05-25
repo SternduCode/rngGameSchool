@@ -73,7 +73,7 @@ public class Fight extends Pane{
 		
 		buttongroup.getChildren().addAll(leaf,majyc,stych);
 		Random r = new Random();
-		gamepanel.getLgp().makeSound("Fight_v2.wav");
+		
 		TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
 		TranslateTransition ib1 = new TranslateTransition(Duration.millis(150),buttongroup);
 		
@@ -82,6 +82,8 @@ public class Fight extends Pane{
 		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
 			gamepanel.goIntoLoadingScreen();
+			SoundHandler.getInstance().endBackgroundMusic();
+			SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 			new Thread(() -> {
 				try {
 					gamepanel.getAktionbutton().setVisible(true);
@@ -116,7 +118,7 @@ public class Fight extends Pane{
 			stych.setDisable(true);
 			ft.setToY(gamepanel.getGameHeight() / 2);
 			ib1.setToY(gamepanel.getGameHeight() / 2);
-			ft.play();
+			ft.play(); 
 			ib1.play();
 			int rr = r.nextInt(2)+1;
 			new Thread(() -> {
@@ -124,8 +126,10 @@ public class Fight extends Pane{
 					Thread.sleep(5000);
 					hit.setVisible(false);
 					if(demonMob.getCurrenthp()!=0) {
-					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
-					else {sheeesh(demonMob, eigenMob);}
+					if(rr==1) {
+						gamepanel.getLgp().makeSound("Enemy Hit.wav");
+						eigenMob.changeCurrenthp(-demonMob.getAtk());
+						}else sheeesh(demonMob, eigenMob);	
 					}
 					majyc.setDisable(false);
 					leaf.setDisable(false);
@@ -159,8 +163,11 @@ public class Fight extends Pane{
 					Thread.sleep(5000);
 					hit.setVisible(false);
 					if(demonMob.getCurrenthp()!=0) {
-					if(rr==1) {eigenMob.changeCurrenthp(-demonMob.getAtk());}
-					else {sheeesh(demonMob, eigenMob);}
+					if(rr==1) {
+						gamepanel.getLgp().makeSound("Enemy Hit.wav");
+						eigenMob.changeCurrenthp(-demonMob.getAtk());
+						}else sheeesh(demonMob, eigenMob);
+					
 					}
 					majyc.setDisable(false);
 					leaf.setDisable(false);
@@ -192,6 +199,7 @@ public class Fight extends Pane{
 	
 	
 	public void sheeesh(Demon eigenMob, Demon demonMob) {
+		gamepanel.getLgp().makeSound("Enemy Hit2.wav");
 		switch (eigenMob.getElement()) {
 		case Fire -> {
 			 if(demonMob.getElement() == Element.Plant) demonMob.changeCurrenthp(-eigenMob.getAtk()*2);
@@ -246,6 +254,8 @@ public class Fight extends Pane{
 	}
 	public void demonDead(){
 		gamepanel.getLgp().makeSound("Enemy Ded.wav");
+		SoundHandler.getInstance().endBackgroundMusic();
+		SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 		int i = r.nextInt(3)+1;
 		eigenMob.setCurrentExp(eigenMob.getCurrentExp()+i);
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
@@ -344,6 +354,9 @@ public class Fight extends Pane{
 				if (eigenMob.getCurrenthp() ==0) {
 					new Thread(() -> {
 						try {
+							gamepanel.getLgp().makeSound("uDeath.wav");
+							SoundHandler.getInstance().endBackgroundMusic();
+							SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 							TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
 							gamepanel.getAktionbutton().setVisible(true);
 							Platform.runLater(() -> {

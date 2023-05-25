@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import rngGame.buildings.Building;
 import rngGame.entity.*;
 import rngGame.tile.*;
+import rngGame.ui.SoundHandler;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -232,23 +233,15 @@ public class GamePanel extends Pane {
 
 		UndoRedo.getInstance().clearActions();
 
-		if (mp != null) mp.stop();
+		SoundHandler.getInstance().endBackgroundMusic();
+
 
 		getPoints().clear();
 
 		vgp.setMap(path, position);
 
 		if (!"".equals(vgp.getTileManager().getBackgroundMusic())) {
-			mp = new MediaPlayer(new Media(new File("./res/" + vgp.getTileManager().getBackgroundMusic()).toURI().toString()));
-			mp.setAutoPlay(true);
-			mp.setVolume(.2);
-			// mp.setCycleCount(MediaPlayer.INDEFINITE);
-			Updater.getInstance().add((Runnable) () -> {
-				Duration	duration	= mp.getMedia().getDuration();
-				Duration	curr		= mp.getCurrentTime();
-				// System.out.println("meow " + duration + " " + curr);
-				if (duration.subtract(curr).lessThan(Duration.millis(34.2))) mp.seek(Duration.millis(2.5));
-			}, "CheckIfMusicIsDone");
+			SoundHandler.getInstance().setBackgroundMusic(vgp.getTileManager().getBackgroundMusic());
 		} else mp = null;
 
 		FadeTransition ft = new FadeTransition(Duration.millis(500), getVgp().getLoadingScreen());

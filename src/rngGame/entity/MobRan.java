@@ -19,6 +19,7 @@ import javafx.scene.shape.Circle;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
+import rngGame.ui.SoundHandler;
 import rngGame.visual.*;
 
 
@@ -68,6 +69,8 @@ public class MobRan extends NPC {
 	private Fight f;
 	
 	private AnimatedImage intro;
+	
+	
 
 	/**
 	 * Instantiates a new mob ran.
@@ -202,14 +205,14 @@ public class MobRan extends NPC {
 				e.printStackTrace();
 			}
 		});
-		
-		
 		if (!getMiscBoxes().containsKey("fight"))
 			getMiscBoxes().put("fight", new Circle(getReqWidth() / 2, getReqHeight() / 2, 32));
 		if (!getMiscBoxes().containsKey("visible"))
 			getMiscBoxes().put("visible", new Circle(getReqWidth() / 2, getReqHeight() / 2, 528));
 		super.init();
 		getMiscBoxHandler().put("fight", (gpt,self)->{
+			SoundHandler.getInstance().endBackgroundMusic();
+			SoundHandler.getInstance().setBackgroundMusic("music/Fight_v2.wav");
 			gpt.setBlockUserInputs(true);
 			MobRan.this.setFixToScreen(true);
 			MobRan.this.setLayoutX(0);
