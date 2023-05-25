@@ -37,4 +37,8 @@ public class HealthBar extends Pane {
 		c.getGraphicsContext2D().fillRect(44*gp.getScalingFactorX() + 165*gp.getScalingFactorX()*(d.getCurrenthp()/(double)d.getMaxHp()), 18*gp.getScalingFactorY(), gp.getScalingFactorX(), 10*gp.getScalingFactorY());
 		}
 	}
+
+	public void setDemon(Demon d) {
+		this.d = d;
+	}
 }
