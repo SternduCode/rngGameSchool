@@ -38,7 +38,7 @@ public class Fight extends Pane{
 	private HealthBar h, hh;
 
 	/** The stych. */
-	private final Button leaf, majyc, stych, tescht;
+	private final Button leaf, majyc, stych;
 
 	/** The mob. */
 	private final MobRan mob;
@@ -69,7 +69,6 @@ public class Fight extends Pane{
 		leaf					= new Button(gamepanel);
 		majyc					= new Button(gamepanel);
 		stych					= new Button(gamepanel);
-		tescht					= new Button(gamepanel);
 		
 		
 		buttongroup.getChildren().addAll(leaf,majyc,stych);
@@ -183,9 +182,6 @@ public class Fight extends Pane{
 			}).start();
 			sheeesh(eigenMob, demonMob);
 		});
-		
-		tescht.setOnPressed(e -> tescht.init("./res/fight/Stych2.png"));
-		tescht.setOnReleased(e -> tescht.init("./res/npc/rdmDemon.gif"));
 
 
 		scaleF11();
@@ -329,14 +325,13 @@ public class Fight extends Pane{
 		h.setLayoutX(gamepanel.getWidth()/2);
 		hh.setLayoutX(gamepanel.getWidth()/4);
 		getChildren().clear();
-		getChildren().addAll(battlebackgroundvisual, fight, buttongroup, tescht);
+		getChildren().addAll(battlebackgroundvisual, fight, buttongroup);
 		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh, hit);
 		
 
 		leaf.init("./res/fight/Leaf.gif", 10);
 		majyc.init("./res/fight/Majyc.gif", 10);
 		stych.init("./res/fight/Stych.gif", 10);
-		tescht.init("./res/npc/rdmDemon.gif", 20);
 	}
 
 	
