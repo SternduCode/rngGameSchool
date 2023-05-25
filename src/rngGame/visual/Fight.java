@@ -46,6 +46,8 @@ public class Fight extends Pane{
 	private final Group buttongroup = new Group();
 	
 	private boolean f = false;
+
+	private boolean overlayVisible;
 	
 	Random r = new Random();
 	
@@ -70,6 +72,8 @@ public class Fight extends Pane{
 		majyc					= new Button(gamepanel);
 		stych					= new Button(gamepanel);
 		
+		overlayVisible = gamepanel.getOverlay().isVisible();
+		gamepanel.getOverlay().setVisible(false);
 		
 		buttongroup.getChildren().addAll(leaf,majyc,stych);
 		Random r = new Random();
@@ -89,13 +93,14 @@ public class Fight extends Pane{
 				SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 			new Thread(() -> {
 				try {
-					gamepanel.getAktionbutton().setVisible(true);
+					Thread.sleep(2000);
 					Platform.runLater(() -> {
 						removeMobRan();
 					});
+					gamepanel.getAktionbutton().setVisible(true);
+					gamepanel.getOverlay().setVisible(overlayVisible);
 					eigenMob.getDemon().flipTextures();
 					eigenMob.getDemon().reloadTextures();
-					Thread.sleep(2000);
 					gamepanel.setBlockUserInputs(false);
 					FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 					ft2.setFromValue(1);
@@ -265,19 +270,19 @@ public class Fight extends Pane{
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
 		new Thread(() -> {
 			try {
-				TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
-				gamepanel.getAktionbutton().setVisible(true);
+				Thread.sleep(2000);
 				Platform.runLater(() -> {
 					removeMobRan();
 				});
+				gamepanel.getAktionbutton().setVisible(true);
+				gamepanel.getOverlay().setVisible(overlayVisible);
 				eigenMob.getDemon().flipTextures();
 				eigenMob.getDemon().reloadTextures();
-				Thread.sleep(2000);
 				gamepanel.setBlockUserInputs(false);
 				FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 				ft2.setFromValue(1);
 				ft2.setToValue(0);
-				ft.play();
+				ft2.play();
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -348,10 +353,22 @@ public class Fight extends Pane{
 		h.update();
 		hh.update();
 		if(demonMob.getCurrenthp() <= 0 && !f) {demonDead(); f = true;}
-		if(eigenMob.getCurrenthp() <= 0) 
-			{	for(int i=0; i<demonArray.length;i++) {
+		if(eigenMob.getCurrenthp() <= 0) {
+				eigenMob.getDemon().flipTextures();
+				eigenMob.getDemon().reloadTextures();
+				for(int i=0; i<demonArray.length;i++) {
 					if(demonArray[i] != null &&demonArray[i].getCurrenthp() != 0) {
 						eigenMob = demonArray[i];
+						eigenMob.getDemon().setReqWidth(256);
+						eigenMob.getDemon().setReqHeight(256);
+						eigenMob.getDemon().setLayoutX(gamepanel.getWidth()/13);
+						eigenMob.getDemon().setLayoutY(gamepanel.getHeight()/6.4);
+						eigenMob.getDemon().flipTextures();
+						eigenMob.getDemon().reloadTextures();
+						if (!gamepanel.getNpcs().contains(eigenMob.getDemon()))
+							gamepanel.getNpcs().add(eigenMob.getDemon());
+						getChildren().set(4, eigenMob.getDemon());
+						hh.setDemon(eigenMob);
 						break;
 					}
 				}
@@ -362,14 +379,14 @@ public class Fight extends Pane{
 							SoundHandler.getInstance().endBackgroundMusic();
 							if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
 								SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
-							TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
-							gamepanel.getAktionbutton().setVisible(true);
+							Thread.sleep(2000);
 							Platform.runLater(() -> {
 								removeMobRan();
 							});
+							gamepanel.getAktionbutton().setVisible(true);
+							gamepanel.getOverlay().setVisible(overlayVisible);
 							eigenMob.getDemon().flipTextures();
 							eigenMob.getDemon().reloadTextures();
-							Thread.sleep(2000);
 							gamepanel.setBlockUserInputs(false);
 							FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 							ft2.setFromValue(1);

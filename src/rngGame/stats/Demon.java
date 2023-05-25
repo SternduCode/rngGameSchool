@@ -330,13 +330,21 @@ public class Demon {
 			       if(getLvl() % 5 == 1) {
 				setAtk(atk+1);
 			} else if(getLvl() % 5 == 2) {
+				boolean hasMaxHp = currenthp == maxhp;
 				setMaxHp(maxhp+1);
+				if (hasMaxHp) {
+					changeCurrenthp(1);
+				}
 			} else if(getLvl() % 5 == 3) {
 				setRes(res+0.0025);
 			} else if(getLvl() % 5 == 4) {
 				setDgc(dgc+0.0015);
 			} else if(getLvl() % 5 == 0) {
+				boolean hasMaxHp = currenthp == maxhp;
 				setMaxHp(maxhp+1);
+				if (hasMaxHp) {
+					changeCurrenthp(1);
+				}
 			}
 			getMaxExp();
 		}
