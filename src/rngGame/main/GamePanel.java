@@ -244,10 +244,17 @@ public class GamePanel extends Pane {
 			SoundHandler.getInstance().setBackgroundMusic(vgp.getTileManager().getBackgroundMusic());
 		} else mp = null;
 
-		FadeTransition ft = new FadeTransition(Duration.millis(500), getVgp().getLoadingScreen());
-		ft.setFromValue(1);
-		ft.setToValue(0);
-		ft.play();
+		new Thread(() -> {
+			try {
+				Thread.sleep(2000);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			FadeTransition ft = new FadeTransition(Duration.millis(500), getVgp().getLoadingScreen());
+			ft.setFromValue(1);
+			ft.setToValue(0);
+			ft.play();
+		}).start();
 
 	}
 

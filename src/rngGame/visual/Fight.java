@@ -83,7 +83,8 @@ public class Fight extends Pane{
 			leaf.init("./res/fight/Leaf.gif");
 			gamepanel.goIntoLoadingScreen();
 			SoundHandler.getInstance().endBackgroundMusic();
-			SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
+			if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
+				SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 			new Thread(() -> {
 				try {
 					gamepanel.getAktionbutton().setVisible(true);
@@ -255,7 +256,8 @@ public class Fight extends Pane{
 	public void demonDead(){
 		gamepanel.getLgp().makeSound("Enemy Ded.wav");
 		SoundHandler.getInstance().endBackgroundMusic();
-		SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
+		if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
+			SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 		int i = r.nextInt(3)+1;
 		eigenMob.setCurrentExp(eigenMob.getCurrentExp()+i);
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
@@ -356,7 +358,8 @@ public class Fight extends Pane{
 						try {
 							gamepanel.getLgp().makeSound("uDeath.wav");
 							SoundHandler.getInstance().endBackgroundMusic();
-							SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
+							if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
+								SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
 							TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
 							gamepanel.getAktionbutton().setVisible(true);
 							Platform.runLater(() -> {
