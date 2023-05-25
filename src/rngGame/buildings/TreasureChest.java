@@ -4,12 +4,20 @@ import java.util.*;
 
 import com.sterndu.json.*;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
+import javafx.util.Duration;
 import rngGame.main.Input;
+import rngGame.main.Text;
+import rngGame.main.Text.AnimatedText;
 import rngGame.stats.*;
+import rngGame.tile.ImgUtil;
 import rngGame.visual.GamePanel;
 
 
@@ -115,20 +123,50 @@ public class TreasureChest extends Building {
 	 * Give item.
 	 */
 	public void giveItem() {
+		
 		if(ifEndchest) {
+			if(gamepanel.getLgp().getBuildings().stream().filter(b -> b instanceof TreasureChest).map(b -> ((TreasureChest) b)).filter(t -> !(t.isOpen()||t.isIfEndchest())).count() == 0 &&
+				gamepanel.getLgp().getMobRans().size() == 0) {
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 			Item r2 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
-
+			FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
+			ft2.setFromValue(1);
+			ft2.setToValue(0);
+			ft2.play();
+			isOpen = true;
+			TreasureChest.this.setCurrentKey("open");
 			gamepanel.setMap("./res/maps/lavaMap2.json", new double[] {
 					1464.0, 372.0
 			});
+			} else {
+				gamepanel.setBlockUserInputs(true);
+				Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/bubble/SpeakBubbledrai.png");
+				ImageView kek = new ImageView(img);
+				gamepanel.getLgp().getBubble().getChildren().add(kek);
+				AnimatedText at = Text.getInstance().convertText("Cant open this Chest \nKill all Enemies and \nfind all Treasurechests", 64, false, Color.WHITE);
+				at.setOnMouseReleased(e->{
+					gamepanel.setBlockUserInputs(false);
+					gamepanel.getLgp().getBubble().getChildren().clear();
+					gamepanel.getBubbleText().getChildren().clear();
+				});
+				kek.setOnMouseReleased(e->{
+					gamepanel.setBlockUserInputs(false);
+					gamepanel.getLgp().getBubble().getChildren().clear();
+					gamepanel.getBubbleText().getChildren().clear();
+				});
+				gamepanel.getBubbleText().getChildren().add(at);
+				gamepanel.getBubbleText().setLayoutX(gamepanel.getGameWidth() / 2 - at.getImgWidth() / 2);
+				gamepanel.getBubbleText().setLayoutY(gamepanel.getGameHeight() / 1.3 - at.getImgHeight() / 2.0);
+			}
 		} else {
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
+			isOpen = true;
+			TreasureChest.this.setCurrentKey("open");
 		}
 	}
 
@@ -150,8 +188,6 @@ public class TreasureChest extends Building {
 		else getMiscBoxHandler().put("action", (gpt, self) -> {
 			if (!isOpen)
 				gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {
-					isOpen = true;
-					TreasureChest.this.setCurrentKey("open");
 					giveItem();
 				});
 		});
@@ -180,7 +216,13 @@ public class TreasureChest extends Building {
 				common / sum, uncommon / sum, rare / sum, veryrare / sum, epic / sum, legendary / sum, god / sum, voidi / sum, (long) (sum * 100));
 	}
 
+	public boolean isOpen() {
+		return isOpen;
+	}
 
+	public boolean isIfEndchest() {
+		return ifEndchest;
+	}
 
 
 }

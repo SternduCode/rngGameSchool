@@ -1,11 +1,143 @@
 {
 	"npcs" : [
-		
+		{
+			"requestedSize" : [
+				64,
+				64
+			],
+			"textures" : {
+				"default" : "Booky.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1730.00,
+				1113.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Plant",
+			"layer" : [
+				0
+			]
+		},
+		{
+			"requestedSize" : [
+				64,
+				64
+			],
+			"textures" : {
+				"default" : "Booky.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1730.00,
+				1113.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Plant",
+			"layer" : [
+				0
+			]
+		},
+		{
+			"requestedSize" : [
+				192,
+				192
+			],
+			"textures" : {
+				"default" : "Booky.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1730.00,
+				1161.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Fire",
+			"layer" : [
+				0
+			]
+		},
+		{
+			"requestedSize" : [
+				192,
+				192
+			],
+			"textures" : {
+				"default" : "Booky.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1730.00,
+				1161.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Fire",
+			"layer" : [
+				0
+			]
+		}
 	],
 	"buildings" : [
-
+		
 	],
 	"map" : {
+		"playerLayer" : 0,
 		"size" : [
 			10,
 			10
@@ -51,15 +183,11 @@
 			"WasserStrom.png",
 			"SeiteUntenB.png",
 			"SeiteUnten3.png",
-			"WasserFall.png",
-			"WasserMiniEckeRechtsO.png",
-			"WasserMiniEckeLinksU.png",
-			"WasserMiniEckeLinksO.png",
-			"WasserMiniEckeRechtsU.png"
+			"WasserFall.png"
 		],
 		"startingPosition" : [
-			48.0,
-			48.0
+			168.000,
+			168.000
 		],
 		"dir" : "Insel",
 		"matrix" : [
