@@ -81,6 +81,8 @@ public class Fight extends Pane{
 		leaf.setOnPressed(e -> leaf.init("./res/fight/Leaf2.png"));
 		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
+			eigenMob.changeCurrenthp(0);
+			System.out.println("dein vieh ded, renn nicht weg du beta");
 			gamepanel.goIntoLoadingScreen();
 			SoundHandler.getInstance().endBackgroundMusic();
 			if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
