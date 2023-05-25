@@ -1,4 +1,5 @@
 package rngGame.visual;
+import java.awt.image.PixelInterleavedSampleModel;
 import java.util.Random;
 
 import javafx.animation.FadeTransition;
@@ -81,8 +82,13 @@ public class Fight extends Pane{
 		leaf.setOnPressed(e -> leaf.init("./res/fight/Leaf2.png"));
 		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
-			eigenMob.changeCurrenthp(0);
-			System.out.println("dein vieh ded, renn nicht weg du beta");
+			leaf.setDisable(true);
+			if(eigenMob.getCurrenthp() == 1) {
+				eigenMob.changeCurrenthp(-1);
+			} else {
+				eigenMob.changeCurrenthp(-eigenMob.getCurrenthp()+1);
+			}
+			System.out.println("uno HP left");
 			gamepanel.goIntoLoadingScreen();
 			SoundHandler.getInstance().endBackgroundMusic();
 			if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
@@ -137,7 +143,7 @@ public class Fight extends Pane{
 					majyc.setDisable(false);
 					leaf.setDisable(false);
 					stych.setDisable(false);
-					ft.setToY(0);
+					ft.setToY(0); 
 					ib1.setToY(0);
 					ft.play();
 					ib1.play();

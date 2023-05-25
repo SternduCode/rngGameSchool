@@ -10,10 +10,10 @@ import java.awt.image.*;
 public class TextToPng {
 
 	public static void main(String[] args) {
-		Image img = Text.getInstance().convertText("click");
+		Image img = Text.getInstance().convertText("Coming Soon");
 		BufferedImage bi = SwingFXUtils.fromFXImage(img, null);
 		try {
-			ImageIO.write(bi, "png", new File("./pngs/Story.png"));
+			ImageIO.write(bi, "png", new File("./pngs/cs.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

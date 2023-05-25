@@ -76,5 +76,6 @@
 		{ "name":[ "SeiteRechts.png", "SeiteRechts2.png", "SeiteRechts3.png" ] , "direction" : "right" },
 		{ "name":[ "SeiteOben.png", "SeiteOben2.png", "SeiteOben3.png" ], "direction" : "up" },
 		{ "name":[ "SeiteUnten.png", "SeiteUnten2.png", "SeiteUnten3.png" ], "plus": [ "Gehaenge.png" ], "direction" : "down" }
-	]
+	],
+	"BackgroundMusic" : "music/dungeon.wav"
 }

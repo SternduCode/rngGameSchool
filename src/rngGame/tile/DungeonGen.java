@@ -724,7 +724,7 @@ public class DungeonGen {
 				downmaps = new ArrayList<>(),
 				leftmaps = new ArrayList<>(),
 				rightmaps = new ArrayList<>();
-
+ 
 		for (int m = 0; m < mapsTileNum.length; m++) for (Entry<Point2D, Direction> conn : mapsConnectors[m]) switch (conn.getValue()) {
 			case UP -> { if (!upmaps.contains(Map.entry(conn.getKey(), m))) upmaps.add(Map.entry(conn.getKey(), m)); }
 			case DOWN -> { if (!downmaps.contains(Map.entry(conn.getKey(), m))) downmaps.add(Map.entry(conn.getKey(), m)); }
