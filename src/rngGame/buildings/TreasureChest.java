@@ -18,6 +18,7 @@ import rngGame.main.Text;
 import rngGame.main.Text.AnimatedText;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
+import rngGame.ui.SoundHandler;
 import rngGame.visual.GamePanel;
 
 
@@ -127,6 +128,7 @@ public class TreasureChest extends Building {
 		if(ifEndchest) {
 			if(gamepanel.getLgp().getBuildings().stream().filter(b -> b instanceof TreasureChest).map(b -> ((TreasureChest) b)).filter(t -> !(t.isOpen()||t.isIfEndchest())).count() == 0 &&
 				gamepanel.getLgp().getMobRans().size() == 0) {
+				SoundHandler.getInstance().makeSound("chest.wav");
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 			Item r2 = createItem();
@@ -143,6 +145,7 @@ public class TreasureChest extends Building {
 					1464.0, 372.0
 			});
 			} else {
+				SoundHandler.getInstance().makeSound("NotClickable.wav");
 				gamepanel.setBlockUserInputs(true);
 				Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/bubble/SpeakBubbledrai.png");
 				ImageView kek = new ImageView(img);
@@ -163,6 +166,7 @@ public class TreasureChest extends Building {
 				gamepanel.getBubbleText().setLayoutY(gamepanel.getGameHeight() / 1.3 - at.getImgHeight() / 2.0);
 			}
 		} else {
+			SoundHandler.getInstance().makeSound("chest.wav");
 			Item r1 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r1);
 			isOpen = true;
