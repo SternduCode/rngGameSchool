@@ -139,7 +139,7 @@ public class TreasureChest extends Building {
 			ft2.play();
 			isOpen = true;
 			TreasureChest.this.setCurrentKey("open");
-			gamepanel.setMap("./res/maps/lavaMap2.json", new double[] {
+			gamepanel.getLgp().setMap("./res/maps/lavaMap2.json", new double[] {
 					1464.0, 372.0
 			});
 			} else {

@@ -553,11 +553,19 @@ public class DungeonGen {
 		JsonArray position = new JsonArray();
 		joB.put("position", position);
 
-		gp.getTileManager().getStartingPosition();//HIER
+		double[] startPosition = gp.getTileManager().getStartingPosition();
+		long[] sPosition = new long[] { (long)(startPosition[0]/48), (long)(startPosition[1]/48) };
+		Point2D startPoint = new Point2D(sPosition[0], sPosition[1]);
 
 		switch (difficulty) {
 			case HARD: {
-				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				double distance = 0.0;
+				Entry<Integer, Integer>	en = null;
+				while (distance <= 7) {
+					en = availChestSpots.get(r.nextInt(availChestSpots.size()));
+					Point2D spot = new Point2D(en.getKey(), en.getValue());
+					distance = spot.distance(startPoint);
+				}
 				position.clear();
 				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
@@ -565,7 +573,13 @@ public class DungeonGen {
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 			}
 			case MIDDLE: {
-				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				double distance = 0.0;
+				Entry<Integer, Integer>	en = null;
+				while (distance <= 7) {
+					en = availChestSpots.get(r.nextInt(availChestSpots.size()));
+					Point2D spot = new Point2D(en.getKey(), en.getValue());
+					distance = spot.distance(startPoint);
+				}
 				position.clear();
 				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
@@ -573,19 +587,37 @@ public class DungeonGen {
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 			}
 			case EASY: {
-				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				double distance = 0.0;
+				Entry<Integer, Integer>	en = null;
+				while (distance <= 7) {
+					en = availChestSpots.get(r.nextInt(availChestSpots.size()));
+					Point2D spot = new Point2D(en.getKey(), en.getValue());
+					distance = spot.distance(startPoint);
+				}
 				position.clear();
 				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
-				en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				distance = 0.0;
+				en = null;
+				while (distance <= 7) {
+					en = availChestSpots.get(r.nextInt(availChestSpots.size()));
+					Point2D spot = new Point2D(en.getKey(), en.getValue());
+					distance = spot.distance(startPoint);
+				}
 				position.clear();
 				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
-				en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				distance = 0.0;
+				en = null;
+				while (distance <= 7) {
+					en = availChestSpots.get(r.nextInt(availChestSpots.size()));
+					Point2D spot = new Point2D(en.getKey(), en.getValue());
+					distance = spot.distance(startPoint);
+				}
 				position.clear();
 				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
