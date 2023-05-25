@@ -778,6 +778,13 @@ public class TileManager extends Pane {
 	public ObjectProperty<Building> getRequesterB() { return requesterB; }
 
 	/**
+	 * Gets the requester M.
+	 *
+	 * @return the requester M
+	 */
+	public ObjectProperty<MobRan> getRequestorM() { return requestorM; }
+
+	/**
 	 * Gets the requestor for the context menu containing the NPC.
 	 *
 	 * @return the requestor for the context menu containing the NPC

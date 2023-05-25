@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.*;
 import javafx.scene.shape.*;
 import rngGame.buildings.*;
+import rngGame.entity.*;
 import rngGame.visual.GamePanel;
 
 
@@ -507,6 +508,89 @@ public class DungeonGen {
 					availChestSpots.remove(en);
 				}
 				break;
+		}
+		JsonObject joB = new JsonObject();
+		JsonArray requestedSize = new JsonArray();
+		joB.put("requestedSize", requestedSize);
+		requestedSize.add(new IntegerValue(64));
+		requestedSize.add(new IntegerValue(64));
+		JsonObject textures = new JsonObject();
+		joB.put("textures", textures);
+		textures.put("default", new StringValue("rdmDemon.gif"));
+		JsonArray extraData = new JsonArray();
+		joB.put("extraData", extraData);
+		extraData.add(new JsonObject());
+		JsonArray background = new JsonArray();
+		joB.put("background", background);
+		background.add(new BoolValue(false));
+		JsonArray fps = new JsonArray();
+		joB.put("fps", fps);
+		fps.add(new DoubleValue(10.000));
+		joB.put("type", new StringValue("MobRan"));
+		JsonArray layer = new JsonArray();
+		joB.put("layer", layer);
+		layer.add(new IntegerValue(0));
+		JsonArray originalSize = new JsonArray();
+		joB.put("originalSize", originalSize);
+		originalSize.add(new IntegerValue(64));
+		originalSize.add(new IntegerValue(64));
+		JsonArray miscBoxes = new JsonArray();
+		joB.put("miscBoxes", miscBoxes);
+		JsonObject box1 = new JsonObject();
+		box1.put("name", new StringValue("visible"));
+		box1.put("x", new DoubleValue(32.0000));
+		box1.put("y", new DoubleValue(32.0000));
+		box1.put("type", new StringValue("circle"));
+		box1.put("radius", new IntegerValue(396));
+		miscBoxes.add(box1);
+		JsonObject box2 = new JsonObject();
+		box2.put("name", new StringValue("fight"));
+		box2.put("x", new DoubleValue(32.0000));
+		box2.put("y", new DoubleValue(32.0000));
+		box2.put("type", new StringValue("circle"));
+		box2.put("radius", new IntegerValue(32));
+		miscBoxes.add(box2);
+		JsonArray position = new JsonArray();
+		joB.put("position", position);
+
+		switch (difficulty) {
+			case HARD: {
+				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				position.clear();
+				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				new MobRan(joB, gp, gp.getLgp().getMobRans(),
+						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
+				//TODO ffs
+			}
+			case MIDDLE: {
+				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				position.clear();
+				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				new MobRan(joB, gp, gp.getLgp().getMobRans(),
+						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
+			}
+			case EASY: {
+				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				position.clear();
+				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				new MobRan(joB, gp, gp.getLgp().getMobRans(),
+						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
+				en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				position.clear();
+				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				new MobRan(joB, gp, gp.getLgp().getMobRans(),
+						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
+				en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
+				position.clear();
+				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				new MobRan(joB, gp, gp.getLgp().getMobRans(),
+						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
+			}
 		}
 	}
 

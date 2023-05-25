@@ -89,6 +89,8 @@ public class Fight extends Pane{
 					Platform.runLater(() -> {
 						removeMobRan();
 					});
+					eigenMob.getDemon().flipTextures();
+					eigenMob.getDemon().reloadTextures();
 					Thread.sleep(2000);
 					gamepanel.setBlockUserInputs(false);
 					FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
@@ -255,6 +257,8 @@ public class Fight extends Pane{
 				Platform.runLater(() -> {
 					removeMobRan();
 				});
+				eigenMob.getDemon().flipTextures();
+				eigenMob.getDemon().reloadTextures();
 				Thread.sleep(2000);
 				gamepanel.setBlockUserInputs(false);
 				FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
@@ -347,6 +351,8 @@ public class Fight extends Pane{
 							Platform.runLater(() -> {
 								removeMobRan();
 							});
+							eigenMob.getDemon().flipTextures();
+							eigenMob.getDemon().reloadTextures();
 							Thread.sleep(2000);
 							gamepanel.setBlockUserInputs(false);
 							FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
