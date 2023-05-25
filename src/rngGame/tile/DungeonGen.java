@@ -553,6 +553,8 @@ public class DungeonGen {
 		JsonArray position = new JsonArray();
 		joB.put("position", position);
 
+		gp.getTileManager().getStartingPosition();//HIER
+
 		switch (difficulty) {
 			case HARD: {
 				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));
@@ -561,7 +563,6 @@ public class DungeonGen {
 				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
-				//TODO ffs
 			}
 			case MIDDLE: {
 				Entry<Integer, Integer>	en	= availChestSpots.get(r.nextInt(availChestSpots.size()));

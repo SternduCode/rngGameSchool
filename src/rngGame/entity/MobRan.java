@@ -358,7 +358,7 @@ public class MobRan extends NPC {
 	public void update(long milis) {
 		super.update(milis);// TODO make speed like with player
 		if(f!=null) f.update();
-		else {
+		else if (!gamepanel.isBlockUserInputs()) {
 			if (diff[0] > 0 || diff[1] > 0)
 				step++;
 			x	+= diff[0] / steps;
@@ -373,55 +373,56 @@ public class MobRan extends NPC {
 			}
 		}
 	}
- public static Demon makeMob(GamePanel gamepanel, Element wahl , String mobName) {
-	 try {
-		 String pnG;
-		 if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
-				pnG = "./res/demons/"+wahl+"/"+mobName+".png";
-			else
-				pnG = "./res/demons/"+wahl+"/"+mobName+".gif";	
-		 
-		 Path p2	= new File(pnG).toPath();
-			Image img = new Image(new FileInputStream(p2.toFile()));
 
-			JsonArray reqSize = new JsonArray();
-			JsonArray position = new JsonArray();
-			JsonObject joB = new JsonObject();
-			reqSize.add(new IntegerValue(64));
-			reqSize.add(new IntegerValue(64));
-			joB.put("requestedSize", reqSize);
-			JsonObject textures = new JsonObject();
-			if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
-				textures.put("default", new StringValue(mobName + ".png"));
-			else
-				textures.put("default", new StringValue(mobName + ".gif"));
-			joB.put("textures", textures);
-			JsonObject buildingData = new JsonObject();
-			joB.put("buildingData", buildingData);
-			joB.put("type", new StringValue("Building"));
-			joB.put("dir", new StringValue(wahl.toString()));
-			position.add(new DoubleValue(1730));
-			position.add(new DoubleValue(1113));
+	 public static Demon makeMob(GamePanel gamepanel, Element wahl , String mobName) {
+		 try {
+			 String pnG;
+			 if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
+					pnG = "./res/demons/"+wahl+"/"+mobName+".png";
+				else
+					pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
 
-			joB.put("position", position);
-			JsonArray originalSize = new JsonArray();
-			originalSize.add(new DoubleValue(img.getHeight()));
-			originalSize.add(new DoubleValue(img.getHeight()));
-			joB.put("originalSize", originalSize);
+			 Path p2	= new File(pnG).toPath();
+				Image img = new Image(new FileInputStream(p2.toFile()));
 
-			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
-					gamepanel.getTileManager().getRequestorN());
-			gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
-			mnpc.setFixToScreen(true);
-			gamepanel.getLgp().getNpcs().add(mnpc);
+				JsonArray reqSize = new JsonArray();
+				JsonArray position = new JsonArray();
+				JsonObject joB = new JsonObject();
+				reqSize.add(new IntegerValue(64));
+				reqSize.add(new IntegerValue(64));
+				joB.put("requestedSize", reqSize);
+				JsonObject textures = new JsonObject();
+				if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
+					textures.put("default", new StringValue(mobName + ".png"));
+				else
+					textures.put("default", new StringValue(mobName + ".gif"));
+				joB.put("textures", textures);
+				JsonObject buildingData = new JsonObject();
+				joB.put("buildingData", buildingData);
+				joB.put("type", new StringValue("Building"));
+				joB.put("dir", new StringValue(wahl.toString()));
+				position.add(new DoubleValue(1730));
+				position.add(new DoubleValue(1113));
 
-			return new Demon(wahl, mobName, mnpc);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+				joB.put("position", position);
+				JsonArray originalSize = new JsonArray();
+				originalSize.add(new DoubleValue(img.getHeight()));
+				originalSize.add(new DoubleValue(img.getHeight()));
+				joB.put("originalSize", originalSize);
 
- }
+				MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
+						gamepanel.getTileManager().getRequestorN());
+				gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
+				mnpc.setFixToScreen(true);
+				gamepanel.getLgp().getNpcs().add(mnpc);
+
+				return new Demon(wahl, mobName, mnpc);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return null;
+			}
+
+	 }
 
 
 

@@ -365,8 +365,8 @@ public class Fight extends Pane{
 						eigenMob.getDemon().setLayoutY(gamepanel.getHeight()/6.4);
 						eigenMob.getDemon().flipTextures();
 						eigenMob.getDemon().reloadTextures();
-						if (!gamepanel.getNpcs().contains(eigenMob.getDemon()))
-							gamepanel.getNpcs().add(eigenMob.getDemon());
+						if (!gamepanel.getLgp().getNpcs().contains(eigenMob.getDemon()))
+							gamepanel.getLgp().getNpcs().add(eigenMob.getDemon());
 						getChildren().set(4, eigenMob.getDemon());
 						hh.setDemon(eigenMob);
 						break;
