@@ -1161,8 +1161,12 @@ public class DungeonGen {
 				e.printStackTrace();
 			}
 
+		JsonArray startingPosition = (JsonArray) ((JsonObject) mainMap.get("map")).get("startingPosition");
+		long[] startPosition = new long[] {
+			((NumberValue) startingPosition.get(0)).getValue().longValue(), ((NumberValue) startingPosition.get(1)).getValue().longValue()
+		}; 
 		gp.getTileManager().setStartingPosition(new double[] {
-				(x - xOffset + .5) * 48, (y - yOffset + .5) * 48
+				(x - xOffset) * 48 + startPosition[0], (y - yOffset) * 48 + startPosition[1]
 		});
 
 		Map<Direction, List<Tile>>	replacements	= new HashMap<>();
