@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import javafx.scene.layout.Pane;
 
 import rngGame.ui.Button;
+import rngGame.ui.SoundHandler;
 import rngGame.visual.GamePanel;
 
 // TODO: Auto-generated Javadoc
@@ -48,6 +49,8 @@ public class AktionButton extends Pane {
 			if (ifc) {
 				aktionbutton.init("./res/gui/always/InteractionGedrueckt.png");
 				if (handler != null) handler.accept(gamepanel);
+			} else {
+				SoundHandler.getInstance().makeSound("NotClickable.wav");
 			}
 		});
 		aktionbutton.setOnReleased(me -> {

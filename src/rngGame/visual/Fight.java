@@ -378,7 +378,8 @@ public class Fight extends Pane{
 						break;
 					}
 				}
-				if (eigenMob.getCurrenthp() ==0) {
+				if (eigenMob.getCurrenthp() ==0 && !f) {
+					f = true;
 					new Thread(() -> {
 						try {
 							gamepanel.getLgp().makeSound("uDeath.wav");
