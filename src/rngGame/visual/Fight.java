@@ -372,7 +372,7 @@ public class Fight extends Pane{
 							FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
 							ft2.setFromValue(1);
 							ft2.setToValue(0);
-							ft.play();
+							ft2.play();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}

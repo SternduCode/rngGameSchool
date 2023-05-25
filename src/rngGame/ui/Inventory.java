@@ -489,7 +489,7 @@ public class Inventory extends Pane {
 								(int) (itemhpText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
 								(int) (itemhpText.getHeight() * gamepanel.getVgp().getScalingFactorY()));
 
-						Image itemRarityText = Text.getInstance().convertText("Rarity:" + pp.getRarity(), 48);
+						Image itemRarityText = Text.getInstance().convertText("Rarity:" + (pp.getRarity()+"").replace("_", " "), 48);
 						itemRarityText = ImgUtil.resizeImage(
 								itemRarityText, (int) itemRarityText.getWidth(), (int) itemRarityText.getHeight(),
 								(int) (itemRarityText.getWidth() * gamepanel.getVgp().getScalingFactorX()),
