@@ -74,7 +74,7 @@ public class Fight extends Pane{
 		
 		buttongroup.getChildren().addAll(leaf,majyc,stych);
 		Random r = new Random();
-		int gg = 0;
+		gamepanel.getLgp().makeSound("Fight_v2.wav");
 		TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
 		TranslateTransition ib1 = new TranslateTransition(Duration.millis(150),buttongroup);
 		
@@ -107,6 +107,7 @@ public class Fight extends Pane{
 		stych.setOnReleased(e -> {
 			hit.init("./res/fight/stichA.gif");
 			hit.setVisible(true);
+			gamepanel.getLgp().makeSound("Enemy Hit.wav");
 			stych.init("./res/fight/Stych.gif");
 			System.out.println(demonMob.getCurrenthp());
 			demonMob.changeCurrenthp(-eigenMob.getAtk());
@@ -144,6 +145,7 @@ public class Fight extends Pane{
 		majyc.setOnReleased(e->{
 			hit.init("./res/fight/MagicA.gif");
 			hit.setVisible(true);
+			gamepanel.getLgp().makeSound("Enemy Hit2.wav");
 			majyc.init("./res/fight/Majyc.gif");
 			majyc.setDisable(true);
 			leaf.setDisable(true);
@@ -247,6 +249,7 @@ public class Fight extends Pane{
 		}
 	}
 	public void demonDead(){
+		gamepanel.getLgp().makeSound("Enemy Ded.wav");
 		int i = r.nextInt(3)+1;
 		eigenMob.setCurrentExp(eigenMob.getCurrentExp()+i);
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
