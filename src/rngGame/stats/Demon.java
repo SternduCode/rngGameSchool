@@ -247,7 +247,7 @@ public class Demon {
 	 * @param atk the new atk
 	 */
 	public void setAtk(int atk) {
-		this.atk = element.getAtk() + atk;
+		this.atk = atk;
 	}
 
 
@@ -271,7 +271,7 @@ public class Demon {
 	 * @param dgc the new dgc
 	 */
 	public void setDgc(double dgc) {
-		this.dgc = element.getDgc()+dgc;
+		this.dgc = dgc;
 	}
 
 
@@ -300,7 +300,7 @@ public class Demon {
 	 * @param hp the new hp
 	 */
 	public void setMaxHp(int hp) {
-		maxhp = element.getHp() + hp;
+		maxhp = hp;
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class Demon {
 	 * @param res the new res
 	 */
 	public void setRes(double res) {
-		this.res = element.getRes() + res;
+		this.res = res;
 	}
 
 	/**
