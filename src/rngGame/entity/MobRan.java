@@ -298,8 +298,8 @@ public class MobRan extends NPC {
 					out.accept(new PathElement(pe.x(), pe.y() + 1, pe.distance() + 1));
 			}).sorted((a, b) -> {
 				if (a.x() == b.x() && a.y() == b.y()) return a.distance() < b.distance() ? -1 : 1;
-				if (a.x() != b.x()) return a.x() < b.x() ? -1 : 1;
-				return a.y() < b.y() ? -1 : 1;
+				if (a.x() != b.x()) return a.x() <= b.x() ? -1 : 1;
+				return a.y() <= b.y() ? -1 : 1;
 			}).distinct();
 
 			List<PathElement> pels = stream.collect(Collectors.toList());
