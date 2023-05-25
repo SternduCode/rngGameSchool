@@ -179,55 +179,7 @@
 			"layer" : [
 				0
 			]
-		},
-		{
-            "requestedSize" : [
-                64,
-                64
-            ],
-            "textures" : {
-                "default" : "rdmDemon.gif"
-            },
-            "extraData" : [
-                {
-
-                }
-            ],
-            "background" : [
-                false
-            ],
-            "fps" : [
-                10.0000
-            ],
-            "position" : [
-                1608.00,
-                1104.00
-            ],
-            "type" : "MobRan",
-            "originalSize" : [
-                64,
-                64
-            ],
-            "miscBoxes" : [
-                {
-                    "name" : "visible",
-                    "x" : 32.0000,
-                    "y" : 32.0000,
-                    "type" : "circle",
-                    "radius" : 528
-                },
-                {
-                    "name" : "fight",
-                    "x" : 32.0000,
-                    "y" : 32.0000,
-                    "type" : "circle",
-                    "radius" : 32
-                }
-            ],
-            "layer" : [
-                0
-            ]
-        }
+		}
 	],
 	"buildings" : [
 		{
