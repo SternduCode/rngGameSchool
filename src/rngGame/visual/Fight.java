@@ -6,10 +6,12 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.entity.MobRan;
+import rngGame.main.Text;
 import rngGame.stats.Demon;
 import rngGame.stats.Element;
 import rngGame.tile.ImgUtil;
@@ -22,7 +24,8 @@ import rngGame.ui.*;
 public class Fight extends Pane{
 
 	/** The battlebackgroundvisual. */
-	private final ImageView fight, battlebackgroundvisual;
+	private final ImageView fight, battlebackgroundvisual, eName, dName, eIcon, dIcon;
+	
 	
 	private AnimatedImage hit;
 
@@ -50,7 +53,7 @@ public class Fight extends Pane{
 
 	private boolean overlayVisible;
 	
-	Random r = new Random();
+	
 	
 	
 
@@ -63,6 +66,10 @@ public class Fight extends Pane{
 	public Fight(GamePanel gamepanel, MobRan mob) {
 		this.mob				= mob;
 		fight					= new ImageView();
+		eName 					= new ImageView();
+		dName 					= new ImageView();
+		eIcon					= new ImageView();
+		dIcon					= new ImageView();
 		hit 					= new AnimatedImage(gamepanel);
 		hit.setLayoutY(-10);
 		hit.setVisible(false);
@@ -82,7 +89,6 @@ public class Fight extends Pane{
 		TranslateTransition ft = new TranslateTransition(Duration.millis(150), fight);
 		TranslateTransition ib1 = new TranslateTransition(Duration.millis(150),buttongroup);
 		
-
 		leaf.setOnPressed(e -> leaf.init("./res/fight/Leaf2.png"));
 		leaf.setOnReleased(e -> {
 			leaf.init("./res/fight/Leaf.gif");
@@ -271,6 +277,7 @@ public class Fight extends Pane{
 		SoundHandler.getInstance().endBackgroundMusic();
 		if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
 			SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
+		Random r = new Random();
 		int i = r.nextInt(3)+1;
 		eigenMob.setCurrentExp(eigenMob.getCurrentExp()+i);
 		gamepanel.getGamemenu().getInventory().addDemon2current(demonMob);
@@ -294,27 +301,6 @@ public class Fight extends Pane{
 			}
 		}).start();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * Scale F 11.
@@ -335,13 +321,15 @@ public class Fight extends Pane{
 		eigenMob.getDemon().setLayoutY(gamepanel.getHeight()/6.4);
 		eigenMob.getDemon().flipTextures();
 		eigenMob.getDemon().reloadTextures();
+		
 		h = new HealthBar(gamepanel, demonMob);
 		hh = new HealthBar(gamepanel, eigenMob);
 		h.setLayoutX(gamepanel.getWidth()/2);
 		hh.setLayoutX(gamepanel.getWidth()/4);
 		getChildren().clear();
 		getChildren().addAll(battlebackgroundvisual, fight, buttongroup);
-		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh, hit);
+		getChildren().addAll(demonMob.getDemon(), eigenMob.getDemon(), h, hh, eName, dName,	eIcon, dIcon ,hit);
+		resetName();
 		
 
 		leaf.init("./res/fight/Leaf.gif", 10);
@@ -371,6 +359,7 @@ public class Fight extends Pane{
 						eigenMob.getDemon().setLayoutY(gamepanel.getHeight()/6.4);
 						eigenMob.getDemon().flipTextures();
 						eigenMob.getDemon().reloadTextures();
+						resetName();
 						if (!gamepanel.getLgp().getNpcs().contains(eigenMob.getDemon()))
 							gamepanel.getLgp().getNpcs().add(eigenMob.getDemon());
 						getChildren().set(4, eigenMob.getDemon());
@@ -406,5 +395,26 @@ public class Fight extends Pane{
 				}
 			}
 	}
-
+public void resetName() {
+	Image eigenmobname = Text.getInstance().convertText(""+eigenMob.getMobName(), 48);
+	eigenmobname = ImgUtil.resizeImage(
+			eigenmobname, (int) eigenmobname.getWidth(), (int) eigenmobname.getHeight(),
+			(int) (eigenmobname.getWidth() * gamepanel.getScalingFactorX()),
+			(int) (eigenmobname.getHeight() * gamepanel.getScalingFactorY()));
+	eName.setImage(eigenmobname);
+	eName.setLayoutX(gamepanel.getWidth()/4+44);
+	eName.setLayoutY(20);
+	eIcon.setImage(gamepanel.getGamemenu().getInventory().showElementIcon(eigenMob.getElement()));
+	
+	Image gegenmobname = Text.getInstance().convertText(""+demonMob.getMobName(), 48);
+	gegenmobname = ImgUtil.resizeImage(
+			gegenmobname, (int) gegenmobname.getWidth(), (int) gegenmobname.getHeight(),
+			(int) (gegenmobname.getWidth() * gamepanel.getScalingFactorX()),
+			(int) (gegenmobname.getHeight() * gamepanel.getScalingFactorY()));
+	dName.setImage(gegenmobname);
+	dName.setLayoutX(gamepanel.getWidth()/2+210-gegenmobname.getWidth());
+	dName.setLayoutY(20);
+	dIcon.setImage(gamepanel.getGamemenu().getInventory().showElementIcon(demonMob.getElement()));
+	dIcon.setLayoutX(gamepanel.getWidth()-96);
+}
 }

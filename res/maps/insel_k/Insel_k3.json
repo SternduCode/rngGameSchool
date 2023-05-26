@@ -1,6 +1,38 @@
 {
 	"npcs" : [
-		
+		{
+			"requestedSize" : [
+				192,
+				192
+			],
+			"textures" : {
+				"default" : "Booky.png"
+			},
+			"extraData" : [
+				{
+					
+				}
+			],
+			"background" : [
+				false
+			],
+			"fps" : [
+				7.00000
+			],
+			"position" : [
+				1730.00,
+				1113.00
+			],
+			"type" : "MonsterNPC",
+			"originalSize" : [
+				64,
+				64
+			],
+			"dir" : "Fire",
+			"layer" : [
+				0
+			]
+		}
 	],
 	"buildings" : [
 		
@@ -30,6 +62,7 @@
 			"SeiteLinksBS.png",
 			"SeiteUnten3.png",
 			"SeiteUnten2.png",
+			"SeiteUntenBS.png",
 			"EckeRechtsUnten.png"
 		],
 		"background" : "backgrounds/dungeonhintergrund1.png",
@@ -47,8 +80,8 @@
 			"15 16 17 17 17 17 16",
 			"0 8 6 9 6 6 18",
 			"0 19 9 6 9 9 7",
-			"0 12 20 21 21 20 22",
-			"0 15 15 15 15 15 15"
+			"0 12 20 21 21 22 23",
+			"0 15 15 15 15 0 15"
 		]
 	}
 }

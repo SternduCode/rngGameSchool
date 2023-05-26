@@ -123,9 +123,6 @@ public class Inventory extends Pane {
 	public Inventory(GamePanel gamepanel, TabMenu tabm) throws FileNotFoundException {
 		this.gamepanel	= gamepanel;
 		this.tabm		= tabm;
-		Input.getInstance().setKeyHandler("Demons", mod -> {
-			init();
-		}, KeyCode.M, false);
 		init();
 	}
 
@@ -364,8 +361,6 @@ public class Inventory extends Pane {
 		case 2 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Water, "Booky");}
 		case 3 -> {m1 = MobRan.makeMob(gamepanel.getVgp(), Element.Plant, "Booky");}
 		}
-		System.out.println(zuz);
-		m1.setCurrentExp(m1.getMaxExp()-1);
 		addDemon2current(m1);
 		
 		Harnish h1 = new Harnish(Rarity.COMMON);

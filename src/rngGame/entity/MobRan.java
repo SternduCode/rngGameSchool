@@ -214,7 +214,7 @@ public class MobRan extends NPC {
 			SoundHandler.getInstance().endBackgroundMusic();
 			SoundHandler.getInstance().setBackgroundMusic("music/Fight_v2.wav");
 			gpt.setBlockUserInputs(true);
-			MobRan.this.setVisible(false);
+			MobRan.this.iv.setVisible(false);
 			MobRan.this.setFixToScreen(true);
 			MobRan.this.setLayoutX(0);
 			MobRan.this.setLayoutY(0);
