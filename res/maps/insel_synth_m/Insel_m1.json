@@ -1,0 +1,52 @@
+{
+	"npcs" : [
+		
+	],
+	"buildings" : [
+		
+	],
+	"map" : {
+		"textures" : [
+			"Water.png",
+			"SandObenL.gif",
+			"SandOben.gif",
+			"BruckeUnten.gif",
+			"SandObenR.gif",
+			"SandObenLC.gif",
+			"Sand.png",
+			"SandR.gif",
+			"BruckeRechts.gif",
+			"SandUntenL.gif",
+			"SandUntenLC.gif",
+			"SandUntenRC.gif",
+			"SandUntenR.gif",
+			"SandUntenL2.gif",
+			"SandL.gif",
+			"SandUntenR2.gif",
+			"SandObenRC.gif",
+			"BruckeLinks.gif",
+			"SandUnten.gif",
+			"BruckeOben.gif",
+			"SandUnten2.gif"
+		],
+		"background" : "backgrounds/dungeonhintergrund1.png",
+		"startingPosition" : [
+			48,
+			48
+		],
+		"dir" : "Insel",
+		"matrix" : [
+			"0 0 0 1 2 2 3 2 2 4 0 ",
+			"0 0 1 5 6 6 6 6 6 7 0 ",
+			"0 0 8 6 6 6 6 6 6 7 0 ",
+			"0 0 9 10 6 6 6 6 11 12 0 ",
+			"0 0 13 14 6 6 6 6 7 15 0 ",
+			"1 2 2 5 6 6 6 6 16 4 0 ",
+			"14 6 6 6 6 6 6 6 6 16 4 ",
+			"14 6 6 6 6 6 6 6 6 6 17 ",
+			"9 10 6 6 11 18 18 19 18 18 12 ",
+			"13 9 18 18 12 20 20 20 20 20 15 ",
+			"0 0 20 20 15 0 0 0 0 0 0 "
+		]
+	}
+}
