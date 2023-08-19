@@ -129,7 +129,7 @@ public class MobRan extends NPC {
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		//		mobName = "May";
-		//		wahl = Element.Void;
+		//		wahl = Element.Void;		
 		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
 		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
@@ -138,7 +138,7 @@ public class MobRan extends NPC {
 			r = gen.nextInt(200)+1;
 			if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster;
 		}
-
+		
 
 		
 
