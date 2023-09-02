@@ -757,7 +757,7 @@ public class DungeonGen {
 				downmaps = new ArrayList<>(),
 				leftmaps = new ArrayList<>(),
 				rightmaps = new ArrayList<>();
- 
+
 		for (int m = 0; m < mapsTileNum.length; m++) for (Entry<Point2D, Direction> conn : mapsConnectors[m]) switch (conn.getValue()) {
 			case UP -> { if (!upmaps.contains(Map.entry(conn.getKey(), m))) upmaps.add(Map.entry(conn.getKey(), m)); }
 			case DOWN -> { if (!downmaps.contains(Map.entry(conn.getKey(), m))) downmaps.add(Map.entry(conn.getKey(), m)); }
@@ -1156,14 +1156,14 @@ public class DungeonGen {
 		});
 
 		gp.getTileManager().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(),
-				"./res/insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(), gp));
+				"./res/Insel/" + ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue(), gp));
 		gp.getTileManager().getTiles().add(new Tile( ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(),
-				"./res/insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(), gp));
+				"./res/Insel/" + ((StringValue) ((JsonArray) connections.get(1).get("name")).get(0)).getValue(), gp));
 		String[] sp = ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue().split("[.]");
-		if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+		if (new File("./res/collisions/Insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 		+ ".collisionbox").exists())
 			try {
-				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/Insel/"
 						+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 						+ ".collisionbox"), "rws");
 				raf.seek(0l);
@@ -1177,10 +1177,10 @@ public class DungeonGen {
 				e.printStackTrace();
 			}
 		sp = ((StringValue) ((JsonArray) connections.get(0).get("name")).get(0)).getValue().split("[.]");
-		if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+		if (new File("./res/collisions/Insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 		+ ".collisionbox").exists())
 			try {
-				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+				RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/Insel/"
 						+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 						+ ".collisionbox"), "rws");
 				raf.seek(0l);
@@ -1197,7 +1197,7 @@ public class DungeonGen {
 		JsonArray startingPosition = (JsonArray) ((JsonObject) mainMap.get("map")).get("startingPosition");
 		long[] startPosition = new long[] {
 			((NumberValue) startingPosition.get(0)).getValue().longValue(), ((NumberValue) startingPosition.get(1)).getValue().longValue()
-		}; 
+		};
 		gp.getTileManager().setStartingPosition(new double[] {
 				(x - xOffset) * 48 + startPosition[0], (y - yOffset) * 48 + startPosition[1]
 		});
@@ -1209,15 +1209,15 @@ public class DungeonGen {
 			Direction	dir		= Direction.valueOf( ((StringValue) replacement.get("direction")).getValue().toUpperCase());
 			List<Tile>	tiles	= new ArrayList<>();
 			for (Object tileName : (JsonArray) replacement.get("name")) {
-				Tile tile = new Tile( ((StringValue) tileName).getValue(), "./res/insel/" + ((StringValue) tileName).getValue(),
+				Tile tile = new Tile( ((StringValue) tileName).getValue(), "./res/Insel/" + ((StringValue) tileName).getValue(),
 						gp);
 				tiles.add(tile);
 				gp.getTileManager().getTiles().add(tile);
 				sp = ((StringValue) tileName).getValue().split("[.]");
-				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				if (new File("./res/collisions/Insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
 					try {
-						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/Insel/"
 								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 								+ ".collisionbox"), "rws");
 						raf.seek(0l);
@@ -1232,15 +1232,15 @@ public class DungeonGen {
 			}
 			replacements.put(dir, tiles);
 			if (replacement.containsKey("plus")) for (Object tileName : (JsonArray) replacement.get("plus")) {
-				Tile tile = new Tile( ((StringValue) tileName).getValue(), "./res/insel/" + ((StringValue) tileName).getValue(),
+				Tile tile = new Tile( ((StringValue) tileName).getValue(), "./res/Insel/" + ((StringValue) tileName).getValue(),
 						gp);
 				plus.add(tile);
 				gp.getTileManager().getTiles().add(tile);
 				sp = ((StringValue) tileName).getValue().split("[.]");
-				if (new File("./res/collisions/insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
+				if (new File("./res/collisions/Insel/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
 				+ ".collisionbox").exists())
 					try {
-						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/insel/"
+						RandomAccessFile raf = new RandomAccessFile(new File("./res/collisions/Insel/"
 								+ String.join(".", Arrays.copyOf(sp, sp.length - 1))
 								+ ".collisionbox"), "rws");
 						raf.seek(0l);

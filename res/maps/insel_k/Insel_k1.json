@@ -1,41 +1,9 @@
 {
 	"npcs" : [
-		{
-			"requestedSize" : [
-				192,
-				192
-			],
-			"textures" : {
-				"default" : "Booky.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1730.00,
-				1113.00
-			],
-			"type" : "MonsterNPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"dir" : "Fire",
-			"layer" : [
-				0
-			]
-		}
+
 	],
 	"buildings" : [
-		
+
 	],
 	"map" : {
 		"playerLayer" : 0,

@@ -67,10 +67,10 @@ public class MobRan extends NPC {
 
 	/** The f. */
 	private Fight f;
-	
+
 	private AnimatedImage intro;
-	
-	
+
+
 
 	/**
 	 * Instantiates a new mob ran.
@@ -129,7 +129,7 @@ public class MobRan extends NPC {
 		int mr = gen.nextInt(mobs.length);
 		mobName = mobs[mr];
 		//		mobName = "May";
-		//		wahl = Element.Void;		
+		//		wahl = Element.Void;
 		//The making of "NaberiusDev" and "CultistKing" very hard to get #Nebl
 		if ("Nobarius".equals(mobName)) {
 			r = gen.nextInt(10)+1;
@@ -138,9 +138,9 @@ public class MobRan extends NPC {
 			r = gen.nextInt(200)+1;
 			if(r == 13) mobName = "CultistKing"; wahl = Element.DimensionMaster;
 		}
-		
 
-		
+
+
 
 		switch (wahl) {
 			case Fire -> fire++;
@@ -224,9 +224,9 @@ public class MobRan extends NPC {
 			intro = new AnimatedImage("./res/gui/BattleIntro.gif",gamepanel,10);
 			f = new Fight(gamepanel, MobRan.this);
 			getChildren().add(intro);
-			thread.start();	
-			
-			
+			thread.start();
+
+
 
 		});
 		getMiscBoxHandler().put("visible", (gpt,self)->{
@@ -376,56 +376,53 @@ public class MobRan extends NPC {
 	}
 
 	 public static Demon makeMob(GamePanel gamepanel, Element wahl , String mobName) {
-		 try {
-			 String pnG;
-			 if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
-					pnG = "./res/demons/"+wahl+"/"+mobName+".png";
-				else
-					pnG = "./res/demons/"+wahl+"/"+mobName+".gif";
+		try {
+			String pnG;
+			if (new File("./res/demons/"+wahl.toString().toLowerCase()+"/"+mobName+".png").exists())
+				pnG = "./res/demons/"+wahl.toString().toLowerCase()+"/"+mobName+".png";
+			else
+				pnG = "./res/demons/"+wahl.toString().toLowerCase()+"/"+mobName+".gif";
 
-			 Path p2	= new File(pnG).toPath();
-				Image img = new Image(new FileInputStream(p2.toFile()));
+			Path p2	= new File(pnG).toPath();
+			Image img = new Image(new FileInputStream(p2.toFile()));
 
-				JsonArray reqSize = new JsonArray();
-				JsonArray position = new JsonArray();
-				JsonObject joB = new JsonObject();
-				reqSize.add(new IntegerValue(64));
-				reqSize.add(new IntegerValue(64));
-				joB.put("requestedSize", reqSize);
-				JsonObject textures = new JsonObject();
-				if (new File("./res/demons/"+wahl+"/"+mobName+".png").exists())
-					textures.put("default", new StringValue(mobName + ".png"));
-				else
-					textures.put("default", new StringValue(mobName + ".gif"));
-				joB.put("textures", textures);
-				JsonObject buildingData = new JsonObject();
-				joB.put("buildingData", buildingData);
-				joB.put("type", new StringValue("Building"));
-				joB.put("dir", new StringValue(wahl.toString()));
-				position.add(new DoubleValue(1730));
-				position.add(new DoubleValue(1113));
+			JsonArray reqSize = new JsonArray();
+			JsonArray position = new JsonArray();
+			JsonObject joB = new JsonObject();
+			reqSize.add(new IntegerValue(64));
+			reqSize.add(new IntegerValue(64));
+			joB.put("requestedSize", reqSize);
+			JsonObject textures = new JsonObject();
+			if (new File("./res/demons/"+wahl.toString().toLowerCase()+"/"+mobName+".png").exists())
+				textures.put("default", new StringValue(mobName + ".png"));
+			else
+				textures.put("default", new StringValue(mobName + ".gif"));
+			joB.put("textures", textures);
+			JsonObject buildingData = new JsonObject();
+			joB.put("buildingData", buildingData);
+			joB.put("type", new StringValue("Building"));
+			joB.put("dir", new StringValue(wahl.toString().toLowerCase()));
+			position.add(new DoubleValue(1730));
+			position.add(new DoubleValue(1113));
 
-				joB.put("position", position);
-				JsonArray originalSize = new JsonArray();
-				originalSize.add(new DoubleValue(img.getHeight()));
-				originalSize.add(new DoubleValue(img.getHeight()));
-				joB.put("originalSize", originalSize);
+			joB.put("position", position);
+			JsonArray originalSize = new JsonArray();
+			originalSize.add(new DoubleValue(img.getHeight()));
+			originalSize.add(new DoubleValue(img.getHeight()));
+			joB.put("originalSize", originalSize);
 
-				MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
-						gamepanel.getTileManager().getRequestorN());
-				gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
-				mnpc.setFixToScreen(true);
-				gamepanel.getLgp().getNpcs().add(mnpc);
+			MonsterNPC mnpc = new MonsterNPC(joB, gamepanel, gamepanel.getTileManager().getNPCSFromMap(), gamepanel.getTileManager().getCM(),
+					gamepanel.getTileManager().getRequestorN());
+			gamepanel.getViewGroups().get(mnpc.getLayer()).getChildren().remove(mnpc);
+			mnpc.setFixToScreen(true);
+			gamepanel.getLgp().getNpcs().add(mnpc);
 
-				return new Demon(wahl, mobName, mnpc);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return null;
-			}
+			return new Demon(wahl, mobName, mnpc);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 
-	 }
-
-
-
+	}
 
 }

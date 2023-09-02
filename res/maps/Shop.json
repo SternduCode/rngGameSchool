@@ -21,7 +21,7 @@
 			},
 			"extraData" : [
 				{
-					
+
 				}
 			],
 			"background" : [
@@ -62,7 +62,7 @@
 			},
 			"extraData" : [
 				{
-					
+
 				}
 			],
 			"background" : [
@@ -83,39 +83,6 @@
 			"layer" : [
 				0
 			]
-		},
-		{
-			"requestedSize" : [
-				256,
-				256
-			],
-			"textures" : {
-				"default" : "May.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7
-			],
-			"position" : [
-				1730,
-				1113
-			],
-			"type" : "MonsterNPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"dir" : "Plant",
-			"layer" : [
-				0
-			]
 		}
 	],
 	"buildings" : [
@@ -129,7 +96,7 @@
 			},
 			"extraData" : [
 				{
-					
+
 				}
 			],
 			"background" : [
@@ -161,7 +128,7 @@
 			},
 			"extraData" : [
 				{
-					
+
 				}
 			],
 			"background" : [
@@ -193,7 +160,7 @@
 			},
 			"extraData" : [
 				{
-					
+
 				}
 			],
 			"background" : [
@@ -239,16 +206,16 @@
 			},
 			"extraData" : [
 				{
-					
+
 				},
 				{
-					
+
 				},
 				{
-					
+
 				},
 				{
-					
+
 				}
 			],
 			"background" : [
