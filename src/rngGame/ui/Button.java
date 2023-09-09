@@ -1,12 +1,9 @@
 package rngGame.ui;
 
-import java.util.function.Consumer;
-
 import javafx.event.*;
 import javafx.scene.input.MouseEvent;
 import rngGame.visual.*;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Button.
  */
@@ -15,17 +12,15 @@ public class Button extends AnimatedImage {
 	/**
 	 * Instantiates a new button.
 	 *
-	 * @param gp the gp
 	 */
-	public Button(GamePanel gp) { super(gp); }
+	public Button() { super(); }
 
 	/**
 	 * Instantiates a new button.
 	 *
 	 * @param path the path
-	 * @param gp   the gp
 	 */
-	public Button(String path, GamePanel gp) { super(path, gp); }
+	public Button(String path) { super(path); }
 
 
 	/**
@@ -54,7 +49,7 @@ public class Button extends AnimatedImage {
 	 */
 	public void setOnReleased(EventHandler<MouseEvent> mv) {
 		setOnMouseReleased(i -> {
-			gamepanel.getLgp().makeSound("click.wav");
+			SoundHandler.getInstance().makeSound("click.wav");
 			mv.handle(i);
 		});
 

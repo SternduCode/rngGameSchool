@@ -1,6 +1,5 @@
 	package rngGame.stats;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Enum Element.
  */
@@ -29,19 +28,19 @@ public enum Element {
 
 
 	/** The atk. */
-	private int atk;
+	private final int atk;
 	
 	/** The res. */
-	private double res;
+	private final double res;
 	
 	/** The hp. */
-	private int hp;
+	private final int hp;
 	
 	/** The dgc. */
-	private double dgc;
+	private final double dgc;
 	
 	/** The lvl. */
-	private int lvl;
+	private final int lvl;
 
 
 

@@ -11,7 +11,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.w3c.dom.Node;
 
 import javafx.scene.image.*;
-import rngGame.visual.GamePanel;
+import rngGame.main.WindowManager;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -22,24 +22,23 @@ public class ImgUtil {
 	/**
 	 * Gets the scaled image.
 	 *
-	 * @param gamepanel the gamepanel
 	 * @param path the path
 	 * @return the scaled image
 	 */
-	public static Image getScaledImage(GamePanel gamepanel, String path) {
+	public static Image getScaledImage(String path) {
 		try {
 			Image wi = new Image(new FileInputStream(path));
-			return getScaledImage(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight());
+			return getScaledImage(path, (int)wi.getWidth(),  (int)wi.getHeight());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public static Image getScaledImage(GamePanel gamepanel, String path, boolean flip) {
+	public static Image getScaledImage(String path, boolean flip) {
 		try {
 			Image wi = new Image(new FileInputStream(path));
-			return getScaledImage(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
+			return getScaledImage(path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -49,77 +48,59 @@ public class ImgUtil {
 	/**
 	 * Gets the scaled image.
 	 *
-	 * @param gamepanel the gamepanel
 	 * @param path the path
 	 * @param width the width
 	 * @param height the height
 	 * @return the scaled image
 	 */
-	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height) {
-		return getScaledImages(gamepanel, path, width, height)[0];
+	public static Image getScaledImage(String path, int width, int height) {
+		return getScaledImages(path, width, height)[0];
 	}
 	
-	public static Image getScaledImage(GamePanel gamepanel, String path, int width, int height, boolean flip) {
-		return getScaledImages(gamepanel, path, width, height, flip)[0];
+	public static Image getScaledImage(String path, int width, int height, boolean flip) {
+		return getScaledImages(path, width, height, flip)[0];
 	}
 
 	/**
 	 * Gets the scaled image.
 	 *
-	 * @param gamepanel the gamepanel
 	 * @param path the path
 	 * @return the scaled image
 	 */
-	public static Image getScaledImage(rngGame.main.GamePanel gamepanel, String path) {
-		return getScaledImage(gamepanel.getVgp(), path);
-	}
-	
-	public static Image getScaledImage(rngGame.main.GamePanel gamepanel, String path, boolean flip) {
-		return getScaledImage(gamepanel.getVgp(), path, flip);
-	}
-
-	/**
-	 * Gets the scaled image.
-	 *
-	 * @param gamepanel the gamepanel
-	 * @param path the path
-	 * @return the scaled image
-	 */
-	public static Image[] getScaledImages(GamePanel gamepanel, String path) {
+	public static Image[] getScaledImages(String path) {
 		try {
 			Image wi = new Image(new FileInputStream(path));
-			return getScaledImages(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight());
+			return getScaledImages(path, (int)wi.getWidth(),  (int)wi.getHeight());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public static Image[] getScaledImages(GamePanel gamepanel, String path, boolean flip) {
+	public static Image[] getScaledImages(String path, boolean flip) {
 		try {
 			Image wi = new Image(new FileInputStream(path));
-			return getScaledImages(gamepanel, path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
+			return getScaledImages(path, (int)wi.getWidth(),  (int)wi.getHeight(), flip);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height) {
-		return getScaledImages(gamepanel, path, width, height, false);
+	public static Image[] getScaledImages(String path, int width, int height) {
+		return getScaledImages(path, width, height, false);
 	}
 
 	/**
 	 * For gifs put {@code 			iv.setScaleX(gamepanel.getScalingFactorX());
 	 * 			iv.setScaleY(gamepanel.getScalingFactorY());} to set the scale
 	 *
-	 * @param gamepanel the gamepanel
 	 * @param path the path
 	 * @param width the width
 	 * @param height the height
 	 * @return the scaled image
 	 */
-	public static Image[] getScaledImages(GamePanel gamepanel, String path, int width, int height, boolean flip) {
+	public static Image[] getScaledImages(String path, int width, int height, boolean flip) {
 		String[] sp = path.split("[.]");
 		try {
 			if ("gif".equals(sp[sp.length - 1])) {
@@ -163,8 +144,8 @@ public class ImgUtil {
 
 				for (int i = 0; i < out.length; i++) out[i] = ImgUtil.resizeImage(
 						awtToFx[i], (int) awtToFx[i].getWidth(), (int) awtToFx[i].getHeight(),
-						(int) (width * gamepanel.getScalingFactorX()),
-						(int) (height * gamepanel.getScalingFactorY()), flip);
+						(int) (width * WindowManager.getInstance().getScalingFactorX()),
+						(int) (height * WindowManager.getInstance().getScalingFactorY()), flip);
 
 				return out;
 			}
@@ -173,8 +154,8 @@ public class ImgUtil {
 			for (int k = 0; k < imgs.length; k++) {
 				imgs[k] = ImgUtil.resizeImage(
 							wi, (int) wi.getWidth(), (int) wi.getHeight(),
-							(int) (width * gamepanel.getScalingFactorX()),
-							(int) (height * gamepanel.getScalingFactorY()), flip);
+							(int) (width * WindowManager.getInstance().getScalingFactorX()),
+							(int) (height * WindowManager.getInstance().getScalingFactorY()), flip);
 			}
 			return imgs;
 		} catch (IOException e) {

@@ -16,7 +16,7 @@ import javafx.stage.*;
 public class MainClass extends Application {
 
 	/** The stopping. */
-	private static boolean stopping = false;
+	private static boolean stopping;
 
 	/**
 	 * Checks if is stopping.
@@ -63,6 +63,7 @@ public class MainClass extends Application {
 		primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 		primaryStage.getIcons().add(new Image(new FileInputStream ("./res/gui/GameIschcon.png")));
 		Input input = Input.getInstance();
+		input.setBlockInputs(true);
 
 		// set eventHandlers to detect Mouse and Key Events on the whole Window
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, input::keyPressed);
@@ -83,7 +84,7 @@ public class MainClass extends Application {
 		// input.toggleFullScreen();
 
 		Window.getWindows().addListener((ListChangeListener<Window>) c -> {
-			if (c.getList().size() == 0) stopping = true;
+			if (c.getList().isEmpty()) stopping = true;
 		});
 	}
 }

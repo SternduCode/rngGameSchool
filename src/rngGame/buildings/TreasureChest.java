@@ -13,8 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.util.Duration;
-import rngGame.main.Input;
-import rngGame.main.Text;
+import rngGame.main.*;
 import rngGame.main.Text.AnimatedText;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
@@ -147,7 +146,7 @@ public class TreasureChest extends Building {
 			} else {
 				SoundHandler.getInstance().makeSound("NotClickable.wav");
 				gamepanel.setBlockUserInputs(true);
-				Image img = ImgUtil.getScaledImage(gamepanel, "./res/gui/bubble/SpeakBubbledrai.png");
+				Image img = ImgUtil.getScaledImage("./res/gui/bubble/SpeakBubbledrai.png");
 				ImageView kek = new ImageView(img);
 				gamepanel.getLgp().getBubble().getChildren().add(kek);
 				AnimatedText at = Text.getInstance().convertText("Cant open this Chest \nKill all Enemies and \nfind all Treasurechests", 64, false, Color.WHITE);
@@ -162,8 +161,8 @@ public class TreasureChest extends Building {
 					gamepanel.getBubbleText().getChildren().clear();
 				});
 				gamepanel.getBubbleText().getChildren().add(at);
-				gamepanel.getBubbleText().setLayoutX(gamepanel.getGameWidth() / 2 - at.getImgWidth() / 2);
-				gamepanel.getBubbleText().setLayoutY(gamepanel.getGameHeight() / 1.3 - at.getImgHeight() / 2.0);
+				gamepanel.getBubbleText().setLayoutX(WindowManager.getInstance().getGameWidth() / 2 - at.getImgWidth() / 2);
+				gamepanel.getBubbleText().setLayoutY(WindowManager.getInstance().getGameHeight() / 1.3 - at.getImgHeight() / 2.0);
 			}
 		} else {
 			SoundHandler.getInstance().makeSound("chest.wav");
@@ -179,8 +178,8 @@ public class TreasureChest extends Building {
 	 */
 	public void init() {
 		if (!getMiscBoxHandler().containsKey("action")) addMiscBox("action",
-				new Ellipse(getReqWidth() * gamepanel.getScalingFactorX() / 2, getReqHeight() * gamepanel.getScalingFactorY() / 2,
-						gamepanel.getBlockSizeX() / 2, gamepanel.getBlockSizeY() / 2),
+				new Ellipse(getReqWidth() * WindowManager.getInstance().getScalingFactorX() / 2, getReqHeight() * WindowManager.getInstance().getScalingFactorY() / 2,
+						WindowManager.getInstance().getBlockSizeX() / 2, WindowManager.getInstance().getBlockSizeY() / 2),
 				(gpt, self) -> {
 					if (!isOpen)
 						gpt.getAktionbutton().setInteractionbuttonKann(true, gp2 -> {

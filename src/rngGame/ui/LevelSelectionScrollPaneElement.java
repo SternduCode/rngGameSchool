@@ -5,7 +5,6 @@ import java.util.stream.*;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.image.*;
-import javafx.scene.input.*;
 import javafx.util.Duration;
 import rngGame.buildings.ContractsTable;
 import rngGame.main.*;
@@ -66,28 +65,28 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 	 * @param dif the dif
 	 */
 	public LevelSelectionScrollPaneElement(GamePanel gamepanel, ContractsTable ct, String floor, int lvlneu, String pic, Difficulty dif) {
-		super(new Button(gamepanel));
+		super(new Button());
 		background = getBackgroundElement();
-		UGbc = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground.png");
-		Image UGbc2 = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/UGbackground2.png");
+		UGbc = ImgUtil.getScaledImage("./res/Contractstuff/UGbackground.png");
+		Image UGbc2 = ImgUtil.getScaledImage("./res/Contractstuff/UGbackground2.png");
 		setBackgroundImageToDefaullt();
 
 
 
-		Image difE = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difE.png");
-		Image difM = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difM.png");
-		Image difH = ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/difH.png");
+		Image difE = ImgUtil.getScaledImage("./res/Contractstuff/difE.png");
+		Image difM = ImgUtil.getScaledImage("./res/Contractstuff/difM.png");
+		Image difH = ImgUtil.getScaledImage("./res/Contractstuff/difH.png");
 
 		difficul = new ImageView(difE);
 		difficul.setVisible(false);
 
 		vlvl = new ImageView(ImgUtil.resizeImage(lvls[lvlneu / 5], (int) lvls[lvlneu / 5].getWidth(), (int) lvls[lvlneu / 5].getHeight(),
-				(int) (48 * gamepanel.getScalingFactorX()), (int) (48 * gamepanel.getScalingFactorY())));
+				(int) (48 * WindowManager.getInstance().getScalingFactorX()), (int) (48 * WindowManager.getInstance().getScalingFactorY())));
 		vlvl.setVisible(false);
-		vlvl.setLayoutX(24 * gamepanel.getScalingFactorX());
-		vlvl.setLayoutY(30 * gamepanel.getScalingFactorY());
+		vlvl.setLayoutX(24 * WindowManager.getInstance().getScalingFactorX());
+		vlvl.setLayoutY(30 * WindowManager.getInstance().getScalingFactorY());
 
-		picture = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/Contractstuff/" + pic + ".png", 64, 64));
+		picture = new ImageView(ImgUtil.getScaledImage("./res/Contractstuff/" + pic + ".png", 64, 64));
 		picture.setDisable(true);
 
 		floor1 = new ImageView();
@@ -100,9 +99,9 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		String	sButton		= "./res/Contractstuff/Startbutton.png";
 		String	sButton2	= "./res/Contractstuff/Startbutton2.png";
 		System.out.println(gamepanel + " " + gamepanel.getLgp());
-		startButton = new Button(sButton, gamepanel);
-		startButton.setLayoutX(383 * gamepanel.getScalingFactorX());
-		startButton.setLayoutY(4 * gamepanel.getScalingFactorY());
+		startButton = new Button(sButton);
+		startButton.setLayoutX(383 * WindowManager.getInstance().getScalingFactorX());
+		startButton.setLayoutY(4 * WindowManager.getInstance().getScalingFactorY());
 		startButton.setOnPressed(me -> {
 			startButton.init(sButton2);
 		});
@@ -140,13 +139,13 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 
 		getChildren().addAll(startButton, floor1, picture);
 
-		floor1.setLayoutX(54 * gamepanel.getScalingFactorX());
-		floor1.setLayoutY(5 * gamepanel.getScalingFactorY());
-		picture.setLayoutX(7 * gamepanel.getScalingFactorX());
-		picture.setLayoutY(7 * gamepanel.getScalingFactorY());
+		floor1.setLayoutX(54 * WindowManager.getInstance().getScalingFactorX());
+		floor1.setLayoutY(5 * WindowManager.getInstance().getScalingFactorY());
+		picture.setLayoutX(7 * WindowManager.getInstance().getScalingFactorX());
+		picture.setLayoutY(7 * WindowManager.getInstance().getScalingFactorY());
 
-		difficul.setLayoutX(360 * gamepanel.getScalingFactorX());
-		difficul.setLayoutY(65 * gamepanel.getScalingFactorY());
+		difficul.setLayoutX(360 * WindowManager.getInstance().getScalingFactorX());
+		difficul.setLayoutY(65 * WindowManager.getInstance().getScalingFactorY());
 	}
 
 	/**
@@ -189,8 +188,8 @@ public class LevelSelectionScrollPaneElement extends ScrollPaneElement {
 		Image floor1 = Text.getInstance().convertText(floor, 64);
 		floor1 = ImgUtil.resizeImage(
 				floor1, (int) floor1.getWidth(), (int) floor1.getHeight(),
-				(int) (floor1.getWidth() * gamepanel.getScalingFactorX()),
-				(int) (floor1.getHeight() * gamepanel.getScalingFactorY()));
+				(int) (floor1.getWidth() * WindowManager.getInstance().getScalingFactorX()),
+				(int) (floor1.getHeight() * WindowManager.getInstance().getScalingFactorY()));
 		this.floor1.setImage(floor1);
 	}
 

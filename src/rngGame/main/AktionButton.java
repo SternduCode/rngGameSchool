@@ -40,7 +40,7 @@ public class AktionButton extends Pane {
 	 */
 	public AktionButton(GamePanel gamepanel) {
 		this.gamepanel = gamepanel;
-		aktionbutton = new Button("./res/gui/always/InteractionNichts.png",gamepanel);
+		aktionbutton = new Button("./res/gui/always/InteractionNichts.png");
 		f11Scale();
 		getChildren().add(aktionbutton);
 		aktionbutton.setImgRequestedWidth(150);
@@ -66,8 +66,8 @@ public class AktionButton extends Pane {
 	public void f11Scale() {
 		aktionbutton.init("./res/gui/always/InteractionNichts.png");
 
-		setLayoutX(gamepanel.getGameWidth() - 220 * gamepanel.getScalingFactorX());
-		setLayoutY(gamepanel.getGameHeight() - 220 * gamepanel.getScalingFactorY());
+		setLayoutX(WindowManager.getInstance().getGameWidth() - 220 * WindowManager.getInstance().getScalingFactorX());
+		setLayoutY(WindowManager.getInstance().getGameHeight() - 220 * WindowManager.getInstance().getScalingFactorY());
 
 	}
 

@@ -1,6 +1,5 @@
 package rngGame.stats;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Enum Rarity.
  */
@@ -24,7 +23,7 @@ public enum Rarity {
 	VOID;
 
 	/** The texture name. */
-	String textureName;
+	private final String textureName;
 
 
 

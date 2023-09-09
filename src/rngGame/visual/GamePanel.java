@@ -151,30 +151,6 @@ public class GamePanel extends Pane {
 	/** The gamemenu. */
 	private final TabMenu gamemenu;
 
-	/** The target FPS. */
-	private final int targetFPS = 80;
-
-	/** The scaling factor Y. */
-	private double scalingFactorX = 1, scalingFactorY = 1;
-
-	/** The block size. */
-	private final int blockSize = 48;
-
-	/** The x blocks. */
-	private final int xBlocks = 20;
-
-	/** The y blocks. */
-	private final int yBlocks = 11;
-
-	/** The scleed blockSizes. */
-	private int blockSizeX = blockSize, blockSizeY = blockSize;
-
-	/** The game height. */
-	private int gameHeight = blockSizeY * yBlocks;
-
-	/** The game width. */
-	private int gameWidth = blockSizeX * xBlocks;
-
 	/** The fps. */
 	private Double fps = 0d;
 
@@ -187,9 +163,6 @@ public class GamePanel extends Pane {
 	/** The lgp. */
 	private final rngGame.main.GamePanel lgp;
 
-	/** The animated images. */
-	private final List<AnimatedImage> animatedImages;
-
 	/**
 	 * Instantiates a new game panel.
 	 *
@@ -198,9 +171,7 @@ public class GamePanel extends Pane {
 	 */
 	public GamePanel(rngGame.main.GamePanel lgp)
 			throws FileNotFoundException {
-		setPrefSize(gameWidth, gameHeight);
-
-		animatedImages = new ArrayList<>();
+		setPrefSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight());
 
 		lgp.setVgp(this);
 
@@ -231,7 +202,7 @@ public class GamePanel extends Pane {
 		selectTool = new SelectTool(this);
 
 		tileManager = new TileManager(this);
-		tileManager.setPrefSize(gameWidth, gameHeight);
+		tileManager.setPrefSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight());
 
 		player = new Player(this, tileManager.getCM(), tileManager.getRequestorN());
 
@@ -241,17 +212,7 @@ public class GamePanel extends Pane {
 		gamemenu = new TabMenu(getLgp());
 
 		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
-				gamemenu, fpsLabel,
-				getLoadingScreen());
-	}
-
-	/**
-	 * Adds the animated image.
-	 *
-	 * @param animatedImage the animated image
-	 */
-	public void addAnimatedImage(AnimatedImage animatedImage) {
-		animatedImages.add(animatedImage);
+				gamemenu, fpsLabel, getLoadingScreen());
 	}
 
 	/**
@@ -261,14 +222,9 @@ public class GamePanel extends Pane {
 	 * @param scaleFactorY the scale factor Y
 	 */
 	public void changeScalingFactor(double scaleFactorX, double scaleFactorY) {
-		player.setPosition(player.getX() * (scaleFactorX / scalingFactorX),
-				player.getY() * (scaleFactorY / scalingFactorY));
-		scalingFactorX = scaleFactorX;
-		scalingFactorY = scaleFactorY;
-		blockSizeX		= (int) (blockSize * scaleFactorX);
-		blockSizeY		= (int) (blockSize * scaleFactorY);
-		gameWidth		= blockSizeX * xBlocks;
-		gameHeight		= blockSizeY * yBlocks;
+		player.setPosition(player.getX() * (scaleFactorX / WindowManager.getInstance().getScalingFactorX() ),
+				player.getY() * (scaleFactorY / WindowManager.getInstance().getScalingFactorY() ));
+		WindowManager.getInstance().changeScalingFactor(scaleFactorX, scaleFactorY);
 		reload();
 		player.getPlayerImage();
 		player.generateCollisionBox();
@@ -281,27 +237,6 @@ public class GamePanel extends Pane {
 	 * @return the aktionbutton
 	 */
 	public AktionButton getAktionbutton() { return aktionbutton; }
-
-	/**
-	 * Gets the block size.
-	 *
-	 * @return the block size
-	 */
-	public int getBlockSize() { return blockSize; }
-
-	/**
-	 * Gets the block size X.
-	 *
-	 * @return the block size X
-	 */
-	public int getBlockSizeX() { return blockSizeX; }
-
-	/**
-	 * Gets the block size Y.
-	 *
-	 * @return the block size Y
-	 */
-	public int getBlockSizeY() { return blockSizeY; }
 
 	/**
 	 * Gets the bubble text.
@@ -320,25 +255,11 @@ public class GamePanel extends Pane {
 	public Double getFps() { return fps; }
 
 	/**
-	 * Gets the game height.
-	 *
-	 * @return the game height
-	 */
-	public int getGameHeight() { return gameHeight; }
-
-	/**
 	 * Gets the gamemenu.
 	 *
 	 * @return the gamemenu
 	 */
 	public TabMenu getGamemenu() { return gamemenu; }
-
-	/**
-	 * Gets the game width.
-	 *
-	 * @return the game width
-	 */
-	public int getGameWidth() { return gameWidth; }
 
 	/**
 	 * Gets the layer group.
@@ -383,32 +304,11 @@ public class GamePanel extends Pane {
 	public Group getPointGroup() { return pointGroup; }
 
 	/**
-	 * Gets the scaling factor X.
-	 *
-	 * @return the scaling factor X
-	 */
-	public double getScalingFactorX() { return scalingFactorX; }
-
-	/**
-	 * Gets the scaling factor Y.
-	 *
-	 * @return the scaling factor Y
-	 */
-	public double getScalingFactorY() { return scalingFactorY; }
-
-	/**
 	 * Gets the select tool.
 	 *
 	 * @return the select tool
 	 */
 	public SelectTool getSelectTool() { return selectTool; }
-
-	/**
-	 * Gets the target FPS.
-	 *
-	 * @return the target FPS
-	 */
-	public int getTargetFPS() { return targetFPS; }
 
 	/**
 	 * Gets the tile M.
@@ -425,25 +325,11 @@ public class GamePanel extends Pane {
 	public List<Group> getViewGroups() { return getLayerGroup().getGroupChildren(); }
 
 	/**
-	 * Gets the x blocks.
-	 *
-	 * @return the x blocks
-	 */
-	public int getxBlocks() { return xBlocks; }
-
-	/**
-	 * Gets the y blocks.
-	 *
-	 * @return the y blocks
-	 */
-	public int getyBlocks() { return yBlocks; }
-
-	/**
 	 * Go into loading screen.
 	 */
 	public void goIntoLoadingScreen() {
-		getLoadingScreen().setFitWidth(getLoadingScreen().getImage().getWidth() * getScalingFactorX());
-		getLoadingScreen().setFitHeight(getLoadingScreen().getImage().getHeight() * getScalingFactorY());
+		getLoadingScreen().setFitWidth(getLoadingScreen().getImage().getWidth() * WindowManager.getInstance().getScalingFactorX());
+		getLoadingScreen().setFitHeight(getLoadingScreen().getImage().getHeight() * WindowManager.getInstance().getScalingFactorY());
 
 		FadeTransition ft = new FadeTransition(Duration.millis(250), getLoadingScreen());
 		ft.setFromValue(0);
@@ -475,7 +361,7 @@ public class GamePanel extends Pane {
 		getPointGroup().getChildren().clear();
 
 		if (!"".equals(getTileManager().getOverlay()))
-			getOverlay().setImage(ImgUtil.getScaledImage(this, "./res/gui/" + getTileManager().getOverlay()));
+			getOverlay().setImage(ImgUtil.getScaledImage("./res/gui/" + getTileManager().getOverlay()));
 		else getOverlay().setImage(null);
 
 		tileManager.reload();
@@ -486,7 +372,7 @@ public class GamePanel extends Pane {
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileManager.getBackgroundPath())),
 							BackgroundRepeat.NO_REPEAT,
 							BackgroundRepeat.NO_REPEAT, null,
-							new BackgroundSize(getGameWidth(), getGameHeight() + getScalingFactorY(), false, false, false, false))));
+							new BackgroundSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight() + WindowManager.getInstance().getScalingFactorY(), false, false, false, false))));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -498,8 +384,8 @@ public class GamePanel extends Pane {
 		getLgp().setNpcs(tileManager.getNPCSFromMap());
 		getLgp().setTest(tileManager.getMobsFromMap());
 
-		Circle spawn = new Circle(getTileManager().getSpawnPoint().getX() * getScalingFactorX(),
-				getTileManager().getSpawnPoint().getY() * getScalingFactorY(), 15,
+		Circle spawn = new Circle(getTileManager().getSpawnPoint().getX() * WindowManager.getInstance().getScalingFactorX(),
+				getTileManager().getSpawnPoint().getY() * WindowManager.getInstance().getScalingFactorY(), 15,
 				Color.color(0, 1, 0, .75));
 		lgp.getPoints().put(tileManager.getSpawnPoint(), spawn);
 		getPointGroup().getChildren().add(spawn);
@@ -515,7 +401,7 @@ public class GamePanel extends Pane {
 							JsonArray	spawnPosition	= (JsonArray) exit.get("spawnPosition");
 							Point2D		p				= new Point2D( ((NumberValue) spawnPosition.get(0)).getValue().longValue(),
 									((NumberValue) spawnPosition.get(1)).getValue().longValue());
-							Circle		respawn			= new Circle(p.getX() * getScalingFactorX(), p.getY() * getScalingFactorY(),
+							Circle		respawn			= new Circle(p.getX() * WindowManager.getInstance().getScalingFactorX(), p.getY() * WindowManager.getInstance().getScalingFactorY(),
 									15,
 									Color.color(0, 1, 0, .75));
 							lgp.getPoints().put(p, respawn);
@@ -587,20 +473,20 @@ public class GamePanel extends Pane {
 					new BackgroundImage(new Image(new FileInputStream("./res/" + tileManager.getBackgroundPath())),
 							BackgroundRepeat.NO_REPEAT,
 							BackgroundRepeat.NO_REPEAT, null,
-							new BackgroundSize(getGameWidth(), getGameHeight(), false, false, false, false))));
+							new BackgroundSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight(), false, false, false, false))));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-		if (!"".equals(tileManager.getOverlay())) getOverlay().setImage(ImgUtil.getScaledImage(this, "./res/gui/" + tileManager.getOverlay()));
+		if (!"".equals(tileManager.getOverlay())) getOverlay().setImage(ImgUtil.getScaledImage("./res/gui/" + tileManager.getOverlay()));
 		else getOverlay().setImage(null);
 
 		lgp.setBuildings(tileManager.getBuildingsFromMap());
 		lgp.setNpcs(tileManager.getNPCSFromMap());
 		lgp.setTest(tileManager.getMobsFromMap());
-		Circle spawn = new Circle(tileManager.getSpawnPoint().getX() * getScalingFactorX(),
-				tileManager.getSpawnPoint().getY() * getScalingFactorY(), 15,
+		Circle spawn = new Circle(tileManager.getSpawnPoint().getX() * WindowManager.getInstance().getScalingFactorX(),
+				tileManager.getSpawnPoint().getY() * WindowManager.getInstance().getScalingFactorY(), 15,
 				Color.color(0, 1, 0, .75));
 		lgp.getPoints().put(tileManager.getSpawnPoint(), spawn);
 		getPointGroup().getChildren().add(spawn);
@@ -630,12 +516,12 @@ public class GamePanel extends Pane {
 
 		if (position != null)
 			player.setPosition(new double[] {
-					position[0] * getScalingFactorX(), position[1] * getScalingFactorY()
+					position[0] * WindowManager.getInstance().getScalingFactorX(), position[1] * WindowManager.getInstance().getScalingFactorY()
 			});
 		else {
 			double[] posi = tileManager.getStartingPosition();
 			player.setPosition(new double[] {
-					posi[0] * getScalingFactorX(), posi[1] * getScalingFactorY()
+					posi[0] * WindowManager.getInstance().getScalingFactorX(), posi[1] * WindowManager.getInstance().getScalingFactorY()
 			});
 		}
 		player.setLayer(tileManager.getPlayerLayer());
@@ -655,7 +541,7 @@ public class GamePanel extends Pane {
 		AtomicReference<Runnable>	runnable	= new AtomicReference<>();
 		AtomicReference<Timeline>	arTl		= new AtomicReference<>();
 		Timeline					tl			= new Timeline(
-				new KeyFrame(Duration.millis(1000 / targetFPS),
+				new KeyFrame(Duration.millis(1000 / WindowManager.getInstance().getTargetFPS()),
 						event -> {
 							update();
 							if ("true".equals(System.getProperty("alternateUpdate"))) {
@@ -693,7 +579,7 @@ public class GamePanel extends Pane {
 		long lastFrameTime = frameTimes.size() > 0 ? frameTimes.get(frameTimes.size() - 1) : 0;
 
 		fpsLabel.setText(String.format("%.2f", 1000 / fps));
-		fpsLabel.setLayoutX(gameWidth - fpsLabel.getWidth());
+		fpsLabel.setLayoutX(WindowManager.getInstance().getGameWidth() - fpsLabel.getWidth());
 
 		try {
 			player.update(lastFrameTime);
@@ -704,8 +590,8 @@ public class GamePanel extends Pane {
 		aktionbutton.update();
 
 		for (Entry<Point2D, Circle> point : lgp.getPoints().entrySet()) {
-			point.getValue().setCenterX(point.getKey().getX() * getScalingFactorX() - player.getX() + player.getScreenX());
-			point.getValue().setCenterY(point.getKey().getY() * getScalingFactorY() - player.getY() + player.getScreenY());
+			point.getValue().setCenterX(point.getKey().getX() * WindowManager.getInstance().getScalingFactorX() - player.getX() + player.getScreenX());
+			point.getValue().setCenterY(point.getKey().getY() * WindowManager.getInstance().getScalingFactorY() - player.getY() + player.getScreenY());
 		}
 
 		tileManager.update();
@@ -719,8 +605,6 @@ public class GamePanel extends Pane {
 		while (frameTimes.size() > Math.pow(fps * 12, 1.2)) frameTimes.remove(0);
 
 		Text.getInstance().update(lastFrameTime);
-
-		animatedImages.forEach(AnimatedImage::update);
 
 	}
 

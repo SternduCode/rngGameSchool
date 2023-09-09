@@ -1,5 +1,4 @@
 package rngGame.visual;
-import java.awt.image.PixelInterleavedSampleModel;
 import java.util.Random;
 
 import javafx.animation.FadeTransition;
@@ -12,12 +11,12 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.entity.MobRan;
 import rngGame.main.Text;
+import rngGame.main.WindowManager;
 import rngGame.stats.Demon;
 import rngGame.stats.Element;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.*;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Fight.
  */
@@ -70,15 +69,15 @@ public class Fight extends Pane{
 		dName 					= new ImageView();
 		eIcon					= new ImageView();
 		dIcon					= new ImageView();
-		hit 					= new AnimatedImage(gamepanel);
+		hit 					= new AnimatedImage();
 		hit.setLayoutY(-10);
 		hit.setVisible(false);
 		this.gamepanel			= gamepanel;
 		demonMob				= MobRan.MobGen(gamepanel);
 		battlebackgroundvisual	= new ImageView();
-		leaf					= new Button(gamepanel);
-		majyc					= new Button(gamepanel);
-		stych					= new Button(gamepanel);
+		leaf					= new Button();
+		majyc					= new Button();
+		stych					= new Button();
 		
 		overlayVisible = gamepanel.getOverlay().isVisible();
 		gamepanel.getOverlay().setVisible(false);
@@ -136,8 +135,8 @@ public class Fight extends Pane{
 			majyc.setDisable(true);
 			leaf.setDisable(true);
 			stych.setDisable(true);
-			ft.setToY(gamepanel.getGameHeight() / 2);
-			ib1.setToY(gamepanel.getGameHeight() / 2);
+			ft.setToY(WindowManager.getInstance().getGameHeight() / 2);
+			ib1.setToY(WindowManager.getInstance().getGameHeight() / 2);
 			ft.play(); 
 			ib1.play();
 			int rr = r.nextInt(2)+1;
@@ -173,8 +172,8 @@ public class Fight extends Pane{
 			majyc.setDisable(true);
 			leaf.setDisable(true);
 			stych.setDisable(true);
-			ft.setToY(gamepanel.getGameHeight() / 2);
-			ib1.setToY(gamepanel.getGameHeight() / 2);
+			ft.setToY(WindowManager.getInstance().getGameHeight() / 2);
+			ib1.setToY(WindowManager.getInstance().getGameHeight() / 2);
 			ft.play();
 			ib1.play();
 			int rr = r.nextInt(2)+1;
@@ -306,8 +305,8 @@ public class Fight extends Pane{
 	 * Scale F 11.
 	 */
 	public void scaleF11() {
-		fight.setImage(ImgUtil.getScaledImage(gamepanel, "./res/fight/Auswahl.png"));
-		battlebackgroundvisual.setImage(ImgUtil.getScaledImage(gamepanel, "./res/fight/Fight.png", gamepanel.getGameWidth(), gamepanel.getGameHeight()));
+		fight.setImage(ImgUtil.getScaledImage("./res/fight/Auswahl.png"));
+		battlebackgroundvisual.setImage(ImgUtil.getScaledImage("./res/fight/Fight.png", WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight()));
 		demonMob.getDemon().setReqWidth(256);
 		demonMob.getDemon().setReqHeight(256);
 		demonMob.getDemon().setLayoutX(gamepanel.getWidth()/1.5);
@@ -399,8 +398,8 @@ public void resetName() {
 	Image eigenmobname = Text.getInstance().convertText(""+eigenMob.getMobName(), 48);
 	eigenmobname = ImgUtil.resizeImage(
 			eigenmobname, (int) eigenmobname.getWidth(), (int) eigenmobname.getHeight(),
-			(int) (eigenmobname.getWidth() * gamepanel.getScalingFactorX()),
-			(int) (eigenmobname.getHeight() * gamepanel.getScalingFactorY()));
+			(int) (eigenmobname.getWidth() * WindowManager.getInstance().getScalingFactorX()),
+			(int) (eigenmobname.getHeight() * WindowManager.getInstance().getScalingFactorY()));
 	eName.setImage(eigenmobname);
 	eName.setLayoutX(gamepanel.getWidth()/4+44);
 	eName.setLayoutY(20);
@@ -409,8 +408,8 @@ public void resetName() {
 	Image gegenmobname = Text.getInstance().convertText(""+demonMob.getMobName(), 48);
 	gegenmobname = ImgUtil.resizeImage(
 			gegenmobname, (int) gegenmobname.getWidth(), (int) gegenmobname.getHeight(),
-			(int) (gegenmobname.getWidth() * gamepanel.getScalingFactorX()),
-			(int) (gegenmobname.getHeight() * gamepanel.getScalingFactorY()));
+			(int) (gegenmobname.getWidth() * WindowManager.getInstance().getScalingFactorX()),
+			(int) (gegenmobname.getHeight() * WindowManager.getInstance().getScalingFactorY()));
 	dName.setImage(gegenmobname);
 	dName.setLayoutX(gamepanel.getWidth()/2+210-gegenmobname.getWidth());
 	dName.setLayoutY(20);

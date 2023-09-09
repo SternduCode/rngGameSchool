@@ -14,6 +14,7 @@ import javafx.scene.image.*;
 import javafx.scene.shape.*;
 import rngGame.buildings.*;
 import rngGame.entity.*;
+import rngGame.main.WindowManager;
 import rngGame.visual.GamePanel;
 
 
@@ -170,7 +171,7 @@ public class DungeonGen {
 					t.poly = new ArrayList<>();
 					boolean s = false;
 					for (int i = 0; i < length; i++)
-						t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+						t.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -192,7 +193,7 @@ public class DungeonGen {
 					t.poly = new ArrayList<>();
 					boolean s = false;
 					for (int i = 0; i < length; i++)
-						t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+						t.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -234,7 +235,7 @@ public class DungeonGen {
 						t.poly = new ArrayList<>();
 						boolean s = false;
 						for (int ij = 0; ij < length; ij++)
-							t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+							t.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -327,10 +328,10 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								j * (gp.getBlockSizeX() / gp.getScalingFactorX())
+								j * (WindowManager.getInstance().getBlockSizeX() / WindowManager.getInstance().getScalingFactorX())
 								+ ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 						position.add(new DoubleValue(
-								i * (gp.getBlockSizeY() / gp.getScalingFactorY())
+								i * (WindowManager.getInstance().getBlockSizeY() / WindowManager.getInstance().getScalingFactorY())
 								+ ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 						joB.put("position", position);
 						JsonArray originalSize = new JsonArray();
@@ -363,10 +364,10 @@ public class DungeonGen {
 					joB.put("type", new StringValue("Building"));
 					JsonArray position = new JsonArray();
 					position.add(new DoubleValue(
-							j * (gp.getBlockSizeX() / gp.getScalingFactorX())
+							j * (WindowManager.getInstance().getBlockSizeX() / WindowManager.getInstance().getScalingFactorX())
 							+ ((NumberValue) object.getValue().getValue().get(0)).getValue().intValue()));
 					position.add(new DoubleValue(
-							i * (gp.getBlockSizeY() / gp.getScalingFactorY())
+							i * (WindowManager.getInstance().getBlockSizeY() / WindowManager.getInstance().getScalingFactorY())
 							+ ((NumberValue) object.getValue().getValue().get(1)).getValue().intValue()));
 					joB.put("position", position);
 					JsonArray originalSize = new JsonArray();
@@ -406,9 +407,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * (gp.getBlockSizeX() / gp.getScalingFactorX())));
+								en.getKey() * (WindowManager.getInstance().getBlockSizeX() / WindowManager.getInstance().getScalingFactorX())));
 						position.add(new DoubleValue(
-								en.getValue() * (gp.getBlockSizeY() / gp.getScalingFactorY())));
+								en.getValue() * (WindowManager.getInstance().getBlockSizeY() / WindowManager.getInstance().getScalingFactorY())));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -447,9 +448,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * gp.getBlockSizeX()));
+								en.getKey() * WindowManager.getInstance().getBlockSizeX()));
 						position.add(new DoubleValue(
-								en.getValue() * gp.getBlockSizeY()));
+								en.getValue() * WindowManager.getInstance().getBlockSizeY()));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -488,9 +489,9 @@ public class DungeonGen {
 						joB.put("type", new StringValue("Building"));
 						JsonArray position = new JsonArray();
 						position.add(new DoubleValue(
-								en.getKey() * gp.getBlockSizeX()));
+								en.getKey() * WindowManager.getInstance().getBlockSizeX()));
 						position.add(new DoubleValue(
-								en.getValue() * gp.getBlockSizeY()));
+								en.getValue() * WindowManager.getInstance().getBlockSizeY()));
 						joB.put("position", position);
 						JsonArray	originalSize	= new JsonArray();
 						JsonArray	background		= new JsonArray();
@@ -567,8 +568,8 @@ public class DungeonGen {
 					distance = spot.distance(startPoint);
 				}
 				position.clear();
-				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
-				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				position.add(new IntegerValue(en.getKey()*WindowManager.getInstance().getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*WindowManager.getInstance().getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 			}
@@ -581,8 +582,8 @@ public class DungeonGen {
 					distance = spot.distance(startPoint);
 				}
 				position.clear();
-				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
-				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				position.add(new IntegerValue(en.getKey()*WindowManager.getInstance().getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*WindowManager.getInstance().getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 			}
@@ -595,8 +596,8 @@ public class DungeonGen {
 					distance = spot.distance(startPoint);
 				}
 				position.clear();
-				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
-				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				position.add(new IntegerValue(en.getKey()*WindowManager.getInstance().getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*WindowManager.getInstance().getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 				distance = 0.0;
@@ -607,8 +608,8 @@ public class DungeonGen {
 					distance = spot.distance(startPoint);
 				}
 				position.clear();
-				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
-				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				position.add(new IntegerValue(en.getKey()*WindowManager.getInstance().getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*WindowManager.getInstance().getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 				distance = 0.0;
@@ -619,8 +620,8 @@ public class DungeonGen {
 					distance = spot.distance(startPoint);
 				}
 				position.clear();
-				position.add(new IntegerValue(en.getKey()*gp.getBlockSizeX()));
-				position.add(new IntegerValue(en.getValue()*gp.getBlockSizeY()));
+				position.add(new IntegerValue(en.getKey()*WindowManager.getInstance().getBlockSizeX()));
+				position.add(new IntegerValue(en.getValue()*WindowManager.getInstance().getBlockSizeY()));
 				new MobRan(joB, gp, gp.getLgp().getMobRans(),
 						gp.getTileManager().getCM(), gp.getTileManager().getRequestorM());
 			}
@@ -1057,8 +1058,8 @@ public class DungeonGen {
 			Point2D p = mapPositions.get(en.getKey());
 			for (Object building : en.getValue()) {
 				JsonArray position = (JsonArray) ((JsonObject) building).get("position");
-				position.set(0, new DoubleValue(((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*gp.getBlockSizeX()));
-				position.set(1, new DoubleValue(((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*gp.getBlockSizeY()));
+				position.set(0, new DoubleValue(((NumberValue) position.get(0)).getValue().doubleValue()+p.getX()*WindowManager.getInstance().getBlockSizeX()));
+				position.set(1, new DoubleValue(((NumberValue) position.get(1)).getValue().doubleValue()+p.getY()*WindowManager.getInstance().getBlockSizeY()));
 			}
 		});
 		List<JsonObject> builds = buildings.entrySet().parallelStream().map(Entry::getValue).flatMap(JsonArray::parallelStream).map(v->(JsonObject)v).collect(Collectors.toList());
@@ -1172,7 +1173,7 @@ public class DungeonGen {
 				boolean s = false;
 				for (int ij = 0; ij < length; ij++)
 					gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 2).poly
-					.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -1189,7 +1190,7 @@ public class DungeonGen {
 				boolean s = false;
 				for (int ij = 0; ij < length; ij++)
 					gp.getTileManager().getTiles().get(gp.getTileManager().getTiles().size() - 1).poly
-					.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+					.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -1225,7 +1226,7 @@ public class DungeonGen {
 						tile.poly = new ArrayList<>();
 						boolean s = false;
 						for (int ij = 0; ij < length; ij++)
-							tile.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+							tile.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -1248,7 +1249,7 @@ public class DungeonGen {
 						tile.poly = new ArrayList<>();
 						boolean s = false;
 						for (int ij = 0; ij < length; ij++)
-							tile.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+							tile.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

@@ -16,6 +16,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import rngGame.main.WindowManager;
 import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 import rngGame.tile.TextureHolder;
@@ -221,7 +222,7 @@ public class MobRan extends NPC {
 			MobRan.this.setLayer(gamepanel.getViewGroups().size());
 			gamepanel.getAktionbutton().setVisible(false);
 			gamepanel.getLgp().makeSound("battleintro.wav");
-			intro = new AnimatedImage("./res/gui/BattleIntro.gif",gamepanel,10);
+			intro = new AnimatedImage("./res/gui/BattleIntro.gif",10);
 			f = new Fight(gamepanel, MobRan.this);
 			getChildren().add(intro);
 			thread.start();
@@ -273,11 +274,11 @@ public class MobRan extends NPC {
 		Player	p	= sp.getPlayer();
 		double	x	= p.getX() + p.getColliBoxX(), y = p.getY() + p.getColliBoxY() / 2;
 
-		int	tileX	= (int) Math.round(x / sp.getBlockSizeX());
-		int	tileY	= (int) Math.round(y / sp.getBlockSizeY());
+		int	tileX	= (int) Math.round(x / WindowManager.getInstance().getBlockSizeX());
+		int	tileY	= (int) Math.round(y / WindowManager.getInstance().getBlockSizeY());
 
 		List<List<TextureHolder>> map = sp.getTileManager().getMap();
-		if (map.size() > 0) {
+		if (!map.isEmpty()) {
 
 			Stream<PathElement> stream = Stream.of(new PathElement(tileX, tileY, 0));
 			for (int i = 0; i < 11; i++) stream=stream.mapMulti((PathElement pe, Consumer<PathElement> out) -> {
@@ -331,8 +332,8 @@ public class MobRan extends NPC {
 
 			// System.out.println(pels);
 
-			int mobX = (int) Math.round(MobRan.this.x / sp.getBlockSizeX()),
-					mobY = (int) Math.round(MobRan.this.y / sp.getBlockSizeY());
+			int mobX = (int) Math.round(MobRan.this.x / WindowManager.getInstance().getBlockSizeX()),
+					mobY = (int) Math.round(MobRan.this.y / WindowManager.getInstance().getBlockSizeY());
 
 			// System.out.println(mobX + " " + mobY + " "
 			// + mobX * sp.BgX + " " + mobY * sp.BgY);
@@ -343,7 +344,7 @@ public class MobRan extends NPC {
 			if (pel.size() > 0) {
 				PathElement pe = pel.get(0);
 				return new Double[] {
-						(double) pe.x() * sp.getBlockSizeX(), (double) pe.y() * sp.getBlockSizeY()
+						(double) pe.x() * WindowManager.getInstance().getBlockSizeX(), (double) pe.y() * WindowManager.getInstance().getBlockSizeY()
 				};
 			}
 		}

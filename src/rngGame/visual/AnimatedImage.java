@@ -1,6 +1,7 @@
 package rngGame.visual;
 
 import javafx.scene.image.*;
+import rngGame.main.WindowManager;
 import rngGame.tile.ImgUtil;
 
 
@@ -9,9 +10,6 @@ import rngGame.tile.ImgUtil;
  * The Class AnimatedImage.
  */
 public class AnimatedImage extends ImageView {
-
-	/** The gamepanel. */
-	protected final GamePanel gamepanel;
 
 	/** The fps. */
 	private int fps;
@@ -30,30 +28,25 @@ public class AnimatedImage extends ImageView {
 
 	/**
 	 * Instantiates a new animated image.
-	 *
-	 * @param gamepanel the gamepanel
 	 */
-	public AnimatedImage(GamePanel gamepanel) {
+	public AnimatedImage() {
 		imgRequestedWidth        = -1;
         imgRequestedHeight        = -1;
-		this.gamepanel = gamepanel;
 		fps = 7;
-		gamepanel.addAnimatedImage(this);
+		WindowManager.getInstance().addAnimatedImage(this);
 	}
 
 	/**
 	 * Instantiates a new animated image.
 	 *
 	 * @param path      the path
-	 * @param gamepanel the gamepanel
 	 */
-	public AnimatedImage(String path, GamePanel gamepanel) {
+	public AnimatedImage(String path) {
 		imgRequestedWidth        = -1;
         imgRequestedHeight        = -1;
 		this.path		= path;
-		this.gamepanel	= gamepanel;
 		fps				= 7;
-		gamepanel.addAnimatedImage(this);
+		WindowManager.getInstance().addAnimatedImage(this);
 		scaleF11();
 		update();
 	}
@@ -62,16 +55,14 @@ public class AnimatedImage extends ImageView {
 	 * Instantiates a new animated image.
 	 *
 	 * @param path      the path
-	 * @param gamepanel the gamepanel
 	 * @param fps       the fps
 	 */
-	public AnimatedImage(String path, GamePanel gamepanel, int fps) {
+	public AnimatedImage(String path, int fps) {
 		imgRequestedWidth        = -1;
         imgRequestedHeight        = -1;
 		this.path		= path;
-		this.gamepanel	= gamepanel;
 		this.fps		= fps;
-		gamepanel.addAnimatedImage(this);
+		WindowManager.getInstance().addAnimatedImage(this);
 		scaleF11();
 		update();
 	}
@@ -120,18 +111,18 @@ public class AnimatedImage extends ImageView {
 	public void scaleF11() {
 		if (path != null) {
             if (imgRequestedWidth != -1 && imgRequestedHeight != -1)
-                frames = ImgUtil.getScaledImages(gamepanel, path, imgRequestedWidth, imgRequestedHeight);
-            else frames = ImgUtil.getScaledImages(gamepanel, path);
+                frames = ImgUtil.getScaledImages(path, imgRequestedWidth, imgRequestedHeight);
+            else frames = ImgUtil.getScaledImages(path);
             if (frameIndex >= frames.length)
                 frameIndex = 0;
         } else for (int i = 0; i < frames.length; i++) {
             Image img = frames[i];
             if (imgRequestedWidth != -1 && imgRequestedHeight != -1)
                 frames[i] = ImgUtil.resizeImage(img, (int) img.getWidth(), (int) img.getHeight(),
-                        (int) (imgRequestedWidth * gamepanel.getScalingFactorX()), (int) (imgRequestedHeight * gamepanel.getScalingFactorY()));
+                        (int) (imgRequestedWidth * WindowManager.getInstance().getScalingFactorX()), (int) (imgRequestedHeight * WindowManager.getInstance().getScalingFactorY()));
             else
                 frames[i] = ImgUtil.resizeImage(img, (int) img.getWidth(), (int) img.getHeight(),
-                        (int) (img.getWidth() * gamepanel.getScalingFactorX()), (int) (img.getHeight() * gamepanel.getScalingFactorY()));
+                        (int) (img.getWidth() * WindowManager.getInstance().getScalingFactorX()), (int) (img.getHeight() * WindowManager.getInstance().getScalingFactorY()));
         }
 		setImage(frames[frameIndex]);
 	}
