@@ -22,7 +22,7 @@ public class WindowManager {
 	private double scalingFactorX = 1, scalingFactorY = 1;
 
 	/** The block size. */
-	private final int blockSize = 48;
+	private final int blockSize = 128;
 
 	/** The x blocks. */
 	private final int xBlocks = 20;
