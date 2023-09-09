@@ -409,7 +409,7 @@ public class TileManager extends Pane {
 						lIV.setFitHeight(16);
 					} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 							(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-							(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48));
+							(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 128, 128));
 					mnpcs.getItems()
 					.add(new MenuItemWNPC(f.getName(),
 							lIV,
@@ -464,7 +464,7 @@ public class TileManager extends Pane {
 						lIV.setFitHeight(16);
 					} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 							(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
-							(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 48, 48));
+							(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 128, 128));
 					getMbuildings().getItems()
 					.add(new MenuItemWBuilding(f.getName(),
 							lIV,
@@ -525,7 +525,7 @@ public class TileManager extends Pane {
 					.add(new MenuItemWMOB(f.getName(),
 							new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 									(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48)),
+									(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 128, 128)),
 							n));
 					mmobs.getItems().get(mmobs.getItems().size() - 1).setOnAction(this::contextMenu);
 					mmobs.getItems().add(mi);
@@ -552,7 +552,7 @@ public class TileManager extends Pane {
 					mtiles.getItems().remove(mi);
 					mtiles.getItems()
 					.add(new MenuItemWTile(f.getName(), new ImageView(ImgUtil.resizeImage(t.images[0],
-							(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)), t));
+							(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 128, 128)), t));
 					mtiles.getItems().get(mtiles.getItems().size() - 1).setOnAction(this::contextMenu);
 					mtiles.getItems().add(mi);
 				} catch (Exception e2) {
@@ -1079,7 +1079,7 @@ public class TileManager extends Pane {
 				mtiles.getItems()
 				.add(new MenuItemWTile( ((StringValue) texture).getValue(),
 						new ImageView(ImgUtil.resizeImage(t.images[0],
-								(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 48, 48)),
+								(int) t.images[0].getWidth(), (int) t.images[0].getHeight(), 128, 128)),
 						t));
 				String[] sp = ((StringValue) texture).getValue().split("[.]");
 				if (new File("./res/collisions/" + getDir() + "/" + String.join(".", Arrays.copyOf(sp, sp.length - 1))
@@ -1132,7 +1132,7 @@ public class TileManager extends Pane {
 					lIV.setFitHeight(16);
 				} else lIV = new ImageView(ImgUtil.resizeImage(b.getImages().get(b.getCurrentKey()).get(0),
 						(int) b.getImages().get(b.getCurrentKey()).get(0).getWidth(),
-						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 48, 48));
+						(int) b.getImages().get(b.getCurrentKey()).get(0).getHeight(), 128, 128));
 				getMbuildings().getItems().add(new MenuItemWBuilding(
 						((StringValue) ((JsonObject) ((JsonObject) building).get("textures")).values().stream()
 								.findFirst().get()).getValue(),
@@ -1153,7 +1153,7 @@ public class TileManager extends Pane {
 					lIV.setFitHeight(16);
 				} else lIV = new ImageView(ImgUtil.resizeImage(n.getImages().get(n.getCurrentKey()).get(0),
 						(int) n.getImages().get(n.getCurrentKey()).get(0).getWidth(),
-						(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 48, 48));
+						(int) n.getImages().get(n.getCurrentKey()).get(0).getHeight(), 128, 128));
 				if (n instanceof MobRan mr)
 					mmobs.getItems()
 					.add(new MenuItemWMOB(
