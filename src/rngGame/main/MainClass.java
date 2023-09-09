@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.stage.*;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MainClass.
  */

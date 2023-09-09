@@ -21,3 +21,5 @@ hs_err_pid*
 *.moreunit.prefs
 /jdk19RngGameEdition/
 /instructions.txt
+/.idea/misc.xml
+/.idea/workspace.xml
