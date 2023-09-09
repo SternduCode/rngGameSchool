@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dade60c-6911-40ad-800c-5958c98266c5" name="Changes" comment="fixed some errors">
-      <change beforePath="$PROJECT_DIR$/rngGAME.iml" beforeDir="false" afterPath="$PROJECT_DIR$/rngGAME.iml" afterDir="false" />
+    <list default="true" id="1dade60c-6911-40ad-800c-5958c98266c5" name="Changes" comment="fixed errors?">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/rngGame/main/TitleScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rngGame/main/TitleScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rngGame/main/WindowManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rngGame/main/WindowManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rngGame/tile/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rngGame/tile/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rngGame/tile/TileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rngGame/tile/TileManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694300782446</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixed errors?">
+      <option name="closed" value="true" />
+      <created>1694302219098</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1694302219098</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -150,6 +155,7 @@
     <MESSAGE value="Intellij IDEA setup" />
     <MESSAGE value=".gitignore" />
     <MESSAGE value="fixed some errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed some errors" />
+    <MESSAGE value="fixed errors?" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed errors?" />
   </component>
 </project>

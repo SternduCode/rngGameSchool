@@ -164,7 +164,7 @@ public class TitleScreen extends Pane{
 	 * Scale F 11.
 	 */
 	public void scaleF11() {
-		frames = ImgUtil.getScaledImages("./res/backgrounds/Main BG.gif");
+		frames = ImgUtil.getScaledImages("./res/backgrounds/Main BG.gif", WindowManager.getInstance().getBlockSize()*WindowManager.getInstance().getxBlocks(), WindowManager.getInstance().getBlockSize()*WindowManager.getInstance().getyBlocks());
 		iv.setImage(frames[0]);
 		Input.getInstance().setBlockInputs(true);
 	}
