@@ -67,22 +67,22 @@ public class TabMenu extends Pane {
 	 * @throws FileNotFoundException the file not found exception
 	 */
 	public TabMenu(GamePanel gamepanel) throws FileNotFoundException {
-		gamemenu = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
+		gamemenu = new ImageView(ImgUtil.getScaledImage("./res/gui/gamemenubackround.png"));
 
-		blank = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
+		blank = new ImageView(ImgUtil.getScaledImage("./res/gui/blackTransparent.png"));
 
 
-		invB = new Button("./res/gui/invAbutton1.png",gamepanel.getVgp());
+		invB = new Button("./res/gui/invAbutton1.png");
 
-		queB = new Button("./res/gui/queAbutton1.png",gamepanel.getVgp());
+		queB = new Button("./res/gui/queAbutton1.png");
 
-		leavB = new Button("./res/gui/leavAbutton1.png",gamepanel.getVgp());
+		leavB = new Button("./res/gui/leavAbutton1.png");
 
-		surebackround = new ImageView(ImgUtil.getScaledImage(gamepanel, "./res/gui/Sure.png"));
+		surebackround = new ImageView(ImgUtil.getScaledImage("./res/gui/Sure.png"));
 
-		sureY = new Button("./res/gui/SureY.png",gamepanel.getVgp());
+		sureY = new Button("./res/gui/SureY.png");
 
-		sureN = new Button("./res/gui/SureN.png",gamepanel.getVgp());
+		sureN = new Button("./res/gui/SureN.png");
 
 
 		buttongroup.getChildren().addAll(invB,queB,leavB);
@@ -170,8 +170,8 @@ public class TabMenu extends Pane {
 					});
 
 
-					ft.setFromY(gamepanel.getVgp().getGameHeight() / 2);
-					ib1.setFromY(gamepanel.getVgp().getGameHeight() / 2);
+					ft.setFromY(WindowManager.getInstance().getGameHeight() / 2);
+					ib1.setFromY(WindowManager.getInstance().getGameHeight() / 2);
 					ft.setToY(0);
 					ib1.setToY(0);
 					ft.play();
@@ -179,8 +179,8 @@ public class TabMenu extends Pane {
 
 
 				} else {
-					ft.setToY(gamepanel.getVgp().getGameHeight() / 2);
-					ib1.setToY(gamepanel.getVgp().getGameHeight() / 2);
+					ft.setToY(WindowManager.getInstance().getGameHeight() / 2);
+					ib1.setToY(WindowManager.getInstance().getGameHeight() / 2);
 					ft.play();
 					ib1.play();
 					closeTabm(false);
@@ -219,8 +219,8 @@ public class TabMenu extends Pane {
 	 * F 11 scale.
 	 */
 	public void f11Scale() {
-		gamemenu.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/gamemenubackround.png"));
-		blank.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/blackTransparent.png"));
+		gamemenu.setImage(ImgUtil.getScaledImage("./res/gui/gamemenubackround.png"));
+		blank.setImage(ImgUtil.getScaledImage("./res/gui/blackTransparent.png"));
 
 		invB.init("./res/gui/invAbutton1.png");
 
@@ -228,13 +228,13 @@ public class TabMenu extends Pane {
 
 		leavB.init("./res/gui/leavAbutton1.png");
 
-		surebackround.setImage(ImgUtil.getScaledImage(gamepanel, "./res/gui/Sure.png"));
-		sureY1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureY.png");
-		sureY2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureY2.png");
+		surebackround.setImage(ImgUtil.getScaledImage("./res/gui/Sure.png"));
+		sureY1 = ImgUtil.getScaledImage("./res/gui/SureY.png");
+		sureY2 = ImgUtil.getScaledImage("./res/gui/SureY2.png");
 		sureY.setImage(sureY1);
 
-		sureN1 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN.png");
-		sureN2 = ImgUtil.getScaledImage(gamepanel, "./res/gui/SureN2.png");
+		sureN1 = ImgUtil.getScaledImage("./res/gui/SureN.png");
+		sureN2 = ImgUtil.getScaledImage("./res/gui/SureN2.png");
 		sureN.setImage(sureN1);
 
 		Inventory.scaleF11();

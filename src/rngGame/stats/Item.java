@@ -35,7 +35,7 @@ public class Item {
 	 * @param gp the gp
 	 * @return the t1
 	 */
-	public Image getImage(GamePanel gp) { return ImgUtil.getScaledImage(gp, path); }
+	public Image getImage(GamePanel gp) { return ImgUtil.getScaledImage(path); }
 
 	/**
 	 * Gets the rarity.

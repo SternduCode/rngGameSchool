@@ -52,8 +52,8 @@ public class TileManager extends Pane {
 				}
 
 			}, null, x, y, null, null, 0, 0);
-			setWidth(gp.getBlockSizeX());
-			setHeight(gp.getBlockSizeY());
+			setWidth(WindowManager.getInstance().getBlockSizeX());
+			setHeight(WindowManager.getInstance().getBlockSizeY());
 
 		}
 
@@ -198,7 +198,7 @@ public class TileManager extends Pane {
 			double[] posi = getStartingPosition();
 			gp.getPlayer()
 			.setPosition(new double[] {
-					posi[0] * gp.getScalingFactorX(), posi[1] * gp.getScalingFactorY()
+					posi[0] * WindowManager.getInstance().getScalingFactorX(), posi[1] * WindowManager.getInstance().getScalingFactorY()
 			});
 		});
 		mextra.getItems().add(backToSpawn);
@@ -251,7 +251,7 @@ public class TileManager extends Pane {
 
 		List<TextureHolder>	ths	= new ArrayList<>();
 
-		int x = (int) collidable.getX() / gp.getBlockSizeX(), y = (int) collidable.getY() / gp.getBlockSizeY();
+		int x = (int) collidable.getX() / WindowManager.getInstance().getBlockSizeX(), y = (int) collidable.getY() / WindowManager.getInstance().getBlockSizeY();
 
 		for (int i = -2; i < 3; i++) for (int j = -2; j < 3; j++)
 			if (x + i >= 0 && y + j >= 0 && y + j < map.size() && x + i < map.get(y + j).size()) ths.add(map.get(y + j).get(x + i));
@@ -274,8 +274,8 @@ public class TileManager extends Pane {
 	public void contextMenu(ActionEvent e) {
 		try {
 			if (requester.get() instanceof FakeTextureHolder fth && e.getSource() instanceof MenuItemWTile miw) {
-				int blockPosX = (int) fth.getLayoutX() / gp.getBlockSizeX() - (fth.getLayoutX() < 0 ? 1 : 0);
-				int	blockPosY	= (int) fth.getLayoutY() / gp.getBlockSizeY() - (fth.getLayoutY() < 0 ? 1 : 0);
+				int blockPosX = (int) fth.getLayoutX() / WindowManager.getInstance().getBlockSizeX() - (fth.getLayoutX() < 0 ? 1 : 0);
+				int	blockPosY	= (int) fth.getLayoutY() / WindowManager.getInstance().getBlockSizeY() - (fth.getLayoutY() < 0 ? 1 : 0);
 				System.out.println(blockPosY);
 				if (blockPosY < 0) for (int j = blockPosY; j < 0; j++) {
 					mapTileNum.add(0, new ArrayList<>());
@@ -284,34 +284,34 @@ public class TileManager extends Pane {
 
 					map.add(0, new ArrayList<>());
 
-					for (Building b : buildings) b.setY(b.getY() + gp.getBlockSizeY());
+					for (Building b : buildings) b.setY(b.getY() + WindowManager.getInstance().getBlockSizeY());
 
-					for (NPC b : npcs) b.setY(b.getY() + gp.getBlockSizeY());
+					for (NPC b : npcs) b.setY(b.getY() + WindowManager.getInstance().getBlockSizeY());
 
-					for (MobRan b : mobs) b.setY(b.getY() + gp.getBlockSizeY());
+					for (MobRan b : mobs) b.setY(b.getY() + WindowManager.getInstance().getBlockSizeY());
 
-					gp.getPlayer().setPosition(gp.getPlayer().getX(), gp.getPlayer().getY() + gp.getBlockSizeY());
+					gp.getPlayer().setPosition(gp.getPlayer().getX(), gp.getPlayer().getY() + WindowManager.getInstance().getBlockSizeY());
 
-					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutY(en.getValue().getLayoutY() + gp.getBlockSizeY());
+					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutY(en.getValue().getLayoutY() + WindowManager.getInstance().getBlockSizeY());
 
-					startingPosition[1] = startingPosition[1] + gp.getBlockSize();
+					startingPosition[1] = startingPosition[1] + WindowManager.getInstance().getBlockSize();
 				}
 				if (blockPosX < 0) for (int i = blockPosX; i < 0; i++) {
 					for (List<Integer> row : mapTileNum) row.add(0, 0);
 
 					for (List<TextureHolder> row : map) row.add(0, null);
 
-					for (Building b : buildings) b.setX(b.getX() + gp.getBlockSizeX());
+					for (Building b : buildings) b.setX(b.getX() + WindowManager.getInstance().getBlockSizeX());
 
-					for (NPC b : npcs) b.setX(b.getX() + gp.getBlockSizeX());
+					for (NPC b : npcs) b.setX(b.getX() + WindowManager.getInstance().getBlockSizeX());
 
-					for (MobRan b : mobs) b.setX(b.getX() + gp.getBlockSizeX());
+					for (MobRan b : mobs) b.setX(b.getX() + WindowManager.getInstance().getBlockSizeX());
 
-					gp.getPlayer().setPosition(gp.getPlayer().getX() + gp.getBlockSizeX(), gp.getPlayer().getY());
+					gp.getPlayer().setPosition(gp.getPlayer().getX() + WindowManager.getInstance().getBlockSizeX(), gp.getPlayer().getY());
 
-					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutX(en.getValue().getLayoutX() + gp.getBlockSizeX());
+					for (Entry<Point2D, Circle> en : gp.getLgp().getPoints().entrySet()) en.getValue().setLayoutX(en.getValue().getLayoutX() + WindowManager.getInstance().getBlockSizeX());
 
-					startingPosition[0] = startingPosition[0] + gp.getBlockSize();
+					startingPosition[0] = startingPosition[0] + WindowManager.getInstance().getBlockSize();
 				}
 				if (blockPosY >= mapTileNum.size()) for(int j = blockPosY - mapTileNum.size(); j >= 0; j--) {
 
@@ -741,10 +741,10 @@ public class TileManager extends Pane {
 	 */
 	public List<List<TextureHolder>> getPartOfMap(double x, double y, double width, double height) {
 		int lx, ly, w, h;
-		lx	= (int) Math.floor( (x - gp.getPlayer().getScreenX() + gp.getPlayer().getX()) / gp.getBlockSizeX());
-		ly	= (int) Math.floor( (y - gp.getPlayer().getScreenY() + gp.getPlayer().getY()) / gp.getBlockSizeY());
-		w	= (int) Math.floor(width / gp.getBlockSizeX());
-		h	= (int) Math.floor(height / gp.getBlockSizeY());
+		lx	= (int) Math.floor( (x - gp.getPlayer().getScreenX() + gp.getPlayer().getX()) / WindowManager.getInstance().getBlockSizeX());
+		ly	= (int) Math.floor( (y - gp.getPlayer().getScreenY() + gp.getPlayer().getY()) / WindowManager.getInstance().getBlockSizeY());
+		w	= (int) Math.floor(width / WindowManager.getInstance().getBlockSizeX());
+		h	= (int) Math.floor(height / WindowManager.getInstance().getBlockSizeY());
 
 		List<List<TextureHolder>> li = new ArrayList<>();
 
@@ -814,15 +814,15 @@ public class TileManager extends Pane {
 	 * @return the tile at x and y
 	 */
 	public TextureHolder getTileAt(double x, double y) {
-		int	tx	= (int) Math.floor(x / gp.getBlockSizeX());
-		int	ty	= (int) Math.floor(y / gp.getBlockSizeY());
+		int	tx	= (int) Math.floor(x / WindowManager.getInstance().getBlockSizeX());
+		int	ty	= (int) Math.floor(y / WindowManager.getInstance().getBlockSizeY());
 		if (x < 0) tx--;
 		if (y < 0) ty--;
 		try {
 			return map.get(ty).get(tx);
 		} catch (IndexOutOfBoundsException e) {
-			return new FakeTextureHolder(tx * gp.getBlockSizeX() - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
-					ty * gp.getBlockSizeY() - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
+			return new FakeTextureHolder(tx * WindowManager.getInstance().getBlockSizeX() - gp.getPlayer().getX() + gp.getPlayer().getScreenX(),
+					ty * WindowManager.getInstance().getBlockSizeY() - gp.getPlayer().getY() + gp.getPlayer().getScreenY());
 		}
 
 	}
@@ -883,9 +883,9 @@ public class TileManager extends Pane {
 	 */
 	public void paste(ActionEvent ae) {
 		TextureHolder th = requester.getValue();
-		if (gp.getLgp().getClipboard().size() > 0) {
+		if (!gp.getLgp().getClipboard().isEmpty()) {
 			List<List<TextureHolder>> partOfMap = getPartOfMap(th.getLayoutX(), th.getLayoutY(),
-					gp.getLgp().getClipboard().get(0).size() * gp.getBlockSizeX(), gp.getLgp().getClipboard().size() * gp.getBlockSizeY());
+					gp.getLgp().getClipboard().get(0).size() * WindowManager.getInstance().getBlockSizeX(), gp.getLgp().getClipboard().size() * WindowManager.getInstance().getBlockSizeY());
 			System.out.println(partOfMap);
 			for (int i = 0; i < partOfMap.size(); i++)
 				for (int j = 0; j < partOfMap.get(i).size(); j++) partOfMap.get(i).get(j).setTile(gp.getLgp().getClipboard().get(i).get(j).getTile());
@@ -1093,7 +1093,7 @@ public class TileManager extends Pane {
 						t.poly = new ArrayList<>();
 						boolean s = false;
 						for (int i = 0; i < length; i++)
-							t.poly.add(raf.readDouble() * ( (s = !s) ? gp.getScalingFactorX() : gp.getScalingFactorY()));
+							t.poly.add(raf.readDouble() * ( (s = !s) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -1204,13 +1204,13 @@ public class TileManager extends Pane {
 		Player p = gp.getPlayer();
 
 		if (exitMap != null) {
-			int	worldX	= (int) (exitPosition[0] * gp.getScalingFactorX());
-			int	worldY	= (int) (exitPosition[1] * gp.getScalingFactorY());
+			int	worldX	= (int) (exitPosition[0] * WindowManager.getInstance().getScalingFactorX());
+			int	worldY	= (int) (exitPosition[1] * WindowManager.getInstance().getScalingFactorY());
 
-			if (worldX + gp.getBlockSizeX() / 2 - p.getX() < 105 * gp.getScalingFactorX()
-					&& worldX + gp.getBlockSizeX() / 2 - p.getX() > -45 * gp.getScalingFactorX() &&
-					worldY + gp.getBlockSizeY() / 2 - p.getY() < 25 * gp.getScalingFactorY()
-					&& worldY + gp.getBlockSizeY() / 2 - p.getY() > 0)
+			if (worldX + WindowManager.getInstance().getBlockSizeX() / 2 - p.getX() < 105 * WindowManager.getInstance().getScalingFactorX()
+					&& worldX + WindowManager.getInstance().getBlockSizeX() / 2 - p.getX() > -45 * WindowManager.getInstance().getScalingFactorX() &&
+					worldY + WindowManager.getInstance().getBlockSizeY() / 2 - p.getY() < 25 * WindowManager.getInstance().getScalingFactorY()
+					&& worldY + WindowManager.getInstance().getBlockSizeY() / 2 - p.getY() > 0)
 				gp.getLgp().setMap("./res/maps/" + exitMap, exitStartingPosition);
 		}
 
@@ -1220,18 +1220,18 @@ public class TileManager extends Pane {
 		while (worldRow < mapTileNum.size()) {
 			int tileNum = mapTileNum.get(worldRow).get(worldCol);
 
-			int		worldX	= worldCol * gp.getBlockSizeX();
-			int		worldY	= worldRow * gp.getBlockSizeY();
+			int		worldX	= worldCol * WindowManager.getInstance().getBlockSizeX();
+			int		worldY	= worldRow * WindowManager.getInstance().getBlockSizeY();
 			double	screenX	= worldX - p.getX() + p.getScreenX();
 			double	screenY	= worldY - p.getY() + p.getScreenY();
 
 			if (map.size() == worldRow)
 				map.add(new ArrayList<>());
 
-			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - gp.getBlockSizeX() -
+			if (worldX + p.getSize() * 1.5 > p.getX() - p.getScreenX() && worldX - WindowManager.getInstance().getBlockSizeX() -
 					p.getSize() * 1.5 < p.getX() + p.getScreenX()
-					&& worldY + gp.getBlockSizeY() + p.getSize() > p.getY() - p.getScreenY()
-					&& worldY - gp.getBlockSizeY() - p.getSize() < p.getY() + p.getScreenY()) {
+					&& worldY + WindowManager.getInstance().getBlockSizeY() + p.getSize() > p.getY() - p.getScreenY()
+					&& worldY - WindowManager.getInstance().getBlockSizeY() - p.getSize() < p.getY() + p.getScreenY()) {
 				TextureHolder th = null;
 				if (map.get(worldRow).size() > worldCol)
 					th = map.get(worldRow).get(worldCol);

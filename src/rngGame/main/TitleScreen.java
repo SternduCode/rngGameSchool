@@ -2,8 +2,6 @@ package rngGame.main;
 
 import java.io.FileNotFoundException;
 
-import javax.print.attribute.standard.PrinterMakeAndModel;
-
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.image.*;
@@ -11,9 +9,9 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.Button;
+import rngGame.ui.SoundHandler;
 import rngGame.visual.AnimatedImage;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TitleScreen.
  */
@@ -45,18 +43,12 @@ public class TitleScreen extends Pane{
 	 * Instantiates a new title screen.
 	 */
 	public TitleScreen() {
-		try {
-			gp = new GamePanel();
-			Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 		iv = new ImageView();
 
-		storyView = new AnimatedImage("./res/story/Story0.gif", gp.getVgp(), 7);
+		storyView = new AnimatedImage("./res/story/Story0.gif", 7);
 		
 		storyView.setOnMouseReleased(me -> {
-			gp.makeSound("click.wav");
+			SoundHandler.getInstance().makeSound("click.wav");
 			if(index < 6) {
 			index++;
 			storyView.init("./res/story/Story"+ index +".gif");
@@ -65,18 +57,29 @@ public class TitleScreen extends Pane{
 			}
 		});
 		
-		clous = new Button("./res/backgrounds/Clous.png", gp.getVgp());
+		clous = new Button("./res/backgrounds/Clous.png");
 		clous.setOnPressed(e -> clous.init("./res/backgrounds/Clous2.png"));
 		clous.setOnReleased(e -> {
 			clous.init("./res/backgrounds/Clous.png");
 			System.exit(0);
 		});
 
-		ploy = new Button("./res/backgrounds/Ploy.png", gp.getVgp());
+		ploy = new Button("./res/backgrounds/Ploy.png");
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
-			gp.makeSound("click.wav");
+			SoundHandler.getInstance().makeSound("click.wav");
+			try {
+				gp = new GamePanel();
+				Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
+				Input.getInstance().setBlockInputs(false);
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			}
 			gp.getVgp().goIntoLoadingScreen();
+			getChildren().add(0, gp.getVgp());
+
+			gp.getVgp().startLogicThread();
+
 			new Thread(() -> {
 				try {
 					Thread.sleep(200);
@@ -106,8 +109,8 @@ public class TitleScreen extends Pane{
 
 		});
 
-		settins	= new Button("./res/backgrounds/Settins.png", gp.getVgp());
-		pfail	= new Button("./res/backgrounds/Pfail.png", gp.getVgp());
+		settins	= new Button("./res/backgrounds/Settins.png");
+		pfail	= new Button("./res/backgrounds/Pfail.png");
 		pfail.setVisible(false);
 		settins.setOnPressed(e -> {
 			settins.init("./res/backgrounds/Settins2.png");
@@ -132,7 +135,7 @@ public class TitleScreen extends Pane{
 
 		});
 
-		getChildren().addAll(gp.getVgp(), iv, ploy, settins, clous, pfail,storyView);
+		getChildren().addAll(iv, ploy, settins, clous, pfail,storyView);
 		new Thread(()->{
 			while (true) {
 				try {
@@ -160,11 +163,9 @@ public class TitleScreen extends Pane{
 	 * Scale F 11.
 	 */
 	public void scaleF11() {
-		frames = ImgUtil.getScaledImages(gp.getVgp(), "./res/backgrounds/Main BG.gif");
+		frames = ImgUtil.getScaledImages("./res/backgrounds/Main BG.gif");
 		iv.setImage(frames[0]);
-		gp.getVgp().setBlockUserInputs(true);
-
-		gp.getVgp().startLogicThread();
+		Input.getInstance().setBlockInputs(true);
 	}
 
 }

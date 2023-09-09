@@ -18,6 +18,8 @@ import rngGame.visual.GamePanel;
  */
 public class Input {
 
+	private static final int CLASSINDEX = 2;
+
 	/**
 	 * The  KeyHandlerKeyCodePair.
 	 */
@@ -31,6 +33,8 @@ public class Input {
 
 	/** The Constant INSTANCE. */
 	private static final Input INSTANCE = new Input();
+
+	private boolean blockInputs;
 
 	/** The key up handlers. */
 	private final Map<KeyCode, List<Consumer<ModKeysState>>> keyDownHandlers = new HashMap<>(),
@@ -133,6 +137,10 @@ public class Input {
 		if (p.getParent() instanceof TextureHolder th) if (th.getTile().poly != null) th.getTile().poly.clear();
 	}
 
+	public void setBlockInputs(boolean b) { blockInputs = b; }
+
+	public boolean isBlockInputs() { return blockInputs || (gamepanel != null && gamepanel.isInLoadingScreen()); }
+
 	/**
 	 * Save.
 	 *
@@ -152,7 +160,7 @@ public class Input {
 			raf.writeInt(t.getPoints().size());
 			boolean s = false;
 			for (Double element: t.getPoints())
-				raf.writeDouble((long) (element / ( (s = !s) ? gamepanel.getScalingFactorX() : gamepanel.getScalingFactorY())));
+				raf.writeDouble((long) (element / ( ( s = !s ) ? WindowManager.getInstance().getScalingFactorX() : WindowManager.getInstance().getScalingFactorY())));
 			raf.setLength(4l + t.getPoints().size() * 8l);
 			raf.close();
 
@@ -228,7 +236,7 @@ public class Input {
 	 * @param e the e
 	 */
 	public void keyPressed(KeyEvent e) {
-		if (!gamepanel.isInLoadingScreen()) {
+		if (!isBlockInputs()) {
 			KeyCode code = e.getCode();
 
 			ModKeysState modKeysState = new ModKeysState(ctrlState, shiftState, capsState, superState, altState,
@@ -249,7 +257,7 @@ public class Input {
 	 * @param e the e
 	 */
 	public void keyReleased(KeyEvent e) {
-		if (!gamepanel.isInLoadingScreen()) {
+		if (!isBlockInputs()) {
 
 			KeyCode code = e.getCode();
 
@@ -285,7 +293,7 @@ public class Input {
 	 * @param me the me
 	 */
 	public void mouseDragged(MouseEvent me) {
-		if (gamepanel != null && !gamepanel.isInLoadingScreen()) if (move != null) {
+		if (!isBlockInputs()) if (move != null) {
 			move.setX((long) (me.getSceneX() - gamepanel.getPlayer().getScreenX() + gamepanel.getPlayer().getX() - move.getWidth() / 2));
 			move.setY((long) (me.getSceneY() - gamepanel.getPlayer().getScreenY() + gamepanel.getPlayer().getY() - move.getHeight() / 2));
 		}
@@ -415,13 +423,18 @@ public class Input {
 	 */
 	public void setKeyHandler(String name, Consumer<ModKeysState> handler, KeyCode keyCode, boolean keyUp) {
 		try {
-			String className = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName()).getSimpleName();
+			String className = Class.forName(Thread.currentThread().getStackTrace()[CLASSINDEX].getClassName()).getSimpleName();
 			if (keyHandlers.containsKey(className + "|" + name)) {
-				KeyHandlerKeyCodePair khkcp = keyHandlers.remove(className + "|" + name);
-				if (khkcp.up()) keyUpHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
-				else keyDownHandlers.get(khkcp.keyCode()).remove(khkcp.handler());
+				KeyHandlerKeyCodePair keyHandlerKeyCodePair = keyHandlers.remove(className + "|" + name);
+
+				// Remove the previous key-up or -down handler
+				if (keyHandlerKeyCodePair.up()) keyUpHandlers.get(keyHandlerKeyCodePair.keyCode()).remove(keyHandlerKeyCodePair.handler());
+				else keyDownHandlers.get(keyHandlerKeyCodePair.keyCode()).remove(keyHandlerKeyCodePair.handler());
 			}
+
 			keyHandlers.put(className + "|" + name, new KeyHandlerKeyCodePair(handler, keyCode, keyUp));
+
+			// Add the new key-up or -down handler
 			if (keyUp) {
 				if (keyUpHandlers.containsKey(keyCode)) keyUpHandlers.get(keyCode).add(handler);
 				else {
@@ -429,12 +442,13 @@ public class Input {
 					li.add(handler);
 					keyUpHandlers.put(keyCode, li);
 				}
-			} else if (keyDownHandlers.containsKey(keyCode)) keyDownHandlers.get(keyCode).add(handler);
-			else {
-				List<Consumer<ModKeysState>> li = new ArrayList<>();
-				li.add(handler);
-				keyDownHandlers.put(keyCode, li);
-			}
+			} else
+				if (keyDownHandlers.containsKey(keyCode)) keyDownHandlers.get(keyCode).add(handler);
+				else {
+					List<Consumer<ModKeysState>> li = new ArrayList<>();
+					li.add(handler);
+					keyDownHandlers.put(keyCode, li);
+				}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -468,9 +482,9 @@ public class Input {
 		if (((Stage) gamepanel.getScene().getWindow()).isFullScreen())
 			((Stage) gamepanel.getScene().getWindow()).setFullScreen(false);
 		else((Stage) gamepanel.getScene().getWindow()).setFullScreen(true);
-		if (gamepanel.getScalingFactorX() > 1) scaleFactorX = 1;
+		if (WindowManager.getInstance().getScalingFactorX() > 1) scaleFactorX = 1;
 		else scaleFactorX = gamepanel.getScene().getWidth() / scaleFactorX;
-		if (gamepanel.getScalingFactorY() > 1) scaleFactorY = 1;
+		if (WindowManager.getInstance().getScalingFactorY() > 1) scaleFactorY = 1;
 		else scaleFactorY = gamepanel.getScene().getHeight() / scaleFactorY;
 		System.out.println(scaleFactorX + " " + scaleFactorY);
 		gamepanel.changeScalingFactor(scaleFactorX, scaleFactorY);

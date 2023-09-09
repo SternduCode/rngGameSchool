@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import rngGame.main.Input;
+import rngGame.main.WindowManager;
 import rngGame.tile.TileManager;
 import rngGame.visual.GamePanel;
 
@@ -70,8 +71,8 @@ public class Player extends Entity {
 
 		gamepanel = gamePanel;
 
-		screenX	= gamePanel.getGameWidth() / 2 - getSize() / 2;	// Place the player in the middle of the screen
-		screenY	= gamePanel.getGameHeight() / 2 - getSize() / 2;
+		screenX	= WindowManager.getInstance().getGameWidth() / 2 - getSize() / 2;	// Place the player in the middle of the screen
+		screenY	= WindowManager.getInstance().getGameHeight() / 2 - getSize() / 2;
 
 		setPosition(0, 0); // Put player on upper left corner of the map; can be overridden in map file
 
@@ -126,13 +127,13 @@ public class Player extends Entity {
 		collisionBoxes.forEach((key, poly) -> {
 			poly.getPoints().clear();
 			poly.setFill(Color.color(1, 0, 1, 0.75));
-			poly.getPoints().addAll(colliBoxX * gamepanel.getScalingFactorX() - 0.5,
-					colliBoxY * gamepanel.getScalingFactorY() - 0.5, colliBoxX * gamepanel.getScalingFactorX() - 0.5,
-					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY() + 0.5,
-					(colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX() + 0.5,
-					(colliBoxY + colliBoxHeight) * gamepanel.getScalingFactorY() + 0.5,
-					(colliBoxX + colliBoxWidth) * gamepanel.getScalingFactorX() + 0.5,
-					colliBoxY * gamepanel.getScalingFactorY() - 0.5);
+			poly.getPoints().addAll(colliBoxX * WindowManager.getInstance().getScalingFactorX() - 0.5,
+					colliBoxY * WindowManager.getInstance().getScalingFactorY() - 0.5, colliBoxX * WindowManager.getInstance().getScalingFactorX() - 0.5,
+					(colliBoxY + colliBoxHeight) * WindowManager.getInstance().getScalingFactorY() + 0.5,
+					(colliBoxX + colliBoxWidth) * WindowManager.getInstance().getScalingFactorX() + 0.5,
+					(colliBoxY + colliBoxHeight) * WindowManager.getInstance().getScalingFactorY() + 0.5,
+					(colliBoxX + colliBoxWidth) * WindowManager.getInstance().getScalingFactorX() + 0.5,
+					colliBoxY * WindowManager.getInstance().getScalingFactorY() - 0.5);
 		});
 	}
 
@@ -141,28 +142,28 @@ public class Player extends Entity {
 	 *
 	 * @return the colli box height
 	 */
-	public double getColliBoxHeight() { return colliBoxHeight * gamepanel.getScalingFactorY(); }
+	public double getColliBoxHeight() { return colliBoxHeight * WindowManager.getInstance().getScalingFactorY(); }
 
 	/**
 	 * Gets the colli box width.
 	 *
 	 * @return the colli box width
 	 */
-	public double getColliBoxWidth() { return colliBoxWidth * gamepanel.getScalingFactorX(); }
+	public double getColliBoxWidth() { return colliBoxWidth * WindowManager.getInstance().getScalingFactorX(); }
 
 	/**
 	 * Gets the colli box X.
 	 *
 	 * @return the colli box X
 	 */
-	public double getColliBoxX() { return colliBoxX * gamepanel.getScalingFactorX(); }
+	public double getColliBoxX() { return colliBoxX * WindowManager.getInstance().getScalingFactorX(); }
 
 	/**
 	 * Gets the colli box Y.
 	 *
 	 * @return the colli box Y
 	 */
-	public double getColliBoxY() { return colliBoxY * gamepanel.getScalingFactorY(); }
+	public double getColliBoxY() { return colliBoxY * WindowManager.getInstance().getScalingFactorY(); }
 
 	/**
 	 * Gets the player image.
@@ -306,17 +307,17 @@ public class Player extends Entity {
 		if (w.get()) { // Hoch
 			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("upL");
 			else setCurrentKey("up");
-			y -= updateSpeed * gamepanel.getScalingFactorY();
+			y -= updateSpeed * WindowManager.getInstance().getScalingFactorY();
 		} else if (s.get()) { // Runter
 			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("downL");
 			else setCurrentKey("down");
-			y += updateSpeed * gamepanel.getScalingFactorY();
+			y += updateSpeed * WindowManager.getInstance().getScalingFactorY();
 		} else if (a.get()) { // Links
 			setCurrentKey("left");
-			x -= updateSpeed * gamepanel.getScalingFactorX();
+			x -= updateSpeed * WindowManager.getInstance().getScalingFactorX();
 		} else if (d.get()) { // Rechts
 			setCurrentKey("right");
-			x += updateSpeed * gamepanel.getScalingFactorX();
+			x += updateSpeed * WindowManager.getInstance().getScalingFactorX();
 		} else if (lastKey.contains("down")) { // Idle Runter
 			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
 			else setCurrentKey("idledown");
@@ -358,8 +359,8 @@ public class Player extends Entity {
 		oldX = x;
 		oldY = y;
 
-		screenX	= (int) (gamepanel.getGameWidth() / 2 - iv.getImage().getWidth() / 2);
-		screenY	= (int) (gamepanel.getGameHeight() / 2 - iv.getImage().getHeight() / 2);
+		screenX	= (int) (WindowManager.getInstance().getGameWidth() / 2 - iv.getImage().getWidth() / 2);
+		screenY	= (int) (WindowManager.getInstance().getGameHeight() / 2 - iv.getImage().getHeight() / 2);
 
 	}
 }

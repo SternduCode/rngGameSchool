@@ -1,6 +1,5 @@
 package rngGame.tile;
 
-import java.io.InputStream;
 import java.util.*;
 
 import javafx.scene.image.*;
@@ -41,7 +40,9 @@ public class Tile {
 
 		this.name = name;
 		if(!path.isEmpty()) {
-			images = ImgUtil.getScaledImages(gp, path, 128, 128);
+
+			images = ImgUtil.getScaledImages(path,128,128);
+
 		}
 		
 
