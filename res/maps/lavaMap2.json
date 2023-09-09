@@ -113,105 +113,6 @@
 			"layer" : [
 				0
 			]
-		},
-		{
-			"requestedSize" : [
-				192,
-				192
-			],
-			"textures" : {
-				"default" : "Booky.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1730.00,
-				1113.00
-			],
-			"type" : "MonsterNPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"dir" : "fire",
-			"layer" : [
-				0
-			]
-		},
-		{
-			"requestedSize" : [
-				192,
-				192
-			],
-			"textures" : {
-				"default" : "Booky.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1730.00,
-				1113.00
-			],
-			"type" : "MonsterNPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"dir" : "fire",
-			"layer" : [
-				0
-			]
-		},
-		{
-			"requestedSize" : [
-				192,
-				192
-			],
-			"textures" : {
-				"default" : "Booky.png"
-			},
-			"extraData" : [
-				{
-					
-				}
-			],
-			"background" : [
-				false
-			],
-			"fps" : [
-				7.00000
-			],
-			"position" : [
-				1730.00,
-				1113.00
-			],
-			"type" : "MonsterNPC",
-			"originalSize" : [
-				64,
-				64
-			],
-			"dir" : "fire",
-			"layer" : [
-				0
-			]
 		}
 	],
 	"buildings" : [
@@ -387,7 +288,7 @@
 	"map" : {
 		"playerLayer" : 0,
 		"textures" : [
-			"Wasser.png",
+			"Wasser.gif",
 			"SteinEckeOL.png",
 			"SteinRandO.png",
 			"SteinEckeOR.png",
@@ -402,11 +303,11 @@
 			"SteinRandUL.png",
 			"SteinGehangR1.png",
 			"SteinGehangL1.png",
-			"SteinGehangR2.png",
+			"SteinGehangR2.gif",
 			"SteinRandU.png",
-			"SteinGehangL2.png",
+			"SteinGehangL2.gif",
 			"SteinGehangM1.png",
-			"SteinGehangM2.png",
+			"SteinGehangM2.gif",
 			"LavaS3.png"
 		],
 		"startingPosition" : [
@@ -441,9 +342,9 @@
 			"0 0 0 0 0 0 0 0 0 0 0 11 16 16 12 5 5 5 5 5 5 8 18 4 5 5 5 8 0 0 17 19 19 19 19 19 19 15 0 0 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 14 18 18 4 5 5 5 5 9 16 10 19 4 5 5 5 6 2 3 0 1 2 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 17 1 2 7 5 5 5 5 8 18 13 0 4 5 5 5 5 5 8 0 4 5 6 2 2 2 3 0 0 0 0 0 0 0 0 0 0 0 0",
-			"0 0 0 0 0 0 0 0 0 0 0 0 4 5 5 5 5 5 5 8 19 15 0 4 5 5 5 5 9 10 0 4 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
-			"0 0 0 0 0 0 0 0 0 0 0 0 11 16 16 16 16 16 12 8 0 1 2 7 5 5 5 5 8 18 1 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
-			"0 0 0 0 0 0 0 0 0 0 0 0 14 18 18 18 18 18 4 8 0 4 5 5 5 5 5 5 6 2 7 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
+			"0 0 0 0 0 0 0 0 0 0 0 0 4 5 5 5 5 5 5 8 19 15 0 4 5 5 5 5 5 8 0 4 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
+			"0 0 0 0 0 0 0 0 0 0 0 0 11 16 16 16 16 16 12 8 0 1 2 7 5 5 5 5 5 6 2 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
+			"0 0 0 0 0 0 0 0 0 0 0 0 14 18 18 18 18 18 4 8 0 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 0 17 19 19 19 19 19 4 8 0 4 5 5 5 5 5 5 5 9 16 12 5 5 5 5 5 6 2 3 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 11 10 0 4 5 5 5 5 5 5 5 8 18 4 5 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0",
 			"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 14 13 0 4 5 5 5 5 5 5 9 10 19 4 5 5 5 5 5 5 5 8 0 0 0 0 0 0 0 0 0 0",

@@ -158,7 +158,7 @@ public class GamePanel extends Pane {
 	private double scalingFactorX = 1, scalingFactorY = 1;
 
 	/** The block size. */
-	private final int blockSize = 48;
+	private final int blockSize = 128;
 
 	/** The x blocks. */
 	private final int xBlocks = 20;
@@ -542,23 +542,25 @@ public class GamePanel extends Pane {
 	public void setBlockUserInputs(boolean blockUserInputs) { this.blockUserInputs = blockUserInputs; }
 
 	public void setLayout(Positions pos, ImageView bild) {
-		int px = pos.x;
-		int py = pos.y;
+		
+		int px = (int) (pos.x*getScalingFactorX());
+		int py = (int) (pos.y*getScalingFactorY());
+		
 		int bx = (int) bild.getImage().getWidth();
 		int by = (int) bild.getImage().getHeight();
 		
 		switch (pos) {
-		case Topleft 		-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py);} 
-		case Topmiddle 		-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py);}
-		case Topright 		-> 	{bild.setLayoutX(px-bx); 	bild.setLayoutY(py);}
+			case Topleft 		-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py);} 
+			case Topmiddle 		-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py);}
+			case Topright 		-> 	{bild.setLayoutX(px-bx); 	bild.setLayoutY(py);}
 		
-		case Middleleft 	-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py-by/2);}
-		case Mcenter 		-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py-by/2);}
-		case Middleright 	->	{bild.setLayoutX(px-by); 	bild.setLayoutY(py-by/2);}
+			case Middleleft 	-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py-by/2);}
+			case Mcenter 		-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py-by/2);}
+			case Middleright 	->	{bild.setLayoutX(px-by); 	bild.setLayoutY(py-by/2);}
 		
-		case Bottomleft 	-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py-by);}
-		case Bottommiddle 	-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py-by);}
-		case Bottomright 	-> 	{bild.setLayoutX(px-bx);    bild.setLayoutY(py-by);}
+			case Bottomleft 	-> 	{bild.setLayoutX(px); 		bild.setLayoutY(py-by);}
+			case Bottommiddle 	-> 	{bild.setLayoutX(px-bx/2); 	bild.setLayoutY(py-by);}
+			case Bottomright 	-> 	{bild.setLayoutX(px-bx);    bild.setLayoutY(py-by);}
 		}
 	}
 	
