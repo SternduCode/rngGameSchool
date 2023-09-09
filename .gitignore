@@ -21,3 +21,7 @@ hs_err_pid*
 *.moreunit.prefs
 /jdk19RngGameEdition/
 /instructions.txt
+/.gradle/
+/.settings/org.eclipse.buildship.core.prefs
+/.idea/codeStyles/Project.xml
+/.idea/misc.xml
