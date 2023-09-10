@@ -113,9 +113,6 @@ public class GamePanel extends Pane {
 
 	}
 
-	/** The loading screen. */
-	private final ImageView loadingScreen;
-
 	/** The fps label. */
 	private final Label fpsLabel;
 
@@ -184,9 +181,6 @@ public class GamePanel extends Pane {
 
 		getOverlay().setDisable(true);
 
-		loadingScreen = new ImageView(new Image(new FileInputStream(new File("./res/gui/Loadingscreen.gif"))));
-		getLoadingScreen().setDisable(true);
-
 		fpsLabel = new Label(fps + "");
 		fpsLabel.setBackground(new Background(new BackgroundFill(Color.color(.5, .5, .5, 1), null, null)));
 		fpsLabel.setTextFill(Color.color(.1, .1, .1));
@@ -213,17 +207,7 @@ public class GamePanel extends Pane {
 		gamemenu = new TabMenu(getLgp());
 
 		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
-				gamemenu, fpsLabel,
-				getLoadingScreen());
-	}
-
-	/**
-	 * Adds the animated image.
-	 *
-	 * @param animatedImage the animated image
-	 */
-	public void addAnimatedImage(AnimatedImage animatedImage) {
-		animatedImages.add(animatedImage);
+				gamemenu, fpsLabel);
 	}
 
 	/**
@@ -287,13 +271,6 @@ public class GamePanel extends Pane {
 	public rngGame.main.GamePanel getLgp() { return lgp; }
 
 	/**
-	 * Gets the loading screen.
-	 *
-	 * @return the loading screen
-	 */
-	public ImageView getLoadingScreen() { return loadingScreen; }
-
-	/**
 	 * Gets the overlay.
 	 *
 	 * @return the overlay
@@ -336,33 +313,13 @@ public class GamePanel extends Pane {
 	public List<Group> getViewGroups() { return getLayerGroup().getGroupChildren(); }
 
 	/**
-	 * Go into loading screen.
-	 */
-	public void goIntoLoadingScreen() {
-		getLoadingScreen().setFitWidth(getLoadingScreen().getImage().getWidth() * getScalingFactorX());
-		getLoadingScreen().setFitHeight(getLoadingScreen().getImage().getHeight() * getScalingFactorY());
-
-		FadeTransition ft = new FadeTransition(Duration.millis(250), getLoadingScreen());
-		ft.setFromValue(0);
-		ft.setToValue(1);
-		ft.play();
-	}
-
-	/**
 	 * Checks if is block user inputs.
 	 *
 	 * @return true, if is block user inputs
 	 */
 	public boolean isBlockUserInputs() {
-		return isInLoadingScreen() || blockUserInputs;
+		return LoadingScreen.INSTANCE.isInLoadingScreen() || blockUserInputs;
 	}
-
-	/**
-	 * Checks if is in loading screen.
-	 *
-	 * @return true, if is in loading screen
-	 */
-	public boolean isInLoadingScreen() { return getLoadingScreen().getOpacity() > .5; }
 
 	/**
 	 * Reload.

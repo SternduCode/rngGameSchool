@@ -70,10 +70,14 @@ public class TitleScreen extends Pane{
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
 			SoundHandler.getInstance().makeSound("click.wav");
+			LoadingScreen.INSTANCE.goIntoLoadingScreen();
+			GamePanel gp = null;
 			try {
 				gp = new GamePanel();
 				Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
 				WindowManager.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to WindowManager
+				getChildren().clear();
+				getChildren().addAll(gp.getVgp(), LoadingScreen.INSTANCE);
 				gp.getVgp().setBlockUserInputs(false);
 			} catch (FileNotFoundException ex) {
 				ex.printStackTrace();
@@ -100,10 +104,7 @@ public class TitleScreen extends Pane{
 
 				try {
 					Thread.sleep(2000);
-					FadeTransition ft = new FadeTransition(Duration.millis(250), gp.getVgp().getLoadingScreen());
-					ft.setFromValue(1);
-					ft.setToValue(0);
-					ft.play();
+					LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -137,7 +138,7 @@ public class TitleScreen extends Pane{
 
 		});
 
-		getChildren().addAll(iv, ploy, settins, clous, pfail,storyView);
+		getChildren().addAll(iv, ploy, settins, clous, pfail, storyView, LoadingScreen.INSTANCE);
 		new Thread(()->{
 			while (true) {
 				try {

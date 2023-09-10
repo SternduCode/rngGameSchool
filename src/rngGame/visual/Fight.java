@@ -10,12 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import rngGame.entity.MobRan;
-import rngGame.main.Text;
-import rngGame.main.WindowManager;
+import rngGame.main.*;
 import rngGame.stats.Demon;
 import rngGame.stats.Element;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.*;
+import rngGame.ui.SoundHandler;
 
 /**
  * The Class Fight.
@@ -98,7 +98,7 @@ public class Fight extends Pane{
 				eigenMob.changeCurrenthp(-eigenMob.getCurrenthp()+1);
 			}
 			System.out.println("uno HP left");
-			gamepanel.goIntoLoadingScreen();
+			LoadingScreen.INSTANCE.goIntoLoadingScreen();
 			SoundHandler.getInstance().endBackgroundMusic();
 			if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
 				SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
@@ -113,10 +113,7 @@ public class Fight extends Pane{
 					eigenMob.getDemon().flipTextures();
 					eigenMob.getDemon().reloadTextures();
 					gamepanel.setBlockUserInputs(false);
-					FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-					ft2.setFromValue(1);
-					ft2.setToValue(0);
-					ft2.play();
+					LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -291,10 +288,7 @@ public class Fight extends Pane{
 				eigenMob.getDemon().flipTextures();
 				eigenMob.getDemon().reloadTextures();
 				gamepanel.setBlockUserInputs(false);
-				FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-				ft2.setFromValue(1);
-				ft2.setToValue(0);
-				ft2.play();
+				LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -383,10 +377,7 @@ public class Fight extends Pane{
 							eigenMob.getDemon().flipTextures();
 							eigenMob.getDemon().reloadTextures();
 							gamepanel.setBlockUserInputs(false);
-							FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-							ft2.setFromValue(1);
-							ft2.setToValue(0);
-							ft2.play();
+							LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}

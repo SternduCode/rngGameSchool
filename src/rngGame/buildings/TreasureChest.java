@@ -134,10 +134,7 @@ public class TreasureChest extends Building {
 			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
-			FadeTransition ft2 = new FadeTransition(Duration.millis(250), gamepanel.getLoadingScreen());
-			ft2.setFromValue(1);
-			ft2.setToValue(0);
-			ft2.play();
+			LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 			isOpen = true;
 			TreasureChest.this.setCurrentKey("open");
 			gamepanel.getLgp().setMap("./res/maps/lavaMap2.json", new double[] {

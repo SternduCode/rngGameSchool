@@ -139,7 +139,7 @@ public class Input {
 
 	public void setBlockInputs(boolean b) { blockInputs = b; }
 
-	public boolean isBlockInputs() { return blockInputs || (gamepanel != null && gamepanel.isInLoadingScreen()); }
+	public boolean isBlockInputs() { return blockInputs || (gamepanel != null && LoadingScreen.INSTANCE.isInLoadingScreen()); }
 
 	/**
 	 * Save.

@@ -229,7 +229,7 @@ public class GamePanel extends Pane {
 	 */
 	public void setMap(String path, double[] position) {
 
-		getVgp().goIntoLoadingScreen();
+		LoadingScreen.INSTANCE.goIntoLoadingScreen();
 
 		UndoRedo.getInstance().clearActions();
 
@@ -250,7 +250,8 @@ public class GamePanel extends Pane {
 			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
-			FadeTransition ft = new FadeTransition(Duration.millis(500), getVgp().getLoadingScreen());
+			// LoadingScreen.INSTANCE.goOutOfLoadingScreen(); With 500ms run time
+			FadeTransition ft = new FadeTransition(Duration.millis(500), LoadingScreen.INSTANCE);
 			ft.setFromValue(1);
 			ft.setToValue(0);
 			ft.play();
