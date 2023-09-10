@@ -45,14 +45,6 @@ public class TitleScreen extends Pane{
 	public TitleScreen() {
 		iv = new ImageView();
 
-		try {
-			gp = new GamePanel();
-			Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		getChildren().add(0, gp.getVgp());
-
 		storyView = new AnimatedImage("./res/story/Story0.gif", 7);
 		
 		storyView.setOnMouseReleased(me -> {
@@ -76,6 +68,13 @@ public class TitleScreen extends Pane{
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
 			SoundHandler.getInstance().makeSound("click.wav");
+			try {
+				gp = new GamePanel();
+				Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			}
+			getChildren().add(0, gp.getVgp());
 			gp.getVgp().goIntoLoadingScreen();
 			Input.getInstance().setBlockInputs(false);
 
