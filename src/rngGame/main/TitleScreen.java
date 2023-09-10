@@ -17,8 +17,7 @@ import rngGame.visual.AnimatedImage;
  */
 public class TitleScreen extends Pane{
 
-	/** The gp. */
-	private GamePanel gp;
+	private boolean destroy;
 
 	/** The iv. */
 	private final ImageView iv;
@@ -82,8 +81,7 @@ public class TitleScreen extends Pane{
 			} catch (FileNotFoundException ex) {
 				ex.printStackTrace();
 			}
-			getChildren().add(0, gp.getVgp());
-			gp.getVgp().goIntoLoadingScreen();
+			destroy();
 			Input.getInstance().setBlockInputs(false);
 
 			new Thread(() -> {
@@ -94,12 +92,17 @@ public class TitleScreen extends Pane{
 				}
 
 				Platform.runLater(() -> {
-					ploy.init("./res/backgrounds/Ploy.png");
+					if (ploy != null) {
+						ploy.init("./res/backgrounds/Ploy.png");
+						ploy.setVisible(false);
+					}
 					iv.setVisible(false);
-					ploy.setVisible(false);
-					settins.setVisible(false);
-					clous.setVisible(false);
-					gp.getVgp().setBlockUserInputs(false);
+					if (settins!= null) {
+						settins.setVisible(false);
+					}
+					if (clous!= null) {
+						clous.setVisible(false);
+					}
 				});
 
 				try {
@@ -140,7 +143,7 @@ public class TitleScreen extends Pane{
 
 		getChildren().addAll(iv, ploy, settins, clous, pfail, storyView, LoadingScreen.INSTANCE);
 		new Thread(()->{
-			while (true) {
+			while (!destroy) {
 				try {
 					storyView.update();
 					Thread.sleep(20);
@@ -151,7 +154,9 @@ public class TitleScreen extends Pane{
 					long t = System.currentTimeMillis();
 					if (t - last > 1000 / 30) {
 						Platform.runLater(() -> {
-							iv.setImage(frames[currFrame]);
+							if (frames != null) {
+								iv.setImage(frames[currFrame]);
+							}
 						});
 						currFrame++;
 						if (currFrame >= frames.length) currFrame = 0;
@@ -160,6 +165,20 @@ public class TitleScreen extends Pane{
 				}
 			}
 		}).start();
+	}
+
+	private void destroy() {
+
+        destroy = true;
+		frames = null;
+		iv.setImage(null);
+		WindowManager.getInstance().removeAnimatedImage(storyView);
+		storyView = null;
+		ploy = null;
+		settins = null;
+		clous = null;
+		pfail = null;
+
 	}
 
 	/**
