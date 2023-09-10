@@ -45,6 +45,8 @@ public class TitleScreen extends Pane{
 	public TitleScreen() {
 		iv = new ImageView();
 
+		WindowManager.getInstance().startLogicThread();
+
 		storyView = new AnimatedImage("./res/story/Story0.gif", 7);
 		
 		storyView.setOnMouseReleased(me -> {
@@ -71,14 +73,14 @@ public class TitleScreen extends Pane{
 			try {
 				gp = new GamePanel();
 				Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
+				WindowManager.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to WindowManager
+				gp.getVgp().setBlockUserInputs(false);
 			} catch (FileNotFoundException ex) {
 				ex.printStackTrace();
 			}
 			getChildren().add(0, gp.getVgp());
 			gp.getVgp().goIntoLoadingScreen();
 			Input.getInstance().setBlockInputs(false);
-
-			gp.getVgp().startLogicThread();
 
 			new Thread(() -> {
 				try {

@@ -1,10 +1,14 @@
 package rngGame.main;
 
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import rngGame.visual.AnimatedImage;
 import rngGame.visual.GamePanel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class WindowManager {
 
@@ -14,6 +18,8 @@ public class WindowManager {
 	private final List<AnimatedImage> animatedImages = new ArrayList<>();
 
 	private static final WindowManager INSTANCE = new WindowManager();
+
+	private GamePanel gamePanel;
 
 	/** The target FPS. */
 	private final int targetFPS = 80;
@@ -113,6 +119,11 @@ public class WindowManager {
 	 */
 	public int getyBlocks() { return yBlocks; }
 
+	public void setGamePanel(GamePanel gamePanel) {
+
+		this.gamePanel = gamePanel;
+	}
+
 	/**
 	 * Adds the animated image.
 	 *
@@ -131,8 +142,51 @@ public class WindowManager {
 		gameHeight		= blockSizeY * yBlocks;
 	}
 
+	/**
+	 * Start logic thread.
+	 */
+	public void startLogicThread() {
+
+		AtomicReference<Runnable> runnable = new AtomicReference<>();
+		AtomicReference<Timeline> arTl = new AtomicReference<>();
+		Timeline tl = new Timeline(
+				new KeyFrame(
+						Duration.millis(1000 / WindowManager.getInstance().getTargetFPS()),
+						event -> {
+							update();
+							if ("true".equals(System.getProperty("alternateUpdate"))) {
+								arTl.get().stop();
+								Platform.runLater(runnable.get());
+							}
+						}
+				));
+		arTl.set(tl);
+		tl.setCycleCount(Animation.INDEFINITE);
+		Runnable r = () -> {
+			update();
+			if (!MainClass.isStopping() && "true".equals(System.getProperty("alternateUpdate")))
+				Platform.runLater(runnable.get());
+			else arTl.get().play();
+		};
+		runnable.set(r);
+
+		if ("false".equals(System.getProperty("alternateUpdate"))) tl.play();
+		else Platform.runLater(r);
+
+	}
+
 	public void update() {
+
 		animatedImages.forEach(AnimatedImage::update);
+
+		if (gamePanel != null) {
+			gamePanel.update();
+		}
+
+	}
+
+	public void removeAnimatedImage(AnimatedImage storyView) {
+		animatedImages.remove(storyView);
 	}
 
 }
