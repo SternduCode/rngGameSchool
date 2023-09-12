@@ -40,10 +40,10 @@ public class WindowManager {
 	private int blockSizeX = blockSize, blockSizeY = blockSize;
 
 	/** The game height. */
-	private int gameHeight = blockSizeY * yBlocks;
+	private int gameHeight = 1080; //blockSizeY * yBlocks;
 
 	/** The game width. */
-	private int gameWidth = blockSizeX * xBlocks;
+	private int gameWidth = 1920; //blockSizeX * xBlocks;
 
 	public static WindowManager getInstance() {
 	return INSTANCE;
