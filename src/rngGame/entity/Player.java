@@ -57,7 +57,7 @@ public class Player extends Entity {
 	 * Player is not defined in map file but some attributes of it are.
 	 *
 	 * @param gamePanel A reference to the {@link GamePanel}
-	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu} via {@link GamePanel#getTileM()}.
+	 * @param cm        A reference to the {@link TileManager#getCM() ContextMenu} via {@link GamePanel#getTileManager()}.
 	 * @param requestor Is used to know on what the {@link TileManager#getCM() ContextMenu} was triggered
 	 */
 	public Player(GamePanel gamePanel, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
@@ -180,18 +180,27 @@ public class Player extends Entity {
 			 * Load the textures for all states of the player
 			 */
 
-			getAnimatedImages("idledown", "Stehen.png");
-			getAnimatedImages("idledownL", "Stehen2.png");
-			getAnimatedImages("right", "LaufenRechts.png");
-			getAnimatedImages("left", "LaufenLinks.png");
-			getAnimatedImages("down", "LaufenRunter.png");
-			getAnimatedImages("downL", "LaufenRunterL.png");
-			getAnimatedImages("up", "LaufenHochL.png");
-			getAnimatedImages("upL", "LaufenHochL.png");
-			getAnimatedImages("idleup", "IdleUp.png");
-			getAnimatedImages("idleupL", "IdleUp.png");
-			getAnimatedImages("idle", "IdleRight.png");
-			getAnimatedImages("idleL", "IdleLeft.png");
+			//Norden
+			getAnimatedImages("NW_run", "LaufenHochL.png");
+			getAnimatedImages("NE_run", "LaufenHochL.png");
+			getAnimatedImages("NE_idle", "IdleUp.png");
+			getAnimatedImages("NW_idle", "IdleUp.png");
+
+			//Seiten
+			getAnimatedImages("R_run", "LaufenRechts.png");
+			getAnimatedImages("W_run", "LaufenLinks.png");
+			getAnimatedImages("E_idle", "IdleRight.png");
+			getAnimatedImages("W_idle", "IdleLeft.png");
+
+			//Sueden
+			getAnimatedImages("SE_run", "LaufenRunter.png");
+			getAnimatedImages("SW_run", "LaufenRunterL.png");
+			getAnimatedImages("SE_ilde", "Stehen.gif");
+			getAnimatedImages("SW_idle", "Stehen2.png");
+
+
+
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
