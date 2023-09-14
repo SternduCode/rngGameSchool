@@ -475,7 +475,7 @@ public class GamePanel extends Pane {
 		getPointGroup().getChildren().clear();
 
 		if (!"".equals(getTileManager().getOverlay()))
-			getOverlay().setImage(ImgUtil.getScaledImage(this, "./res/gui/" + getTileManager().getOverlay()));
+			getOverlay().setImage(ImgUtil.getScaledImage("./res/gui/" + getTileManager().getOverlay()));
 		else getOverlay().setImage(null);
 
 		tileManager.reload();
@@ -595,7 +595,7 @@ public class GamePanel extends Pane {
 		}
 		else setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-		if (!"".equals(tileManager.getOverlay())) getOverlay().setImage(ImgUtil.getScaledImage(this, "./res/gui/" + tileManager.getOverlay()));
+		if (!"".equals(tileManager.getOverlay())) getOverlay().setImage(ImgUtil.getScaledImage("./res/gui/" + tileManager.getOverlay()));
 		else getOverlay().setImage(null);
 
 		lgp.setBuildings(tileManager.getBuildingsFromMap());

@@ -40,9 +40,7 @@ public class Tile {
 
 		this.name = name;
 		if(!path.isEmpty()) {
-
 			images = ImgUtil.getScaledImages(path,128,128);
-
 		}
 		
 

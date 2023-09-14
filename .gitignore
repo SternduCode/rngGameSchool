@@ -23,3 +23,8 @@ hs_err_pid*
 /instructions.txt
 /.idea/misc.xml
 /.idea/workspace.xml
+/.gradle/
+/.idea/
+/.settings/org.eclipse.buildship.core.prefs
+/.idea/codeStyles/Project.xml
+/.idea/misc.xml
