@@ -180,23 +180,37 @@ public class Player extends Entity {
 			 * Load the textures for all states of the player
 			 */
 
-			//Norden
-			getAnimatedImages("NW_run", "LaufenHochL.png");
-			getAnimatedImages("NE_run", "LaufenHochL.png");
-			getAnimatedImages("NE_idle", "IdleUp.png");
-			getAnimatedImages("NW_idle", "IdleUp.png");
+			getAnimatedImages("idledown", "Stehen.png");
+			getAnimatedImages("idledownL", "Stehen2.png");
+			getAnimatedImages("right", "LaufenRechts.png");
+			getAnimatedImages("left", "LaufenLinks.png");
+			getAnimatedImages("down", "LaufenRunter.png");
+			getAnimatedImages("downL", "LaufenRunterL.png");
+			getAnimatedImages("up", "LaufenHochL.png");
+			getAnimatedImages("upL", "LaufenHochL.png");
+			getAnimatedImages("idleup", "IdleUp.png");
+			getAnimatedImages("idleupL", "IdleUp.png");
+			getAnimatedImages("idle", "IdleRight.png");
+			getAnimatedImages("idleL", "IdleLeft.png");
 
-			//Seiten
-			getAnimatedImages("R_run", "LaufenRechts.png");
-			getAnimatedImages("W_run", "LaufenLinks.png");
-			getAnimatedImages("E_idle", "IdleRight.png");
-			getAnimatedImages("W_idle", "IdleLeft.png");
 
-			//Sueden
-			getAnimatedImages("SE_run", "LaufenRunter.png");
-			getAnimatedImages("SW_run", "LaufenRunterL.png");
-			getAnimatedImages("SE_ilde", "Stehen.gif");
-			getAnimatedImages("SW_idle", "Stehen2.png");
+//			//Norden
+//			getAnimatedImages("NW_run", "LaufenHochL.png");
+//			getAnimatedImages("NE_run", "LaufenHochL.png");
+//			getAnimatedImages("NE_idle", "IdleUp.png");
+//			getAnimatedImages("NW_idle", "IdleUp.png");
+//
+//			//Seiten
+//			getAnimatedImages("R_run", "LaufenRechts.png");
+//			getAnimatedImages("W_run", "LaufenLinks.png");
+//			getAnimatedImages("E_idle", "IdleRight.png");
+//			getAnimatedImages("W_idle", "IdleLeft.png");
+//
+//			//Sueden
+//			getAnimatedImages("SE_run", "LaufenRunter.png");
+//			getAnimatedImages("SW_run", "LaufenRunterL.png");
+//			getAnimatedImages("SE_ilde", "Stehen.gif");
+//			getAnimatedImages("SW_idle", "Stehen2.png");
 
 
 

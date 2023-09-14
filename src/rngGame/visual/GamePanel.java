@@ -17,11 +17,11 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 import rngGame.buildings.House;
 import rngGame.entity.Player;
 import rngGame.main.*;
 import rngGame.tile.*;
+import rngGame.ui.JoyStick;
 import rngGame.ui.TabMenu;
 
 /**
@@ -134,6 +134,8 @@ public class GamePanel extends Pane {
 	/** The last frame. */
 	private Long lastFrame;
 
+	private JoyStick joyStick;
+
 	/** The tile M. */
 	private final TileManager tileManager;
 
@@ -167,6 +169,8 @@ public class GamePanel extends Pane {
 	public GamePanel(rngGame.main.GamePanel lgp)
 			throws FileNotFoundException {
 		setPrefSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight());
+
+		joyStick = JoyStick.INSTANCE;
 
 		frameTimes	= new ArrayList<>();
 		lastFrame	= System.currentTimeMillis();
@@ -206,7 +210,7 @@ public class GamePanel extends Pane {
 		lgp.setMap("./res/maps/lavaMap2.json");
 		gamemenu = new TabMenu(getLgp());
 
-		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
+		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), joyStick, getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
 				gamemenu, fpsLabel);
 	}
 

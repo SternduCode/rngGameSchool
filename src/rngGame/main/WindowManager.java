@@ -185,8 +185,8 @@ public class WindowManager {
 
 	}
 
-	public void removeAnimatedImage(AnimatedImage storyView) {
-		animatedImages.remove(storyView);
+	public void removeAnimatedImage(AnimatedImage animatedImage) {
+		animatedImages.remove(animatedImage);
 	}
 
 }

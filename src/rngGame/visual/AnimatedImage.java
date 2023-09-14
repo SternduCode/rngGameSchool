@@ -5,7 +5,6 @@ import rngGame.main.WindowManager;
 import rngGame.tile.ImgUtil;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AnimatedImage.
  */
@@ -140,6 +139,7 @@ public class AnimatedImage extends ImageView {
 	public void uninit() {
 		frames = null;
 		frameIndex	= 0;
+		WindowManager.getInstance().removeAnimatedImage(this);
 	}
 
 	/**

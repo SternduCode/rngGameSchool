@@ -10,7 +10,6 @@ import rngGame.ui.Button;
 import rngGame.ui.SoundHandler;
 import rngGame.visual.GamePanel;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AktionButton.
  */
@@ -43,8 +42,8 @@ public class AktionButton extends Pane {
 		aktionbutton = new Button("./res/gui/always/InteractionNichts.png");
 		f11Scale();
 		getChildren().add(aktionbutton);
-		aktionbutton.setImgRequestedWidth(150);
-		aktionbutton.setImgRequestedHeight(150);
+		aktionbutton.setImgRequestedWidth(200);
+		aktionbutton.setImgRequestedHeight(200);
 		aktionbutton.setOnPressed(me -> {
 			if (ifc) {
 				aktionbutton.init("./res/gui/always/InteractionGedrueckt.png");
@@ -66,8 +65,8 @@ public class AktionButton extends Pane {
 	public void f11Scale() {
 		aktionbutton.init("./res/gui/always/InteractionNichts.png");
 
-		setLayoutX(WindowManager.getInstance().getGameWidth() - 220 * WindowManager.getInstance().getScalingFactorX());
-		setLayoutY(WindowManager.getInstance().getGameHeight() - 220 * WindowManager.getInstance().getScalingFactorY());
+		setLayoutX(WindowManager.getInstance().getGameWidth() - 270 * WindowManager.getInstance().getScalingFactorX());
+		setLayoutY(WindowManager.getInstance().getGameHeight() - 270 * WindowManager.getInstance().getScalingFactorY());
 
 	}
 
