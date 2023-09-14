@@ -180,8 +180,8 @@ public class Player extends Entity {
 			 * Load the textures for all states of the player
 			 */
 
-			getAnimatedImages("idledown", "Stehen.png");
-			getAnimatedImages("idledownL", "Stehen2.png");
+			getAnimatedImages("idledown", "SE_idle.gif");
+			getAnimatedImages("idledownL", "SW_idle.gif");
 			getAnimatedImages("right", "LaufenRechts.png");
 			getAnimatedImages("left", "LaufenLinks.png");
 			getAnimatedImages("down", "LaufenRunter.png");
@@ -190,8 +190,8 @@ public class Player extends Entity {
 			getAnimatedImages("upL", "LaufenHochL.png");
 			getAnimatedImages("idleup", "IdleUp.png");
 			getAnimatedImages("idleupL", "IdleUp.png");
-			getAnimatedImages("idle", "IdleRight.png");
-			getAnimatedImages("idleL", "IdleLeft.png");
+			getAnimatedImages("idle", "E_idle.gif");
+			getAnimatedImages("idleL", "W_idle.gif");
 
 
 //			//Norden
