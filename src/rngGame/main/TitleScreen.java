@@ -17,8 +17,7 @@ import rngGame.visual.AnimatedImage;
  */
 public class TitleScreen extends Pane{
 
-	/** The gp. */
-	private GamePanel gp;
+	private boolean destroy;
 
 	/** The iv. */
 	private final ImageView iv;
@@ -45,13 +44,7 @@ public class TitleScreen extends Pane{
 	public TitleScreen() {
 		iv = new ImageView();
 
-		try {
-			gp = new GamePanel();
-			Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		}
-		getChildren().add(0, gp.getVgp());
+		WindowManager.getInstance().startLogicThread();
 
 		storyView = new AnimatedImage("./res/story/Story0.gif", 7);
 		
@@ -76,10 +69,20 @@ public class TitleScreen extends Pane{
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
 			SoundHandler.getInstance().makeSound("click.wav");
-			gp.getVgp().goIntoLoadingScreen();
+			LoadingScreen.INSTANCE.goIntoLoadingScreen();
+			GamePanel gp = null;
+			try {
+				gp = new GamePanel();
+				Input.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to the Instance of Input
+				WindowManager.getInstance().setGamePanel(gp.getVgp()); // pass instance of GamePanel to WindowManager
+				getChildren().clear();
+				getChildren().addAll(gp.getVgp(), LoadingScreen.INSTANCE);
+				gp.getVgp().setBlockUserInputs(false);
+			} catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+			}
+			destroy();
 			Input.getInstance().setBlockInputs(false);
-
-			gp.getVgp().startLogicThread();
 
 			new Thread(() -> {
 				try {
@@ -89,20 +92,22 @@ public class TitleScreen extends Pane{
 				}
 
 				Platform.runLater(() -> {
-					ploy.init("./res/backgrounds/Ploy.png");
+					if (ploy != null) {
+						ploy.init("./res/backgrounds/Ploy.png");
+						ploy.setVisible(false);
+					}
 					iv.setVisible(false);
-					ploy.setVisible(false);
-					settins.setVisible(false);
-					clous.setVisible(false);
-					gp.getVgp().setBlockUserInputs(false);
+					if (settins!= null) {
+						settins.setVisible(false);
+					}
+					if (clous!= null) {
+						clous.setVisible(false);
+					}
 				});
 
 				try {
 					Thread.sleep(2000);
-					FadeTransition ft = new FadeTransition(Duration.millis(250), gp.getVgp().getLoadingScreen());
-					ft.setFromValue(1);
-					ft.setToValue(0);
-					ft.play();
+					LoadingScreen.INSTANCE.goOutOfLoadingScreen();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -136,9 +141,9 @@ public class TitleScreen extends Pane{
 
 		});
 
-		getChildren().addAll(iv, ploy, settins, clous, pfail,storyView);
+		getChildren().addAll(iv, ploy, settins, clous, pfail, storyView, LoadingScreen.INSTANCE);
 		new Thread(()->{
-			while (true) {
+			while (!destroy) {
 				try {
 					storyView.update();
 					Thread.sleep(20);
@@ -149,7 +154,9 @@ public class TitleScreen extends Pane{
 					long t = System.currentTimeMillis();
 					if (t - last > 1000 / 30) {
 						Platform.runLater(() -> {
-							iv.setImage(frames[currFrame]);
+							if (frames != null) {
+								iv.setImage(frames[currFrame]);
+							}
 						});
 						currFrame++;
 						if (currFrame >= frames.length) currFrame = 0;
@@ -160,11 +167,25 @@ public class TitleScreen extends Pane{
 		}).start();
 	}
 
+	private void destroy() {
+
+        destroy = true;
+		frames = null;
+		iv.setImage(null);
+		WindowManager.getInstance().removeAnimatedImage(storyView);
+		storyView = null;
+		ploy = null;
+		settins = null;
+		clous = null;
+		pfail = null;
+
+	}
+
 	/**
 	 * Scale F 11.
 	 */
 	public void scaleF11() {
-		frames = ImgUtil.getScaledImages("./res/backgrounds/Main BG.gif", WindowManager.getInstance().getBlockSize()*WindowManager.getInstance().getxBlocks(), WindowManager.getInstance().getBlockSize()*WindowManager.getInstance().getyBlocks());
+		frames = ImgUtil.getScaledImages("./res/backgrounds/Main BG.gif", WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight());
 		iv.setImage(frames[0]);
 		Input.getInstance().setBlockInputs(true);
 	}

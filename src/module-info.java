@@ -17,6 +17,7 @@ module rngGame {
 	requires javafx.media;
 	
 	requires transitive Lib;
+	requires kotlin.stdlib;
 
 	opens rngGame.main to javafx.graphics;
 }
