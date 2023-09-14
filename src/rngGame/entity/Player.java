@@ -24,7 +24,7 @@ import rngGame.visual.GamePanel;
 public class Player extends Entity {
 
 	/** The size. */
-	private final int size = 64; // The value that reqHeight will be set to
+	private final int size = 128; // The value that reqHeight will be set to
 
 	/** The p. */
 	private final AtomicBoolean p = new AtomicBoolean(false);
