@@ -1,6 +1,7 @@
 package rngGame.ui
 
 import javafx.scene.layout.Pane
+import javafx.scene.shape.Line
 import rngGame.main.WindowManager
 import rngGame.visual.AnimatedImage
 
