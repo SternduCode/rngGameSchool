@@ -1,7 +1,5 @@
 package rngGame.entity;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
@@ -11,6 +9,8 @@ import rngGame.main.Input;
 import rngGame.main.WindowManager;
 import rngGame.tile.TileManager;
 import rngGame.visual.GamePanel;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -173,8 +173,8 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 
 		try {
-			origHeight = reqHeight;
-			origWidth = reqWidth;
+			origHeight = 64;//reqHeight;
+			origWidth = 96;//reqWidth;
 
 			/*
 			 * Load the textures for all states of the player
