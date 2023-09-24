@@ -81,20 +81,24 @@ object JoyStick: Pane() {
 			it.consume()
 		}
 		setOnMouseDragged {
-			joyStick.layoutX = it.x - joyStick.imgRequestedWidth * .5
-			joyStick.layoutY = it.y - joyStick.imgRequestedHeight * .5
 
-			val x = calculateX(it.x, it.y);
+			val (newX, newY) = pythagorasDistanceCap(it.x - background.imgRequestedWidth * .5, it.y - background.imgRequestedHeight * .5)
+				.let { (x, y) -> (x + background.imgRequestedWidth * .5) to (y + background.imgRequestedHeight * .5) }
 
-			val y1 = calculateY(x, it.x, it.y) * joyStick.imgRequestedHeight / 2
+			joyStick.layoutX = newX - joyStick.imgRequestedWidth * .5
+			joyStick.layoutY = newY - joyStick.imgRequestedHeight * .5
 
-			val y2 = calculateY(-x, it.x, it.y) * joyStick.imgRequestedHeight / 2
+			val x = calculateX(newX, newY);
 
-			line.points[2] = it.x + x * joyStick.imgRequestedWidth / 2
-			line.points[3] = it.y + y1
+			val y1 = calculateY(x, newX, newY) * joyStick.imgRequestedHeight / 2
 
-			line.points[4] = it.x - x * joyStick.imgRequestedWidth / 2
-			line.points[5] = it.y + y2
+			val y2 = calculateY(-x, newX, newY) * joyStick.imgRequestedHeight / 2
+
+			line.points[2] = newX + x * joyStick.imgRequestedWidth / 2
+			line.points[3] = newY + y1
+
+			line.points[4] = newX - x * joyStick.imgRequestedWidth / 2
+			line.points[5] = newY + y2
 
 			it.consume()
 		}
@@ -110,6 +114,20 @@ object JoyStick: Pane() {
 
 			it.consume()
 		}
+	}
+
+	fun pythagorasDistanceCap(x: Double, y: Double): Pair<Double, Double> {
+		val a = x.pow(2)
+		val b = y.pow(2)
+		val sum = a + b
+		val fraction = a / sum
+		val distance64pow2 = 4096
+		val distancePow2 = a + b
+		return if (distancePow2 > distance64pow2) {
+			val newA = distance64pow2 * fraction
+			val newB = distance64pow2 - newA
+			(sqrt(newA) * if (x < 0) -1 else 1) to (sqrt(newB) * if (y < 0) -1 else 1)
+		} else x to y
 	}
 
 	private fun calculateX(joyStickX: Double, joyStickY: Double): Double {
