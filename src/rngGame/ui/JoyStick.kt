@@ -5,6 +5,7 @@ import javafx.scene.shape.Polygon
 import rngGame.main.Direction
 import rngGame.main.WindowManager
 import rngGame.visual.AnimatedImage
+import java.awt.Color
 import kotlin.math.*
 
 object JoyStick: Pane() {
@@ -45,6 +46,8 @@ object JoyStick: Pane() {
 		joyStick.scaleF11()
 
 		line.strokeWidth = 5.0
+		line.fill = javafx.scene.paint.Color(1.0,1.0,1.0,0.5)
+
 
 		children.addAll(background, line, joyStick)
 

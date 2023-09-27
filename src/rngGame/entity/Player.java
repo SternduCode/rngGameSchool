@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 import rngGame.main.Input;
 import rngGame.main.WindowManager;
 import rngGame.tile.TileManager;
+import rngGame.ui.JoyStick;
 import rngGame.visual.GamePanel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -180,37 +181,34 @@ public class Player extends Entity {
 			 * Load the textures for all states of the player
 			 */
 
-			getAnimatedImages("idledown", "SE_idle.gif");
-			getAnimatedImages("idledownL", "SW_idle.gif");
-			getAnimatedImages("right", "LaufenRechts.png");
-			getAnimatedImages("left", "LaufenLinks.png");
-			getAnimatedImages("down", "LaufenRunter.png");
-			getAnimatedImages("downL", "LaufenRunterL.png");
-			getAnimatedImages("up", "LaufenHochL.png");
-			getAnimatedImages("upL", "LaufenHochL.png");
-			getAnimatedImages("idleup", "IdleUp.png");
-			getAnimatedImages("idleupL", "IdleUp.png");
-			getAnimatedImages("idle", "E_idle.gif");
-			getAnimatedImages("idleL", "W_idle.gif");
 
 
 //			//Norden
-//			getAnimatedImages("NW_run", "LaufenHochL.png");
-//			getAnimatedImages("NE_run", "LaufenHochL.png");
-//			getAnimatedImages("NE_idle", "IdleUp.png");
-//			getAnimatedImages("NW_idle", "IdleUp.png");
-//
-//			//Seiten
-//			getAnimatedImages("R_run", "LaufenRechts.png");
-//			getAnimatedImages("W_run", "LaufenLinks.png");
-//			getAnimatedImages("E_idle", "IdleRight.png");
-//			getAnimatedImages("W_idle", "IdleLeft.png");
-//
-//			//Sueden
-//			getAnimatedImages("SE_run", "LaufenRunter.png");
-//			getAnimatedImages("SW_run", "LaufenRunterL.png");
-//			getAnimatedImages("SE_ilde", "Stehen.gif");
-//			getAnimatedImages("SW_idle", "Stehen2.png");
+			getAnimatedImages("N_run", "N_idle.gif");
+			getAnimatedImages("N_idle", "N_idle.gif");
+
+			getAnimatedImages("NE_run", "NE_idle.gif");
+			getAnimatedImages("NE_idle", "NE_idle.gif");
+
+			getAnimatedImages("NW_run", "NW_idle.gif");
+			getAnimatedImages("NW_idle", "NW_idle.gif");
+
+			//Seiten
+			getAnimatedImages("E_run", "E_idle.gif");
+			getAnimatedImages("E_idle", "E_idle.gif");
+
+			getAnimatedImages("W_run", "W_idle.gif");
+			getAnimatedImages("W_idle", "W_idle.gif");
+
+			//Sueden
+			getAnimatedImages("S_run", "S_idle.gif");
+			getAnimatedImages("S_idle", "S_idle.gif");
+
+			getAnimatedImages("SE_run", "SE_idle.gif");
+			getAnimatedImages("SE_idle", "SE_idle.gif");
+
+			getAnimatedImages("SW_run", "SW_idle.gif");
+			getAnimatedImages("SW_idle", "SW_idle.gif");
 
 
 
@@ -327,28 +325,16 @@ public class Player extends Entity {
 			d.set(false);
 		}
 
-		if (w.get()) { // Hoch
-			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("upL");
-			else setCurrentKey("up");
-			y -= updateSpeed * WindowManager.getInstance().getScalingFactorY();
-		} else if (s.get()) { // Runter
-			if ("left".equals(getCurrentKey()) || getCurrentKey().endsWith("L")) setCurrentKey("downL");
-			else setCurrentKey("down");
-			y += updateSpeed * WindowManager.getInstance().getScalingFactorY();
-		} else if (a.get()) { // Links
-			setCurrentKey("left");
-			x -= updateSpeed * WindowManager.getInstance().getScalingFactorX();
-		} else if (d.get()) { // Rechts
-			setCurrentKey("right");
-			x += updateSpeed * WindowManager.getInstance().getScalingFactorX();
-		} else if (lastKey.contains("down")) { // Idle Runter
-			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idledownL");
-			else setCurrentKey("idledown");
-		} else if (lastKey.contains("up")) { // Idle Hoch
-			if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idleupL");
-			else setCurrentKey("idleup");
-		} else if (lastKey.endsWith("L") || lastKey.contains("left")) setCurrentKey("idleL");
-		else setCurrentKey("idle");
+		switch (JoyStick.INSTANCE.getDirection()){
+			case N -> setCurrentKey("N_idle");
+			case NE -> setCurrentKey("NE_idle");
+			case NW -> setCurrentKey("NW_idle");
+			case E -> setCurrentKey("E_idle");
+			case W -> setCurrentKey("W_idle");
+			case S -> setCurrentKey("S_idle");
+			case SE -> setCurrentKey("SE_idle");
+			case SW -> setCurrentKey("SW_idle");
+		}
 
 		super.update(milis);
 
