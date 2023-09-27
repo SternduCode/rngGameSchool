@@ -13,7 +13,6 @@ import rngGame.visual.GamePanel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-// TODO: Auto-generated Javadoc
 /**
  * A class that defines the Player.
  *
@@ -323,6 +322,11 @@ public class Player extends Entity {
 			a.set(false);
 			s.set(false);
 			d.set(false);
+		}
+
+		if (JoyStick.INSTANCE.getX() != 0.0 || JoyStick.INSTANCE.getY() != 0.0) {
+			x += updateSpeed * JoyStick.INSTANCE.getX() * WindowManager.getInstance().getScalingFactorX();
+			y += updateSpeed * JoyStick.INSTANCE.getY() * WindowManager.getInstance().getScalingFactorY();
 		}
 
 		switch (JoyStick.INSTANCE.getDirection()){
