@@ -279,18 +279,30 @@ public class Player extends Entity {
 		if (JoyStick.INSTANCE.getX() != 0.0 || JoyStick.INSTANCE.getY() != 0.0) {
 			x += updateSpeed * JoyStick.INSTANCE.getX() * WindowManager.getInstance().getScalingFactorX();
 			y += updateSpeed * JoyStick.INSTANCE.getY() * WindowManager.getInstance().getScalingFactorY();
+			switch (JoyStick.INSTANCE.getDirection()){
+				case N -> setCurrentKey("N_run");
+				case NE -> setCurrentKey("NE_run");
+				case NW -> setCurrentKey("NW_run");
+				case E -> setCurrentKey("E_run");
+				case W -> setCurrentKey("W_run");
+				case S -> setCurrentKey("S_run");
+				case SE -> setCurrentKey("SE_run");
+				case SW -> setCurrentKey("SW_run");
+			}
+		} else {
+			switch (JoyStick.INSTANCE.getDirection()){
+				case N -> setCurrentKey("N_idle");
+				case NE -> setCurrentKey("NE_idle");
+				case NW -> setCurrentKey("NW_idle");
+				case E -> setCurrentKey("E_idle");
+				case W -> setCurrentKey("W_idle");
+				case S -> setCurrentKey("S_idle");
+				case SE -> setCurrentKey("SE_idle");
+				case SW -> setCurrentKey("SW_idle");
+			}
 		}
 
-		switch (JoyStick.INSTANCE.getDirection()){
-			case N -> setCurrentKey("N_idle");
-			case NE -> setCurrentKey("NE_idle");
-			case NW -> setCurrentKey("NW_idle");
-			case E -> setCurrentKey("E_idle");
-			case W -> setCurrentKey("W_idle");
-			case S -> setCurrentKey("S_idle");
-			case SE -> setCurrentKey("SE_idle");
-			case SW -> setCurrentKey("SW_idle");
-		}
+		
 
 		super.update(milis);
 
