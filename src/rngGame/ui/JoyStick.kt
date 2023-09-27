@@ -11,6 +11,16 @@ object JoyStick: Pane() {
 
 	private val joyStick = AnimatedImage("./res/gui/always/JoyschtickBaumwolle.png")
 
+	private var _x = 0.0
+
+	private var _y = 0.0
+
+	val x
+		get() = _x
+
+	val y
+		get() = _y
+
 	private val line = Polygon(
 		0.0, 0.0,
 		0.0, 0.0,
@@ -78,6 +88,9 @@ object JoyStick: Pane() {
 			line.points[4] = it.x - x * joyStick.imgRequestedWidth / 2
 			line.points[5] = it.y + y2
 
+			_x = (it.x - background.imgRequestedWidth * .5) / joyStick.imgRequestedWidth
+			_y = (it.y - background.imgRequestedHeight * .5) / joyStick.imgRequestedHeight
+
 			it.consume()
 		}
 		setOnMouseDragged {
@@ -88,17 +101,26 @@ object JoyStick: Pane() {
 			joyStick.layoutX = newX - joyStick.imgRequestedWidth * .5
 			joyStick.layoutY = newY - joyStick.imgRequestedHeight * .5
 
-			val x = calculateX(newX, newY);
+			val x = calculateX(newX, newY)
 
-			val y1 = calculateY(x, newX, newY) * joyStick.imgRequestedHeight / 2
+			val y1 = if (x != 0.0)
+				calculateY(x, newX, newY) * joyStick.imgRequestedHeight / 2
+			else
+				joyStick.imgRequestedHeight * .5
 
-			val y2 = calculateY(-x, newX, newY) * joyStick.imgRequestedHeight / 2
+			val y2 = if (x != 0.0)
+				calculateY(-x, newX, newY) * joyStick.imgRequestedHeight / 2
+			else
+				-joyStick.imgRequestedHeight * .5
 
 			line.points[2] = newX + x * joyStick.imgRequestedWidth / 2
 			line.points[3] = newY + y1
 
 			line.points[4] = newX - x * joyStick.imgRequestedWidth / 2
 			line.points[5] = newY + y2
+
+			_x = (newX - background.imgRequestedWidth * .5) / joyStick.imgRequestedWidth
+			_y = (newY - background.imgRequestedHeight * .5) / joyStick.imgRequestedHeight
 
 			it.consume()
 		}
@@ -111,6 +133,9 @@ object JoyStick: Pane() {
 
 			line.points[4] = background.imgRequestedWidth * .5
 			line.points[5] = background.imgRequestedHeight * .5
+
+			_x = 0.0
+			_y = 0.0
 
 			it.consume()
 		}
