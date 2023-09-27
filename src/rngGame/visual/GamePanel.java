@@ -210,7 +210,7 @@ public class GamePanel extends Pane {
 		lgp.setMap("./res/maps/lavaMap2.json");
 		gamemenu = new TabMenu(getLgp());
 
-		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), joyStick, getPointGroup(), selectTool, aktionbutton, lgp.getBubble(), bubbleText,
+		getChildren().addAll(tileManager, getLayerGroup(), getOverlay(), getPointGroup(), selectTool, joyStick, aktionbutton, lgp.getBubble(), bubbleText,
 				gamemenu, fpsLabel);
 	}
 

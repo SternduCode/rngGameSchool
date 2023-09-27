@@ -39,7 +39,10 @@ public class Button extends AnimatedImage {
 	 * @param mv the new on pressed
 	 */
 	public void setOnPressed(EventHandler<MouseEvent> mv) {
-		setOnMousePressed(mv);
+		setOnMousePressed(i -> {
+            mv.handle(i);
+            i.consume();
+		});
 	}
 
 	/**
@@ -51,6 +54,7 @@ public class Button extends AnimatedImage {
 		setOnMouseReleased(i -> {
 			SoundHandler.getInstance().makeSound("click.wav");
 			mv.handle(i);
+			i.consume();
 		});
 
 	}
