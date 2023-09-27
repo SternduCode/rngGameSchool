@@ -4,8 +4,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.shape.Polygon
 import rngGame.main.WindowManager
 import rngGame.visual.AnimatedImage
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 object JoyStick: Pane() {
 
@@ -15,11 +14,16 @@ object JoyStick: Pane() {
 
 	private var _y = 0.0
 
+	private var _theta = 0.0
+
 	val x
 		get() = _x
 
 	val y
 		get() = _y
+
+	val theta
+		get() = _theta
 
 	private val line = Polygon(
 		0.0, 0.0,
@@ -90,6 +94,7 @@ object JoyStick: Pane() {
 
 			_x = (it.x - background.imgRequestedWidth * .5) / joyStick.imgRequestedWidth
 			_y = (it.y - background.imgRequestedHeight * .5) / joyStick.imgRequestedHeight
+			_theta = atan2(_y, _x)
 
 			it.consume()
 		}
@@ -121,6 +126,9 @@ object JoyStick: Pane() {
 
 			_x = (newX - background.imgRequestedWidth * .5) / joyStick.imgRequestedWidth
 			_y = (newY - background.imgRequestedHeight * .5) / joyStick.imgRequestedHeight
+			_theta = atan2(_y, _x)
+
+			println("$_x $_y $_theta")
 
 			it.consume()
 		}
