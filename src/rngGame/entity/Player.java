@@ -29,18 +29,6 @@ public class Player extends Entity {
 	/** The p. */
 	private final AtomicBoolean p = new AtomicBoolean(false);
 
-	/** The w. */
-	private final AtomicBoolean w = new AtomicBoolean(false);
-
-	/** The a. */
-	private final AtomicBoolean a = new AtomicBoolean(false);
-
-	/** The s. */
-	private final AtomicBoolean s = new AtomicBoolean(false);
-
-	/** The d. */
-	private final AtomicBoolean d = new AtomicBoolean(false);
-
 	/** The colli box height. */
 	private final double colliBoxX = 33, colliBoxY = 45, colliBoxWidth = 31, colliBoxHeight = 20;
 
@@ -61,8 +49,8 @@ public class Player extends Entity {
 	 * @param requestor Is used to know on what the {@link TileManager#getCM() ContextMenu} was triggered
 	 */
 	public Player(GamePanel gamePanel, ContextMenu cm, ObjectProperty<? extends Entity> requestor) {
-		super(null, 3 * 60, gamePanel, "player", null, cm, requestor);
-		setCurrentKey("down");
+		super(null, 4 * 60, gamePanel, "player", null, cm, requestor);
+		setCurrentKey("E_idle");
 
 		fps = 10.5;
 
@@ -85,37 +73,9 @@ public class Player extends Entity {
 		generateCollisionBox();
 
 		/*
-		 * KeyHandlers for: P > sets the Player invisible W > move forward A > move left
-		 * S > move down D > move right
+		 * KeyHandler P > sets the Player invisible
 		 */
-
-		Input.getInstance().setKeyHandler("p", mod -> {
-			p.set(!p.get());
-		}, KeyCode.P, false);
-		Input.getInstance().setKeyHandler("wDOWN", mod -> {
-			w.set(true);
-		}, KeyCode.W, false);
-		Input.getInstance().setKeyHandler("aDOWN", mod -> {
-			a.set(true);
-		}, KeyCode.A, false);
-		Input.getInstance().setKeyHandler("sDOWN", mod -> {
-			if (!mod.isControlPressed()) s.set(true);
-		}, KeyCode.S, false);
-		Input.getInstance().setKeyHandler("dDOWN", mod -> {
-			d.set(true);
-		}, KeyCode.D, false);
-		Input.getInstance().setKeyHandler("wUP", mod -> {
-			w.set(false);
-		}, KeyCode.W, true);
-		Input.getInstance().setKeyHandler("aUP", mod -> {
-			a.set(false);
-		}, KeyCode.A, true);
-		Input.getInstance().setKeyHandler("sUP", mod -> {
-			s.set(false);
-		}, KeyCode.S, true);
-		Input.getInstance().setKeyHandler("dUP", mod -> {
-			d.set(false);
-		}, KeyCode.D, true);
+		Input.getInstance().setKeyHandler("p", mod -> p.set(!p.get()), KeyCode.P, false);
 	}
 
 	/**
@@ -293,8 +253,7 @@ public class Player extends Entity {
 	 */
 	@Override
 	public String toString() {
-		return "Player [size=" + getSize() + ", p=" + p + ", w=" + w + ", a=" + a + ", s=" + s
-				+ ", d=" + d + ", screenX=" + getScreenX() + ", screenY=" + getScreenY() + ", oldX=" + oldX
+		return "Player [size=" + getSize() + ", p=" + p + ", screenX=" + getScreenX() + ", screenY=" + getScreenY() + ", oldX=" + oldX
 				+ ", oldY=" + oldY + ", speed=" + getSpeed() + ", x=" + getX() + ", y=" + getY() + ", fps="
 				+ fps + ", images=" + getImages() + ", collisionBoxes=" + collisionBoxes + ", directory="
 				+ directory + ", layer=" + getLayer() + ", extraData=" + extraData + ", slave=" + isSlave()
@@ -316,13 +275,6 @@ public class Player extends Entity {
 		double updateSpeed = speed / 1000 * milis;
 
 		String lastKey = getCurrentKey();
-
-		if (gamepanel.isBlockUserInputs()) {
-			w.set(false);
-			a.set(false);
-			s.set(false);
-			d.set(false);
-		}
 
 		if (JoyStick.INSTANCE.getX() != 0.0 || JoyStick.INSTANCE.getY() != 0.0) {
 			x += updateSpeed * JoyStick.INSTANCE.getX() * WindowManager.getInstance().getScalingFactorX();
