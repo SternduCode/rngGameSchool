@@ -2,6 +2,7 @@ package rngGame.ui
 
 import javafx.scene.layout.Pane
 import javafx.scene.shape.Polygon
+import rngGame.main.Direction
 import rngGame.main.WindowManager
 import rngGame.visual.AnimatedImage
 import kotlin.math.*
@@ -128,8 +129,6 @@ object JoyStick: Pane() {
 			_y = (newY - background.imgRequestedHeight * .5) / joyStick.imgRequestedHeight
 			_theta = atan2(_y, _x)
 
-			println("$_x $_y $_theta")
-
 			it.consume()
 		}
 		setOnMouseReleased {
@@ -171,6 +170,10 @@ object JoyStick: Pane() {
 
 	private fun calculateY(x: Double, joyStickX: Double, joyStickY: Double): Double {
 		return ( joyStickX + background.imgRequestedWidth * -.5 ) / ( joyStickY + background.imgRequestedHeight * -.5 ) * -x
+	}
+
+	fun getDirection(): Direction {
+		return Direction.getDirectionFromAngle(theta)
 	}
 
 }
