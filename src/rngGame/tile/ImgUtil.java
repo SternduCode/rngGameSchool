@@ -1,19 +1,18 @@
 package rngGame.tile;
 
+import javafx.geometry.Point2D;
+import javafx.scene.image.*;
+import org.w3c.dom.Node;
+import rngGame.main.WindowManager;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.imageio.*;
-import javax.imageio.stream.ImageInputStream;
-
-import org.w3c.dom.Node;
-
-import javafx.scene.image.*;
-import rngGame.main.WindowManager;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class ImgUtil.
  */
@@ -59,6 +58,16 @@ public class ImgUtil {
 	
 	public static Image getScaledImage(String path, int width, int height, boolean flip) {
 		return getScaledImages(path, width, height, flip)[0];
+	}
+
+	public static Point2D getoriginalSize(String path) {
+		try {
+			Image wi = new Image(new FileInputStream(path));
+			return new Point2D(wi.getWidth(), wi.getHeight());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

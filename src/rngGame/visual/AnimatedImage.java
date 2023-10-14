@@ -1,5 +1,6 @@
 package rngGame.visual;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.*;
 import rngGame.main.WindowManager;
 import rngGame.tile.ImgUtil;
@@ -153,6 +154,11 @@ public class AnimatedImage extends ImageView {
 			setImage(frames[frameIndex]);
 		}
 	}
+
+	public double getWidth() { return getImage().getWidth(); }
+
+	public double getHeight() { return getImage().getHeight(); }
+
 	/**
      * Gets the img requested height.
      *
@@ -166,8 +172,10 @@ public class AnimatedImage extends ImageView {
      * @return the img requested width
      */
     public int getImgRequestedWidth() { return imgRequestedWidth; }
+
     /** The img requested height. */
     private int imgRequestedWidth, imgRequestedHeight;
+
     /**
      * Sets the img requested height.
      *
@@ -181,4 +189,14 @@ public class AnimatedImage extends ImageView {
      * @param imgRequestedWidth the new img requested width
      */
     public void setImgRequestedWidth(int imgRequestedWidth) { this.imgRequestedWidth = imgRequestedWidth; }
+
+	public void setImgRequestedSize(int width, int height) {
+		setImgRequestedWidth(width);
+		setImgRequestedHeight(height);
+	}
+
+	public void setImgRequestedSize(Point2D size) {
+		setImgRequestedSize((int) size.getX(), (int) size.getY());
+	}
 }
+

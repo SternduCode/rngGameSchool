@@ -1,16 +1,16 @@
 package rngGame.main;
 
-import java.io.FileNotFoundException;
-
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.scene.image.*;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import rngGame.tile.ImgUtil;
 import rngGame.ui.Button;
 import rngGame.ui.SoundHandler;
 import rngGame.visual.AnimatedImage;
+
+import java.io.FileNotFoundException;
 
 /**
  * The Class TitleScreen.
@@ -59,6 +59,10 @@ public class TitleScreen extends Pane{
 		});
 		
 		clous = new Button("./res/backgrounds/Clous.png");
+		Point2D clousSize = ImgUtil.getoriginalSize(clous.getPath());
+		clous.setImgRequestedSize((int) (clousSize.getX() * 1.5), (int) (clousSize.getY() * 1.5));
+		clous.scaleF11();
+		KotlinExtensionFunctionsKt.setPosition(clous, WindowManager.getInstance().getGameWidth() * .99 - clous.getWidth(), WindowManager.getInstance().getGameHeight() * .885);
 		clous.setOnPressed(e -> clous.init("./res/backgrounds/Clous2.png"));
 		clous.setOnReleased(e -> {
 			clous.init("./res/backgrounds/Clous.png");
@@ -66,6 +70,10 @@ public class TitleScreen extends Pane{
 		});
 
 		ploy = new Button("./res/backgrounds/Ploy.png");
+		Point2D ploySize = ImgUtil.getoriginalSize(ploy.getPath());
+		ploy.setImgRequestedSize((int) (ploySize.getX() * 2), (int) (ploySize.getY() * 2));
+		ploy.scaleF11();
+		KotlinExtensionFunctionsKt.setPosition(ploy, WindowManager.getInstance().getGameWidth() / 2.0 - ploy.getWidth() / 2.0, WindowManager.getInstance().getGameHeight() * .85);
 		ploy.setOnMousePressed(e -> ploy.init("./res/backgrounds/Ploy2.png"));
 		ploy.setOnMouseReleased(e -> {
 			SoundHandler.getInstance().makeSound("click.wav");
@@ -116,7 +124,12 @@ public class TitleScreen extends Pane{
 		});
 
 		settins	= new Button("./res/backgrounds/Settins.png");
+		Point2D settinsSize = ImgUtil.getoriginalSize(settins.getPath());
+		settins.setImgRequestedSize((int) (settinsSize.getX() * 1.5), (int) (settinsSize.getY() * 1.5));
+		settins.scaleF11();
+		KotlinExtensionFunctionsKt.setPosition(settins, WindowManager.getInstance().getGameWidth() * .01, WindowManager.getInstance().getGameHeight() * .885);
 		pfail	= new Button("./res/backgrounds/Pfail.png");
+		KotlinExtensionFunctionsKt.setPosition(pfail, WindowManager.getInstance().getGameWidth() - pfail.getWidth() * 1.1, WindowManager.getInstance().getGameHeight() * .01);
 		pfail.setVisible(false);
 		settins.setOnPressed(e -> {
 			settins.init("./res/backgrounds/Settins2.png");
