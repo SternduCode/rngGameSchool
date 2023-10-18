@@ -1,6 +1,7 @@
 package rngGame.ui
 
 import javafx.scene.layout.Pane
+import javafx.scene.paint.Color
 import javafx.scene.shape.Polygon
 import rngGame.main.Direction
 import rngGame.main.WindowManager

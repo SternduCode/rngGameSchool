@@ -51,8 +51,8 @@ public class TitleScreen extends Pane{
 		storyView.setOnMouseReleased(me -> {
 			SoundHandler.getInstance().makeSound("click.wav");
 			if(index < 6) {
-			index++;
-			storyView.init("./res/story/Story"+ index +".gif");
+				index++;
+				storyView.init("./res/story/Story"+ index +".gif");
 			} else {
 				storyView.setVisible(false);
 			}
