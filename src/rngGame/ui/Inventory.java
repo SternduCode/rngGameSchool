@@ -12,7 +12,6 @@ import rngGame.stats.*;
 import rngGame.tile.ImgUtil;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Inventory.
  */
@@ -148,14 +147,14 @@ public class Inventory extends Pane {
 			int k = 0;
 			System.out.println(data + " " + Arrays.toString(data));
 			for (int j = 0; j < invSlots[0].length; j++) for (ImageView[] invSlot : invSlots) {
-				if (data[k] != null) invSlot[j].setImage(data[k].getImage(gamepanel));
+				if (data[k] != null) invSlot[j].setImage(data[k].getImage());
 				else invSlot[j].setImage(null);
 				k++;
 			}
 		}
 		for (int i = 0; i < Item4Slots.length; i++)
 			if (getCurrentDemon() != null && getCurrentDemon().getItem4List()[i] != null)
-				Item4Slots[i].setImage(getCurrentDemon().getItem4List()[i].getImage(gamepanel));
+				Item4Slots[i].setImage(getCurrentDemon().getItem4List()[i].getImage());
 			else Item4Slots[i].setImage(null);
 
 	}
@@ -935,7 +934,7 @@ public class Inventory extends Pane {
 			int _i = i;
 			ImageView iv = new ImageView();
 			if (getCurrentDemon() != null && getCurrentDemon().getItem4List()[i] != null) {
-				Image iv2 = getCurrentDemon().getItem4List()[i].getImage(gamepanel);
+				Image iv2 = getCurrentDemon().getItem4List()[i].getImage();
 				iv.setImage(iv2);
 			}
 			Item4Slots[i] = iv;
