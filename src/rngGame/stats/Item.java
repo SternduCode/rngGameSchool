@@ -14,6 +14,8 @@ public class Item {
 	/** The rarity. */
 	protected Rarity rarity;
 
+	public static final Item NOITEM = new Item("Use", "noItem", Rarity.COMMON);
+
 	/**
 	 * Instantiates a new item.
 	 *
