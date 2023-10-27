@@ -158,10 +158,10 @@ public class ContractsTable extends Building {
 		contractBackground.setTranslateY(-1);
 		// contractBackground.setTranslateX(gamepanel.SpielLaenge / 2 * 3);
 
-		contractSaturn		= new Button("./res/Contractstuff/Saturn.png");
-		contractNebel		= new Button("./res/Contractstuff/Nebel.png");
-		contractGalactus	= new Button("./res/Contractstuff/Galactus.png");
-		contractNova		= new Button("./res/Contractstuff/nova.png");
+		contractSaturn		= new Button("./res/Contractstuff/Himmel_Galaxy.gif", 25.6);
+		contractNebel		= new Button("./res/Contractstuff/Lava_Galaxy.gif", 25.6);
+		contractGalactus	= new Button("./res/Contractstuff/Strand_Galaxy.gif", 25.6);
+		contractNova		= new Button("./res/Contractstuff/Ice_Galaxy.gif", 25.6);
 
 		text = new ImageView(ka);
 
