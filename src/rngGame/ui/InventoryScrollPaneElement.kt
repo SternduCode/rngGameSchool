@@ -4,10 +4,16 @@ import javafx.scene.layout.Pane
 import rngGame.stats.Item
 import rngGame.visual.AnimatedImage
 
-class InventoryScrollPaneElement(var item: Item): Pane() {
+class InventoryScrollPaneElement(item: Item): Pane() {
 
-	val background: AnimatedImage = AnimatedImage("path")
-	val itemView: AnimatedImage = AnimatedImage()
+	var item: Item = item
+		set(value) {
+			field = value
+			itemView.init(item.path)
+		}
+
+	private val background: AnimatedImage = AnimatedImage("path")
+	private val itemView: AnimatedImage = AnimatedImage()
 
 	init {
 		children.addAll(background, itemView)
