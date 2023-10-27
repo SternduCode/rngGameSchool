@@ -20,4 +20,10 @@ class InventoryScrollPaneElement(item: Item): Pane() {
 		itemView.init(item.path)
 	}
 
+	val imageHeight
+		get() = background.height
+
+	val imageWidth
+		get() = background.width
+
 }
