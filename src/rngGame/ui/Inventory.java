@@ -476,13 +476,13 @@ public class Inventory extends Pane {
 					if (itemTestArray[_j / 62 * 10 + _i / 62] instanceof Potion pp) {
 						ImageView hpView2, rarityView2;
 
-						Image itemhpText = Text.getInstance().convertText("HP:" + pp.getHp(), 48);
+						Image itemhpText = Text.getInstance().convertText("HP:" + pp.hp, 48);
 						itemhpText = ImgUtil.resizeImage(
 								itemhpText, (int) itemhpText.getWidth(), (int) itemhpText.getHeight(),
 								(int) (itemhpText.getWidth() * WindowManager.getInstance().getScalingFactorX()),
 								(int) (itemhpText.getHeight() * WindowManager.getInstance().getScalingFactorY()));
 
-						Image itemRarityText = Text.getInstance().convertText("Rarity:" + (pp.getRarity()+"").replace("_", " "), 48);
+						Image itemRarityText = Text.getInstance().convertText("Rarity:" + (pp.getRarity() + "").replace("_", " "), 48);
 						itemRarityText = ImgUtil.resizeImage(
 								itemRarityText, (int) itemRarityText.getWidth(), (int) itemRarityText.getHeight(),
 								(int) (itemRarityText.getWidth() * WindowManager.getInstance().getScalingFactorX()),
@@ -530,7 +530,7 @@ public class Inventory extends Pane {
 
 							ctbi1.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[0].changeCurrenthp(pp.getHp());
+								currentDemonArray[0].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
@@ -546,7 +546,7 @@ public class Inventory extends Pane {
 							});
 							ctbi2.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[1].changeCurrenthp(pp.getHp());
+								currentDemonArray[1].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
@@ -563,7 +563,7 @@ public class Inventory extends Pane {
 							});
 							ctbi3.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[2].changeCurrenthp(pp.getHp());
+								currentDemonArray[2].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
@@ -579,7 +579,7 @@ public class Inventory extends Pane {
 							});
 							ctbi4.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[3].changeCurrenthp(pp.getHp());
+								currentDemonArray[3].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
@@ -595,7 +595,7 @@ public class Inventory extends Pane {
 							});
 							ctbi5.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[4].changeCurrenthp(pp.getHp());
+								currentDemonArray[4].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
@@ -611,7 +611,7 @@ public class Inventory extends Pane {
 							});
 							ctbi6.setOnReleased(mee -> {
 								transp.setVisible(false);
-								currentDemonArray[5].changeCurrenthp(pp.getHp());
+								currentDemonArray[5].changeCurrenthp(pp.hp);
 								potionArray[_j / 62 * 10 + _i / 62] = null;
 								moveFromArrayToView();
 								itemSureBackround.setVisible(false);
