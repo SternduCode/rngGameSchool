@@ -170,7 +170,7 @@ public class GamePanel extends Pane {
 			throws FileNotFoundException {
 		setPrefSize(WindowManager.getInstance().getGameWidth(), WindowManager.getInstance().getGameHeight());
 
-		joyStick = JoyStick.INSTANCE;
+		joyStick = JoyStick.getInstance();
 
 		frameTimes	= new ArrayList<>();
 		lastFrame	= System.currentTimeMillis();
@@ -322,7 +322,7 @@ public class GamePanel extends Pane {
 	 * @return true, if is block user inputs
 	 */
 	public boolean isBlockUserInputs() {
-		return LoadingScreen.INSTANCE.isInLoadingScreen() || blockUserInputs;
+		return LoadingScreen.getInstance().isInLoadingScreen() || blockUserInputs;
 	}
 
 	/**

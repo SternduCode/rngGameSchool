@@ -1,5 +1,6 @@
 package rngGame.main;
 
+import java.io.File;
 import java.io.FileInputStream;
 
 import javafx.application.Application;

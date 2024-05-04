@@ -35,11 +35,11 @@ public class Demon {
 		this.demon = demon;
 		element = wahl;
 		this.mobName = mobName;
-		atk = element.atk +gen.nextInt(6);
-		res = element.res;
-		maxhp = element.hp + gen.nextInt(11);
-		dgc = element.dgc;
-		lvl = element.lvl;
+		atk = element.getAtk() +gen.nextInt(6);
+		res = element.getRes();
+		maxhp = element.getHp() + gen.nextInt(11);
+		dgc = element.getDgc();
+		lvl = element.getLvl();
 		currenthp = getMaxHp();
 	}
 

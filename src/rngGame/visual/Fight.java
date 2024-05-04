@@ -98,7 +98,7 @@ public class Fight extends Pane{
 				eigenMob.changeCurrenthp(-eigenMob.getCurrenthp()+1);
 			}
 			System.out.println("uno HP left");
-			LoadingScreen.INSTANCE.goIntoLoadingScreen();
+			LoadingScreen.getInstance().goIntoLoadingScreen();
 			SoundHandler.getInstance().endBackgroundMusic();
 			if (!"".equals(gamepanel.getTileManager().getBackgroundMusic()))
 				SoundHandler.getInstance().setBackgroundMusic(gamepanel.getTileManager().getBackgroundMusic());
@@ -113,7 +113,7 @@ public class Fight extends Pane{
 					eigenMob.getDemon().flipTextures();
 					eigenMob.getDemon().reloadTextures();
 					gamepanel.setBlockUserInputs(false);
-					LoadingScreen.INSTANCE.goOutOfLoadingScreen();
+					LoadingScreen.getInstance().goOutOfLoadingScreen();
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -288,7 +288,7 @@ public class Fight extends Pane{
 				eigenMob.getDemon().flipTextures();
 				eigenMob.getDemon().reloadTextures();
 				gamepanel.setBlockUserInputs(false);
-				LoadingScreen.INSTANCE.goOutOfLoadingScreen();
+				LoadingScreen.getInstance().goOutOfLoadingScreen();
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
@@ -377,7 +377,7 @@ public class Fight extends Pane{
 							eigenMob.getDemon().flipTextures();
 							eigenMob.getDemon().reloadTextures();
 							gamepanel.setBlockUserInputs(false);
-							LoadingScreen.INSTANCE.goOutOfLoadingScreen();
+							LoadingScreen.getInstance().goOutOfLoadingScreen();
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}

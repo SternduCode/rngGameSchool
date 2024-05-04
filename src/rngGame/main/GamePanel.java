@@ -5,8 +5,6 @@ import java.util.*;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.sterndu.multicore.Updater;
-
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
@@ -229,7 +227,7 @@ public class GamePanel extends Pane {
 	 */
 	public void setMap(String path, double[] position) {
 
-		LoadingScreen.INSTANCE.goIntoLoadingScreen();
+		LoadingScreen.getInstance().goIntoLoadingScreen();
 
 		UndoRedo.getInstance().clearActions();
 
@@ -251,7 +249,7 @@ public class GamePanel extends Pane {
 				e.printStackTrace();
 			}
 			// LoadingScreen.INSTANCE.goOutOfLoadingScreen(); With 500ms run time
-			FadeTransition ft = new FadeTransition(Duration.millis(500), LoadingScreen.INSTANCE);
+			FadeTransition ft = new FadeTransition(Duration.millis(500), LoadingScreen.getInstance());
 			ft.setFromValue(1);
 			ft.setToValue(0);
 			ft.play();
@@ -373,6 +371,8 @@ public class GamePanel extends Pane {
 		frameTimes.add(frameTime);
 		fps = frameTimes.stream().mapToLong(l -> l).average().getAsDouble();
 		while (frameTimes.size() > Math.pow(fps * 12, 1.2)) frameTimes.remove(0);
+
+		SoundHandler.getInstance().update();
 
 	}
 

@@ -29,3 +29,5 @@ hs_err_pid*
 /.idea/codeStyles/Project.xml
 /.idea/misc.xml
 /classes/production/rngGAME/META-INF/rngGAME.kotlin_module
+/.profileconfig.json
+/build/

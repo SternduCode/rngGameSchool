@@ -2,7 +2,6 @@ package rngGame.ui
 
 import javafx.scene.layout.Pane
 import rngGame.main.WindowManager
-import rngGame.stats.Item
 
 class InventoryScrollPane: Pane() {
 

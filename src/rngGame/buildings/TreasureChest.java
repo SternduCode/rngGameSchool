@@ -134,7 +134,7 @@ public class TreasureChest extends Building {
 			gamepanel.getGamemenu().getInventory().itemToInventory(r2);
 			Item r3 = createItem();
 			gamepanel.getGamemenu().getInventory().itemToInventory(r3);
-			LoadingScreen.INSTANCE.goOutOfLoadingScreen();
+			LoadingScreen.getInstance().goOutOfLoadingScreen();
 			isOpen = true;
 			TreasureChest.this.setCurrentKey("open");
 			gamepanel.getLgp().setMap("./res/maps/lavaMap2.json", new double[] {

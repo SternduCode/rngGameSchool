@@ -1,7 +1,6 @@
 package rngGame.ui
 
 import javafx.scene.layout.Pane
-import rngGame.stats.Item
 import rngGame.visual.AnimatedImage
 
 class InventoryScrollPaneElement(item: Item): Pane() {

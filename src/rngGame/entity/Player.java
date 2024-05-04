@@ -276,10 +276,10 @@ public class Player extends Entity {
 
 		String lastKey = getCurrentKey();
 
-		if (JoyStick.INSTANCE.getX() != 0.0 || JoyStick.INSTANCE.getY() != 0.0) {
-			x += updateSpeed * JoyStick.INSTANCE.getX() * WindowManager.getInstance().getScalingFactorX();
-			y += updateSpeed * JoyStick.INSTANCE.getY() * WindowManager.getInstance().getScalingFactorY();
-			switch (JoyStick.INSTANCE.getDirection()){
+		if (JoyStick.getInstance().getX() != 0.0 || JoyStick.getInstance().getY() != 0.0) {
+			x += updateSpeed * JoyStick.getInstance().getX() * WindowManager.getInstance().getScalingFactorX();
+			y += updateSpeed * JoyStick.getInstance().getY() * WindowManager.getInstance().getScalingFactorY();
+			switch (JoyStick.getInstance().getDirection()){
 				case N -> setCurrentKey("N_run");
 				case NE -> setCurrentKey("NE_run");
 				case NW -> setCurrentKey("NW_run");
@@ -290,7 +290,7 @@ public class Player extends Entity {
 				case SW -> setCurrentKey("SW_run");
 			}
 		} else {
-			switch (JoyStick.INSTANCE.getDirection()){
+			switch (JoyStick.getInstance().getDirection()){
 				case N -> setCurrentKey("N_idle");
 				case NE -> setCurrentKey("NE_idle");
 				case NW -> setCurrentKey("NW_idle");
